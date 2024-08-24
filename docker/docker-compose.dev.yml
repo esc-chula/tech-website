@@ -1,0 +1,21 @@
+name: tech-website
+services:
+  postgres:
+    image: postgres:latest
+    container_name: tech-website-postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tech-website
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - default
+volumes:
+  postgres-data:
+networks:
+  default:
+    driver: bridge
