@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@directus/sdk': ^17.0.0
   '@prisma/client': ^5.14.0
   '@t3-oss/env-nextjs': ^0.10.1
   '@tanstack/react-query': ^5.50.0
@@ -36,6 +37,7 @@ specifiers:
   zod: ^3.23.3
 
 dependencies:
+  '@directus/sdk': 17.0.0
   '@prisma/client': 5.18.0_prisma@5.18.0
   '@t3-oss/env-nextjs': 0.10.1_w5hcuwibbw2q5mvl2ppratu4ju
   '@tanstack/react-query': 5.51.23_react@18.3.1
@@ -77,6 +79,11 @@ packages:
   /@alloc/quick-lru/5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
+
+  /@directus/sdk/17.0.0:
+    resolution: {integrity: sha512-ADKoFrLjWPVVsYNK0EffVFstl/ZHVaQbiUp4NCueKfvFaOSLQ16xSVNj5O//rP5+rU8t1HkjwC6JDh02rao7ZQ==}
+    engines: {node: '>=18.0.0'}
+    dev: false
 
   /@eslint-community/eslint-utils/4.4.0_eslint@8.57.0:
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
