@@ -16,6 +16,7 @@ model User {
     password        String
     username        String          @unique
     urls            ShortenedLink[] @relation("UserToShortenedLink")
+    qrCodes         QrCodeGen[]     @relation("UserToQrCodeGen")
 }
 
 model ShortenedLink {
@@ -24,7 +25,20 @@ model ShortenedLink {
     url             String
     slug            String      @unique
     editedAt        DateTime    @default(now())
-    // qrCode          QrCode?
+    qrCode          QrCodeGen?  @relation("ShortenedLinkToQrCodeGen")
     user            User        @relation(fields: [userId], references: [id], name:"UserToShortenedLink")
+    userId          Int
+}
+
+model QrCodeGen {
+    id              Int         @id @default(autoincrement())
+    name            String
+    url             String      @unique
+    qrCode          String
+    color           String
+    logo            String?
+    editedAt        DateTime    @default(now())
+    shortenedLink   ShortenedLink? @relation(fields: [url], references: [slug], name: "ShortenedLinkToQrCodeGen")
+    user            User        @relation(fields: [userId], references: [id], name: "UserToQrCodeGen")
     userId          Int
 }
