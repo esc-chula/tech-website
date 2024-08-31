@@ -10,21 +10,30 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+// model Post {
+//     id        Int      @id @default(autoincrement())
+//     name      String
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+
+//     @@index([name])
+// }
+
 model User {
-    id              Int         @id @default(autoincrement())
-    email           String      @unique
+    id              Int             @id @default(autoincrement())
+    email           String          @unique
     password        String
-    username        String      @unique
-    urls            Url[]
+    username        String          @unique
+    urls            ShortenedLink[] @relation("UserToShortenedLink")
 }
 
-model Url {
+model ShortenedLink {
     id              Int         @id @default(autoincrement())
-    urlName         String      @unique
-    originalUrl     String
-    shortUrl        String      @unique
+    name            String      
+    url             String
+    slug            String      @unique
     editedAt        DateTime    @default(now())
     // qrCode          QrCode?
-    user            User        @relation(fields: [userId], references: [id])
+    user            User        @relation(fields: [userId], references: [id], name:"UserToShortenedLink")
     userId          Int
 }
