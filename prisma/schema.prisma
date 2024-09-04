@@ -25,7 +25,6 @@ model ShortenedLink {
     url             String
     slug            String      @unique
     editedAt        DateTime    @default(now())
-    qrCode          QrCodeGen?  @relation("ShortenedLinkToQrCodeGen")
     user            User        @relation(fields: [userId], references: [id], name:"UserToShortenedLink")
     userId          Int
 }
@@ -38,7 +37,6 @@ model QrCodeGen {
     color           String
     logo            String?
     editedAt        DateTime    @default(now())
-    shortenedLink   ShortenedLink? @relation(fields: [url], references: [slug], name: "ShortenedLinkToQrCodeGen")
     user            User        @relation(fields: [userId], references: [id], name: "UserToQrCodeGen")
     userId          Int
 }
