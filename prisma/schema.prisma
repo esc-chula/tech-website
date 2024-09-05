@@ -15,11 +15,11 @@ model User {
     email           String          @unique
     password        String
     username        String          @unique
-    urls            ShortenedLink[] @relation("UserToShortenedLink")
-    qrCodes         QrCodeGen[]     @relation("UserToQrCodeGen")
+    urls            UserShortenedLink[] @relation("UserToShortenedLink")
+    qrCodes         UserQrCode[]     @relation("UserToQrCodeGen")
 }
 
-model ShortenedLink {
+model UserShortenedLink {
     id              Int         @id @default(autoincrement())
     name            String      
     url             String
@@ -29,10 +29,10 @@ model ShortenedLink {
     userId          Int
 }
 
-model QrCodeGen {
+model UserQrCode {
     id              Int         @id @default(autoincrement())
     name            String
-    url             String      @unique
+    url             String      
     qrCode          String
     color           String
     logo            String?
