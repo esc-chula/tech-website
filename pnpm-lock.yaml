@@ -1,119 +1,78 @@
-lockfileVersion: '9.0'
+lockfileVersion: 5.4
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
+specifiers:
+  '@directus/sdk': ^17.0.0
+  '@prisma/client': ^5.14.0
+  '@t3-oss/env-nextjs': ^0.10.1
+  '@tanstack/react-query': ^5.50.0
+  '@trpc/client': ^11.0.0-rc.446
+  '@trpc/react-query': ^11.0.0-rc.446
+  '@trpc/server': ^11.0.0-rc.446
+  '@types/eslint': ^8.56.10
+  '@types/node': ^20.14.10
+  '@types/react': ^18.3.3
+  '@types/react-dom': ^18.3.0
+  '@typescript-eslint/eslint-plugin': ^7.1.1
+  '@typescript-eslint/parser': ^7.1.1
+  class-variance-authority: ^0.7.0
+  clsx: ^2.1.1
+  eslint: ^8.57.0
+  eslint-config-next: ^14.2.4
+  eslint-plugin-tailwindcss: ^3.17.4
+  geist: ^1.3.0
+  lucide-react: ^0.428.0
+  next: ^14.2.4
+  postcss: ^8.4.39
+  prettier: ^3.3.2
+  prettier-plugin-tailwindcss: ^0.6.5
+  prisma: ^5.14.0
+  react: ^18.3.1
+  react-dom: ^18.3.1
+  server-only: ^0.0.1
+  superjson: ^2.2.1
+  tailwind-merge: ^2.5.2
+  tailwindcss: ^3.4.3
+  tailwindcss-animate: ^1.0.7
+  typescript: ^5.5.3
+  zod: ^3.23.3
 
-importers:
+dependencies:
+  '@directus/sdk': 17.0.0
+  '@prisma/client': 5.18.0_prisma@5.18.0
+  '@t3-oss/env-nextjs': 0.10.1_w5hcuwibbw2q5mvl2ppratu4ju
+  '@tanstack/react-query': 5.51.23_react@18.3.1
+  '@trpc/client': 11.0.0-rc.477_@trpc+server@11.0.0-rc.477
+  '@trpc/react-query': 11.0.0-rc.477_aowrdprvsvampbqv34vljq4aie
+  '@trpc/server': 11.0.0-rc.477
+  class-variance-authority: 0.7.0
+  clsx: 2.1.1
+  eslint-plugin-tailwindcss: 3.17.4_tailwindcss@3.4.10
+  geist: 1.3.1_next@14.2.5
+  lucide-react: 0.428.0_react@18.3.1
+  next: 14.2.5_nnrd3gsncyragczmpvfhocinkq
+  react: 18.3.1
+  react-dom: 18.3.1_react@18.3.1
+  server-only: 0.0.1
+  superjson: 2.2.1
+  tailwind-merge: 2.5.2
+  tailwindcss-animate: 1.0.7_tailwindcss@3.4.10
+  zod: 3.23.8
 
-  .:
-    dependencies:
-      '@prisma/client':
-        specifier: ^5.14.0
-        version: 5.18.0(prisma@5.18.0)
-      '@t3-oss/env-nextjs':
-        specifier: ^0.10.1
-        version: 0.10.1(typescript@5.5.4)(zod@3.23.8)
-      '@tanstack/react-query':
-        specifier: ^5.50.0
-        version: 5.52.2(react@18.3.1)
-      '@trpc/client':
-        specifier: ^11.0.0-rc.446
-        version: 11.0.0-rc.485(@trpc/server@11.0.0-rc.485)
-      '@trpc/react-query':
-        specifier: ^11.0.0-rc.446
-        version: 11.0.0-rc.485(@tanstack/react-query@5.52.2(react@18.3.1))(@trpc/client@11.0.0-rc.485(@trpc/server@11.0.0-rc.485))(@trpc/server@11.0.0-rc.485)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@trpc/server':
-        specifier: ^11.0.0-rc.446
-        version: 11.0.0-rc.485
-      class-variance-authority:
-        specifier: ^0.7.0
-        version: 0.7.0
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      eslint-plugin-tailwindcss:
-        specifier: ^3.17.4
-        version: 3.17.4(tailwindcss@3.4.10)
-      geist:
-        specifier: ^1.3.0
-        version: 1.3.1(next@14.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      lucide-react:
-        specifier: ^0.428.0
-        version: 0.428.0(react@18.3.1)
-      next:
-        specifier: ^14.2.4
-        version: 14.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      server-only:
-        specifier: ^0.0.1
-        version: 0.0.1
-      superjson:
-        specifier: ^2.2.1
-        version: 2.2.1
-      tailwind-merge:
-        specifier: ^2.5.2
-        version: 2.5.2
-      tailwindcss-animate:
-        specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.10)
-      zod:
-        specifier: ^3.23.3
-        version: 3.23.8
-    devDependencies:
-      '@types/eslint':
-        specifier: ^8.56.10
-        version: 8.56.12
-      '@types/node':
-        specifier: ^20.14.10
-        version: 20.16.1
-      '@types/qrcode':
-        specifier: ^1.5.5
-        version: 1.5.5
-      '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.4
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.0
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^7.1.1
-        version: 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)
-      '@typescript-eslint/parser':
-        specifier: ^7.1.1
-        version: 7.18.0(eslint@8.57.0)(typescript@5.5.4)
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.0
-      eslint-config-next:
-        specifier: ^14.2.4
-        version: 14.2.6(eslint@8.57.0)(typescript@5.5.4)
-      postcss:
-        specifier: ^8.4.39
-        version: 8.4.41
-      prettier:
-        specifier: ^3.3.2
-        version: 3.3.3
-      prettier-plugin-tailwindcss:
-        specifier: ^0.6.5
-        version: 0.6.6(prettier@3.3.3)
-      prisma:
-        specifier: ^5.14.0
-        version: 5.18.0
-      qrcode:
-        specifier: ^1.5.4
-        version: 1.5.4
-      tailwindcss:
-        specifier: ^3.4.3
-        version: 3.4.10
-      typescript:
-        specifier: ^5.5.3
-        version: 5.5.4
+devDependencies:
+  '@types/eslint': 8.56.11
+  '@types/node': 20.15.0
+  '@types/react': 18.3.3
+  '@types/react-dom': 18.3.0
+  '@typescript-eslint/eslint-plugin': 7.18.0_oqhcuottb3aexc5dcdnbsrzqfa
+  '@typescript-eslint/parser': 7.18.0_qusgslmwnowdaqieuropes6b5q
+  eslint: 8.57.0
+  eslint-config-next: 14.2.5_qusgslmwnowdaqieuropes6b5q
+  postcss: 8.4.41
+  prettier: 3.3.3
+  prettier-plugin-tailwindcss: 0.6.6_prettier@3.3.3
+  prisma: 5.18.0
+  tailwindcss: 3.4.10
+  typescript: 5.5.4
 
 packages:
 
@@ -121,7 +80,12 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@eslint-community/eslint-utils@4.4.0':
+  /@directus/sdk/17.0.0:
+    resolution: {integrity: sha512-ADKoFrLjWPVVsYNK0EffVFstl/ZHVaQbiUp4NCueKfvFaOSLQ16xSVNj5O//rP5+rU8t1HkjwC6JDh02rao7ZQ==}
+    engines: {node: '>=18.0.0'}
+    dev: false
+
+  /@eslint-community/eslint-utils/4.4.0_eslint@8.57.0:
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
