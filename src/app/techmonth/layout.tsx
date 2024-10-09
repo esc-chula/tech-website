@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { type Metadata } from "next";
 
 import Background from "./_components/background";
+import Navigation from "./_components/navigation";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -15,6 +16,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <body className="bg-techmonth-black text-techmonth-white">
+      <Navigation />
       {children}
       <Background />
     </body>

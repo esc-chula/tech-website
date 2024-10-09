@@ -68,6 +68,7 @@ const config = {
           white: "#F2F0E0",
           green: "#C3E88D",
           magenta: "#C782EA",
+          yellow: "#FFEB0A",
           black: "#1C1C1C",
         },
       },
