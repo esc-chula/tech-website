@@ -6,8 +6,7 @@
 
 1. Clone this repo
 
-   `git clone https://github.com/carsup/carsup-frontend.git
-`
+   `git clone https://github.com/esc-chula/tech-website.git`
 
 2. Create `.env` file by remove .example from `.env.exmaple` file
 
