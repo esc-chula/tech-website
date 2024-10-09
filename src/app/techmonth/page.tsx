@@ -4,10 +4,10 @@ import TechMonthSection from "./_components/section-techmonth";
 
 export default function Page(): JSX.Element {
   return (
-    <div>
+    <>
       <HeroSection />
       <TechMonthSection />
       <ScheduleSection />
-    </div>
+    </>
   );
 }
