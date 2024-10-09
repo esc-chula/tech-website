@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <body className="bg-techmonth-black text-techmonth-white">
       <Navigation />
-      {children}
+      <main className="-mt-[calc(100vh-14px)]">{children}</main>
       <Background />
     </body>
   );
