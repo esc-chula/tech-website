@@ -1,3 +1,7 @@
 export default function TechMonthSection(): JSX.Element {
-  return <div className="min-h-screen">Tech Month Section</div>;
+  return (
+    <div id="techmonth" className="min-h-screen">
+      Tech Month Section
+    </div>
+  );
 }

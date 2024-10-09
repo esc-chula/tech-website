@@ -1,3 +1,7 @@
 export default function ScheduleSection(): JSX.Element {
-  return <div className="min-h-screen">ScheduleSection</div>;
+  return (
+    <div id="schedule" className="min-h-screen">
+      ScheduleSection
+    </div>
+  );
 }
