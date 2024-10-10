@@ -25,6 +25,8 @@ const config = {
           ...fontFamily.sans
         ],
         mono: ["var(--font-mono)", ...fontFamily.mono],
+        inter: ["var(--font-inter)", ...fontFamily.sans],
+        thai: ["var(--font-ibm-plex-sans-thai)", ...fontFamily.sans],
       },
       colors: {
         border: "hsl(var(--border) / <alpha-value>)",
