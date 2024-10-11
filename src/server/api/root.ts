@@ -1,6 +1,6 @@
 import { postRouter } from "@/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-import { techMonthStampRouter } from "./routers/techmonth-stamp";
+import { techMonthStampRouter } from "./routers/techmonth";
 
 /**
  * This is the primary router for your server.
