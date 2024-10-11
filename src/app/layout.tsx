@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { type Metadata } from "next";
 import { Press_Start_2P } from "next/font/google";
 import localFont from "next/font/local";
+import { IBM_Plex_Sans_Thai } from "next/font/google";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { cn } from "@/lib/utils";
@@ -22,12 +23,24 @@ const tiny5 = localFont({
   src: "./_fonts/Tiny5-Regular.ttf",
   variable: "--font-tiny5",
 });
+const ibmPlexSansThai = IBM_Plex_Sans_Thai({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-ibm-plex-sans-thai",
+});
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={cn(pressStart2P.variable, tiny5.variable)}>
+    <html
+      lang="en"
+      className={cn(
+        pressStart2P.variable,
+        tiny5.variable,
+        ibmPlexSansThai.variable,
+      )}
+    >
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>

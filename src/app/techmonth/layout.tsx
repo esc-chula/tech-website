@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <body className="bg-techmonth-black text-techmonth-white">
       <Navigation />
-      <main className="-mt-[calc(100vh-14px)] flex w-full flex-col items-center">
+      <main className="flex w-full flex-col items-center lg:-mt-[calc(100vh-14px)]">
         {children}
       </main>
       <Background />
