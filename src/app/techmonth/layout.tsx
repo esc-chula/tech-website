@@ -3,7 +3,6 @@ import "@/styles/globals.css";
 import { type Metadata } from "next";
 
 import Background from "./_components/background";
-import Navigation from "./_components/navigation";
 
 export const metadata: Metadata = {
   title: "Intania Tech Month 2024",
@@ -17,10 +16,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <body className="bg-techmonth-black text-techmonth-white">
-      <Navigation />
-      <main className="flex w-full flex-col items-center lg:-mt-[calc(100vh-14px)]">
-        {children}
-      </main>
+      {children}
       <Background />
     </body>
   );

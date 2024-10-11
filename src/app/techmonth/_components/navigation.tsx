@@ -29,7 +29,7 @@ export default function Navigation(): JSX.Element {
           ))}
         </div>
         <Link
-          href="/techmonth/stamp"
+          href="/techmonth/stamps"
           className="grid h-full w-min place-content-center whitespace-nowrap bg-techmonth-yellow px-3 text-2xl text-techmonth-black duration-300 ease-in-out hover:translate-x-2"
         >
           {`COLLECT STAMP ->`}
