@@ -45,3 +45,9 @@ model UserQrCode {
     user     User     @relation(fields: [userId], references: [id], name: "UserToQrCodeGen")
     userId   Int
 }
+
+model TechMonthStamp {
+    id        Int    @id @default(autoincrement())
+    studentId String
+    eventId   String
+}
