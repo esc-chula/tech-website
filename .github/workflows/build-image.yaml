@@ -22,7 +22,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}:latest .
+        run: docker build -t ghcr.io/${{ github.repository }}:latest --build-arg DIRECTUS_URL=${{secrets.DIRECTUS_URL}} .
 
       - name: Push Docker image to GitHub Container Registry
         run: docker push ghcr.io/${{ github.repository }}:latest
