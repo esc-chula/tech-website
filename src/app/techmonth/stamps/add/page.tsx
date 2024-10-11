@@ -28,6 +28,14 @@ export default async function AddStampPage({
     return notFound();
   }
 
+  if (event.stampStrictDate) {
+    const today = new Date();
+    const eventDate = new Date(event.date);
+    if (today.getDate() !== eventDate.getDate()) {
+      return notFound();
+    }
+  }
+
   const userStamps = await api.techMonthStamp.getStampsByStudentId({
     studentId,
   });

@@ -4,4 +4,5 @@ export interface Event {
   name: string;
   club: "thinc" | "gdsc" | "grdc" | "quant" | "cubs" | "eic" | "robo-racer";
   date: string;
+  stampStrictDate: boolean;
 }
