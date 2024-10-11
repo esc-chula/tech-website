@@ -26,6 +26,7 @@ const config = {
         // TECH MONTH
         "press-start-2p": "var(--font-press-start-2p)",
         tiny5: "var(--font-tiny5)",
+        "ibm-plex-sans-thai": "var(--font-ibm-plex-sans-thai)",
       },
       colors: {
         // SHADCN

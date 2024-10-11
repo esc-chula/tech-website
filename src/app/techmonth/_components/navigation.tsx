@@ -11,7 +11,7 @@ const items = [
 
 export default function Navigation(): JSX.Element {
   return (
-    <nav className="sticky top-4 mt-[calc(100vh-72px)] flex select-none justify-center font-tiny5">
+    <nav className="sticky top-4 z-50 mt-[calc(100vh-72px)] hidden select-none justify-center font-tiny5 lg:flex">
       <div className="flex h-14 w-full max-w-screen-md gap-4">
         <div className="flex h-full w-full items-center justify-between bg-techmonth-white px-4 text-3xl">
           {items.map((item) => (
