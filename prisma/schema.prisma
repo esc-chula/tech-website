@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider      = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl"]
 }
 
 datasource db {
@@ -44,4 +45,10 @@ model UserQrCode {
     editedAt DateTime @default(now())
     user     User     @relation(fields: [userId], references: [id], name: "UserToQrCodeGen")
     userId   Int
+}
+
+model TechMonthStamp {
+    id        Int    @id @default(autoincrement())
+    studentId String
+    eventId   String
 }
