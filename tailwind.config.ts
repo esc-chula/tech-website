@@ -22,8 +22,14 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         mono: ["var(--font-mono)", ...fontFamily.mono],
+
+        // TECH MONTH
+        "press-start-2p": "var(--font-press-start-2p)",
+        tiny5: "var(--font-tiny5)",
+        "ibm-plex-sans-thai": "var(--font-ibm-plex-sans-thai)",
       },
       colors: {
+        // SHADCN
         border: "hsl(var(--border) / <alpha-value>)",
         input: "hsl(var(--input) / <alpha-value>)",
         ring: "hsl(var(--ring) / <alpha-value>)",
@@ -56,6 +62,15 @@ const config = {
         card: {
           DEFAULT: "hsl(var(--card) / <alpha-value>)",
           foreground: "hsl(var(--card-foreground) / <alpha-value>)",
+        },
+
+        // TECH MONTH
+        techmonth: {
+          white: "#F2F0E0",
+          green: "#C3E88D",
+          magenta: "#C782EA",
+          yellow: "#FFEB0A",
+          black: "#1C1C1C",
         },
       },
       borderRadius: {
