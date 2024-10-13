@@ -13,7 +13,7 @@ export const Session = ({
   return (
     <div
       className={cn(
-        "flex w-full flex-col items-center justify-center space-y-4 bg-neutral-900 px-4 py-10 text-white sm:space-y-4",
+        "flex w-full flex-col items-center justify-center space-y-4 bg-neutral-900 px-4 py-10 text-white",
         className,
       )}
     >
