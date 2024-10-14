@@ -15,7 +15,9 @@ export default async function AddStampPage({
   const cookieStore = cookies();
   const studentId = cookieStore.get("studentId")?.value;
   if (!studentId) {
-    redirect("/techmonth/login");
+    redirect(
+      `/techmonth/login?callbackUrl=${encodeURIComponent(`/techmonth/stamps/add?code=${searchParams.code}`)}`,
+    );
   }
 
   const eventId = searchParams.code;
