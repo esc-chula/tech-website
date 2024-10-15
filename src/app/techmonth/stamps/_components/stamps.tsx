@@ -1,10 +1,27 @@
 "use client";
 
-import React from "react";
+import { useWindowSize } from "@/hooks/useWindowSize";
+import React, { useEffect, useState } from "react";
 
 export default function Stamps() {
-  const numberOfColumns = 7;
-  const numberOfRows = 100;
+  const { width: windowWidth } = useWindowSize();
+  const [numberOfColumns, setNumberOfColumns] = useState(0);
+
+  useEffect(() => {
+    if (windowWidth < 768) {
+      setNumberOfColumns(3);
+    } else if (windowWidth < 1024) {
+      setNumberOfColumns(5);
+    } else if (windowWidth < 1280) {
+      setNumberOfColumns(6);
+    } else {
+      setNumberOfColumns(7);
+    }
+  }, [windowWidth, numberOfColumns]);
+
+  const numberOfRows = 20;
+
+  if (numberOfColumns === 0) return null;
 
   return (
     <div
