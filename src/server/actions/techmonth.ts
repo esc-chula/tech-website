@@ -10,6 +10,11 @@ export async function login(studentId: string) {
   cookieStore.set("studentId", studentId);
 }
 
+export async function logout() {
+  const cookieStore = cookies();
+  cookieStore.delete("studentId");
+}
+
 export async function getEvents(): Promise<Event[]> {
   const events = await directus.request(
     readItems("Tech_web_techmonth_event" as never),
