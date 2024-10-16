@@ -37,7 +37,7 @@ export default function LoginPage() {
   return (
     <main className="flex w-full flex-col items-center">
       <div className="flex min-h-screen w-full max-w-screen-xl flex-col justify-center space-y-8 px-8 py-28 font-tiny5 md:px-16 xl:px-4">
-        <h2 className="text-center text-3xl uppercase md:text-5xl lg:text-left lg:text-8xl">
+        <h2 className="text-left text-6xl uppercase md:text-5xl lg:text-8xl">
           <span className="text-techmonth-green">LOG</span>
           IN
         </h2>
