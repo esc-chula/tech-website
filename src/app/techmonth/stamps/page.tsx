@@ -38,8 +38,8 @@ export default async function StampsPage(): Promise<JSX.Element> {
                 <span className="text-techmonth-green">STAMPS</span> BOOK
               </h2>
               <Link
-                href="/stamps/rewards"
-                className="font-press-start-2p text-techmonth-magenta underline hover:text-techmonth-yellow"
+                href="/techmonth/stamps/rewards"
+                className="w-max font-press-start-2p text-techmonth-magenta underline hover:text-techmonth-yellow"
               >{`REWARDS ->`}</Link>
             </div>
             <TriggerModal className="mt-4 h-min bg-techmonth-yellow px-6 py-2 text-2xl text-techmonth-black duration-200 hover:translate-x-3 lg:text-3xl">
