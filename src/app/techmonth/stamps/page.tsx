@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Header from "./_components/header";
 import Link from "next/link";
-import Stamps from "./_components/stamps";
+import StampsLadder from "./_components/stamps_ladder";
 
 export default async function StampsPage(): Promise<JSX.Element> {
   const cookieStore = cookies();
@@ -46,7 +46,10 @@ export default async function StampsPage(): Promise<JSX.Element> {
             {`ADD ->`}
           </button>
         </div>
-        <Stamps />
+        <StampsLadder
+          numberOfRows={events.length}
+          stampsWithEvent={stampsWithEvent}
+        />
       </div>
     </main>
   );

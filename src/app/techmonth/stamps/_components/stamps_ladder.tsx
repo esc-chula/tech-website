@@ -1,9 +1,22 @@
 "use client";
 
 import { useWindowSize } from "@/hooks/useWindowSize";
+import { type Event } from "@/types/techmonth";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-export default function Stamps() {
+export default function StampsLadder({
+  numberOfRows,
+  stampsWithEvent,
+}: {
+  numberOfRows: number;
+  stampsWithEvent: {
+    event: Event | undefined;
+    id: number;
+    studentId: string;
+    eventId: string;
+  }[];
+}) {
   const { width: windowWidth } = useWindowSize();
   const [numberOfColumns, setNumberOfColumns] = useState(0);
 
@@ -19,8 +32,6 @@ export default function Stamps() {
     }
   }, [windowWidth, numberOfColumns]);
 
-  const numberOfRows = 20;
-
   if (numberOfColumns === 0) return null;
 
   return (
@@ -30,7 +41,12 @@ export default function Stamps() {
         gridTemplateColumns: `repeat(${numberOfColumns}, minmax(0, 1fr))`,
       }}
     >
-      {Array.from({ length: numberOfRows }).map((_, rowIndex) => {
+      {Array.from({ length: numberOfRows + 3 }).map((_, rowIndex) => {
+        const stamps = [
+          stampsWithEvent[rowIndex * 2],
+          stampsWithEvent[rowIndex * 2 + 1],
+        ];
+
         return (
           <React.Fragment key={rowIndex}>
             {Array.from({ length: 1 }).map((_, index) => {
@@ -53,12 +69,32 @@ export default function Stamps() {
               );
             })}
 
-            {Array.from({ length: 2 }).map((_, index) => (
-              <div
-                key={`stamp-${rowIndex}-${index}`}
-                className="aspect-square w-full border-8 border-techmonth-white bg-techmonth-white/5"
-              />
-            ))}
+            {stamps.map((stamp, index) => {
+              return (
+                <div
+                  key={`stamp-${rowIndex}-${index}`}
+                  className="aspect-square w-full select-none border-8 border-techmonth-white bg-techmonth-white/5 p-2"
+                >
+                  {stamp ? (
+                    <div className="h-full w-full -rotate-[20deg] rounded-full bg-[#474747] pt-3 text-center">
+                      <div className="relative h-3/4 w-full">
+                        <Image
+                          src={
+                            stamp.event?.club
+                              ? `/techmonth/clubs/${stamp.event?.club}.png`
+                              : "/techmonth/tech_logo.svg"
+                          }
+                          alt={stamp.eventId}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                      <div className="h-20">{`<${stamp.eventId}>`}</div>
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
 
             {Array.from({ length: 1 }).map((_, index) => {
               const isInverse =
