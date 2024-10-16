@@ -16,7 +16,7 @@ export default function TechMonthSection(): JSX.Element {
   return (
     <div
       id="techmonth"
-      className="flex min-h-screen w-full max-w-screen-xl flex-col gap-40 px-8 pt-16 md:px-16 xl:px-4"
+      className="flex min-h-screen w-full max-w-screen-xl flex-col gap-40 px-8 py-28 md:px-16 xl:px-4"
     >
       <article>
         <h2 className="max-w-4xl text-center font-ibm-plex-sans-thai text-5xl leading-normal md:text-7xl lg:text-left lg:text-8xl">
