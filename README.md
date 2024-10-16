@@ -17,7 +17,7 @@
 pnpm install
 
 # start db
-docker compose -f docker/docker-compose.dev.yml up -d
+docker compose up postgres
 
 # start dev
 pnpm dev

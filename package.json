@@ -32,6 +32,7 @@
     "react-dom": "^18.3.1",
     "react-scroll": "^1.9.0",
     "server-only": "^0.0.1",
+    "sharp": "^0.33.5",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
