@@ -2,8 +2,8 @@
 
 import { useWindowSize } from "@/hooks/useWindowSize";
 import { type Event } from "@/types/techmonth";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import Stamp from "./stamp";
 
 export default function StampsLadder({
   numberOfRows,
@@ -75,23 +75,7 @@ export default function StampsLadder({
                   key={`stamp-${rowIndex}-${index}`}
                   className="aspect-square w-full select-none border-8 border-techmonth-white bg-techmonth-white/5 p-2"
                 >
-                  {stamp ? (
-                    <div className="h-full w-full -rotate-[20deg] rounded-full bg-[#474747] pt-3 text-center">
-                      <div className="relative h-3/4 w-full">
-                        <Image
-                          src={
-                            stamp.event?.club
-                              ? `/techmonth/clubs/${stamp.event?.club}.png`
-                              : "/techmonth/tech_logo.svg"
-                          }
-                          alt={stamp.eventId}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <div className="h-20">{`<${stamp.eventId}>`}</div>
-                    </div>
-                  ) : null}
+                  {stamp ? <Stamp stamp={stamp} /> : null}
                 </div>
               );
             })}
