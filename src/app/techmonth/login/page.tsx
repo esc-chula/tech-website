@@ -2,9 +2,17 @@
 
 import { login } from "@/server/actions/techmonth";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-export default function LoginPage() {
+export default function LoginPageWithSuspense() {
+  return (
+    <Suspense fallback="Loading...">
+      <LoginPage />
+    </Suspense>
+  );
+}
+
+function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
