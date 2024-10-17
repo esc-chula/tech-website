@@ -51,6 +51,15 @@ export default function HeroSection(): JSX.Element {
               MONTH
             </h2>
           </div>
+          <div className="mt-4 flex gap-2">
+            <p>Sponsored By</p>
+            <Image
+              src="/techmonth/cleverse_logo.svg"
+              alt="Cleverse"
+              width={100}
+              height={100}
+            />
+          </div>
         </section>
         <section className="flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-4 font-press-start-2p lg:flex-col lg:items-end lg:gap-14 lg:text-right">
           <h2 className="w-min whitespace-nowrap text-xl md:text-2xl lg:whitespace-normal lg:text-9xl">
