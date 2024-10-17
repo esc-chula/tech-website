@@ -1,0 +1,38 @@
+name: tech-website
+services:
+  postgres:
+    image: postgres:latest
+    container_name: tech-website-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tech-website
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - default
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DIRECTUS_URL: ${DIRECTUS_URL}
+    container_name: tech-website-web
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    networks:
+      - default
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+
+networks:
+  default:
+    driver: bridge
