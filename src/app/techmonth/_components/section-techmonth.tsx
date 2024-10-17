@@ -51,7 +51,7 @@ export default function TechMonthSection(): JSX.Element {
             เพื่อแลกของรางวัลด้วย!
           </p>
           <Link
-            href="/techmonth/stamp"
+            href="/techmonth/stamps"
             className="mx-auto h-fit w-min whitespace-nowrap bg-techmonth-yellow px-4 py-2 text-center font-tiny5 text-xl text-techmonth-black duration-300 ease-in-out hover:translate-x-2 md:text-2xl lg:px-5 lg:py-2.5 lg:text-3xl"
           >
             COLLECT STAMP -&gt;
