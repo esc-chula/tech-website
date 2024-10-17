@@ -25,9 +25,12 @@ export default async function AddStampPage({
     return notFound();
   }
 
-  const event = await getEventByEventId(eventId).catch(() => null);
+  const { data: event, error } = await getEventByEventId(eventId);
   if (!event) {
     return notFound();
+  }
+  if (error) {
+    redirect("/techmonth/stamps");
   }
 
   if (event.stampStrictDate) {
