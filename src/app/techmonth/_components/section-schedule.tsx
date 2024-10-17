@@ -1,5 +1,15 @@
 import { getEvents } from "@/server/actions/techmonth";
 
+const clubNames = {
+  thinc: "Thinc.",
+  gdsc: "GDSC",
+  grdc: "GRDC",
+  quant: "Quant",
+  cubs: "CUBS",
+  eic: "EIC",
+  robo_racer: "RoboRacer",
+};
+
 export default async function ScheduleSection(): Promise<JSX.Element> {
   const events = await getEvents();
 
@@ -21,7 +31,10 @@ export default async function ScheduleSection(): Promise<JSX.Element> {
             <div>
               <h3 className="text-3xl xl:text-5xl">{event.name}</h3>
               <p className="font-ibm-plex-sans-thai">
-                Powered by {event.club || "TECH ESC"}
+                Powered by{" "}
+                {event.club
+                  ? clubNames[event.club as keyof typeof clubNames]
+                  : "TECH ESC"}
               </p>
             </div>
             <div className="text-right">
