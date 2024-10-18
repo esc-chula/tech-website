@@ -30,6 +30,39 @@ services:
       - default
     restart: unless-stopped
 
+  hydra:
+    image: oryd/hydra:v2.2.0
+    ports:
+      - "4444:4444" # Public port
+      - "4445:4445" # Admin port, don't expose this port in production
+      - "9090:9090" # Port for development oauth client
+    command: serve all --dev
+    environment:
+      DSN: postgres://hydra:secret@hydradb:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+      SECRETS_SYSTEM: youReallyNeedToChangeThis
+      URLS_SELF_ISSUER: http://127.0.0.1:4444 #iss
+      URLS_CONSENT: http://localhost:3000/oauth2/consent
+      URLS_LOGIN: http://localhost:3000/oauth2/login
+    restart: unless-stopped
+    depends_on:
+      - hydra-migrate
+
+  hydra-migrate:
+    image: oryd/hydra:v2.2.0
+    command: migrate sql -e --yes
+    environment:
+      DSN: postgres://hydra:secret@hydra-db:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+    restart: on-failure
+    depends_on:
+      - hydra-db
+
+  hydra-db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_USER: hydra
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: hydra
+
 volumes:
   postgres-data:
 
