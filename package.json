@@ -12,7 +12,8 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "prepare": "husky"
   },
   "dependencies": {
     "@directus/sdk": "^17.0.0",
@@ -39,6 +40,8 @@
     "zod": "^3.23.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
@@ -48,6 +51,8 @@
     "@typescript-eslint/parser": "^7.1.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.4",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "postcss": "^8.4.39",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
@@ -58,5 +63,11 @@
   "ct3aMetadata": {
     "initVersion": "7.36.2"
   },
-  "packageManager": "pnpm@7.13.6"
+  "packageManager": "pnpm@7.13.6",
+  "lint-staged": {
+    "*": "prettier --ignore-unknown --write",
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --max-warnings 0 --fix"
+    ]
+  }
 }
