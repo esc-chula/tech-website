@@ -1,12 +1,6 @@
 import "@/styles/globals.css";
 import { Header } from "../_components/Header";
-import { Session } from "../_components/Session";
-import { Title } from "../_components/Title";
 import { IBM_Plex_Sans_Thai, Inter } from "next/font/google";
-import { BrowseNow } from "../_components/BrowseNow";
-import { ViewRepo } from "../_components/ViewRepo";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Member } from "../_components/Member";
 import { AboutSession } from "./_components/AboutSession";
 import { ProjectsSession } from "./_components/ProjectsSession";
 import { MemberSession } from "./_components/MemberSession";
