@@ -7,11 +7,11 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 export const ProjectsSession = () => {
   return (
     <Session className="bg-black">
-      <Title titleText="Our Projects" varience="yellow" />
+      <Title titleText="Our Projects" fontSize="48" varience="yellow" />
 
       <div className="flex w-full flex-col-reverse sm:w-[70%] sm:flex-row">
         <div className="mt-4 flex flex-col items-center justify-center space-y-2 sm:w-[50%]">
-          <p className="text-xl font-semibold">Orientation Website 67</p>
+          <p className="text-3xl font-semibold text-center">Orientation Website 67</p>
           <p className="w-[70%] text-center text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim

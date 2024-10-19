@@ -5,8 +5,8 @@ import { Title } from "@/app/_components/Title";
 export const MemberSession = () => {
   return (
     <Session>
-      <Title titleText="Members" varience="yellow" />
-      <p className="text-center max-sm:text-sm sm:w-[40%]">
+      <Title titleText="Members" fontSize="48" varience="yellow" />
+      <p className="text-center max-sm:text-sm font-normal sm:font-semibold sm:w-[40%]">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation

@@ -4,6 +4,7 @@ import { IBM_Plex_Sans_Thai, Inter } from "next/font/google";
 import { AboutSession } from "./_components/AboutSession";
 import { ProjectsSession } from "./_components/ProjectsSession";
 import { MemberSession } from "./_components/MemberSession";
+import { BackButton } from "../_components/BackButton";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ export default function RootHead() {
     <html lang="en" className={`${inter.variable} ${ibmPlexSansThai.variable}`}>
       <body>
         <Header />
+        <BackButton backUrl="/"/>
         <AboutSession />
         <ProjectsSession />
         <MemberSession />
