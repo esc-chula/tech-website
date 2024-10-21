@@ -7,7 +7,7 @@ export const StampCollection = (): JSX.Element => {
     <div className="grid size-max grid-cols-4 grid-rows-3 [&>div]:size-16 [&>div]:border-4 [&>div]:border-techmonth-white [&>div]:p-2 md:[&>div]:size-32 md:[&>div]:border-8 md:[&>div]:p-2 lg:[&>div]:size-36">
       <div className="col-start-1 row-start-1">
         <Image
-          src="/techmonth/stamp_mock.svg"
+          src="/techmonth/assets/stamp_mock.svg"
           alt=""
           width={120}
           height={120}

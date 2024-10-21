@@ -10,7 +10,7 @@ export default function HeroSection(): JSX.Element {
       <header className="flex h-10 w-full justify-between text-2xl md:h-12 md:text-4xl lg:h-16 lg:text-5xl">
         <div className="flex flex-wrap items-center gap-5">
           <Image
-            src="/techmonth/esc_icon.svg"
+            src="/techmonth/assets/esc_icon.svg"
             alt=""
             className="h-full"
             width={55}
@@ -25,7 +25,7 @@ export default function HeroSection(): JSX.Element {
           className="z-50 h-full"
         >
           <Image
-            src="/techmonth/instagram_icon.svg"
+            src="/techmonth/assets/instagram_icon.svg"
             className="pointer-events-none size-full object-fill"
             alt=""
             width={45}
@@ -39,7 +39,7 @@ export default function HeroSection(): JSX.Element {
             Intania
           </h1>
           <Image
-            src="/techmonth/tech_logo.svg"
+            src="/techmonth/assets/tech_logo.svg"
             alt="Tech"
             width={801}
             height={223}
@@ -54,7 +54,7 @@ export default function HeroSection(): JSX.Element {
           <div className="mt-4 flex gap-2">
             <p>Sponsored By</p>
             <Image
-              src="/techmonth/cleverse_logo.svg"
+              src="/techmonth/assets/cleverse_logo.svg"
               alt="Cleverse"
               width={100}
               height={100}
