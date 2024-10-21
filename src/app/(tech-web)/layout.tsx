@@ -1,8 +1,8 @@
-import Background from "@/components/background";
 import { type Metadata } from "next";
+import Background from "@/components/common/background";
 
 export const metadata: Metadata = {
-  title: "<Intania Tech>",
+  title: "<intania.tech>",
   description: "",
 };
 

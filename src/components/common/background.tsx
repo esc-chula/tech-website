@@ -5,7 +5,7 @@ export default function Background() {
         className="absolute inset-0 z-20"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.75) 125%)",
+            "radial-gradient(ellipse at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.75) 125%)",
         }}
       />
       <div
@@ -16,7 +16,7 @@ export default function Background() {
           backgroundRepeat: "repeat",
           backgroundPosition: "center",
         }}
-      ></div>
+      />
     </div>
   );
 }
