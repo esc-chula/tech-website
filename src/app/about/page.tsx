@@ -1,4 +1,3 @@
-
 import { Header } from "../../components/common/Header";
 import { AboutSession } from "../../components/about/AboutSession";
 import { ProjectsSession } from "../../components/about/ProjectsSession";
@@ -10,7 +9,7 @@ export default function RootHead() {
     <>
       <body>
         <Header />
-        <BackButton backUrl="/"/>
+        <BackButton backUrl="/" />
         <AboutSession />
         <ProjectsSession />
         <MemberSession />
