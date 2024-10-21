@@ -3,13 +3,13 @@ import { StampCollection } from "./stamp-collection";
 import Link from "next/link";
 
 const sources = [
-  "/techmonth/clubs/robo_racer.png",
-  "/techmonth/clubs/quant.png",
-  "/techmonth/clubs/eic.png",
-  "/techmonth/clubs/thinc.png",
-  "/techmonth/clubs/gdsc.png",
-  "/techmonth/clubs/grdc.png",
-  "/techmonth/clubs/cubs.png",
+  "/techmonth/assets/clubs/robo_racer.png",
+  "/techmonth/assets/clubs/quant.png",
+  "/techmonth/assets/clubs/eic.png",
+  "/techmonth/assets/clubs/thinc.png",
+  "/techmonth/assets/clubs/gdsc.png",
+  "/techmonth/assets/clubs/grdc.png",
+  "/techmonth/assets/clubs/cubs.png",
 ];
 
 export default function TechMonthSection(): JSX.Element {

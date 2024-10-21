@@ -17,8 +17,8 @@ export default function Stamp({
         <Image
           src={
             stamp.event?.club
-              ? `/techmonth/clubs/${stamp.event?.club}.png`
-              : "/techmonth/tech_logo.svg"
+              ? `/techmonth/assets/clubs/${stamp.event?.club}.png`
+              : "/techmonth/assets/tech_logo.svg"
           }
           alt={stamp.eventId}
           fill

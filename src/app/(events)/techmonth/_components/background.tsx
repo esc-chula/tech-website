@@ -15,7 +15,7 @@ export default function Background(): JSX.Element {
   );
 
   return (
-    <div className="font-tiny5 fixed bottom-0 left-0 right-0 top-0 -z-10 select-none whitespace-nowrap text-2xl leading-none opacity-[3%]">
+    <div className="fixed bottom-0 left-0 right-0 top-0 -z-10 select-none whitespace-nowrap font-tiny5 text-2xl leading-none opacity-[3%]">
       {randomStrings.map((str, index) => (
         <p key={index}>{str}</p>
       ))}
