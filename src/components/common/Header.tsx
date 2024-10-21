@@ -12,7 +12,7 @@ export function Header()
                 <span className="font-semibold text-3xl text-right">67</span>
             </div>
 
-            <div className="sm:hidden flex top-0 bg-black w-full h-[60px] flex-row justify-between items-center text-white px-[22px]">
+            <div className="sm:hidden flex top-0 bg-black w-full h-[60px] flex-row justify-between items-center text-white px-6">
                 <Image src="escIcon.svg" alt="ESC icon" width={24} height={28} />
                 <Image src="MenuIcon.svg" alt="Menu icon" width={24} height={34} />
             </div>
