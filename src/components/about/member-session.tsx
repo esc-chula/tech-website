@@ -1,12 +1,12 @@
-import { Member } from "@/components/common/Member";
-import { Session } from "@/components/common/Session";
-import { Title } from "@/components/common/Title";
+import { Member } from "@/components/common/member-button";
+import { Session } from "@/components/common/session";
+import { Title } from "@/components/common/title";
 
 export const MemberSession = () => {
   return (
     <Session>
       <Title titleText="Members" fontSize="48" varience="yellow" />
-      <p className="text-center max-sm:text-sm font-normal sm:font-semibold sm:w-[40%]">
+      <p className="text-center font-normal max-sm:text-sm sm:w-[40%] sm:font-semibold">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation

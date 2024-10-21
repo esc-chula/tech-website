@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 export const BrowseNow = ({
   className,
@@ -9,7 +10,7 @@ export const BrowseNow = ({
   link: string;
 }) => {
   return (
-    <a
+    <Link
       href={link}
       target="_blank"
       className={cn(
@@ -21,6 +22,6 @@ export const BrowseNow = ({
         Browse <span className="font-bold">Now</span>
       </p>
       <ExternalLink color="yellow" />
-    </a>
+    </Link>
   );
 };

@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Github } from "lucide-react";
+import Link from "next/link";
 
 export const ViewRepo = ({
   className,
@@ -9,7 +10,7 @@ export const ViewRepo = ({
   link: string;
 }) => {
   return (
-    <a
+    <Link
       href={link}
       target="_blank"
       className={cn(
@@ -21,6 +22,6 @@ export const ViewRepo = ({
       <p>
         View <span className="font-bold">Repo</span>
       </p>
-    </a>
+    </Link>
   );
 };

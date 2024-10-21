@@ -1,7 +1,7 @@
-import { BrowseNow } from "@/components/common/BrowseNow";
-import { Session } from "@/components/common/Session";
-import { Title } from "@/components/common/Title";
-import { ViewRepo } from "@/components/common/ViewRepo";
+import { BrowseNow } from "@/components/common/browse-now";
+import { Session } from "@/components/common/session";
+import { Title } from "@/components/common/title";
+import { ViewRepo } from "@/components/common/view-repo-button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const ProjectsSession = () => {
@@ -11,7 +11,9 @@ export const ProjectsSession = () => {
 
       <div className="flex w-full flex-col-reverse sm:w-[70%] sm:flex-row">
         <div className="mt-4 flex flex-col items-center justify-center space-y-2 sm:w-[50%]">
-          <p className="text-3xl font-semibold text-center">Orientation Website 67</p>
+          <p className="text-center text-3xl font-semibold">
+            Orientation Website 67
+          </p>
           <p className="w-[70%] text-center text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim

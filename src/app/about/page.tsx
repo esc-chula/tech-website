@@ -1,8 +1,8 @@
-import { Header } from "../../components/common/Header";
-import { AboutSession } from "../../components/about/AboutSession";
-import { ProjectsSession } from "../../components/about/ProjectsSession";
-import { MemberSession } from "../../components/about/MemberSession";
-import { BackButton } from "../../components/common/Back-Button";
+import { Header } from "@/components/common/header";
+import { AboutSession } from "@/components/about/about-session";
+import { ProjectsSession } from "@/components/about/projects-session";
+import { MemberSession } from "@/components/about/member-session";
+import { BackButton } from "@/components/common/back-button";
 
 export default function RootHead() {
   return (
