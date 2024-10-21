@@ -20,13 +20,13 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: [
-          "var(--font-sans)", 
-          ...fontFamily.sans
-        ],
+        sans: ["var(--font-sans)", ...fontFamily.sans],
         mono: ["var(--font-mono)", ...fontFamily.mono],
-        inter: ["var(--font-inter)", ...fontFamily.sans],
-        thai: ["var(--font-ibm-plex-sans-thai)", ...fontFamily.sans],
+
+        // TECH MONTH
+        "press-start-2p": "var(--font-press-start-2p)",
+        tiny5: "var(--font-tiny5)",
+        "ibm-plex-sans-thai": "var(--font-ibm-plex-sans-thai)",
       },
       colors: {
         // SHADCN

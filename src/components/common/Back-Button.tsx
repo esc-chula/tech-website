@@ -23,7 +23,7 @@ export const BackButton = ({
                 onClick={navigateBack}>
                 <div className="w-fit h-fit items-center flex space-x-1 text-white align-middle">
                     <ArrowLeft strokeWidth={3}/>
-                    <h2>Back</h2>
+                    <span className="font-semibold text-3xl">Back</span>
                 </div>
             </button>
             <button
@@ -31,7 +31,7 @@ export const BackButton = ({
                 onClick={navigateBack}>
                 <div className="w-fit h-fit items-center flex space-x-1 text-white align-middle">
                     <ArrowLeft width={10} height={10} strokeWidth={3}/>
-                    <h2 className="text-sm">Back</h2>
+                    <span className="font-semibold text-sm">Back</span>
                 </div>
             </button>
         </>

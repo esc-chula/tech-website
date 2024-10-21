@@ -1,5 +1,3 @@
-"use client";
-import "@/styles/globals.css";
 import Image from "next/image";
 
 export function Header() 
@@ -7,11 +5,11 @@ export function Header()
     return (
         <>
             <div className="hidden sm:flex relative top-0 bg-black w-full h-20 flex-row justify-between items-center text-white px-[10%] font-inter">
-                <h2 className="text-left">tech</h2>
+                <span className="font-semibold text-3xl text-left">tech</span>
                 <div className="flex justify-center absolute inset-x-0 mx-auto">
                     <Image src="escIcon.svg" alt="ESC icon" width={35} height={40} />
                 </div>
-                <h2 className="text-right">67</h2>
+                <span className="font-semibold text-3xl text-right">67</span>
             </div>
 
             <div className="sm:hidden flex top-0 bg-black w-full h-[60px] flex-row justify-between items-center text-white px-[22px]">
