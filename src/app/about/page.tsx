@@ -1,4 +1,4 @@
-import { Header } from "../../components/common/Header";
+import { Header } from "../../components/common/header";
 import { AboutSession } from "../../components/about/about-section";
 import { ProjectsSession } from "../../components/about/projects-section";
 import { MemberSession } from "../../components/about/member-section";

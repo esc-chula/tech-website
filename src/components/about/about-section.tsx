@@ -1,11 +1,11 @@
-import { Session } from "@/components/common/Section";
-import { Title } from "@/components/common/Title";
+import { Session } from "@/components/common/section";
+import { Title } from "@/components/common/title";
 
 export const AboutSession = () => {
   return (
     <Session>
       <Title titleText="ABOUT" fontSize="64" varience="white" />
-      <p className="text-center max-sm:text-sm font-normal sm:font-semibold sm:w-[40%]">
+      <p className="text-center font-normal max-sm:text-sm sm:w-[40%] sm:font-semibold">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -14,7 +14,7 @@ export const AboutSession = () => {
         occaecat cupidatat non proident, sunt in culpa qui officia deserunt
         mollit anim id est laborum.
       </p>
-      <div className="flex flex-col items-center font-normal sm:font-semibold justify-center">
+      <div className="flex flex-col items-center justify-center font-normal sm:font-semibold">
         <p>P Poon</p>
         <p>Head of Tech ,ESC67 No 1</p>
       </div>
