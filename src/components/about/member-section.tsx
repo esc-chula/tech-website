@@ -1,6 +1,6 @@
 import { MemberButton } from "@/components/common/member-button";
-import { Section } from "@/components/common/section";
-import { Title } from "@/components/common/title";
+import { Section } from "@/components/common/sectiontemp";
+import { Title } from "@/components/common/titletemp";
 
 export const MemberSection = () => {
   return (

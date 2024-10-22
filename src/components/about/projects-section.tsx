@@ -1,6 +1,6 @@
 import { BrowseNowButton } from "@/components/common/browse-now-button";
-import { Section } from "@/components/common/section";
-import { Title } from "@/components/common/title";
+import { Section } from "@/components/common/sectiontemp";
+import { Title } from "@/components/common/titletemp";
 import { ViewRepoButton } from "@/components/common/view-repo-button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
