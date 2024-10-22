@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
-export const BrowseNow = ({
+export const BrowseNowButton = ({
   className,
   link,
 }: {

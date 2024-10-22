@@ -1,12 +1,12 @@
-import { BrowseNow } from "@/components/common/browse-now";
-import { Session } from "@/components/common/section";
+import { BrowseNowButton } from "@/components/common/browse-now-button";
+import { Section } from "@/components/common/section";
 import { Title } from "@/components/common/title";
-import { ViewRepo } from "@/components/common/view-repo-button";
+import { ViewRepoButton } from "@/components/common/view-repo-button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-export const ProjectsSession = () => {
+export const ProjectsSection = () => {
   return (
-    <Session className="bg-black">
+    <Section className="bg-black">
       <Title titleText="Our Projects" fontSize="48" varience="yellow" />
 
       <div className="flex w-full flex-col-reverse sm:w-[70%] sm:flex-row">
@@ -23,8 +23,8 @@ export const ProjectsSession = () => {
             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
             culpa qui officia deserunt mollit anim id est laborum.
           </p>
-          <BrowseNow link="/" />
-          <ViewRepo link="/" />
+          <BrowseNowButton link="/" />
+          <ViewRepoButton link="/" />
         </div>
         <div className="flex flex-col items-center justify-center space-y-2 sm:w-[50%]">
           <div className="flex h-[270px] w-[90%] items-center justify-center bg-red-300">
@@ -44,6 +44,6 @@ export const ProjectsSession = () => {
           </div>
         </div>
       </div>
-    </Session>
+    </Section>
   );
 };

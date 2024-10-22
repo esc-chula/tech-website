@@ -1,7 +1,7 @@
 import { Header } from "../../components/common/header";
-import { AboutSession } from "../../components/about/about-section";
-import { ProjectsSession } from "../../components/about/projects-section";
-import { MemberSession } from "../../components/about/member-section";
+import { AboutSection } from "../../components/about/about-section";
+import { ProjectsSection } from "../../components/about/projects-section";
+import { MemberSection } from "../../components/about/member-section";
 import { BackButton } from "../../components/common/back-button";
 
 export default function RootHead() {
@@ -10,9 +10,9 @@ export default function RootHead() {
       <body>
         <Header />
         <BackButton backUrl="/" />
-        <AboutSession />
-        <ProjectsSession />
-        <MemberSession />
+        <AboutSection />
+        <ProjectsSection />
+        <MemberSection />
       </body>
     </>
   );

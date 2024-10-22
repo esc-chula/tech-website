@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Github } from "lucide-react";
 import Link from "next/link";
 
-export const ViewRepo = ({
+export const ViewRepoButton = ({
   className,
   link,
 }: {

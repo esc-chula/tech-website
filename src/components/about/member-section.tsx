@@ -1,10 +1,10 @@
-import { Member } from "@/components/common/member-button";
-import { Session } from "@/components/common/section";
+import { MemberButton } from "@/components/common/member-button";
+import { Section } from "@/components/common/section";
 import { Title } from "@/components/common/title";
 
-export const MemberSession = () => {
+export const MemberSection = () => {
   return (
-    <Session>
+    <Section>
       <Title titleText="Members" fontSize="48" varience="yellow" />
       <p className="text-center font-normal max-sm:text-sm sm:w-[40%] sm:font-semibold">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -13,10 +13,10 @@ export const MemberSession = () => {
       </p>
       <div className="flex w-[60%] flex-wrap items-center justify-center gap-2">
         {memberTemp.map((member, index) => (
-          <Member key={index} nameTag={member} />
+          <MemberButton key={index} nameTag={member} />
         ))}
       </div>
-    </Session>
+    </Section>
   );
 };
 

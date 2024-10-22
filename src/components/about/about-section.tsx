@@ -1,9 +1,9 @@
-import { Session } from "@/components/common/section";
+import { Section } from "@/components/common/section";
 import { Title } from "@/components/common/title";
 
-export const AboutSession = () => {
+export const AboutSection = () => {
   return (
-    <Session>
+    <Section>
       <Title titleText="ABOUT" fontSize="64" varience="white" />
       <p className="text-center font-normal max-sm:text-sm sm:w-[40%] sm:font-semibold">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -18,6 +18,6 @@ export const AboutSession = () => {
         <p>P Poon</p>
         <p>Head of Tech ,ESC67 No 1</p>
       </div>
-    </Session>
+    </Section>
   );
 };
