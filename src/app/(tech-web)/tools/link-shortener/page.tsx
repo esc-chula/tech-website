@@ -1,43 +1,12 @@
-import LinkCard from "@/components/tools/link-shortener/link-card";
+import Links from "@/components/tools/link-shortener/links";
 
 export default function Page() {
   return (
-    <div className="flex w-full flex-col items-center gap-8 py-10">
+    <div className="flex w-full flex-col items-center gap-5 py-10 lg:gap-8">
       <div className="flex w-full items-center justify-between">
-        <h2 className="text-2xl font-medium">Your URLs</h2>
+        <h2 className="text-2xl font-medium">Your Links</h2>
       </div>
-      <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
-        <LinkCard
-          editedAt={new Date()}
-          name={"Intania Tech Month Website"}
-          url={"https://tech.intania.org/techmonth"}
-          slug={"techmonth"}
-        />
-        <LinkCard
-          editedAt={new Date()}
-          name={"Intania Tech Month Website"}
-          url={"https://tech.intania.org/techmonth"}
-          slug={"techmonth"}
-        />
-        <LinkCard
-          editedAt={new Date()}
-          name={"Intania Tech Month Website"}
-          url={"https://tech.intania.org/techmonth"}
-          slug={"techmonth"}
-        />
-        <LinkCard
-          editedAt={new Date()}
-          name={"Intania Tech Month Website"}
-          url={"https://tech.intania.org/techmonth"}
-          slug={"techmonth"}
-        />
-        <LinkCard
-          editedAt={new Date()}
-          name={"Intania Tech Month Website"}
-          url={"https://tech.intania.org/techmonth"}
-          slug={"techmonth"}
-        />
-      </div>
+      <Links />
     </div>
   );
 }
