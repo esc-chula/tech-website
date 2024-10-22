@@ -1,5 +1,5 @@
-import { Section } from "@/components/common/sectiontemp";
-import { Title } from "@/components/common/titletemp";
+import { Section } from "@/components/common/section";
+import { Title } from "@/components/common/title";
 
 export const AboutSection = () => {
   return (
