@@ -1,5 +1,5 @@
 import { BrowseNow } from "@/components/common/BrowseNow";
-import { Session } from "@/components/common/Session";
+import { Session } from "@/components/common/Section";
 import { Title } from "@/components/common/Title";
 import { ViewRepo } from "@/components/common/ViewRepo";
 import { ArrowLeft, ArrowRight } from "lucide-react";

@@ -1,4 +1,4 @@
-import { Session } from "@/components/common/Session";
+import { Session } from "@/components/common/Section";
 import { Title } from "@/components/common/Title";
 
 export const AboutSession = () => {
