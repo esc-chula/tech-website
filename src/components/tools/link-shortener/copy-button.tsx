@@ -4,18 +4,19 @@ import { Check, Copy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-interface CopyButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  copyText: string;
+interface CopyButtonProps {
+  value: string;
+  className?: string;
 }
 
-export default function CopyButton(props: CopyButtonProps) {
+export default function CopyButton({ value, className }: CopyButtonProps) {
   const [success, setSuccess] = useState(false);
 
   const copy = async () => {
     if (success) return;
 
     try {
-      await navigator.clipboard.writeText(props.copyText);
+      await navigator.clipboard.writeText(value);
       setSuccess(true);
     } catch (error) {
       console.error("Failed to copy: ", error);
@@ -26,19 +27,19 @@ export default function CopyButton(props: CopyButtonProps) {
     if (success) {
       const timer = setTimeout(() => {
         setSuccess(false);
-      }, 2000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [success]);
 
   return (
     <button
-      {...props}
       onClick={copy}
+      type="button"
       className={cn(
         "relative p-1 outline-none",
         success ? "cursor-default" : "cursor-pointer",
-        props.className,
+        className,
       )}
     >
       {success ? <Check size={16} /> : <Copy size={16} />}

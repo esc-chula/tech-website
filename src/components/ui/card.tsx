@@ -1,16 +1,15 @@
 import { cn } from "@/lib/utils";
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
-}
-
-export default function Card(props: CardProps) {
+export default function Card({
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      {...props}
       className={cn(
         "w-full rounded-xl bg-gradient-to-b from-neutral-800 to-neutral-900 p-px",
       )}
+      {...props}
     >
       <div
         className={cn(
@@ -18,7 +17,7 @@ export default function Card(props: CardProps) {
           props.className,
         )}
       >
-        {props.children}
+        {children}
       </div>
     </div>
   );

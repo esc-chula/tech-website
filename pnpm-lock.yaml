@@ -14,7 +14,7 @@ importers:
         specifier: ^2.2.1
         version: 2.2.1
       "@prisma/client":
-        specifier: ^5.14.0
+        specifier: ^5.18.0
         version: 5.18.0(prisma@5.18.0)
       "@radix-ui/react-dropdown-menu":
         specifier: ^2.1.2
