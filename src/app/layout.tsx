@@ -20,7 +20,7 @@ const pressStart2P = Press_Start_2P({
   variable: "--font-press-start-2p",
 });
 const tiny5 = localFont({
-  src: "./_fonts/Tiny5-Regular.ttf",
+  src: "../../public/techmonth/fonts/Tiny5-Regular.ttf",
   variable: "--font-tiny5",
 });
 const ibmPlexSansThai = IBM_Plex_Sans_Thai({

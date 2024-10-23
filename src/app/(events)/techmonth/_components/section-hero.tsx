@@ -10,7 +10,7 @@ export default function HeroSection(): JSX.Element {
       <header className="flex h-10 w-full justify-between text-2xl md:h-12 md:text-4xl lg:h-16 lg:text-5xl">
         <div className="flex flex-wrap items-center gap-5">
           <Image
-            src="/techmonth/esc_icon.svg"
+            src="/techmonth/assets/esc_icon.svg"
             alt=""
             className="h-full"
             width={55}
@@ -25,7 +25,7 @@ export default function HeroSection(): JSX.Element {
           className="z-50 h-full"
         >
           <Image
-            src="/techmonth/instagram_icon.svg"
+            src="/techmonth/assets/instagram_icon.svg"
             className="pointer-events-none size-full object-fill"
             alt=""
             width={45}
@@ -39,7 +39,7 @@ export default function HeroSection(): JSX.Element {
             Intania
           </h1>
           <Image
-            src="/techmonth/tech_logo.svg"
+            src="/techmonth/assets/tech_logo.svg"
             alt="Tech"
             width={801}
             height={223}
@@ -50,6 +50,15 @@ export default function HeroSection(): JSX.Element {
             <h2 className="text-3xl text-techmonth-green md:text-5xl lg:text-6xl">
               MONTH
             </h2>
+          </div>
+          <div className="mt-4 flex gap-2">
+            <p>Sponsored By</p>
+            <Image
+              src="/techmonth/assets/cleverse_logo.svg"
+              alt="Cleverse"
+              width={100}
+              height={100}
+            />
           </div>
         </section>
         <section className="flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-4 font-press-start-2p lg:flex-col lg:items-end lg:gap-14 lg:text-right">
@@ -66,7 +75,7 @@ export default function HeroSection(): JSX.Element {
           </p>
         </section>
         <Link
-          href="/techmonth/stamp"
+          href="/techmonth/stamps"
           className="mx-auto h-fit w-min whitespace-nowrap bg-techmonth-yellow px-4 py-2 text-center font-tiny5 text-xl text-techmonth-black duration-300 ease-in-out hover:translate-x-2 md:text-2xl lg:hidden lg:px-5 lg:py-2.5 lg:text-3xl"
         >
           COLLECT STAMP -&gt;

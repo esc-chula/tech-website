@@ -6,6 +6,16 @@ interface Schema {
   Tech_web_techmonth_event: Event;
 }
 
-const directus = createDirectus<Schema>(env.DIRECTUS_URL).with(rest());
+const directus = createDirectus<Schema>(env.DIRECTUS_URL).with(
+  rest({
+    onRequest: (options) => ({
+      ...options,
+      headers: {
+        ...options.headers,
+        "cache-control": "no-store",
+      },
+    }),
+  }),
+);
 
 export default directus;

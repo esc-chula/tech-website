@@ -3,20 +3,20 @@ import { StampCollection } from "./stamp-collection";
 import Link from "next/link";
 
 const sources = [
-  "/techmonth/clubs/robo_racer.png",
-  "/techmonth/clubs/quant.png",
-  "/techmonth/clubs/eic.png",
-  "/techmonth/clubs/thinc.png",
-  "/techmonth/clubs/gdsc.png",
-  "/techmonth/clubs/grdc.png",
-  "/techmonth/clubs/cubs.png",
+  "/techmonth/assets/clubs/robo_racer.png",
+  "/techmonth/assets/clubs/quant.png",
+  "/techmonth/assets/clubs/eic.png",
+  "/techmonth/assets/clubs/thinc.png",
+  "/techmonth/assets/clubs/gdsc.png",
+  "/techmonth/assets/clubs/grdc.png",
+  "/techmonth/assets/clubs/cubs.png",
 ];
 
 export default function TechMonthSection(): JSX.Element {
   return (
     <div
       id="techmonth"
-      className="flex min-h-screen w-full max-w-screen-xl flex-col gap-40 px-8 pt-16 md:px-16 xl:px-4"
+      className="flex min-h-screen w-full max-w-screen-xl flex-col gap-40 px-8 py-28 md:px-16 xl:px-4"
     >
       <article>
         <h2 className="max-w-4xl text-center font-ibm-plex-sans-thai text-5xl leading-normal md:text-7xl lg:text-left lg:text-8xl">
@@ -51,7 +51,7 @@ export default function TechMonthSection(): JSX.Element {
             เพื่อแลกของรางวัลด้วย!
           </p>
           <Link
-            href="/techmonth/stamp"
+            href="/techmonth/stamps"
             className="mx-auto h-fit w-min whitespace-nowrap bg-techmonth-yellow px-4 py-2 text-center font-tiny5 text-xl text-techmonth-black duration-300 ease-in-out hover:translate-x-2 md:text-2xl lg:px-5 lg:py-2.5 lg:text-3xl"
           >
             COLLECT STAMP -&gt;
