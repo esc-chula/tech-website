@@ -4,7 +4,7 @@ import { Title } from "@/components/common/title";
 
 export const MemberSection = () => {
   return (
-    <Section>
+    <Section className="gap-4">
       <Title titleText="Members" fontSize="48" varience="yellow" />
       <p className="text-center font-normal max-sm:text-sm sm:w-[40%] sm:font-semibold">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

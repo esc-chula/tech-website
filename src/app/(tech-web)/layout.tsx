@@ -13,9 +13,7 @@ export default function Layout({
   return (
     <body className="flex flex-col items-center bg-neutral-900 px-5 text-white md:px-10">
       <Header />
-      <main className="mt-16 w-full max-w-screen-xl pb-10 pt-8">
-        {children}
-      </main>
+      <main className="mt-16 w-full max-w-screen-xl">{children}</main>
       <Background />
     </body>
   );

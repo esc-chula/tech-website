@@ -8,14 +8,29 @@ export const Section = ({
   children: ReactNode;
   className?: string;
 }) => {
+  const classNameWithBg = cn(
+    className?.split(" ").filter((c) => c.startsWith("bg-")),
+  );
+  const classNameWithoutBg = cn(
+    className?.split(" ").filter((c) => !c.startsWith("bg-")),
+  );
+
   return (
-    <div
-      className={cn(
-        "flex w-full flex-col items-center justify-center space-y-4 bg-neutral-900 px-4 py-10 text-white font-semibold",
-        className,
-      )}
-    >
-      {children}
-    </div>
+    <section className="relative h-full w-full py-10">
+      <div
+        className={cn(
+          "z-50 flex h-full flex-col items-center",
+          classNameWithoutBg,
+        )}
+      >
+        {children}
+      </div>
+      <div
+        className={cn(
+          "absolute -left-[50vw] -right-[50vw] bottom-0 top-0 -z-10 h-full",
+          classNameWithBg,
+        )}
+      />
+    </section>
   );
 };
