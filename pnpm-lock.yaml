@@ -9,7 +9,7 @@ importers:
     dependencies:
       "@directus/sdk":
         specifier: ^17.0.0
-        version: 17.0.1
+        version: 17.0.2
       "@ory/hydra-client":
         specifier: ^2.2.1
         version: 2.2.1
@@ -284,10 +284,10 @@ packages:
       }
     engines: { node: ">=v18" }
 
-  "@directus/sdk@17.0.1":
+  "@directus/sdk@17.0.2":
     resolution:
       {
-        integrity: sha512-6TorT8am/8q2YmhLhGY1yZks2rFr31my5WqbXUPZs+4hPWYkTNThns2lfhZQ8w2KBh9DZ7v5SaghZNSIswUOwA==,
+        integrity: sha512-gKfWH6oQKnHw6mUl5lM32PTjtWrmSF6f09/zfN/74FKGPD853srCwip6rGif2R0GfdcrPHXwGHc7vTMXNDlniw==,
       }
     engines: { node: ">=18.0.0" }
 
@@ -4252,7 +4252,7 @@ snapshots:
       "@types/conventional-commits-parser": 5.0.0
       chalk: 5.3.0
 
-  "@directus/sdk@17.0.1": {}
+  "@directus/sdk@17.0.2": {}
 
   "@emnapi/runtime@1.3.1":
     dependencies:
