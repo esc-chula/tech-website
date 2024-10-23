@@ -19,9 +19,9 @@ export default function LinkCard({
   count,
 }: LinkCardProps) {
   return (
-    <Card className="relative space-y-1">
+    <Card className="relative h-36 space-y-1">
       <CopyButton
-        copyText={`https://intania.link/${slug}`}
+        value={`https://intania.link/${slug}`}
         className="absolute right-4 top-4"
       />
       <Link href={`/tools/link-shortener/${slug}`} className="h-full space-y-3">

@@ -1,6 +1,8 @@
 import LinkCard from "./link-card";
 
-export default function Links() {
+export default async function Links() {
+  await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate loading
+
   const shortenedLinks = [
     {
       editedAt: new Date(),
@@ -25,11 +27,7 @@ export default function Links() {
     },
   ];
 
-  return (
-    <div className="grid w-full grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-8">
-      {shortenedLinks.map((link, index) => (
-        <LinkCard key={index} {...link} />
-      ))}
-    </div>
-  );
+  return shortenedLinks.map((link, index) => (
+    <LinkCard key={index} {...link} />
+  ));
 }
