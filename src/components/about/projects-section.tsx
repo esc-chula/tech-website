@@ -7,7 +7,9 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 export const ProjectsSection = () => {
   return (
     <Section className="gap-4 bg-neutral-950">
-      <Title titleText="Our Projects" fontSize="48" varience="yellow" />
+      <Title variant="sectionTitle" color="primary" className="text-4xl">
+        Our Projects
+      </Title>
 
       <div className="flex w-full flex-col-reverse sm:w-[70%] sm:flex-row">
         <div className="mt-4 flex flex-col items-center justify-center space-y-2 sm:w-[50%]">

@@ -6,7 +6,7 @@ import { BackButton } from "@/components/common/back-button";
 export default function Page() {
   return (
     <>
-      <BackButton backUrl="/" />
+      <BackButton href="/" fixed />
       <AboutSection />
       <ProjectsSection />
       <MemberSection />

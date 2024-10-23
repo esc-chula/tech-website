@@ -6,6 +6,8 @@ export default function LinksLoading() {
       <Skeleton className="h-36 w-full" />
       <Skeleton className="h-36 w-full" />
       <Skeleton className="h-36 w-full" />
+      <Skeleton className="h-36 w-full" />
+      <Skeleton className="h-36 w-full" />
     </>
   );
 }
