@@ -11,7 +11,7 @@ export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <body className="flex flex-col items-center bg-neutral-900 px-5 text-white md:px-10">
+    <body className="flex flex-col items-center overflow-x-hidden bg-neutral-900 px-5 text-white md:px-10">
       <Header />
       <main className="mt-16 w-full max-w-screen-xl">{children}</main>
       <Background />
