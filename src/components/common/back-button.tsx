@@ -14,27 +14,12 @@ export const BackButton = ({ backUrl }: { backUrl?: string }) => {
   return (
     <>
       <button
-        className="w-h-9 absolute hidden w-24 px-10 py-14 sm:flex"
+        type="button"
         onClick={navigateBack}
+        className="fixed top-24 z-10 flex items-center gap-2"
       >
-        <div className="flex h-fit w-fit items-center space-x-1 text-white">
-          <div className="hidden md:flex">
-            <ArrowLeft strokeWidth={3} />
-          </div>
-          <div className="flex md:hidden">
-            <ArrowLeft width={18} height={18} strokeWidth={3} />
-          </div>
-          <span className="text-2xl font-semibold md:text-3xl">Back</span>
-        </div>
-      </button>
-      <button
-        className="absolute flex h-4 w-10 px-6 py-6 sm:hidden"
-        onClick={navigateBack}
-      >
-        <div className="flex h-fit w-fit items-center space-x-1 text-white">
-          <ArrowLeft width={10} height={10} strokeWidth={3} />
-          <span className="text-sm font-semibold">Back</span>
-        </div>
+        <ArrowLeft className="h-4 w-4 md:h-6 md:w-6" />
+        <span className="font-medium md:text-lg">Back</span>
       </button>
     </>
   );
