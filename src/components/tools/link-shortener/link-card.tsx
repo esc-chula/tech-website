@@ -19,7 +19,7 @@ export default function LinkCard({
   count,
 }: LinkCardProps) {
   return (
-    <Card className="relative h-36 space-y-1">
+    <Card className="relative space-y-1">
       <CopyButton
         value={`https://intania.link/${slug}`}
         className="absolute right-4 top-4"

@@ -1,24 +1,19 @@
 import { cn } from "@/lib/utils";
 
-export default function Card({
-  children,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export default function Card({ children, className }: CardProps) {
   return (
     <div
       className={cn(
-        "w-full rounded-xl bg-gradient-to-b from-neutral-800 to-neutral-900 p-px",
+        "rounded-lg border border-neutral-800 bg-neutral-950/70 p-4 backdrop-blur-lg",
+        className,
       )}
-      {...props}
     >
-      <div
-        className={cn(
-          "space-y-2 rounded-[calc(0.5rem+1px)] bg-neutral-900 p-4",
-          props.className,
-        )}
-      >
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
