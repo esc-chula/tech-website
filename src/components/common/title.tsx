@@ -8,8 +8,8 @@ const titleVariants = cva("text-center", {
       primary: "text-amber-300",
     },
     variant: {
-      pageTitle: "text-4xl font-semibold uppercase",
-      sectionTitle: "text-3xl font-semibold",
+      pageTitle: "text-3xl md:text-4xl font-semibold uppercase",
+      sectionTitle: "text-2xl md:text-3xl font-semibold",
     },
   },
   defaultVariants: {

@@ -23,12 +23,12 @@ export const BackButton = ({ href, fixed }: BackButtonProps) => {
         type="button"
         onClick={navigateBack}
         className={cn(
-          "z-10 flex items-center gap-2",
+          "z-10 flex items-center gap-1.5 md:gap-2",
           fixed ? "fixed top-24" : "absolute top-24",
         )}
       >
         <ArrowLeft className="h-4 w-4 md:h-6 md:w-6" />
-        <span className="font-medium md:text-lg">Back</span>
+        <span className="text-sm font-medium md:text-lg">Back</span>
       </button>
     </>
   );
