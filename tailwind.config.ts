@@ -99,6 +99,13 @@ const config = {
           "linear-gradient(119.65deg, #FFFFFF 0%, #D2D2D2 108.38%)",
         "background-gradient-prop":
           "radial-gradient(50% 50% at 50% 50%, #982C32 0%, rgba(255, 255, 255, 0) 100%)",
+        'background-radial': 'radial-gradient(circle at 50% 50%, #262626 0%, #000000 100%)',
+      },
+      backgroundRepeat: {
+        'repeat-pattern': 'repeat',
+      },
+      backgroundSize: {
+        'size-pattern': 'auto',
       },
     },
   },
