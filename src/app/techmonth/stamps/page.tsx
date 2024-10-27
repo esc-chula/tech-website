@@ -18,7 +18,10 @@ export default async function StampsPage(): Promise<JSX.Element> {
     studentId,
   });
 
-  const events = await getEvents();
+  const { data: events, error } = await getEvents();
+  if (error) {
+    return <div>Something went wrong...</div>;
+  }
   const eventMap = new Map(events.map((event) => [event.eventId, event]));
 
   const stampsWithEvent = stamps.map((stamp) => ({

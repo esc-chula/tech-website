@@ -41,7 +41,7 @@ export default function StampsLadder({
         gridTemplateColumns: `repeat(${numberOfColumns}, minmax(0, 1fr))`,
       }}
     >
-      {Array.from({ length: numberOfRows + 3 }).map((_, rowIndex) => {
+      {Array.from({ length: numberOfRows / 2 + 2 }).map((_, rowIndex) => {
         const stamps = [
           stampsWithEvent[rowIndex * 2],
           stampsWithEvent[rowIndex * 2 + 1],
@@ -73,7 +73,7 @@ export default function StampsLadder({
               return (
                 <div
                   key={`stamp-${rowIndex}-${index}`}
-                  className="aspect-square w-full select-none border-8 border-techmonth-white bg-techmonth-white/5 p-2"
+                  className="aspect-square w-full select-none border-4 border-techmonth-white bg-techmonth-white/5 p-2 lg:border-8"
                 >
                   {stamp ? <Stamp stamp={stamp} /> : null}
                 </div>

@@ -62,16 +62,16 @@ export function ModalContent(): JSX.Element {
 
     setLoading(true);
 
-    await addStamp(eventId as string)
-      .then(() => {
-        router.refresh();
-        setOpen(false);
-        setLoading(false);
-      })
-      .catch((err) => {
-        alert(err);
-        setLoading(false);
-      });
+    const { error } = await addStamp(eventId as string);
+    if (error) {
+      alert(error);
+      setLoading(false);
+      return;
+    }
+
+    router.refresh();
+    setOpen(false);
+    setLoading(false);
   };
 
   return (
