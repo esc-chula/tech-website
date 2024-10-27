@@ -71,3 +71,9 @@
     @apply bg-background text-foreground;
   }
 }
+/* 
+.background {
+  background-image: url("../../public/main/background/background_pattern.jpg");
+  background-size: contain;
+  background-repeat: repeat;
+} */
