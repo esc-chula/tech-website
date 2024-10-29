@@ -1,9 +1,10 @@
 'use client'
 import React, { useState, useEffect, useMemo } from 'react';
 import QRCode from 'qrcode';
-import Image, { StaticImageData } from 'next/image';
-import ESCLogoPath from '../../../../public/main/logo/sigma.png'
-import { ESCLogo } from '@/app/assets/logo';
+import Image from 'next/image';
+import { base64ESCLogo } from '@/app/assets/ESCLogo';
+import { X } from 'lucide-react';
+import { isURL } from "@/lib/utils";
 
 export function CreateQRCode({ onClick }: { onClick: () => void }) {
   const [qrCodeData, setQrCodeData] = useState<string>('')
@@ -15,11 +16,8 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
     url: '',
     image_data: ''
   });
-  const [errors, setErrors] = useState({
-    name: false,
-    url: false,
-    generation: '',
-  });
+  const [errorName, setErrorName] = useState<boolean>(false)
+  const [errorURL, setErrorURL] = useState<boolean>(false)
 
   const colorOptions: string[] = [
     '#000000', // Black
@@ -30,33 +28,21 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
   ];
 
   const logoOptions: string[] = [
-    ESCLogoPath.src,
-    ESCLogo.toString()
+    base64ESCLogo,
   ]
-
-  const isValidUrl = (url: string) => {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    setErrors(prev => ({ ...prev, [name]: false }));
   };
 
   const handleSubmit = async () => {
-    const newErrors = {
-      name: !formData.name.trim(),
-      url: !formData.url.trim() || !isValidUrl(formData.url),
-      generation: qrCodeData,
-    };
-    setErrors(newErrors);
-    if (!errors.name && !errors.url && errors.generation != '') {
+    if (formData.name === '') {
+      setErrorName(true)
+      return
+    }
+    if (formData.url === '' || !isURL(formData.url)) {
+      setErrorURL(true)
       return
     }
     // Create form
@@ -81,24 +67,24 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
     }
 
     return (
-      <div className='w-full aspect-square flex justify-center items-center'>
+      <div className='w-full aspect-square flex justify-center items-center relative'>
+        <Image src={qrCodeData} alt='QR Code' width={0} height={0} className='w-full h-full' />
         {
           isSelectedLogo && selectedLogo != undefined ? (
             <div className='absolute inset-0 flex justify-center items-center'>
-              <div className='relative bg-white w-fit aspect-square p-1'>
-                <Image src={selectedLogo} alt='Logo' width={48} height={48} objectFit='contain' className='w-12' />
+              <div className='relative bg-white w-fit aspect-square p-2'>
+                <Image src={selectedLogo} alt='Logo' width={30} height={30} objectFit='contain' className='' />
               </div>
             </div>
           ) : null
         }
-        <Image src={qrCodeData} alt='' width={0} height={0} className='w-full h-full' />
       </div>
     );
   }, [qrCodeData, isSelectedLogo, selectedLogo]);
 
   useEffect(() => {
     const generated = async () => {
-      if (!formData.url || isValidUrl(formData.url)) {
+      if (!formData.url || !isURL(formData.url)) {
         setQrCodeData('');
         return;
       }
@@ -114,16 +100,24 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
           width: 256,
         });
         setQrCodeData(qrCodeGen);
-        setErrors(prev => ({ ...prev, generation: '' }));
       } catch (error) {
         console.error('QR Code generation error:', error);
       }
     };
+
     generated().catch((error) => {
-      setErrors(prev => ({ ...prev, generation: 'Failed to generate QR code' }));
       console.error('QR Code generation error:', error);
     });
   }, [formData.url, selectedColor]);
+
+  useEffect(() => {
+    if (formData.name !== '') {
+      setErrorName(false)
+    }
+    if (formData.url !== '' && isURL(formData.url)) {
+      setErrorURL(false)
+    }
+  }, [formData.name, formData.url])
 
   return (
     <div className="h-screen max-w-[550px] max-h-[750px] p-8 flex flex-col justify-between items-start rounded-3xl text-white"
@@ -141,10 +135,10 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
               value={formData.name}
               onChange={handleInputChange}
               className={`w-full border bg-white rounded-2xl py-2 px-4 text-black
-                ${errors.name ? "border-red-500" : "border-neutral-400"}`}
+                ${errorName ? "border-red-500" : "border-neutral-400"}`}
               placeholder="Enter QR code name"
             />
-            {errors.name && (
+            {errorName && (
               <p className="text-sm text-red-500">Please enter a name</p>
             )}
           </div>
@@ -158,10 +152,10 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
               value={formData.url}
               onChange={handleInputChange}
               className={`w-full border bg-white rounded-2xl py-2 px-4 text-black
-                ${errors.url ? "border-red-500" : "border-neutral-400"}`}
+                ${errorURL ? "border-red-500" : "border-neutral-400"}`}
               placeholder="Enter URL to generate QR code"
             />
-            {errors.url && (
+            {errorURL && (
               <p className="text-sm text-red-500">Please enter a valid URL</p>
             )}
           </div>
@@ -193,7 +187,7 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
                       {`Select color ${color}`}
                     </label>
                     <span
-                      className={`w-6 h-6 rounded-full cursor-pointer ${selectedColor === color ? 'border-2 border-white' : ''}`}
+                      className={`w-6 h-6 rounded-full cursor-pointer ${selectedColor === color ? 'border-2 border-black' : ''}`}
                       style={{ backgroundColor: color }}
                     ></span>
                   </label>
@@ -215,9 +209,14 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
                   <label htmlFor={`logo-none`} className="sr-only">
                     {`Select color none`}
                   </label>
-                  <span
-                    className={`w-6 h-6 rounded-full cursor-pointer ${selectedLogo === undefined ? 'border-2 border-white' : ''}`}
-                  ></span>
+                  <div className='w-12 aspect-square flex'>
+                    <div className='w-full p-3 aspect-square bg-white rounded-full flex justify-center items-center'>
+                      <X color='black' />
+                    </div>
+                    <span
+                      className={`absolute w-12 h-12 rounded-full cursor-pointer ${selectedLogo === undefined ? 'border-2 border-black' : ''}`}
+                    ></span>
+                  </div>
                 </label>
                 {logoOptions.map((logo: string, idx) => (
                   <label key={idx} className="relative flex items-center justify-center">
@@ -232,9 +231,14 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
                     <label htmlFor={`logo-${idx}`} className="sr-only">
                       {`Select color ${logo}`}
                     </label>
-                    <span
-                      className={`w-6 h-6 rounded-full cursor-pointer ${selectedLogo === logo ? 'border-2 border-white' : ''}`}
-                    ></span>
+                    <div className='w-12 aspect-square flex'>
+                      <div className='w-full p-3 aspect-square bg-white rounded-full flex justify-center items-center'>
+                        <Image src={logo} alt='' width={0} height={0} className='w-full' />
+                      </div>
+                      <span
+                        className={`absolute w-12 h-12 rounded-full cursor-pointer ${selectedLogo === logo ? 'border-2 border-black' : ''}`}
+                      ></span>
+                    </div>
                   </label>
                 ))}
               </div>
@@ -242,7 +246,6 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
           </div>
         </div>
       </div>
-
       <div className="w-full flex gap-x-4 mt-6">
         <button
           onClick={onClick}
