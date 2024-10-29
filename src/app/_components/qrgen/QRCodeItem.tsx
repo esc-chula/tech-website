@@ -1,23 +1,20 @@
 import { SquarePen, Trash2, History } from "lucide-react";
 import Image from 'next/image';
-import type { StaticImageData } from 'next/image';
-import qrCode from '../../../public/main/qr_code_PNG6.png'
 
 export function QRCodeItem({
     name,
     urlString,
     qrSrc,
-    date,
+    editAt,
 }: {
     name: string,
     urlString: string,
-    qrSrc?: StaticImageData,
-    date: string,
+    qrSrc: string,
+    editAt: Date,
 }) {
-    if (qrSrc === undefined)
-        qrSrc = qrCode
+    const date = editAt.toLocaleDateString('en-US', {day:'numeric' , month: 'short', year: 'numeric'});
     return (
-        <div className="w-80 h-96 rounded-3xl p-7 bg-black grid grid-flow-row content-between">
+        <div className="w-80 rounded-3xl p-7 bg-black grid grid-flow-row content-between">
             <div className="w-full flex flex-row justify-between items-start">
                 <div className="flex flex-col gap-1">
                     <p className="font-semibold text-xl">{name}</p>
@@ -33,10 +30,10 @@ export function QRCodeItem({
                 </div>
             </div>
 
-            <div className="w-full p-4 flex flex-col justify-center gap-4">
-                <div className="w-2/3 flex place-self-center">
-                    <div className="bg-white p-2">
-                        <Image src={qrSrc} alt="qr-code" width={0} height={0} className="aspect-square" />
+            <div className="w-full p-2 flex flex-col justify-center gap-4">
+                <div className="w-full flex place-self-center">
+                    <div className="w-full bg-white p-1">
+                        <Image src={qrSrc} alt="qr-code" width={0} height={0} className="w-full aspect-square" />
                     </div>
                 </div>
                 <div className="flex flex-row justify-center text-neutral-500 gap-1">
