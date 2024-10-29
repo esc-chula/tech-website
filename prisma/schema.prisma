@@ -12,40 +12,61 @@ datasource db {
 }
 
 model User {
-    id           Int                 @id @default(autoincrement())
-    oidcId       String              @unique
-    studentId    String              @unique
+    id           Int     @id @default(autoincrement())
+    oidcId       String  @unique
+    studentId    String  @unique
     firstNameTh  String
     middleNameTh String?
     lastNameTh   String
     firstNameEn  String
     middleNameEn String?
     lastNameEn   String
-    urls         UserShortenedLink[] @relation("UserToShortenedLink")
-    qrCodes      UserQrCode[]        @relation("UserToQrCodeGen")
+
+    userShortenedLinks UserShortenedLink[] @relation("UserToShortenedLink")
+    userQrCodes        UserQrCode[]        @relation("UserToQrCodeGen")
 }
 
 model UserShortenedLink {
-    id       Int      @id @default(autoincrement())
-    name     String
-    url      String
-    slug     String   @unique
+    id    Int    @id @default(autoincrement())
+    name  String
+    url   String
+    slug  String @unique
+    count Int    @default(0)
+
+    userId                          Int
+    user                            User                             @relation(fields: [userId], references: [id], name: "UserToShortenedLink")
+    userShortenedLinkVisitedRecords UserShortenedLinkVisitedRecord[] @relation("UserShortenedLinkVisitedRecords")
+
     editedAt DateTime @default(now())
-    user     User     @relation(fields: [userId], references: [id], name: "UserToShortenedLink")
-    userId   Int
-    count    Int      @default(0)
+}
+
+model UserShortenedLinkVisitedRecord {
+    id                 Int     @id @default(autoincrement())
+    utmCampaignSource  String?
+    utmCampaignMedium  String?
+    utmCampaignName    String?
+    utmCampaignId      String?
+    utmCampaignTerm    String?
+    utmCampaignContent String?
+
+    userShortenedLinkId Int
+    userShortenedLink   UserShortenedLink @relation(fields: [userShortenedLinkId], references: [id], name: "UserShortenedLinkVisitedRecords")
+
+    editedAt DateTime @default(now())
 }
 
 model UserQrCode {
-    id       Int      @id @default(autoincrement())
-    name     String
-    url      String
-    qrCode   String
-    color    String
-    logo     String?
+    id     Int     @id @default(autoincrement())
+    name   String
+    url    String
+    qrCode String
+    color  String
+    logo   String?
+
+    userId Int
+    user   User @relation(fields: [userId], references: [id], name: "UserToQrCodeGen")
+
     editedAt DateTime @default(now())
-    user     User     @relation(fields: [userId], references: [id], name: "UserToQrCodeGen")
-    userId   Int
 }
 
 model TechMonthStamp {
