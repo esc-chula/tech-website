@@ -14,7 +14,7 @@ export function QRCodeItem({
 }) {
     const date = editAt.toLocaleDateString('en-US', {day:'numeric' , month: 'short', year: 'numeric'});
     return (
-        <div className="w-80 rounded-3xl p-7 bg-black grid grid-flow-row content-between">
+        <div className="w-full lg:w-96 rounded-3xl p-7 bg-black grid grid-flow-row content-between">
             <div className="w-full flex flex-row justify-between items-start">
                 <div className="flex flex-col gap-1">
                     <p className="font-semibold text-xl">{name}</p>
@@ -31,9 +31,9 @@ export function QRCodeItem({
             </div>
 
             <div className="w-full p-2 flex flex-col justify-center gap-4">
-                <div className="w-full flex place-self-center">
-                    <div className="w-full bg-white p-1">
-                        <Image src={qrSrc} alt="qr-code" width={0} height={0} className="w-full aspect-square" />
+                <div className="w-full flex place-self-center justify-center items-center">
+                    <div className=" bg-white p-1">
+                        <Image src={qrSrc} alt="qr-code" width={0} height={0} className="w-full max-w-64 aspect-square" />
                     </div>
                 </div>
                 <div className="flex flex-row justify-center text-neutral-500 gap-1">
