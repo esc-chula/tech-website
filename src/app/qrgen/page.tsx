@@ -81,10 +81,10 @@ export default function QRCodePage() {
                 {/* Qr-Code */}
                 <div className="w-full flex flex-col gap-12">
                     <p className="font-semibold text-4xl">Recent</p>
-                    <div className="grid gap-x-8 gap-y-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                        <div className="grid justify-items-center">
+                    <div className="grid gap-x-8 gap-y-20 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="w-full h-full col-span-1 grid justify-items-center">
                             <button
-                                className="w-80 min-h-96 flex justify-center items-center border-dashed border-4 border-neutral-800 rounded-3xl"
+                                className="w-96 min-h-96 h-full flex justify-center items-center border-dashed border-4 border-neutral-800 rounded-3xl"
                                 onClick={() => setShowCreateQrCode(true)}
                             >
                                 <div className="border-dashed border-4 border-neutral-800 rounded-full p-10">
