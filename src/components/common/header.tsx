@@ -1,7 +1,12 @@
+"use client"
+
 import { Menu } from "lucide-react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export function Header() {
+  const router = useRouter();
+
   return (
     <header className="fixed left-0 right-0 top-0 z-50 flex h-16 justify-center border-b border-neutral-800 bg-neutral-950/70 px-5 backdrop-blur-lg md:px-10">
       <div className="flex h-full w-full max-w-screen-xl items-center justify-between">
@@ -15,7 +20,10 @@ export function Header() {
         <span className="hidden text-right text-xl font-semibold lg:inline">
           tech
         </span>
-        <button type="button" className="select-none p-1 lg:hidden">
+        <button 
+          type="button" 
+          className="select-none p-1 lg:hidden"
+          onClick={()=>router.push("/home")}>
           <Menu size={24} />
         </button>
       </div>
