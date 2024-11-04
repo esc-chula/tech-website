@@ -1,14 +1,13 @@
-import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 import { User } from "lucide-react";
 import Image from "next/image";
-import { heroLinks } from "@/constants/home";
 import Card from "../ui/card";
+import Menu from "./menu";
 
 export default function Hero() {
   return (
-    <Card className="grid w-full overflow-hidden bg-black p-0 lg:grid-cols-7">
+    <Card className="grid w-full overflow-hidden p-0 lg:grid-cols-7">
       {/* banner */}
       <div className="relative col-span-5 aspect-video bg-neutral-700 lg:aspect-[4/2]">
         <Image
@@ -30,17 +29,7 @@ export default function Hero() {
 
       {/* menu */}
       <div className="col-span-2 hidden flex-col justify-between lg:flex">
-        <div className="flex flex-col">
-          {heroLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="border-b border-neutral-800 bg-black px-7 py-5 text-lg font-semibold text-white hover:bg-neutral-900"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
+        <Menu />
         <div className="flex items-center justify-between gap-4 px-4 py-5">
           <div className="flex items-center gap-4">
             <div className="grid aspect-square w-12 place-content-center rounded-full bg-white/20">

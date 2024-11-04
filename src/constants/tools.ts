@@ -12,6 +12,12 @@ export const tools = [
     image: "/assets/tools/qr-code.png",
   },
   {
+    title: "Intania OAuth",
+    description: "Create and use OAuth for your app",
+    href: "/tools/oauth",
+    image: "/assets/tools/oauth.png",
+  },
+  {
     title: "Report Bug",
     description: "Found a bug? Report to us!",
     href: "/tools/bug-report",
