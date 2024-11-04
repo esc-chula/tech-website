@@ -3,22 +3,9 @@ import React from "react";
 import { Button } from "../ui/button";
 import { User } from "lucide-react";
 import Image from "next/image";
+import { heroLinks } from "@/constants/home";
 
 export default function Hero() {
-  const links = [
-    {
-      label: "About",
-      href: "/about",
-    },
-    {
-      label: "Documentations",
-      href: "/docs",
-    },
-    {
-      label: "Tools & Apps",
-      href: "/tools",
-    },
-  ];
   return (
     <div className="grid w-full bg-black lg:grid-cols-7">
       {/* banner */}
@@ -43,7 +30,7 @@ export default function Hero() {
       {/* menu */}
       <div className="col-span-2 hidden flex-col justify-between lg:flex">
         <div className="flex flex-col">
-          {links.map((link) => (
+          {heroLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
