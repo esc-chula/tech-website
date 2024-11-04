@@ -33,6 +33,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
+RUN npx prisma generate
 RUN \
     if [ -f yarn.lock ]; then SKIP_ENV_VALIDATION=1 yarn build; \
     elif [ -f package-lock.json ]; then SKIP_ENV_VALIDATION=1 npm run build; \
@@ -42,7 +43,7 @@ RUN \
 
 ##### RUNNER
 
-FROM gcr.io/distroless/nodejs20-debian12 AS runner
+FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -55,6 +56,7 @@ COPY --from=builder /app/package.json ./package.json
 
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+COPY --chown=nextjs:nodejs prisma ./prisma/
 
 EXPOSE 3000
 ENV PORT=3000
