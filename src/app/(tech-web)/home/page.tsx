@@ -1,6 +1,7 @@
 "use client"
 
 import AdsText from "@/components/home/ads-text";
+// import ToolCard from "@/components/home/tool-card";
 import { useEffect, useState } from "react";
 
 export default function Page()
@@ -21,8 +22,11 @@ export default function Page()
         return (
         <>
             <AdsText image="/adsEx.png" title="TECH website is now open!" subTitle="A place of tools and knowledges for geeks." />
+            {/* <ToolCard /> */}
         </>
         );
     }
-    return null;
+    return (null
+        // <ToolCard />
+    );
 }
