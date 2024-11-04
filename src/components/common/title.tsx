@@ -1,17 +1,43 @@
-export const Title = (props: {
-  titleText: string;
-  fontSize: "64" | "48";
-  varience: "white" | "yellow";
-}) => {
-  const color = props.varience === "white" ? "white" : "#FCD34D";
-  const size = props.fontSize === "64" ? "sm:text-[64px]" : "sm:text-[48px]";
-  const smallSize = props.fontSize === "64" ? "text-[24px]" : "text-[20px]";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+
+const titleVariants = cva("text-center", {
+  variants: {
+    color: {
+      white: "text-white",
+      primary: "text-amber-300",
+    },
+    variant: {
+      pageTitle: "text-3xl md:text-4xl font-semibold uppercase",
+      sectionTitle: "text-2xl md:text-3xl font-semibold",
+    },
+  },
+  defaultVariants: {
+    color: "white",
+    variant: "pageTitle",
+  },
+});
+
+export type TitleProps = VariantProps<typeof titleVariants> &
+  React.HTMLProps<HTMLHeadingElement>;
+
+const Title = ({
+  className,
+  color,
+  variant,
+  children,
+  ...props
+}: TitleProps) => {
+  const Comp = variant === "pageTitle" ? "h1" : "h2";
   return (
-    <p
-      className={`font-semibold sm:font-bold ${smallSize} ${size}`}
-      style={{ color: color }}
+    <Comp
+      className={cn(titleVariants({ color, variant, className }))}
+      {...props}
     >
-      {props.titleText}
-    </p>
+      {children}
+    </Comp>
   );
 };
+Title.displayName = "Title";
+
+export { Title, titleVariants };

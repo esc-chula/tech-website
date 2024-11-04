@@ -41,8 +41,8 @@ const Banner = () => (
           <p className="font-semibold text-white">Tools & Apps</p>
         </div>
 
-        <div id="banner-profile" className="h-full w-full flex items-end">
-          <div className="align-bottom h-min w-full flex flex-row">
+        <div id="banner-profile" className="flex h-full w-full items-end">
+          <div className="flex h-min w-full flex-row align-bottom">
             <div className="basis-1/4"></div>
             <div className="basis-2/4"></div>
             <div className="basis-1/4"></div>

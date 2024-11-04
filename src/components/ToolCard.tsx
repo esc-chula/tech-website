@@ -15,11 +15,17 @@ const ToolCard = () => (
     </div>
     <div className="h-1/3 bg-black p-4">
       <div className="h-2/3">
-        <div className="h-min text-white text-xl font-semibold pb-1">QR Code Generator</div>
-        <div className="h-min text-white text-sm align-top">Create custom QR Code with styles!</div>
+        <div className="h-min pb-1 text-xl font-semibold text-white">
+          QR Code Generator
+        </div>
+        <div className="h-min align-top text-sm text-white">
+          Create custom QR Code with styles!
+        </div>
       </div>
-      <div className="h-1/3 text-white flex place-content-end">
-      <div className="w-1/5 h-full bg-amber-300  text-center text-black text-sm">Launch</div>
+      <div className="flex h-1/3 place-content-end text-white">
+        <div className="h-full w-1/5 bg-amber-300 text-center text-sm text-black">
+          Launch
+        </div>
       </div>
     </div>
   </div>
