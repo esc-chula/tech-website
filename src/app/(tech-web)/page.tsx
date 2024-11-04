@@ -1,16 +1,11 @@
-import { HydrateClient } from "@/trpc/server";
-import Banner from "@/components/Banner";
+import Hero from "@/components/home/hero";
 import ToolCard from "@/components/ToolCard";
 
 export default async function Home() {
   return (
-    <HydrateClient>
-      <main className="h-screen items-center justify-center bg-[#161616] pl-40 pr-40">
-        <div className="h-1/2 w-full">
-          <Banner />
-          <ToolCard />
-        </div>
-      </main>
-    </HydrateClient>
+    <div className="flex w-full flex-col items-center gap-10 py-12">
+      <Hero />
+      <ToolCard />
+    </div>
   );
 }
