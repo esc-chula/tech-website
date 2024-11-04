@@ -4,10 +4,11 @@ import { Button } from "../ui/button";
 import { User } from "lucide-react";
 import Image from "next/image";
 import { heroLinks } from "@/constants/home";
+import Card from "../ui/card";
 
 export default function Hero() {
   return (
-    <div className="grid w-full bg-black lg:grid-cols-7">
+    <Card className="grid w-full overflow-hidden bg-black p-0 lg:grid-cols-7">
       {/* banner */}
       <div className="relative col-span-5 aspect-video bg-neutral-700 lg:aspect-[4/2]">
         <Image
@@ -55,6 +56,6 @@ export default function Hero() {
           </Button>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
