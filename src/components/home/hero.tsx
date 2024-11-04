@@ -17,7 +17,7 @@ export default function Hero() {
           className="select-none object-cover"
         />
         <div className="absolute z-10 h-full w-full bg-gradient-to-t from-black to-transparent to-35%"></div>
-        <div className="absolute z-20 flex h-full flex-col justify-end p-4 lg:gap-2 lg:px-7 lg:py-6">
+        <div className="absolute z-20 flex h-full flex-col justify-end p-4 lg:gap-1 lg:px-7 lg:py-6">
           <h4 className="align-bottom text-lg font-semibold text-white lg:text-2xl">
             TECH website is now open!
           </h4>

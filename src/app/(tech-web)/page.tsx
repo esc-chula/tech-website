@@ -1,12 +1,12 @@
 import Hero from "@/components/home/hero";
-import ToolCard from "@/components/ToolCard";
+import ToolList from "@/components/tools/tool-list";
 
 export default async function Home() {
   return (
-    <div className="flex w-full flex-col items-center gap-10 py-12">
+    <div className="flex w-full flex-col items-center gap-10 pb-24 pt-12">
       <h1 className="hidden">ESC Technology Department Website</h1>
       <Hero />
-      <ToolCard />
+      <ToolList />
     </div>
   );
 }
