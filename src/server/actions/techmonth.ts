@@ -14,6 +14,7 @@ export async function login(
   cookieStore.set("studentId", studentId);
 
   return {
+    message: "Successfully logged in",
     data: null,
   };
 }
@@ -23,23 +24,28 @@ export async function logout(): Promise<ServerActionResponse<null>> {
   cookieStore.delete("studentId");
 
   return {
+    message: "Successfully logged out",
     data: null,
   };
 }
 
-export async function getEvents(): Promise<ServerActionResponse<Event[]>> {
+export async function getEvents(): Promise<
+  ServerActionResponse<Event[] | null>
+> {
   try {
     const events = await directus.request(
       readItems("Tech_web_techmonth_event" as never),
     );
 
     return {
+      message: "Successfully fetched events",
       data: events as never as Event[],
     };
   } catch (error) {
     return {
-      error: "Failed to fetch events",
-      data: [],
+      message: "Failed to fetch events",
+      error: error instanceof Error ? error.message : "Unknown error",
+      data: null,
     };
   }
 }
@@ -56,7 +62,8 @@ export async function getEventByEventId(
 
     if (events.length === 0) {
       return {
-        error: "Event not found",
+        message: "Event not found",
+        error: "Not found",
         data: null,
       };
     }
@@ -64,11 +71,13 @@ export async function getEventByEventId(
     const event = events[0];
 
     return {
+      message: "Successfully fetched event",
       data: event as never as Event,
     };
   } catch (error) {
     return {
-      error: "Failed to fetch event",
+      message: "Failed to fetch event",
+      error: error instanceof Error ? error.message : "Unknown error",
       data: null,
     };
   }
@@ -80,18 +89,24 @@ export async function addStamp(
   const cookieStore = cookies();
   const studentId = cookieStore.get("studentId")?.value;
   if (!studentId) {
-    throw new Error("Student not found");
+    return {
+      message: "Not logged in",
+      error: "Unauthorized",
+      data: null,
+    };
   }
 
   const { data: event, error } = await getEventByEventId(eventId);
   if (error) {
     return {
+      message: "Failed to fetch event",
       error: error,
       data: null,
     };
   }
   if (!event) {
     return {
+      message: "Event not found",
       error: "Invalid Event ID",
       data: null,
     };
@@ -102,6 +117,7 @@ export async function addStamp(
     const eventDate = new Date(event.date);
     if (today.getDate() !== eventDate.getDate()) {
       return {
+        message: "Failed to stamp",
         error: "Invalid Event Date",
         data: null,
       };
@@ -115,7 +131,8 @@ export async function addStamp(
     .catch(() => null);
   if (!userStamps) {
     return {
-      error: "Failed to fetch user stamps",
+      message: "Failed to fetch user stamps",
+      error: "Unknown error",
       data: null,
     };
   }
@@ -126,7 +143,8 @@ export async function addStamp(
 
   if (hasAlreadyStamped) {
     return {
-      error: "User already stamped",
+      message: "User already stamped",
+      error: "Failed to stamp",
       data: null,
     };
   }
@@ -137,6 +155,7 @@ export async function addStamp(
   });
 
   return {
+    message: "Successfully stamped",
     data: null,
   };
 }
