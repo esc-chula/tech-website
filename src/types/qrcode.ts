@@ -1,6 +1,4 @@
-import { z } from "zod";
-
-export interface QRcodeInterface {
+export interface QRcode {
   name: string;
   url: string;
   qrCode: string;
@@ -10,12 +8,3 @@ export interface QRcodeInterface {
   id: number;
   editedAt: Date;
 }
-
-export const CreateQRCodeInput = z.object({
-  name: z.string(),
-  url: z.string(),
-  qrCode: z.string(),
-  color: z.string(),
-  logo: z.string(),
-  userId: z.string(),
-});

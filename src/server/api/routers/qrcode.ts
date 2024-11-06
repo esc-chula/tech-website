@@ -1,13 +1,14 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { type QRcodeInterface, CreateQRCodeInput } from "@/types/qrcode";
+import { type QRcode } from "@/types/qrcode";
+import { CreateQRCodeDto } from "@/server/api/dto/qrcode";
 
 export const postRouter = createTRPCRouter({
   create: publicProcedure
-    .input(CreateQRCodeInput)
+    .input(CreateQRCodeDto)
     .mutation(async ({ ctx, input }) => {
-      const newQRCode: QRcodeInterface = await ctx.db.userQrCode.create({
+      const newQRCode: QRcode = await ctx.db.userQrCode.create({
         data: {
           name: input.name,
           url: input.url,
@@ -18,8 +19,8 @@ export const postRouter = createTRPCRouter({
         },
       });
       return {
-        message: `Created QRcode for ID ${input.userId}`,
         data: newQRCode,
+        message: `Created QRcode for ID ${input.userId}`,
       };
     }),
 
@@ -32,21 +33,21 @@ export const postRouter = createTRPCRouter({
         },
       });
 
-      if (qrCode == null) {
+      if (qrCode === null) {
         return {
-          message: `No QR code found for ID ${input.userId}`,
           data: null,
+          error: `No QR code found for ID ${input.userId}`,
         };
       }
 
       return {
-        message: `Updated for ID ${input.userId}`,
         data: qrCode,
+        message: `Updated for ID ${input.userId}`,
       };
     }),
 
   update: publicProcedure
-    .input(CreateQRCodeInput)
+    .input(CreateQRCodeDto)
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.db.userQrCode.findFirst({
         where: {
@@ -63,10 +64,16 @@ export const postRouter = createTRPCRouter({
           editedAt: new Date(),
         },
       });
+      if (newQRCode === null) {
+        return {
+          data: null,
+          error: `No QR code found for ID ${input.userId}`,
+        };
+      }
 
       return {
-        message: `Updated QRCode for ${user?.id}`,
         data: newQRCode,
+        message: `Updated QRCode for ${user?.id}`,
       };
     }),
 
@@ -78,6 +85,12 @@ export const postRouter = createTRPCRouter({
           userId: Number(input.userId),
         },
       });
+      if (user === null) {
+        return {
+          data: null,
+          error: `No QR code found for ID ${input.userId}`,
+        };
+      }
 
       await ctx.db.userQrCode.delete({
         where: {
@@ -86,6 +99,7 @@ export const postRouter = createTRPCRouter({
       });
 
       return {
+        data: user,
         message: `Deleted QRCode for ${input.userId}`,
       };
     }),
