@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { Section } from "@/components/common/section";
 import { Title } from "@/components/common/title";
-import ProjectCard from "./project-card";
+import ProjectsContainer from "./projects-container";
+import ProjectsLoading from "./projects-loading";
 
 export const ProjectsSection = () => {
   return (
@@ -10,21 +12,9 @@ export const ProjectsSection = () => {
       </Title>
 
       <div className="flex w-full flex-col gap-5">
-        <h3 className="text-lg font-semibold uppercase">
-          ESC67
-          <span className="text-sm font-medium normal-case text-neutral-600">
-            {" <initiation>"}
-          </span>
-        </h3>
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-          <ProjectCard
-            title="Orientation Website 67"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
-            image="/assets/mock/banner.png"
-            projectLink="https://or67.intania.org"
-            githubLink="https://github.com/esc-chula/or67"
-          />
-        </div>
+        <Suspense fallback={<ProjectsLoading />}>
+          <ProjectsContainer />
+        </Suspense>
       </div>
     </Section>
   );

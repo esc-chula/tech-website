@@ -26,7 +26,7 @@ export default function ProjectCard({
           href={projectLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute inset-0 z-10 flex items-center justify-center gap-1 bg-black/50 opacity-0 duration-200 group-hover:opacity-100"
+          className="absolute inset-0 z-10 flex items-center justify-center gap-1 bg-black/50 text-sm opacity-0 duration-200 group-hover:opacity-100"
         >
           <span>Visit Project</span> <ArrowUpRight size={12} className="mb-1" />
         </Link>
