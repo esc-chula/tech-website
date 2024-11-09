@@ -23,7 +23,7 @@ export default async function ScheduleSection(): Promise<JSX.Element> {
         <span className="text-techmonth-magenta">dule</span>
       </h2>
       <div className="flex w-full flex-col gap-4">
-        {error
+        {(error ?? !events)
           ? "something went wrong..."
           : events.map((event, index) => (
               <div
