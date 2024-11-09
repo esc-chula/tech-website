@@ -1,6 +1,6 @@
 import LinkCard from "./link-card";
 
-export default async function Links() {
+export default async function LinksContainer() {
   await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate loading
 
   const shortenedLinks = [

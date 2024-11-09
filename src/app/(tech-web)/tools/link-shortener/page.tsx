@@ -1,7 +1,7 @@
 import { BackButton } from "@/components/common/back-button";
 import { Title } from "@/components/common/title";
 import CreateLinkDialog from "@/components/tools/link-shortener/create-link-dialog";
-import Links from "@/components/tools/link-shortener/links";
+import LinksContainer from "@/components/tools/link-shortener/links-container";
 import LinksLoading from "@/components/tools/link-shortener/links-loading";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
@@ -28,9 +28,9 @@ export default function Page() {
         </div>
         <div className="grid w-full grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-8">
           <Suspense fallback={<LinksLoading />}>
-            <Links />
-            <Links />
-            <Links />
+            <LinksContainer />
+            <LinksContainer />
+            <LinksContainer />
           </Suspense>
         </div>
       </div>
