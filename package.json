@@ -18,6 +18,7 @@
   "dependencies": {
     "@directus/sdk": "^17.0.0",
     "@hookform/resolvers": "^3.9.0",
+    "@icons-pack/react-simple-icons": "^10.1.0",
     "@ory/hydra-client": "^2.2.1",
     "@prisma/client": "^5.18.0",
     "@radix-ui/react-dialog": "^1.1.2",
