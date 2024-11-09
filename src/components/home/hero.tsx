@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "../ui/button";
-import { User } from "lucide-react";
 import Image from "next/image";
 import Card from "../ui/card";
 import Menu from "./menu";
+import MenuUser from "./menu-user";
 
 export default function Hero() {
   return (
@@ -30,20 +29,7 @@ export default function Hero() {
       {/* menu */}
       <div className="col-span-2 hidden flex-col justify-between lg:flex">
         <Menu />
-        <div className="flex items-center justify-between gap-4 px-4 py-5">
-          <div className="flex items-center gap-4">
-            <div className="grid aspect-square w-12 place-content-center rounded-full bg-white/20">
-              <User size={24} />
-            </div>
-            <div>
-              <p className="font-medium">Hello, Intania</p>
-              <p className="text-sm">Please log in</p>
-            </div>
-          </div>
-          <Button variant="primary" className="px-5" size="sm">
-            Log in
-          </Button>
-        </div>
+        <MenuUser />
       </div>
     </Card>
   );
