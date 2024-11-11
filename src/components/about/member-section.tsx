@@ -3,23 +3,17 @@ import { MemberButton } from "@/components/common/member-button";
 import { Section } from "@/components/common/section";
 import { Title } from "@/components/common/title";
 import { useEffect, useState } from "react";
+import { api } from "@/trpc/server";
 
 export const MemberSection = () => {
   const [members, setMembers] = useState<GithubMemberProps[]>([]);
-  // const members: GithubMemberProps[] = [];
   useEffect(() => {
     const fetchAPI = async () => {
       try {
-        // const { data }: { data: GithubMemberProps[] } = await axios.get(
-        //   `https://api.github.com/orgs/esc-chula/public_members`,
-        // );
-        const response = await fetch(
-          `https://api.github.com/orgs/esc-chula/public_members`,
-        );
+        const data = await api.aboutMember.get();
 
-        console.log(response);
-        // const data = await response.json();
-        // console.log(data);
+        console.log(data);
+
         setMembers([]);
         // setMembers((members) => {
         //   return [...members, ...data].sort((a, b) =>
@@ -57,7 +51,7 @@ export const MemberSection = () => {
   );
 };
 
-interface GithubMemberProps {
+export interface GithubMemberProps {
   login: string;
   id: number;
   node_id: string;
