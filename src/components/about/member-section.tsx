@@ -1,32 +1,10 @@
-"use client";
 import { MemberButton } from "@/components/common/member-button";
 import { Section } from "@/components/common/section";
 import { Title } from "@/components/common/title";
-import { useEffect, useState } from "react";
 import { api } from "@/trpc/server";
 
-export const MemberSection = () => {
-  const [members, setMembers] = useState<GithubMemberProps[]>([]);
-  useEffect(() => {
-    const fetchAPI = async () => {
-      try {
-        const data = await api.aboutMember.get();
-
-        console.log(data);
-
-        setMembers([]);
-        // setMembers((members) => {
-        //   return [...members, ...data].sort((a, b) =>
-        //     a.login.localeCompare(b.login),
-        //   );
-        // });
-        // console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchAPI().catch(console.error);
-  }, []);
+export const MemberSection = async () => {
+  const members = await api.aboutMember.get();
 
   return (
     <Section className="gap-6">
@@ -44,6 +22,7 @@ export const MemberSection = () => {
             key={index}
             nameTag={member.login}
             url={member.html_url}
+            imgLink={member.avatar_url}
           />
         ))}
       </div>
