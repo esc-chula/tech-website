@@ -29,7 +29,7 @@ export default function Menu() {
               href={link.href}
               target={link.external ? "_blank" : ""}
               rel={link.external ? "noopener noreferrer" : ""}
-              className="border-b border-neutral-800 px-7 py-5 text-lg font-semibold text-white hover:bg-white/5"
+              className="border-b border-neutral-800 px-7 py-5 text-base font-semibold text-white hover:bg-white/5"
             >
               {link.label}
             </Link>

@@ -1,46 +1,45 @@
-"use client"
+"use client";
 
-import { ArrowRight } from "lucide-react"
-import { useRouter } from "next/navigation"
-
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+import Card from "../ui/card";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface ToolCardProps {
-    icon: React.ReactNode
-    name: string
-    description: string
-    navPage?: string
-};
+  image: string;
+  title: string;
+  description: string;
+  href: string;
+}
 
 export const ToolCards = ({
-    icon,
-    name,
-    description,
-    navPage,
+  image,
+  title,
+  description,
+  href,
 }: ToolCardProps) => {
-    const router = useRouter();
-
-    const handleClick = () => {
-        if(navPage)
-            router.push(navPage);
-        else router.back();
-    };
-
-    return (
-        <div className="w-[95%] h-32 flex bg-black">
-            <div className="w-1/4 h-full items-center justify-center flex">
-                {icon}
-            </div>
-            <div className="w-3/4 h-full border-l border-[#272727] relative">
-                <div className="px-5 py-4 w-fit">
-                    <span className="flex text-base font-semibold">{name}</span>
-                    <span className="text-xs font-normal">{description? description:null}</span>
-                </div>
-                <button onClick={handleClick} className="w-16 h-5 bg-[#FCD34D] text-black text-[10px] font-medium flex items-center justify-center absolute bottom-4 right-5">
-                    Launch 
-                    <ArrowRight className="ml-1" width={10} height={12} strokeWidth={2} />
-                </button>
-            </div>
-            
+  return (
+    <Card className="flex h-36 w-[95%] bg-black sm:h-32">
+      <div className="relative flex h-full w-1/4 items-center justify-center">
+        <Image src={image} alt={title} fill className="object-contain"></Image>
+      </div>
+      <div className="relative flex w-3/4 flex-col border-l border-neutral-800 px-5 py-4 sm:flex-row">
+        <div className="flex flex-col">
+          <span className="text-base font-semibold">{title}</span>
+          <span className="text-xs font-normal">{description}</span>
         </div>
-    );
+        <Button
+          variant="primary"
+          className="absolute bottom-4 right-5 flex h-5 w-16 items-center justify-center bg-[#FCD34D] px-10 py-3 text-xs font-medium text-black"
+          asChild
+        >
+          <Link href={href} className="flex items-center space-x-1">
+            Launch
+            <ArrowRight size={10} />
+          </Link>
+        </Button>
+      </div>
+    </Card>
+  );
 };

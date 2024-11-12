@@ -60,7 +60,7 @@ export function NavMenuContent({ children }: NavMenuContentProps) {
     <>
       <nav
         className={cn(
-          "fixed left-0 right-0 top-16 z-40 border-b border-neutral-800 bg-neutral-950/70 backdrop-blur-lg duration-300 ease-in-out",
+          "fixed left-0 right-0 top-16 z-40 h-screen overflow-y-scroll border-b border-neutral-800 bg-neutral-950/70 pb-16 backdrop-blur-lg duration-300 ease-in-out",
           isOpen ? "translate-y-0" : "translate-y-[calc(-100%-4rem)]",
         )}
       >
