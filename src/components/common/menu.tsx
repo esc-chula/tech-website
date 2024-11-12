@@ -4,7 +4,11 @@ import { heroLinks } from "@/constants/home";
 import Link from "next/link";
 import { Link as Scroll } from "react-scroll";
 
-export default function Menu() {
+interface MenuProps {
+  onClick?: () => void;
+}
+
+export default function Menu({ onClick }: MenuProps) {
   return (
     <div className="flex flex-col">
       {heroLinks.map((link) => {
@@ -18,6 +22,7 @@ export default function Menu() {
               duration={700}
               offset={-100}
               className="cursor-pointer border-b border-neutral-800 px-7 py-5 text-lg font-semibold text-white hover:bg-white/5"
+              onClick={onClick}
             >
               {link.label}
             </Scroll>
@@ -29,7 +34,8 @@ export default function Menu() {
               href={link.href}
               target={link.external ? "_blank" : ""}
               rel={link.external ? "noopener noreferrer" : ""}
-              className="border-b border-neutral-800 px-7 py-5 text-lg font-semibold text-white hover:bg-white/5"
+              className="border-b border-neutral-800 px-7 py-5 text-base font-semibold text-white hover:bg-white/5"
+              onClick={onClick}
             >
               {link.label}
             </Link>
