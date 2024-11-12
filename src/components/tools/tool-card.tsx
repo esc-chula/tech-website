@@ -18,11 +18,11 @@ export default function ToolCard({
   image,
 }: ToolCardProps) {
   return (
-    <Card className="grid aspect-square w-full grid-rows-9 p-0">
-      <div className="relative row-span-6">
+    <Card className="flex w-full flex-row p-0 max-lg:h-36 sm:aspect-square lg:grid lg:grid-rows-9">
+      <div className="relative flex max-lg:w-1/4 lg:row-span-6">
         <Image src={image} alt={title} fill className="object-contain" />
       </div>
-      <div className="relative row-span-3 flex flex-col justify-between border-t border-neutral-800 px-6 py-5">
+      <div className="relative flex flex-col justify-between border-l border-neutral-800 px-6 py-5 max-lg:w-3/4 lg:row-span-3 lg:border-t">
         <div>
           <h5 className="text-lg font-semibold">{title}</h5>
           <p className="text-sm font-light">{description}</p>

@@ -1,7 +1,7 @@
 import MenuUser from "./menu-user";
 import Menu from "./menu";
 import { tools } from "@/constants/tools";
-import { ToolCards } from "./tool-card";
+import ToolCard from "@/components/tools/tool-card";
 
 export default function MobileNav() {
   return (
@@ -9,9 +9,9 @@ export default function MobileNav() {
       <MenuUser />
       <Menu />
       <div className="my-8 ml-6 text-2xl font-semibold">Tools & Apps</div>
-      <div className="flex w-full flex-col items-center">
+      <div className="flex w-full flex-col items-center gap-5 px-5">
         {tools.map((tool) => (
-          <ToolCards
+          <ToolCard
             key={tool.title}
             title={tool.title}
             description={tool.description}
