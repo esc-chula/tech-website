@@ -7,6 +7,9 @@ export default async function Home() {
     <div className="flex w-full flex-col items-center gap-10 pb-24 pt-12">
       <h1 className="hidden">ESC Technology Department Website</h1>
       <Hero />
+      <div className="flex w-full text-left text-2xl font-semibold lg:text-5xl lg:font-bold">
+        Tools & Apps
+      </div>
       <section
         id="tools-list"
         className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-3"
