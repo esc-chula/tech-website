@@ -18,7 +18,7 @@ export default function ToolCard({
   image,
 }: ToolCardProps) {
   return (
-    <Card className="flex w-full flex-row p-0 max-lg:h-36 sm:aspect-square lg:grid lg:grid-rows-9">
+    <Card className="flex w-full flex-row p-0 max-lg:h-36 max-lg:border-0 sm:aspect-square lg:grid lg:grid-rows-9">
       <div className="relative flex max-lg:w-1/4 lg:row-span-6">
         <Image src={image} alt={title} fill className="object-contain" />
       </div>

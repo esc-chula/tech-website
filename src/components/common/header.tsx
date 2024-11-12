@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { NavMenu, NavMenuContent, NavMenuTrigger } from "./nav-menu";
 import { Menu } from "lucide-react";
-import MobileNav from "../home/mobile-nav";
+import MobileNav from "../common/mobile-nav";
 
 export function Header() {
   return (
