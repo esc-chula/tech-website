@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import Card from "../ui/card";
-import Menu from "./menu";
-import MenuUser from "./menu-user";
+import Menu from "../common/menu";
+import MenuUser from "../common/menu-user";
 
 export default function Hero() {
   return (
