@@ -5,7 +5,7 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 export const aboutMemberRouter = createTRPCRouter({
   get: publicProcedure.query(async () => {
     const response = await fetch(
-      `https://api.github.com/orgs/esc-chula/public_members`,
+      `https://api.github.com/orgs/esc-chula/public_members?per_page=200`,
     );
 
     // if (!response.ok) {
