@@ -1,0 +1,271 @@
+syntax = "proto3";
+
+package intania.auth.student.v1;
+
+option go_package = "github.com/esc-chula/intania-auth/generated/proto/student/v1";
+
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+service StudentService {
+  rpc GetStudentById(GetStudentByIdRequest) returns (GetStudentByIdResponse) {}
+  rpc GetStudentByStudentId(GetStudentByStudentIdRequest) returns (GetStudentByStudentIdResponse) {}
+
+  // Edit student information.
+  // 
+  // The system look for `student.id` for target student to edit.
+  // 
+  // The caller must specified `masks` for all the attribute which will be edited. If the
+  // masks is specified but the field the cleared/unset, that field will be removed
+  // if NULLABLE else will be set to default.
+  // For information about field mask, see https://protobuf.dev/reference/protobuf/google.protobuf/#field-mask.
+  // If there is/are unexpected field(s), it will be ignored.
+  //
+  // For every attribute
+  //   if the attribute is primitive and not in the exception, it can be directly edited.
+  //   if the attribute is relate to other entity (`FamilyStatus`, `FamilyMemberStatus`,
+  //     `Religion`, `Province`, `District`), specify id of the inner message field to edit.
+  //     Note that other field in the inner entity is ignore.
+  //
+  // These are the exception.
+  //   1. `student.id`, `student.created_at`, `student.updated_at`, `student.student_id` can't be edited.
+  //   2. `student.id` does not need to be specified in `masks`.
+  //
+  // The example are shown as JSON for readability.
+  // 
+  // Example 1: Set and unset
+  //   {
+  //     "sid": "<REDACTED>",
+  //     "masks": {
+  //       "paths": ["student.title_en", "student.first_name_en", "extra_field"]
+  //     
+  //     "student": {
+  //       "id": 5,
+  //       "title_en": "Mr.",
+  //       "family_name_en": "Doe"
+  //     }
+  //   }
+  // 
+  // In this example, if this sid belong to the student, the system will
+  //   1. Save "Mr." as `title_en` for student with id = 5.
+  //   2. Clear field `first_name_en` for student with id = 5 because it is not set.
+  //   3. Ignore `family_name_en` because it is not specified in the masks.
+  //   4. Ignore `extra_field` because it is not valid path.
+  //
+  // Example 2: Relationship
+  //   {
+  //     "sid": "<REDACTED>",
+  //     "masks": {
+  //       "paths": ["student.department.id"]
+  //     
+  //     "student": {
+  //       "id": 5
+  //       "department": {
+  //         "id": 4,
+  //         "name_en": "Industrial Engineering"
+  //       },
+  //       "religion": {
+  //         "id": 4
+  //       },
+  //     }
+  //   }
+  // 
+  // In this example, if this sid belong to the student, the system will
+  //   1. Save `department.id`=4 (internally stored as department_id) for student with id=5.
+  //   2. Ignore `department.name_en`.
+  //   3. Ignore `religion` because it's not specified in masks.
+  // 
+  rpc EditStudent(EditStudentRequest) returns (EditStudentResponse) {}
+
+  // Get map data
+  // Use to get data available about normalized type such as religion.
+  rpc ListStudentMapping(ListStudentMappingRequest) returns (ListStudentMappingResponse) {}
+}
+
+message GetStudentByIdRequest {
+  string id = 1;
+  google.protobuf.FieldMask masks = 2;
+  string sid = 3;
+}
+message GetStudentByIdResponse {
+  Student student = 1;
+}
+
+message GetStudentByStudentIdRequest {
+  string student_id = 1;
+  google.protobuf.FieldMask masks = 2;
+  string sid = 3;
+}
+message GetStudentByStudentIdResponse {
+  Student student = 1;
+}
+
+message EditStudentRequest {
+  Student student = 1;
+  google.protobuf.FieldMask masks = 2;
+  string sid = 3;
+}
+message EditStudentResponse {
+}
+
+message ListStudentMappingRequest {
+  // If not specified, default to all field.
+  // Currently masks only support first-level, i.e., "departments" works but "departments.name_th" does not work.
+  google.protobuf.FieldMask masks = 1;
+  // Revalidate information cache of the given masks. The default duration of the cache
+  // is up to the server to decide.
+  // Default value to false.
+  optional bool revalidate_cache = 2;
+}
+message ListStudentMappingResponse {
+  repeated Department departments = 1;
+  repeated Religion religions = 2;
+  repeated FamilyStatus family_statuses = 3;
+  repeated FamilyMemberStatus family_member_statuses = 4;
+  repeated Country countries = 5;
+  repeated Province provinces = 6;
+  repeated District districts = 7;
+}
+
+message Student {
+  // Internal data
+  int32 id = 1;
+  optional google.protobuf.Timestamp created_at = 2;
+  optional google.protobuf.Timestamp updated_at = 3;
+  optional string profile_picture_key = 4;
+
+  // Student related data
+  optional string student_id = 5;
+  optional Department department = 6;
+
+  // Personal data 1
+  optional string title_th = 7;
+  optional string title_en = 8;
+  optional string first_name_th = 9;
+  optional string first_name_en = 10;
+  optional string family_name_th = 11;
+  optional string family_name_en = 12;
+  optional string middle_name_th = 13;
+  optional string middle_name_en = 14;
+  optional string nickname_th = 15;
+  optional string nickname_en = 16;
+  optional string preferred_pronoun = 17;
+  optional string national_id = 18;
+
+  // Personal data 2
+  optional Country nationality = 19;
+  optional google.protobuf.Timestamp birth_date = 20;
+  optional Religion religion = 21;
+  optional string blood_type = 22;
+  optional string food_limitations = 23;
+  optional string drug_allergies = 24;
+  optional string medical_conditions = 25;
+  optional string medications = 26;
+  optional int32 shirt_size = 27;
+
+  // Social
+  optional string email = 28;
+  optional bool email_verified = 29;
+  optional string phone_number = 30;
+  optional bool phone_number_verified = 31;
+  optional string line_id = 32;
+  optional string facebook = 33;
+  optional string instagram = 34;
+
+  // Family
+  optional FamilyStatus family_status = 35;
+  // string enum: "Father", "Mother", "Other"
+  optional string parent = 36;
+  optional int32 sibling_total = 37;
+  optional int32 sibling_order = 38;
+  optional string parent_phone_number = 39;
+  optional string parent_address = 40;
+
+  // Father & Mother
+  optional string father_name = 41;
+  optional int32 father_birth_year = 42;
+  optional FamilyMemberStatus father_status = 43;
+  optional string mother_name = 44;
+  optional int32 mother_birth_year = 45;
+  optional FamilyMemberStatus mother_status = 46;
+  
+  // Current address
+  optional string current_address_number = 47;
+  optional Province current_address_province = 48;
+  optional District current_address_district = 49;
+  optional float current_address_latitude = 50;
+  optional float current_address_longitude = 51;
+  optional string current_address_other = 52;
+
+  // Hometown address
+  optional string hometown_address_number = 53;
+  optional Province hometown_address_province = 54;
+  optional District hometown_address_district = 55;
+  optional float hometown_address_latitude = 56;
+  optional float hometown_address_longitude = 57;
+  optional string hometown_address_other = 58;
+
+  // Miscellaneous
+  optional bool cuea_data_transfer_agreement = 59;
+}
+
+message Department {
+  int32 id = 1;
+  optional google.protobuf.Timestamp created_at = 2;
+  optional google.protobuf.Timestamp updated_at = 3;
+  optional string name_th = 4;
+  optional string name_en = 5;
+  optional string code = 6;
+}
+
+message Country {
+  int32 id = 1;
+  optional google.protobuf.Timestamp created_at = 2;
+  optional google.protobuf.Timestamp updated_at = 3;
+  optional string name = 5;
+  optional string code = 6;
+}
+
+message Religion {
+  int32 id = 1;
+  optional google.protobuf.Timestamp created_at = 2;
+  optional google.protobuf.Timestamp updated_at = 3;
+  optional string name_th = 4;
+  optional string name_en = 5;
+}
+
+message FamilyStatus {
+  int32 id = 1;
+  optional google.protobuf.Timestamp created_at = 2;
+  optional google.protobuf.Timestamp updated_at = 3;
+  optional string value_th = 4;
+  optional string value_en = 5;
+}
+
+message FamilyMemberStatus {
+  int32 id = 1;
+  optional google.protobuf.Timestamp created_at = 2;
+  optional google.protobuf.Timestamp updated_at = 3;
+  optional string value_th = 4;
+  optional string value_en = 5;
+}
+
+message Province {
+  int32 id = 1;
+  optional google.protobuf.Timestamp created_at = 2;
+  optional google.protobuf.Timestamp updated_at = 3;
+  optional string name_th = 4;
+  optional string name_en = 5;
+  optional int32 province_code = 6;
+}
+
+message District {
+  int32 id = 1;
+  optional google.protobuf.Timestamp created_at = 2;
+  optional google.protobuf.Timestamp updated_at = 3;
+  optional string name_th = 4;
+  optional string name_en = 5;
+  optional int32 province_code = 6;
+  optional int32 district_code = 7;
+  optional int32 postal_code = 8;
+}
