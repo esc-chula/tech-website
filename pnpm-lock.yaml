@@ -7,6 +7,9 @@ settings:
 importers:
   .:
     dependencies:
+      "@bufbuild/protobuf":
+        specifier: ^2.2.2
+        version: 2.2.2
       "@directus/sdk":
         specifier: ^17.0.0
         version: 17.0.2
