@@ -7,6 +7,10 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   output: "standalone",
+  // config next/image to beable to src img from url link
+  images: {
+    domains: ["avatars.githubusercontent.com"],
+  },
 };
 
 export default config;

@@ -1,4 +1,4 @@
-import { MemberSection } from "@/components/about/member-section";
+import { MembersSection } from "@/components/about/members-section";
 import { ProjectsSection } from "@/components/about/projects-section";
 import { BackButton } from "@/components/common/back-button";
 
@@ -7,7 +7,7 @@ export default function Page() {
     <>
       <BackButton href="/" fixed />
       <ProjectsSection />
-      <MemberSection />
+      <MembersSection />
     </>
   );
 }

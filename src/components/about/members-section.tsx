@@ -1,8 +1,10 @@
-import { MemberButton } from "@/components/common/member-button";
 import { Section } from "@/components/common/section";
 import { Title } from "@/components/common/title";
+import { Suspense } from "react";
+import { MembersLoading } from "./members-loading";
+import { MemberContainer } from "./members-container";
 
-export const MemberSection = () => {
+export const MembersSection = async () => {
   return (
     <Section className="gap-6">
       <Title variant="sectionTitle" color="primary" className="text-4xl">
@@ -13,25 +15,9 @@ export const MemberSection = () => {
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation
       </p>
-      <div className="flex flex-wrap items-center justify-center gap-2">
-        {memberTemp.map((member, index) => (
-          <MemberButton key={index} nameTag={member} />
-        ))}
-      </div>
+      <Suspense fallback={<MembersLoading />}>
+        <MemberContainer />
+      </Suspense>
     </Section>
   );
 };
-
-const memberTemp = [
-  "Jowkem #2 CEDT",
-  "GG #2 CP",
-  "Jowkem #2 CEDT",
-  "Jowkem #2 CEDT",
-  "Jowkem #2 CEDT",
-  "Jowkem #2 CEDT",
-  "Jowkem #2 CEDT",
-  "Jowkem #2 CEDT",
-  "Jowkem #2 CEDT",
-  "Jowkem #2 CEDT",
-  "Jowkem #2 CEDT",
-];
