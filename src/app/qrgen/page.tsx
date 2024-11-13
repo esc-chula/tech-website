@@ -68,48 +68,48 @@ export default function QRCodePage() {
             {/* Create */}
             {
                 showCreateQrCode ?
-                    <div className="absolute w-full h-full left-0 top-0 flex justify-center items-center backdrop-brightness-50">
+                    <div className="top-0 left-0 absolute flex justify-center items-center backdrop-brightness-50 w-full h-full">
                         {/* <CreateQRCode onClick={() => setShowCreateQrCode(false)} /> */}
                     </div> :
                     null
             }
-            <div className="h-full w-full flex flex-col justify-start text-secondary gap-20">
+            <div className="flex flex-col justify-start gap-20 w-full h-full text-secondary">
                 {/* Header */}
                 <div className="flex flex-col gap-8">
                     <button
-                        className="pointer w-full flex flex-row items-center justify-start"
+                        className="flex flex-row justify-start items-center w-full pointer"
                         onClick={handleGoBack}
                     >
                         <ArrowLeft size={20} strokeWidth={3} color="white" />
-                        <div className="font-semibold text-lg md:text-xl ml-1">Back</div>
+                        <div className="ml-1 font-semibold text-lg md:text-xl">Back</div>
                     </button>
-                    <h1 className="uppercase font-bold text-4xl md:text-5xl text-center leading-normal">QR CODE GENERATOR</h1>
+                    <h1 className="font-bold text-4xl text-center md:text-5xl uppercase leading-normal">QR CODE GENERATOR</h1>
                 </div>
                 {/* Qr-Code */}
-                <div className="w-full flex flex-col gap-16 justify-start items-center">
-                    <div className="w-full flex flex-row justify-between items-end">
-                        <p className="w-full text-left font-semibold text-3xl">Recent</p>
+                <div className="flex flex-col justify-start items-center gap-16 w-full">
+                    <div className="flex flex-row justify-between items-end w-full">
+                        <p className="w-full font-semibold text-3xl text-left">Recent</p>
                         <button 
-                            className="sm:hidden flex flex-row items-center justify-center gap-1 bg-neutral-800 py-1 px-4 rounded-lg"
+                            className="flex flex-row justify-center items-center gap-1 sm:hidden bg-neutral-800 px-4 py-1 rounded-lg"
                             >
                             <Plus size={16} strokeWidth={3} color="white" />
-                            <p className="font-semibold text-base ml-1">New</p>
+                            <p className="ml-1 font-semibold text-base">New</p>
                         </button>
                     </div>
-                    <div className="w-full grid gap-6 sm:gap-14 grid-cols-[repeat(auto-fit,_minmax(400px,1fr))] auto-rows-[minmax(120px,_auto)]">
-                        <div className="hidden sm:grid w-full sm:col-span-1 justify-items-center">
+                    <div className="gap-6 sm:gap-14 grid grid-cols-[repeat(auto-fit,_minmax(400px,1fr))] auto-rows-[minmax(120px,_auto)] w-full">
+                        <div className="justify-items-center hidden sm:grid sm:col-span-1 w-full">
                             <button
-                                className="w-96 h-[450px] flex justify-center items-center border-dashed border-4 border-neutral-800 rounded-3xl"
+                                className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-96 h-[450px]"
                                 onClick={() => setShowCreateQrCode(true)}
                             >
-                                <div className="w-44 aspect-square flex justify-center items-center border-dashed border-4 border-neutral-800 rounded-full">
+                                <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full w-44 aspect-square">
                                     <Plus size={60} strokeWidth={4} color="#262626" />
                                 </div>
                             </button>
                         </div>
                         {
                             mockData.map((data, idx) => (
-                                <div key={idx} className="w-full h-full col-span-1 grid justify-items-center">
+                                <div key={idx} className="justify-items-center grid col-span-1 w-full h-full">
                                     <QRCodeItem
                                         name={data.name}
                                         urlString={data.urlString}

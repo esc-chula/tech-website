@@ -45,6 +45,13 @@ export function QRCodeItem({
         return
     }
 
+    const handleDownloadQrCode = () => {
+        const link = document.createElement('a');
+        link.href = qrSrc;
+        link.download = `${name}.png`;
+        link.click();
+    }
+
     useEffect(() => {
         setIsDeleteError(false);
     }, [deleteConfirm])
@@ -59,57 +66,61 @@ export function QRCodeItem({
     return (
         <>
             {/* Desktop and Ipad */}
-            <div className="hidden sm:grid w-96 h-[450px] rounded-3xl p-6 bg-black sm:grid-flow-row gap-1 content-between">
+            <div className="sm:flex sm:flex-col justify-between content-between hidden bg-black p-6 rounded-3xl w-96 h-[450px] overflow-hidden">
                 {/* Header Qr-Code */}
-                <div className="w-full flex flex-row justify-between items-start">
-                    <div className="w-full flex flex-col gap-2">
-                        <div className="w-full flex flex-row justify-between items-center">
-                            <div className="line-clamp-1 font-semibold text-2xl">{name}</div>
-                            {/* Edit and Delete */}
-                            <div className="flex flex-row items-center gap-2">
-                                <button
-                                    onClick={() => setShowEditQrCode(true)}
-                                >
-                                    <SquarePen size={24} />
-                                </button>
-                                <button
-                                    onClick={() => setShowDeleteQrCode(true)}
-                                >
-                                    <Trash2 size={24} />
-                                </button>
-                            </div>
+                <div className="flex flex-col justify-start items-start gap-2 w-full">
+                    <div className="flex flex-row justify-between items-start w-full">
+                        <div className="line-clamp-1 w-1/2 font-semibold text-2xl">{name}</div>
+                        {/* Edit and Delete */}
+                        <div className="flex flex-row justify-end items-center gap-2 w-1/2">
+                            <button onClick={() => setShowEditQrCode(true)}>
+                                <SquarePen size={24} />
+                            </button>
+                            <button onClick={() => setShowDeleteQrCode(true)}>
+                                <Trash2 size={24} />
+                            </button>
                         </div>
-                        <div className="w-full line-clamp-1 font-semibold text-base text-amber-300">{urlString}</div>
                     </div>
+                    <div className="line-clamp-1 w-full font-semibold text-amber-300 text-base">{urlString}</div>
                 </div>
 
-                <div className="w-full p-4 flex flex-col justify-center gap-2 bg-black">
-                    <div className="w-full flex place-self-center justify-center items-center">
-                        <div className=" bg-white p-1">
-                            <Image src={qrSrc} alt="qr-code" width={0} height={0} className="w-full max-w-52 aspect-square" />
+                <div className="flex flex-col justify-center gap-2 bg-black p-4 w-full">
+                    <div className="flex justify-center items-center w-full place-self-center">
+                        <div className="bg-white p-1">
+                            <Image
+                                src={qrSrc}
+                                alt="qr-code"
+                                width={200}
+                                height={200}
+                                className="aspect-square"
+                            />
                         </div>
                     </div>
-                    <div className="flex flex-row justify-center items-center text-neutral-500 gap-1">
+                    <div className="flex flex-row justify-center items-center gap-1 text-neutral-500">
                         <History size={16} />
-                        <p className="text-sm font-semibold">{date}</p>
+                        <p className="font-semibold text-sm">{date}</p>
                     </div>
                 </div>
 
-                <button className="w-full rounded-xl bg-amber-300 text-primary text-center text-base font-bold py-2">Download QR Code (.PNG)</button>
+                <button
+                    className="bg-amber-300 py-2 rounded-xl w-full font-bold text-base text-center text-primary"
+                    onClick={handleDownloadQrCode}>
+                    Download QR Code (.PNG)
+                </button>
             </div>
             {/* Mobile */}
-            <div className="grid grid-cols-3 gap-5 justify-center h-fit items-center sm:hidden bg-black rounded-2xl p-4">
+            <div className="justify-center items-center gap-5 sm:hidden grid grid-cols-3 bg-black p-4 rounded-2xl h-fit overflow-hidden">
                 <div className="col-span-1">
-                    <div className="w-full bg-white p-1">
+                    <div className="bg-white p-1 w-full">
                         <Image src={qrSrc} alt="qr-code" width={0} height={0} className="w-full max-w-52 aspect-square" />
                     </div>
                 </div>
-                <div className="h-full col-span-2 flex flex-col items-start justify-between gap-1">
-                    <div className="w-full flex flex-col gap-1">
-                        <div className="w-full flex flex-row justify-between items-center">
-                            <div className="flex flex-row justify-center items-center text-neutral-500 gap-1">
+                <div className="flex flex-col justify-between items-start gap-1 col-span-2 h-full">
+                    <div className="flex flex-col gap-1 w-full">
+                        <div className="flex flex-row justify-between items-center w-full">
+                            <div className="flex flex-row justify-center items-center gap-1 text-neutral-500">
                                 <History size={10} />
-                                <p className="text-[10px] font-semibold">{date}</p>
+                                <p className="font-semibold text-[10px]">{date}</p>
                             </div>
                             <button
                                 className="relative"
@@ -119,15 +130,15 @@ export function QRCodeItem({
                             </button>
                             {
                                 isMenuMobileOpen && (
-                                    <div className="absolute flex flex-col w-24 right-10 mt-20">
+                                    <div className="right-10 absolute flex flex-col mt-20 w-24">
                                         <button
-                                            className="rounded-t-xl bg-neutral-800 py-1 text-[10px] font-semibold text-center w-full text-white border-b-2 border-b-neutral-700"
+                                            className="bg-neutral-800 py-1 border-b-2 border-b-neutral-700 rounded-t-xl w-full font-semibold text-[10px] text-center text-white"
                                             onClick={() => setShowEditQrCode(true)}
                                         >
                                             Edit
                                         </button>
                                         <button
-                                            className="rounded-b-xl bg-neutral-800 py-1 text-[10px] font-semibold text-center w-full text-red-600"
+                                            className="bg-neutral-800 py-1 rounded-b-xl w-full font-semibold text-[10px] text-center text-red-600"
                                             onClick={() => setShowDeleteQrCode(true)}
                                         >
                                             Delete
@@ -136,18 +147,23 @@ export function QRCodeItem({
                                 )
                             }
                         </div>
-                        <div className="w-10/12 line-clamp-1 text-base font-semibold text-white">{name}</div>
-                        <div className="w-10/12 line-clamp-1 text-xs text-neutral-600">{urlString}</div>
+                        <div className="line-clamp-1 w-10/12 font-semibold text-base text-white">{name}</div>
+                        <div className="line-clamp-1 w-10/12 text-neutral-600 text-xs">{urlString}</div>
                     </div>
-                    <button className="w-fit rounded-lg bg-amber-300 text-primary text-center text-[10px] font-bold mt-2 py-1 px-4">Download QR Code (.PNG)</button>
+                    <button
+                        className="bg-amber-300 mt-2 px-4 py-1 rounded-lg w-fit font-bold text-[10px] text-center text-primary"
+                        onClick={handleDownloadQrCode}
+                    >
+                        Download QR Code (.PNG)
+                    </button>
                 </div>
             </div>
             {/* Delete */}
             {
                 showDeleteQrCode ?
 
-                    <div className="fixed inset-0 flex items-center justify-center">
-                        <div className="absolute w-full h-full bg-black opacity-50"></div>
+                    <div className="fixed inset-0 flex justify-center items-center">
+                        <div className="absolute bg-black opacity-50 w-full h-full"></div>
 
                     </div> :
                     null
