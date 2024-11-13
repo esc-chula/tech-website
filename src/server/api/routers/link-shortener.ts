@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { CreateShortenedLinkDto } from "@/server/api/dto/linkshortener";
-import { type ShortenedLink } from "@/types/linkshortener";
+import { CreateShortenedLinkDto } from "@/server/api/dto/link-shortener";
+import { type ShortenedLink } from "@/types/link-shortener";
 
 export const postRouter = createTRPCRouter({
   create: publicProcedure
