@@ -1,10 +1,10 @@
 import { Section } from "@/components/common/section";
 import { Title } from "@/components/common/title";
 import { Suspense } from "react";
-import { MembersLoading } from "./member-loading";
-import { MemberContainer } from "./member-container";
+import { MembersLoading } from "./members-loading";
+import { MemberContainer } from "./members-container";
 
-export const MemberSection = async () => {
+export const MembersSection = async () => {
   return (
     <Section className="gap-6">
       <Title variant="sectionTitle" color="primary" className="text-4xl">

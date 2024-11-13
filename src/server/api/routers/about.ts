@@ -9,11 +9,17 @@ export const aboutRouter = createTRPCRouter({
     );
 
     if (!response.ok) {
-      throw new Error("Can't get ESC members");
+      return {
+        data: null,
+        message: "Error : Can't get ESC members",
+      };
     }
 
     const data: GithubMemberProps[] =
       (await response.json()) as GithubMemberProps[];
-    return data;
+    return {
+      data,
+      message: "Successfully get ESC members",
+    };
   }),
 });
