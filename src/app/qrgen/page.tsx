@@ -2,8 +2,8 @@
 import { ArrowLeft, Plus, SquarePen, Trash2, History } from "lucide-react";
 import Image from 'next/image';
 // import qrCode from '../../../public/main/qr_code_PNG6.png'
-import { CreateQRCode } from "../_components/qrgen/createQRCode";
-import { QRCodeItem } from "../_components/qrgen/QRCodeItem";
+// import { CreateQRCode } from "../_components/qrgen/createAndEditQRCode";
+import { QRCodeItem } from "@/components/qrgen/qrcode-card";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -40,6 +40,36 @@ const mockData = [
         qrSrc: qrCode,
         editAt: new Date("2023-05-01"),
     },
+    {
+        name: "Example 5",
+        urlString: "https://www.example5.com",
+        qrSrc: qrCode,
+        editAt: new Date("2023-05-01"),
+    },
+    {
+        name: "Example 5",
+        urlString: "https://www.example5.com",
+        qrSrc: qrCode,
+        editAt: new Date("2023-05-01"),
+    },
+    {
+        name: "Example 5",
+        urlString: "https://www.example5.com",
+        qrSrc: qrCode,
+        editAt: new Date("2023-05-01"),
+    },
+    {
+        name: "Example 5",
+        urlString: "https://www.example5.com",
+        qrSrc: qrCode,
+        editAt: new Date("2023-05-01"),
+    },
+    {
+        name: "Example 5 Hahahhahahahahhahahhahaahaaha",
+        urlString: "https://chatgpt.com/c/673425d8-e1f8-800e-96cd-3ede7ad982a4",
+        qrSrc: qrCode,
+        editAt: new Date("2023-05-01"),
+    },
 ];
 
 export default function QRCodePage() {
@@ -59,32 +89,42 @@ export default function QRCodePage() {
 
     return (
         <>
+            {/* Create */}
             {
                 showCreateQrCode ?
                     <div className="absolute w-full h-full left-0 top-0 flex justify-center items-center backdrop-brightness-50">
-                        <CreateQRCode onClick={() => setShowCreateQrCode(false)} />
+                        {/* <CreateQRCode onClick={() => setShowCreateQrCode(false)} /> */}
                     </div> :
                     null
             }
-            <div className="min-h-screen w-full flex flex-col px-10 py-14 text-secondary gap-14">
+
+            <div className="h-full w-full flex flex-col justify-start text-secondary gap-20">
                 {/* Header */}
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-8">
                     <button
-                        className="pointer w-full flex flex-row items-center"
+                        className="pointer w-full flex flex-row items-center justify-start"
                         onClick={handleGoBack}
                     >
                         <ArrowLeft size={20} strokeWidth={3} color="white" />
-                        <span className="font-semibold text-xl ml-1">Back</span>
+                        <div className="font-semibold text-lg md:text-xl ml-1">Back</div>
                     </button>
-                    <h1 className="uppercase font-bold text-6xl text-center">QR CODE GENERATOR</h1>
+                    <h1 className="uppercase font-bold text-4xl md:text-5xl text-center leading-normal">QR CODE GENERATOR</h1>
                 </div>
                 {/* Qr-Code */}
-                <div className="w-full flex flex-col gap-12">
-                    <p className="font-semibold text-4xl">Recent</p>
-                    <div className="grid gap-x-8 gap-y-20 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                        <div className="w-full h-full col-span-1 grid justify-items-center">
+                <div className="w-full flex flex-col gap-16 justify-start items-center">
+                    <div className="w-full flex flex-row justify-between items-end">
+                        <p className="w-full text-left font-semibold text-3xl">Recent</p>
+                        <button 
+                            className="sm:hidden flex flex-row items-center justify-center gap-1 bg-neutral-800 py-1 px-4 rounded-lg"
+                            >
+                            <Plus size={16} strokeWidth={3} color="white" />
+                            <p className="font-semibold text-base ml-1">New</p>
+                        </button>
+                    </div>
+                    <div className="w-full grid gap-6 md:gap-10 grid-cols-[repeat(auto-fit,_minmax(280px,1fr))] auto-rows-[minmax(120px,_auto)]">
+                        <div className="hidden sm:grid w-full h-full min-h-[420px] sm:col-span-1 justify-items-center">
                             <button
-                                className="w-96 min-h-96 h-full flex justify-center items-center border-dashed border-4 border-neutral-800 rounded-3xl"
+                                className="w-3/4 min-w-72 max-w-80 h-full flex justify-center items-center border-dashed border-4 border-neutral-800 rounded-3xl"
                                 onClick={() => setShowCreateQrCode(true)}
                             >
                                 <div className="border-dashed border-4 border-neutral-800 rounded-full p-10">
@@ -94,7 +134,7 @@ export default function QRCodePage() {
                         </div>
                         {
                             mockData.map((data, idx) => (
-                                <div key={idx} className="grid justify-items-center">
+                                <div key={idx} className="w-full h-full col-span-1 grid justify-items-center">
                                     <QRCodeItem
                                         name={data.name}
                                         urlString={data.urlString}

@@ -2,11 +2,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import QRCode from 'qrcode';
 import Image from 'next/image';
-import { base64ESCLogo } from '@/app/assets/ESCLogo';
+import { base64ESCLogo } from '@/app/assets/esc-logo';
 import { X } from 'lucide-react';
 import { isURL } from "@/lib/utils";
 
-export function CreateQRCode({ onClick }: { onClick: () => void }) {
+export function EditQRCode({ onClick }: { onClick: () => void }) {
   const [qrCodeData, setQrCodeData] = useState<string>('')
   const [selectedColor, setSelectedColor] = useState<string>('#000000')
   const [selectedLogo, setSelectedLogo] = useState<string | undefined>(undefined)
