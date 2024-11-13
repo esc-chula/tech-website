@@ -109,14 +109,12 @@ export function QRCodeItem({
                 </button>
             </div>
             {/* Mobile */}
-            <div className="justify-center items-center gap-5 sm:hidden grid grid-cols-3 bg-black p-4 rounded-2xl h-fit overflow-hidden">
-                <div className="col-span-1">
-                    <div className="bg-white p-1 w-full">
-                        <Image src={qrSrc} alt="qr-code" width={0} height={0} className="w-full max-w-52 aspect-square" />
-                    </div>
+            <div className="flex flex-row justify-start items-center gap-4 sm:hidden bg-black p-4 rounded-xl w-full h-32 overflow-hidden">
+                <div className="bg-white p-1 h-full aspect-square">
+                    <Image src={qrSrc} alt="qr-code" width={10} height={10} className="w-auto h-full aspect-square" />
                 </div>
-                <div className="flex flex-col justify-between items-start gap-1 col-span-2 h-full">
-                    <div className="flex flex-col gap-1 w-full">
+                <div className="flex flex-col justify-between items-start h-full grow">
+                    <div className="flex flex-col w-full">
                         <div className="flex flex-row justify-between items-center w-full">
                             <div className="flex flex-row justify-center items-center gap-1 text-neutral-500">
                                 <History size={10} />
@@ -151,7 +149,7 @@ export function QRCodeItem({
                         <div className="line-clamp-1 w-10/12 text-neutral-600 text-xs">{urlString}</div>
                     </div>
                     <button
-                        className="bg-amber-300 mt-2 px-4 py-1 rounded-lg w-fit font-bold text-[10px] text-center text-primary"
+                        className="bg-amber-300 mt-2 px-4 py-1 line-clamp-1 rounded-lg w-fit font-bold text-[10px] text-center text-primary"
                         onClick={handleDownloadQrCode}
                     >
                         Download QR Code (.PNG)

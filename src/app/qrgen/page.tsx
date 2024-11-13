@@ -81,7 +81,7 @@ export default function QRCodePage() {
                         onClick={handleGoBack}
                     >
                         <ArrowLeft size={20} strokeWidth={3} color="white" />
-                        <div className="ml-1 font-semibold text-lg md:text-xl">Back</div>
+                        <div className="ml-1 font-semibold text-lg md:text-xl xl:text-2xl">Back</div>
                     </button>
                     <h1 className="font-bold text-4xl text-center md:text-5xl uppercase leading-normal">QR CODE GENERATOR</h1>
                 </div>
@@ -96,7 +96,7 @@ export default function QRCodePage() {
                             <p className="ml-1 font-semibold text-base">New</p>
                         </button>
                     </div>
-                    <div className="gap-6 sm:gap-14 grid grid-cols-[repeat(auto-fit,_minmax(400px,1fr))] auto-rows-[minmax(120px,_auto)] w-full">
+                    <div className="gap-6 sm:gap-14 grid grid-cols-[repeat(auto-fit,_minmax(320px,1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(400px,1fr))] auto-rows-[minmax(120px,_auto)] w-full">
                         <div className="justify-items-center hidden sm:grid sm:col-span-1 w-full">
                             <button
                                 className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-96 h-[450px]"
