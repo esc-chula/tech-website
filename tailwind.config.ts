@@ -100,12 +100,6 @@ const config = {
         "background-gradient-prop":
           "radial-gradient(50% 50% at 50% 50%, #982C32 0%, rgba(255, 255, 255, 0) 100%)",
       },
-      backgroundRepeat: {
-        'repeat-pattern': 'repeat',
-      },
-      backgroundSize: {
-        'size-pattern': 'auto',
-      },
     },
   },
   plugins: [require("tailwindcss-animate")],
