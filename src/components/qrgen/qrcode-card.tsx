@@ -59,11 +59,13 @@ export function QRCodeItem({
     return (
         <>
             {/* Desktop and Ipad */}
-            <div className="hidden sm:grid w-2/3 min-w-72 max-w-80 h-fit min-h-[420px] rounded-3xl p-6 bg-black sm:grid-flow-row gap-1 content-between">
+            <div className="hidden sm:grid w-96 h-[450px] rounded-3xl p-6 bg-black sm:grid-flow-row gap-1 content-between">
+                {/* Header Qr-Code */}
                 <div className="w-full flex flex-row justify-between items-start">
                     <div className="w-full flex flex-col gap-2">
                         <div className="w-full flex flex-row justify-between items-center">
-                            <p className="line-clamp-1 font-semibold text-2xl">{name}</p>
+                            <div className="line-clamp-1 font-semibold text-2xl">{name}</div>
+                            {/* Edit and Delete */}
                             <div className="flex flex-row items-center gap-2">
                                 <button
                                     onClick={() => setShowEditQrCode(true)}
@@ -77,7 +79,7 @@ export function QRCodeItem({
                                 </button>
                             </div>
                         </div>
-                        <p className="line-clamp-1 font-semibold text-base text-amber-300">{urlString}</p>
+                        <div className="w-full line-clamp-1 font-semibold text-base text-amber-300">{urlString}</div>
                     </div>
                 </div>
 

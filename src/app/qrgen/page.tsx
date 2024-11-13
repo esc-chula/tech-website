@@ -41,34 +41,10 @@ const mockData = [
         editAt: new Date("2023-05-01"),
     },
     {
-        name: "Example 5",
-        urlString: "https://www.example5.com",
-        qrSrc: qrCode,
-        editAt: new Date("2023-05-01"),
-    },
-    {
-        name: "Example 5",
-        urlString: "https://www.example5.com",
-        qrSrc: qrCode,
-        editAt: new Date("2023-05-01"),
-    },
-    {
-        name: "Example 5",
-        urlString: "https://www.example5.com",
-        qrSrc: qrCode,
-        editAt: new Date("2023-05-01"),
-    },
-    {
-        name: "Example 5",
-        urlString: "https://www.example5.com",
-        qrSrc: qrCode,
-        editAt: new Date("2023-05-01"),
-    },
-    {
-        name: "Example 5 Hahahhahahahahhahahhahaahaaha",
+        name: "Example 6 Hahahhahahahahhahahhahaahaaha",
         urlString: "https://chatgpt.com/c/673425d8-e1f8-800e-96cd-3ede7ad982a4",
         qrSrc: qrCode,
-        editAt: new Date("2023-05-01"),
+        editAt: new Date("2023-06-01"),
     },
 ];
 
@@ -97,7 +73,6 @@ export default function QRCodePage() {
                     </div> :
                     null
             }
-
             <div className="h-full w-full flex flex-col justify-start text-secondary gap-20">
                 {/* Header */}
                 <div className="flex flex-col gap-8">
@@ -121,14 +96,14 @@ export default function QRCodePage() {
                             <p className="font-semibold text-base ml-1">New</p>
                         </button>
                     </div>
-                    <div className="w-full grid gap-6 md:gap-10 grid-cols-[repeat(auto-fit,_minmax(280px,1fr))] auto-rows-[minmax(120px,_auto)]">
-                        <div className="hidden sm:grid w-full h-full min-h-[420px] sm:col-span-1 justify-items-center">
+                    <div className="w-full grid gap-6 sm:gap-14 grid-cols-[repeat(auto-fit,_minmax(400px,1fr))] auto-rows-[minmax(120px,_auto)]">
+                        <div className="hidden sm:grid w-full sm:col-span-1 justify-items-center">
                             <button
-                                className="w-3/4 min-w-72 max-w-80 h-full flex justify-center items-center border-dashed border-4 border-neutral-800 rounded-3xl"
+                                className="w-96 h-[450px] flex justify-center items-center border-dashed border-4 border-neutral-800 rounded-3xl"
                                 onClick={() => setShowCreateQrCode(true)}
                             >
-                                <div className="border-dashed border-4 border-neutral-800 rounded-full p-10">
-                                    <Plus size={36} strokeWidth={4} color="#262626" />
+                                <div className="w-44 aspect-square flex justify-center items-center border-dashed border-4 border-neutral-800 rounded-full">
+                                    <Plus size={60} strokeWidth={4} color="#262626" />
                                 </div>
                             </button>
                         </div>
