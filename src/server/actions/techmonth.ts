@@ -5,54 +5,53 @@ import { readItems } from "@directus/sdk";
 import directus from "@/lib/directus";
 import type { Event } from "@/types/techmonth";
 import { api } from "@/trpc/server";
-import { type ServerActionResponse } from "@/types/server";
+import { type Response } from "@/types/server";
 
-export async function login(
-  studentId: string,
-): Promise<ServerActionResponse<null>> {
+export async function login(studentId: string): Promise<Response<null>> {
   const cookieStore = cookies();
   cookieStore.set("studentId", studentId);
 
   return {
+    success: true,
     message: "Successfully logged in",
     data: null,
   };
 }
 
-export async function logout(): Promise<ServerActionResponse<null>> {
+export async function logout(): Promise<Response<null>> {
   const cookieStore = cookies();
   cookieStore.delete("studentId");
 
   return {
+    success: true,
     message: "Successfully logged out",
     data: null,
   };
 }
 
-export async function getEvents(): Promise<
-  ServerActionResponse<Event[] | null>
-> {
+export async function getEvents(): Promise<Response<Event[]>> {
   try {
     const events = await directus.request(
       readItems("Tech_web_techmonth_event" as never),
     );
 
     return {
+      success: true,
       message: "Successfully fetched events",
       data: events as never as Event[],
     };
   } catch (error) {
     return {
+      success: false,
       message: "Failed to fetch events",
-      error: error instanceof Error ? error.message : "Unknown error",
-      data: null,
+      errors: [error instanceof Error ? error.message : "Unknown error"],
     };
   }
 }
 
 export async function getEventByEventId(
   eventId: string,
-): Promise<ServerActionResponse<Event | null>> {
+): Promise<Response<Event>> {
   try {
     const events = await directus.request(
       readItems("Tech_web_techmonth_event" as never, {
@@ -62,64 +61,58 @@ export async function getEventByEventId(
 
     if (events.length === 0) {
       return {
+        success: false,
         message: "Event not found",
-        error: "Not found",
-        data: null,
+        errors: ["Not found"],
       };
     }
 
     const event = events[0];
 
     return {
+      success: true,
       message: "Successfully fetched event",
       data: event as never as Event,
     };
   } catch (error) {
     return {
+      success: false,
       message: "Failed to fetch event",
-      error: error instanceof Error ? error.message : "Unknown error",
-      data: null,
+      errors: [error instanceof Error ? error.message : "Unknown error"],
     };
   }
 }
 
-export async function addStamp(
-  eventId: string,
-): Promise<ServerActionResponse<null>> {
+export async function addStamp(eventId: string): Promise<Response<null>> {
   const cookieStore = cookies();
   const studentId = cookieStore.get("studentId")?.value;
   if (!studentId) {
     return {
+      success: false,
       message: "Not logged in",
-      error: "Unauthorized",
-      data: null,
+      errors: ["Unauthorized"],
     };
   }
 
-  const { data: event, error } = await getEventByEventId(eventId);
-  if (error) {
+  const res = await getEventByEventId(eventId);
+  if (!res.success) {
     return {
+      success: false,
       message: "Failed to fetch event",
-      error: error,
-      data: null,
+      errors: res.errors,
     };
   }
-  if (!event) {
-    return {
-      message: "Event not found",
-      error: "Invalid Event ID",
-      data: null,
-    };
-  }
+
+  const event = res.data;
 
   if (event.stampStrictDate) {
     const today = new Date();
     const eventDate = new Date(event.date);
     if (today.getDate() !== eventDate.getDate()) {
       return {
+        success: false,
         message: "Failed to stamp",
-        error: "Invalid Event Date",
-        data: null,
+        errors: ["Invalid Event Date"],
       };
     }
   }
@@ -131,9 +124,9 @@ export async function addStamp(
     .catch(() => null);
   if (!userStamps) {
     return {
+      success: false,
       message: "Failed to fetch user stamps",
-      error: "Unknown error",
-      data: null,
+      errors: ["Unknown error"],
     };
   }
 
@@ -143,9 +136,9 @@ export async function addStamp(
 
   if (hasAlreadyStamped) {
     return {
+      success: false,
       message: "User already stamped",
-      error: "Failed to stamp",
-      data: null,
+      errors: ["Failed to stamp"],
     };
   }
 
@@ -155,6 +148,7 @@ export async function addStamp(
   });
 
   return {
+    success: true,
     message: "Successfully stamped",
     data: null,
   };

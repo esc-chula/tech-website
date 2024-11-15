@@ -2,6 +2,7 @@ import { postRouter } from "@/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { techMonthStampRouter } from "./routers/techmonth";
 import { aboutRouter } from "./routers/about";
+import { authRouter } from "./routers/auth";
 
 /**
  * This is the primary router for your server.
@@ -9,6 +10,7 @@ import { aboutRouter } from "./routers/about";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  auth: authRouter,
   post: postRouter,
   techMonthStamp: techMonthStampRouter,
   aboutMember: aboutRouter,

@@ -1,5 +1,3 @@
-"use server";
-
 import { credentials, type ServiceError } from "@grpc/grpc-js";
 import { env } from "@/env";
 import {
