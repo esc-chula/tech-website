@@ -1,18 +1,9 @@
-import { Suspense } from "react";
 import { User } from "lucide-react";
 import { me } from "@/server/actions/auth";
-import { LoginButton, LogoutButton } from "./auth-buttons";
-import { Skeleton } from "../ui/skeleton";
+import LoginButton from "../button/login-button";
+import LogoutButton from "../button/logout-button";
 
-export default function MenuUser() {
-  return (
-    <Suspense fallback={<Loading />}>
-      <UI />
-    </Suspense>
-  );
-}
-
-async function UI() {
+export default async function UserBox() {
   const res = await me();
 
   return (
@@ -44,20 +35,6 @@ async function UI() {
         </div>
       </div>
       {res.success ? <LogoutButton /> : <LoginButton />}
-    </div>
-  );
-}
-
-function Loading() {
-  return (
-    <div className="flex items-center justify-between gap-4 border-b border-neutral-800 px-4 py-5">
-      <div className="flex items-center gap-4">
-        <Skeleton className="h-12 w-12 rounded-full" />
-        <div className="space-y-1">
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-3 w-24" />
-        </div>
-      </div>
     </div>
   );
 }

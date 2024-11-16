@@ -2,7 +2,9 @@ import Image from "next/image";
 import { NavMenu, NavMenuContent, NavMenuTrigger } from "./nav-menu";
 import { Menu as MenuIcon } from "lucide-react";
 import Menu from "./menu";
-import MenuUser from "./menu-user";
+import UserBox from "./user-box/user-box";
+import { Suspense } from "react";
+import UserBoxLoading from "./user-box/user-box-loading";
 
 export function Header() {
   return (
@@ -25,7 +27,9 @@ export function Header() {
         </div>
       </header>
       <NavMenuContent>
-        <MenuUser />
+        <Suspense fallback={<UserBoxLoading />}>
+          <UserBox />
+        </Suspense>
         <Menu />
       </NavMenuContent>
     </NavMenu>

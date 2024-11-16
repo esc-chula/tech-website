@@ -87,7 +87,13 @@ export async function me(): Promise<Response<MeResponse>> {
   }
 }
 
-export async function logout() {
+export async function logout(): Promise<Response<null>> {
   const cookieStore = cookies();
   cookieStore.delete("sid");
+
+  return {
+    success: true,
+    message: "Logged out",
+    data: null,
+  };
 }
