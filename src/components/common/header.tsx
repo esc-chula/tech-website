@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { NavMenu, NavMenuContent, NavMenuTrigger } from "./nav-menu";
-import { Menu } from "lucide-react";
-import MobileNav from "../common/mobile-nav";
+import { Menu as MenuIcon } from "lucide-react";
+import Menu from "./menu";
+import MenuUser from "./menu-user";
 
 export function Header() {
   return (
@@ -19,12 +20,13 @@ export function Header() {
             tech
           </span>
           <NavMenuTrigger className="select-none p-1 lg:hidden">
-            <Menu size={24} />
+            <MenuIcon size={24} />
           </NavMenuTrigger>
         </div>
       </header>
       <NavMenuContent>
-        <MobileNav />
+        <MenuUser />
+        <Menu />
       </NavMenuContent>
     </NavMenu>
   );

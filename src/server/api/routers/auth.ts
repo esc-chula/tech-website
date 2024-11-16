@@ -1,18 +1,18 @@
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { grpc } from "@/server/grpc";
-import { type StudentLoginResponse } from "@/generated/intania/auth/account/v1/account";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
+import { grpc } from "@/server/auth/grpc";
+import {
+  type MeResponse,
+  type StudentLoginResponse,
+} from "@/generated/intania/auth/account/v1/account";
+import { TRPCError } from "@trpc/server";
+import { type Response } from "@/types/server";
 
-type Response<T> =
-  | {
-      success: true;
-      data: T;
-    }
-  | {
-      success: false;
-      errors: string[];
-    };
 export const authRouter = createTRPCRouter({
   login: publicProcedure
     .input(z.object({ username: z.string(), password: z.string() }))
@@ -26,33 +26,45 @@ export const authRouter = createTRPCRouter({
 
         return {
           success: true,
+          message: "Login successful",
           data: response,
         };
       } catch (error) {
-        return {
-          success: false,
-          errors: [
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
             error instanceof Error ? error.message : "Something went wrong",
-          ],
-        };
+        });
       }
     }),
 
-  // create: publicProcedure
-  //   .input(z.object({ name: z.string().min(1) }))
-  //   .mutation(async ({ ctx, input }) => {
-  //     return ctx.db.post.create({
-  //       data: {
-  //         name: input.name,
-  //       },
-  //     });
-  //   }),
+  me: protectedProcedure.query(
+    async ({ ctx }): Promise<Response<MeResponse>> => {
+      try {
+        const sessionId = ctx.session?.id;
+        if (!sessionId) {
+          return {
+            success: false,
+            errors: ["Session not found"],
+          };
+        }
 
-  // getLatest: publicProcedure.query(async ({ ctx }) => {
-  //   const post = await ctx.db.post.findFirst({
-  //     orderBy: { createdAt: "desc" },
-  //   });
+        const response = await grpc.account.me({
+          sessionId,
+        });
 
-  //   return post ?? null;
-  // }),
+        return {
+          success: true,
+          message: "User data retrieved",
+          data: response,
+        };
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            error instanceof Error ? error.message : "Something went wrong",
+        });
+      }
+    },
+  ),
 });

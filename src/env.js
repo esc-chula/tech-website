@@ -12,7 +12,7 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     DIRECTUS_URL: z.string().url(),
-    GRPC_ADDRESS: z.string().url(),
+    GRPC_ADDRESS: z.string(),
   },
 
   /**
