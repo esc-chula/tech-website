@@ -12,15 +12,9 @@ datasource db {
 }
 
 model User {
-    id           Int     @id @default(autoincrement())
-    oidcId       String  @unique
-    studentId    String  @unique
-    firstNameTh  String
-    middleNameTh String?
-    lastNameTh   String
-    firstNameEn  String
-    middleNameEn String?
-    lastNameEn   String
+    id        Int    @id @default(autoincrement())
+    oidcId    String @unique
+    studentId String @unique
 
     userShortenedLinks UserShortenedLink[] @relation("UserToShortenedLink")
     userQrCodes        UserQrCode[]        @relation("UserToQrCodeGen")
