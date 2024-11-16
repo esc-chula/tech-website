@@ -5,8 +5,21 @@ import Image from 'next/image';
 import { base64ESCLogo } from '@/app/assets/esc-logo';
 import { X } from 'lucide-react';
 import { isURL } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
-export function CreateQRCode({ onClick }: { onClick: () => void }) {
+interface QrCode {
+  name: string,
+  url: string,
+  image_data: string
+}
+
+export function CreateQRCode({
+  onCreate,
+  onCancel
+}: {
+  onCreate: (data: QrCode) => void;
+  onCancel: () => void;
+}) {
   const [qrCodeData, setQrCodeData] = useState<string>('')
   const [selectedColor, setSelectedColor] = useState<string>('#000000')
   const [selectedLogo, setSelectedLogo] = useState<string | undefined>(undefined)
@@ -46,34 +59,32 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
       return
     }
     // Create form
-    const data = {
+    const data: QrCode = {
       name: formData.name.trim(),
       url: formData.url.trim(),
       image_data: qrCodeData
     }
     // api for create new QrCoed
-
-    // close the form
-    onClick();
+    onCreate(data);
   };
 
   const previewContent = useMemo(() => {
     if (!qrCodeData) {
       return (
-        <div className="w-full h-full flex items-center justify-center p-3">
-          <p className="text-neutral-400 text-center">Enter a valid URL to generate QR code</p>
+        <div className="flex justify-center items-center p-3 w-full h-full">
+          <p className="text-center text-neutral-400">Enter a valid URL to generate QR code</p>
         </div>
       );
     }
 
     return (
-      <div className='w-full aspect-square flex justify-center items-center relative'>
+      <div className='relative flex justify-center items-center w-full aspect-square'>
         <Image src={qrCodeData} alt='QR Code' width={0} height={0} className='w-full h-full' />
         {
           isSelectedLogo && selectedLogo != undefined ? (
             <div className='absolute inset-0 flex justify-center items-center'>
-              <div className='relative bg-white w-fit aspect-square p-2'>
-                <Image src={selectedLogo} alt='Logo' width={30} height={30} objectFit='contain' className='' />
+              <div className='relative flex justify-center items-center p-1 w-full aspect-square'>
+                <Image src={selectedLogo} alt='Logo' width={30} height={30} objectFit='contain' className='bg-white p-1 w-1/5 aspect-square object-contain' />
               </div>
             </div>
           ) : null
@@ -120,61 +131,60 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
   }, [formData.name, formData.url])
 
   return (
-    <div className="h-screen max-w-[550px] max-h-[750px] p-8 flex flex-col justify-between items-start rounded-3xl text-white"
+    <div className="flex flex-col justify-between items-start p-8 rounded-3xl w-full max-w-[550px] h-fit max-h-[750px] text-white"
       style={{ background: 'linear-gradient(146.88deg, #404040 0%, #262626 100%)' }}>
-      <div className="w-full space-y-8">
-        <h2 className="text-3xl font-bold text-center">Create New QR Code</h2>
-
+      <div className="space-y-8 w-full">
+        <h2 className="font-bold text-center text-xl md:text-2xl lg:text-3xl">Create New QR Code</h2>
         <div className="space-y-6">
           <div className="space-y-2">
-            <label htmlFor="name" className="font-bold text-lg">QR Code Name</label>
+            <label htmlFor="name" className="font-bold text-sm sm:text-base md:text-lg">QR Code Name</label>
             <input
               id="name"
               name="name"
               type="text"
               value={formData.name}
               onChange={handleInputChange}
-              className={`w-full border bg-white rounded-2xl py-2 px-4 text-black
-                ${errorName ? "border-red-500" : "border-neutral-400"}`}
+              className={cn(`w-full border bg-white text-sm sm:text-base rounded-2xl py-2 px-4 text-black`,
+                errorName ? "border-red-500" : "border-neutral-400")}
               placeholder="Enter QR code name"
             />
             {errorName && (
-              <p className="text-sm text-red-500">Please enter a name</p>
+              <p className="text-red-500 text-sm">Please enter a name</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="url" className="font-bold text-lg">URL</label>
+            <label htmlFor="url" className="font-bold text-sm sm:text-base md:text-lg">URL</label>
             <input
               id="url"
               name="url"
               type="text"
               value={formData.url}
               onChange={handleInputChange}
-              className={`w-full border bg-white rounded-2xl py-2 px-4 text-black
-                ${errorURL ? "border-red-500" : "border-neutral-400"}`}
+              className={cn(`w-full border bg-white text-sm sm:text-base rounded-2xl py-2 px-4 text-black`,
+                errorName ? "border-red-500" : "border-neutral-400")}
               placeholder="Enter URL to generate QR code"
             />
             {errorURL && (
-              <p className="text-sm text-red-500">Please enter a valid URL</p>
+              <p className="text-red-500 text-sm">Please enter a valid URL. Include http:// or https://</p>
             )}
           </div>
         </div>
 
-        <div className="flex flex-row justify-between items-center gap-2">
-          <div className="w-64 px-2 flex flex-col justify-start items-center gap-y-4">
-            <div className="font-bold text-lg text-center">Preview</div>
-            <div className='w-full aspect-square bg-white'>
+        <div className="flex flex-row justify-between items-start gap-2">
+          <div className="flex flex-col justify-start items-center gap-y-4 px-2 w-64">
+            <div className="font-bold text-center text-lg">Preview</div>
+            <div className='bg-white w-full aspect-square'>
               {previewContent}
             </div>
           </div>
 
-          <div className="px-2 flex flex-col gap-3">
+          <div className="flex flex-col gap-3 px-2">
             <div className="space-y-2">
-              <h3 className="text-base font-medium">Select Color</h3>
+              <h3 className="font-medium text-base">Select Color</h3>
               <div className="flex flex-wrap gap-2">
                 {colorOptions.map((color, idx) => (
-                  <label key={idx} className="relative flex items-center justify-center">
+                  <label key={idx} className="relative flex justify-center items-center">
                     <input
                       id={`color-${idx}`}
                       type="radio"
@@ -195,9 +205,9 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
               </div>
             </div>
             <div className="space-y-2">
-              <h3 className="text-base font-medium">Logo</h3>
+              <h3 className="font-medium text-base">Logo</h3>
               <div className="flex flex-wrap gap-2">
-                <label className="relative flex items-center justify-center">
+                <label className="relative flex justify-center items-center">
                   <input
                     type="radio"
                     id='logo-none'
@@ -209,17 +219,17 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
                   <label htmlFor={`logo-none`} className="sr-only">
                     {`Select color none`}
                   </label>
-                  <div className='w-12 aspect-square flex'>
-                    <div className='w-full p-3 aspect-square bg-white rounded-full flex justify-center items-center'>
+                  <div className='flex w-10 lg:w-12 aspect-square'>
+                    <div className='flex justify-center items-center bg-white p-3 rounded-full w-full aspect-square'>
                       <X color='black' />
                     </div>
                     <span
-                      className={`absolute w-12 h-12 rounded-full cursor-pointer ${selectedLogo === undefined ? 'border-2 border-black' : ''}`}
+                      className={`absolute  w-10 lg:w-12 aspect-square rounded-full cursor-pointer ${selectedLogo === undefined ? 'border-2 border-black' : ''}`}
                     ></span>
                   </div>
                 </label>
                 {logoOptions.map((logo: string, idx) => (
-                  <label key={idx} className="relative flex items-center justify-center">
+                  <label key={idx} className="relative flex justify-center items-center">
                     <input
                       id={`logo-${idx}`}
                       type="radio"
@@ -231,12 +241,12 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
                     <label htmlFor={`logo-${idx}`} className="sr-only">
                       {`Select color ${logo}`}
                     </label>
-                    <div className='w-12 aspect-square flex'>
-                      <div className='w-full p-3 aspect-square bg-white rounded-full flex justify-center items-center'>
+                    <div className='flex w-10 lg:w-12 aspect-square'>
+                      <div className='flex justify-center items-center bg-white p-3 rounded-full w-full aspect-square'>
                         <Image src={logo} alt='' width={0} height={0} className='w-full' />
                       </div>
                       <span
-                        className={`absolute w-12 h-12 rounded-full cursor-pointer ${selectedLogo === logo ? 'border-2 border-black' : ''}`}
+                        className={`absolute w-10 lg:w-12 aspect-square rounded-full cursor-pointer ${selectedLogo === logo ? 'border-2 border-black' : ''}`}
                       ></span>
                     </div>
                   </label>
@@ -246,16 +256,22 @@ export function CreateQRCode({ onClick }: { onClick: () => void }) {
           </div>
         </div>
       </div>
-      <div className="w-full flex gap-x-4 mt-6">
+      <div className="flex gap-x-4 mt-6 w-full">
         <button
-          onClick={onClick}
-          className="w-1/2 py-2 rounded-2xl bg-neutral-300 text-lg font-semibold text-black transition hover:bg-neutral-400"
+          onClick={(e) => {
+            e.preventDefault();
+            onCancel();
+          }}
+          className="bg-neutral-300 hover:bg-neutral-400 py-2 rounded-2xl w-1/2 font-semibold text-black text-sm md:text-base lg:text-lg transition"
         >
           Cancel
         </button>
         <button
-          onClick={handleSubmit}
-          className="w-1/2 py-2 rounded-2xl bg-amber-300 text-lg font-semibold text-black transition hover:bg-amber-400"
+          onClick={(e) => {
+            e.preventDefault();
+            handleSubmit
+          }}
+          className="bg-amber-300 hover:bg-amber-400 py-2 rounded-2xl w-1/2 font-semibold text-black text-sm md:text-base lg:text-lg transition"
         >
           Generate QR Code
         </button>

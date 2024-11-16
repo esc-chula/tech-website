@@ -4,6 +4,7 @@ import Image from 'next/image';
 // import qrCode from '../../../public/main/qr_code_PNG6.png'
 // import { CreateQRCode } from "../_components/qrgen/createAndEditQRCode";
 import { QRCodeItem } from "@/components/qrgen/qrcode-card";
+import { CreateQRCode } from "@/components/qrgen/create-qrcode";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -47,6 +48,11 @@ const mockData = [
         editAt: new Date("2023-06-01"),
     },
 ];
+interface QrCode {
+    name: string,
+    url: string,
+    image_data: string
+}
 
 export default function QRCodePage() {
     const router = useRouter();
@@ -63,13 +69,22 @@ export default function QRCodePage() {
         router.back();
     }
 
+    const handleCreateQrCode = (data: QrCode) => {
+        // api for create new QrCoed
+
+        // close the form
+        setShowCreateQrCode(false);
+    };
+
     return (
         <>
             {/* Create */}
             {
                 showCreateQrCode ?
-                    <div className="top-0 left-0 absolute flex justify-center items-center backdrop-brightness-50 w-full h-full">
-                        {/* <CreateQRCode onClick={() => setShowCreateQrCode(false)} /> */}
+                    <div className="top-0 left-0 z-50 absolute flex justify-center items-center backdrop-brightness-50 p-5 w-full h-full">
+                        <CreateQRCode
+                            onCreate={handleCreateQrCode}
+                            onCancel={() => setShowCreateQrCode(false)} />
                     </div> :
                     null
             }
@@ -89,9 +104,9 @@ export default function QRCodePage() {
                 <div className="flex flex-col justify-start items-center gap-16 w-full">
                     <div className="flex flex-row justify-between items-end w-full">
                         <p className="w-full font-semibold text-3xl text-left">Recent</p>
-                        <button 
+                        <button
                             className="flex flex-row justify-center items-center gap-1 sm:hidden bg-neutral-800 px-4 py-1 rounded-lg"
-                            >
+                        >
                             <Plus size={16} strokeWidth={3} color="white" />
                             <p className="ml-1 font-semibold text-base">New</p>
                         </button>
