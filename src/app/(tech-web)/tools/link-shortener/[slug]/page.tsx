@@ -1,4 +1,4 @@
-import { BackButton } from "@/components/common/back-button";
+import { BackButton } from "@/components/common/button/back-button";
 
 interface PageProps {
   params: {

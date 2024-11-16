@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { Section } from "@/components/common/section";
-import { Title } from "@/components/common/title";
+import { Section } from "@/components/ui/section";
+import { Title } from "@/components/ui/title";
 import ProjectsContainer from "./projects-container";
 import ProjectsLoading from "./projects-loading";
 

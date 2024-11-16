@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
 import Image from "next/image";
 import Card from "../ui/card";
-import Menu from "../common/menu";
 import UserBox from "../common/user-box/user-box";
 import UserBoxLoading from "../common/user-box/user-box-loading";
+import NavItems from "../common/navigation/nav-items";
 
 export default function Hero() {
   return (
@@ -29,7 +29,7 @@ export default function Hero() {
 
       {/* menu */}
       <div className="col-span-2 hidden flex-col justify-between lg:flex">
-        <Menu />
+        <NavItems />
         <Suspense fallback={<UserBoxLoading />}>
           <UserBox />
         </Suspense>

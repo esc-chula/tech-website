@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { NavMenu, NavMenuContent, NavMenuTrigger } from "./nav-menu";
 import { Menu as MenuIcon } from "lucide-react";
-import Menu from "./menu";
-import UserBox from "./user-box/user-box";
+import UserBox from "../user-box/user-box";
 import { Suspense } from "react";
-import UserBoxLoading from "./user-box/user-box-loading";
+import UserBoxLoading from "../user-box/user-box-loading";
+import NavItems from "./nav-items";
 
-export function Header() {
+export default function NavHeader() {
   return (
     <NavMenu>
       <header className="fixed left-0 right-0 top-0 z-50 flex h-16 justify-center border-b border-neutral-800 bg-neutral-950/70 px-5 backdrop-blur-lg md:px-10">
@@ -30,7 +30,7 @@ export function Header() {
         <Suspense fallback={<UserBoxLoading />}>
           <UserBox />
         </Suspense>
-        <Menu />
+        <NavItems />
       </NavMenuContent>
     </NavMenu>
   );

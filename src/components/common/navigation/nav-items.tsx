@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Link as Scroll } from "react-scroll";
 import { useCloseNavMenu } from "./nav-menu";
 
-export default function Menu() {
+export default function NavItems() {
   const closeNavMenu = useCloseNavMenu();
 
   return (
