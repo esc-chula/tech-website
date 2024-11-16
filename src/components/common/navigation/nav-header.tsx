@@ -14,7 +14,7 @@ export default function NavHeader() {
         <div className="flex h-full w-full max-w-screen-xl items-center justify-between">
           <Link href="/">
             <Image
-              src="/assets/esc_icon.svg"
+              src="/assets/esc-icon.svg"
               alt="ESC icon"
               width={24}
               height={28}
