@@ -4,7 +4,7 @@ import QRCode from 'qrcode';
 import Image from 'next/image';
 import { base64ESCLogo } from '@/app/assets/esc-logo';
 import { X } from 'lucide-react';
-import { isURL } from "@/lib/utils";
+import { isURL } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 
 interface QrCode {
