@@ -3,12 +3,11 @@
 import { heroLinks } from "@/constants/home";
 import Link from "next/link";
 import { Link as Scroll } from "react-scroll";
+import { useCloseNavMenu } from "./nav-menu";
 
-interface MenuProps {
-  onClick?: () => void;
-}
+export default function NavItems() {
+  const closeNavMenu = useCloseNavMenu();
 
-export default function Menu({ onClick }: MenuProps) {
   return (
     <div className="flex flex-col">
       {heroLinks.map((link) => {
@@ -21,8 +20,8 @@ export default function Menu({ onClick }: MenuProps) {
               smooth={true}
               duration={700}
               offset={-100}
-              className="cursor-pointer border-b border-neutral-800 px-7 py-5 text-lg font-semibold text-white hover:bg-white/5"
-              onClick={onClick}
+              className="cursor-pointer border-b border-neutral-800 px-7 py-5 font-semibold text-white hover:bg-white/5 lg:text-lg"
+              onClick={closeNavMenu}
             >
               {link.label}
             </Scroll>
@@ -34,8 +33,8 @@ export default function Menu({ onClick }: MenuProps) {
               href={link.href}
               target={link.external ? "_blank" : ""}
               rel={link.external ? "noopener noreferrer" : ""}
-              className="border-b border-neutral-800 px-7 py-5 text-base font-semibold text-white hover:bg-white/5"
-              onClick={onClick}
+              className="border-b border-neutral-800 px-7 py-5 font-semibold text-white hover:bg-white/5 lg:text-lg"
+              onClick={closeNavMenu}
             >
               {link.label}
             </Link>

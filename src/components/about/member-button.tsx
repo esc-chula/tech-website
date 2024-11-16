@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-export const MemberButton = ({
+export default function MemberButton({
   nameTag,
   url,
   imgLink,
@@ -9,7 +9,7 @@ export const MemberButton = ({
   nameTag: string;
   url: string;
   imgLink: string;
-}) => {
+}) {
   return (
     <Link
       href={url}
@@ -27,4 +27,4 @@ export const MemberButton = ({
       <p>{nameTag}</p>
     </Link>
   );
-};
+}

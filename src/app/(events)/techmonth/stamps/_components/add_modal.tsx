@@ -62,9 +62,9 @@ export function ModalContent(): JSX.Element {
 
     setLoading(true);
 
-    const { error } = await addStamp(eventId as string);
-    if (error) {
-      alert(error);
+    const res = await addStamp(eventId as string);
+    if (!res.success) {
+      alert(res.errors.join(", "));
       setLoading(false);
       return;
     }

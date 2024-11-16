@@ -1,5 +1,11 @@
-export interface ServerActionResponse<T> {
-  data: T;
-  message?: string;
-  error?: string;
-}
+export type Response<T> =
+  | {
+      success: true;
+      message?: string;
+      data: T;
+    }
+  | {
+      success: false;
+      message?: string;
+      errors: string[];
+    };

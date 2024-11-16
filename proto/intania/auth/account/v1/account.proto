@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package intania.auth.account.v1;
+
+option go_package = "github.com/esc-chula/intania-auth/generated/proto/account/v1";
+
+import "intania/auth/student/v1/student.proto";
+import "google/protobuf/timestamp.proto";
+
+service AccountService {
+  rpc StudentLogin(StudentLoginRequest) returns (StudentLoginResponse) {}
+
+  // Used to retrieve information about session and the user.
+  rpc Me(MeRequest) returns (MeResponse) {}
+
+  // Used to retrieve information about session without user and account information.
+  rpc IntrospectSession(IntrospectSessionRequest) returns (IntrospectSessionResponse) {}
+}
+
+enum AccountType {
+  ACCOUNT_TYPE_UNSPECIFIED = 0;
+  ACCOUNT_TYPE_STUDENT = 1;
+}
+
+message StudentLoginRequest {
+  string username = 1;
+  string password = 2;
+  bool verify_with_ldap = 3;
+}
+message StudentLoginResponse {
+  Session session = 1;
+  Account account = 2;
+  intania.auth.student.v1.Student student = 3;
+}
+
+message MeRequest {
+  string session_id = 1;
+}
+message MeResponse {
+  Session session = 1;
+  Account account = 2;
+  oneof account_data {
+    intania.auth.student.v1.Student student = 3;
+  }
+}
+
+message IntrospectSessionRequest {
+  string session_id = 1;
+}
+message IntrospectSessionResponse {
+  Session session = 1;
+}
+
+message Session {
+  // Session id
+  //
+  // This field is sentitive data and should be handle with caution.
+  string id = 1;
+
+  // Internal account id, include for completeness purpose.
+  int32 account_id = 2;
+
+  // Session expiration time.
+  google.protobuf.Timestamp expires_at = 3;
+}
+
+message Account {
+  // Id of the account, unique across all account.
+  int32 id = 1;
+
+  // Type of the account, current can only be student.
+  AccountType type = 2;
+
+  // Refer to id on the respective table.
+  int32 external_id = 3;
+
+  // Public id to be used by use to provide randomness.
+  string public_id = 4;
+}

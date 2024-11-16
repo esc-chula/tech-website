@@ -1,5 +1,5 @@
-import { BackButton } from "@/components/common/back-button";
-import { Title } from "@/components/common/title";
+import { BackButton } from "@/components/common/button/back-button";
+import { Title } from "@/components/ui/title";
 import CreateLinkDialog from "@/components/tools/link-shortener/create-link-dialog";
 import LinksContainer from "@/components/tools/link-shortener/links-container";
 import LinksLoading from "@/components/tools/link-shortener/links-loading";

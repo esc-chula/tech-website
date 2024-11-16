@@ -1,5 +1,5 @@
-import { MemberButton } from "@/components/common/member-button";
 import { api } from "@/trpc/server";
+import MemberButton from "./member-button";
 
 export const MemberContainer = async () => {
   const members = (await api.aboutMember.get()).data;

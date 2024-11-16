@@ -12,6 +12,7 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     DIRECTUS_URL: z.string().url(),
+    GRPC_ADDRESS: z.string(),
   },
 
   /**
@@ -30,7 +31,8 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-    DIRECTUS_URL: process.env.DIRECTUS_URL
+    DIRECTUS_URL: process.env.DIRECTUS_URL,
+    GRPC_ADDRESS: process.env.GRPC_ADDRESS,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
