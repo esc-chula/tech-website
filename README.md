@@ -16,8 +16,14 @@
 # install the dependencies
 pnpm install
 
-# start db
-docker compose up postgres
+# generate prisma client
+pnpm generate
+
+# prepare husky
+pnpm prepare
+
+# start db and hydra
+docker compose up postgres hydra hydra-migrate hydra-db
 
 # start dev
 pnpm dev
