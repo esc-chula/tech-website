@@ -1,6 +1,6 @@
 "use client";
 
-import { useWindowSize } from "@/hooks/useWindowSize";
+import { useWindowSize } from "@/hooks/use-window-size";
 import { type Event } from "@/types/techmonth";
 import React, { useEffect, useState } from "react";
 import Stamp from "./stamp";

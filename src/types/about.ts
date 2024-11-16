@@ -7,7 +7,7 @@ export interface Project {
   githubLink?: string;
 }
 
-export interface GithubMemberProps {
+export interface GithubMember {
   login: string;
   id: number;
   node_id: string;

@@ -1,5 +1,6 @@
 import { z } from "Zod";
-export const CreateQRCodeDto = z.object({
+
+export const CreateQrCodeDto = z.object({
   name: z.string(),
   url: z.string(),
   qrCode: z.string(),

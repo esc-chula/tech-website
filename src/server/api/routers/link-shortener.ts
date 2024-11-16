@@ -4,7 +4,7 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { CreateShortenedLinkDto } from "@/server/api/dto/link-shortener";
 import { type ShortenedLink } from "@/types/link-shortener";
 
-export const postRouter = createTRPCRouter({
+export const linkShortenerRouter = createTRPCRouter({
   create: publicProcedure
     .input(CreateShortenedLinkDto)
     .mutation(async ({ ctx, input }) => {
@@ -17,35 +17,35 @@ export const postRouter = createTRPCRouter({
         };
       }
       return await ctx.db.$transaction(async (tx) => {
-      // check if slug is unique.
-      const shortenedLinkWithSameSlug =
-        await tx.userShortenedLink.findUnique({
-          where: {
-            slug: input.slug,
+        // check if slug is unique.
+        const shortenedLinkWithSameSlug = await tx.userShortenedLink.findUnique(
+          {
+            where: {
+              slug: input.slug,
+            },
           },
-        });
-      if (
-        shortenedLinkWithSameSlug) {
-        return {
-          data: null,
-          error: `The Slug "${input.slug}" have already been used. Please choose a different slug.`,
-        };
-      }
+        );
+        if (shortenedLinkWithSameSlug) {
+          return {
+            data: null,
+            error: `The Slug "${input.slug}" have already been used. Please choose a different slug.`,
+          };
+        }
 
-      const newShortenedLink: ShortenedLink =
-        await tx.userShortenedLink.create({
-          data: {
-            name: input.name,
-            url: input.url,
-            slug: input.slug,
-            userId: Number(input.userId),
-          },
-        });
-      return {
-        data: newShortenedLink,
-        message: `Created a shortened link for user with ID:${input.userId}`,
-      };
-      })
+        const newShortenedLink: ShortenedLink =
+          await tx.userShortenedLink.create({
+            data: {
+              name: input.name,
+              url: input.url,
+              slug: input.slug,
+              userId: Number(input.userId),
+            },
+          });
+        return {
+          data: newShortenedLink,
+          message: `Created a shortened link for user with ID:${input.userId}`,
+        };
+      });
     }),
 
   get: publicProcedure
@@ -66,10 +66,7 @@ export const postRouter = createTRPCRouter({
         },
       });
 
-      if (
-        userShortenedLink === null ||
-        userShortenedLink.length == 0
-      ) {
+      if (userShortenedLink === null || userShortenedLink.length == 0) {
         return {
           data: null,
           error: `No shortened link found for user with ID:${input.userId}`,
@@ -96,39 +93,39 @@ export const postRouter = createTRPCRouter({
       }
 
       return await ctx.db.$transaction(async (tx) => {
-      // can only update own link
-      const currentShortenedLink = await tx.userShortenedLink.findUnique({
-        where: {
-          id: Number(input.id),
-        },
-      });
+        // can only update own link
+        const currentShortenedLink = await tx.userShortenedLink.findUnique({
+          where: {
+            id: Number(input.id),
+          },
+        });
 
-      if (
-        currentShortenedLink == null ||
-        currentShortenedLink.userId !== Number(input.userId)
-      ) {
+        if (
+          currentShortenedLink == null ||
+          currentShortenedLink.userId !== Number(input.userId)
+        ) {
+          return {
+            data: null,
+            error: `The shortened link with ID:${input.id} might not exist or The user with ID:${input.userId} might not be associated with it.`,
+          };
+        }
+
+        const updatedShortenedLink = await tx.userShortenedLink.update({
+          where: {
+            id: Number(input.id),
+          },
+          data: {
+            name: input.name,
+            url: input.url,
+            slug: input.slug,
+          },
+        });
+
         return {
-          data: null,
-          error: `The shortened link with ID:${input.id} might not exist or The user with ID:${input.userId} might not be associated with it.`,
+          data: updatedShortenedLink,
+          message: `update success for shortened link with the ID:${input.id}`,
         };
-      }
-
-      const updatedShortenedLink = await tx.userShortenedLink.update({
-        where: {
-          id: Number(input.id),
-        },
-        data: {
-          name: input.name,
-          url: input.url,
-          slug: input.slug,
-        },
       });
-
-      return {
-        data: updatedShortenedLink,
-        message: `update success for shortened link with the ID:${input.id}`,
-      };
-      })
     }),
 
   delete: publicProcedure
@@ -136,7 +133,7 @@ export const postRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const id = Number(input.id);
       const userId = Number(input.userId);
-  
+
       if (isNaN(id) || isNaN(userId)) {
         return {
           data: null,
@@ -163,8 +160,11 @@ export const postRouter = createTRPCRouter({
         await tx.userShortenedLink.delete({
           where: { id },
         });
-  
-        return { data: null, message: `Shortened link with the ID:${input.id} have successfully been deleted.` };
-      })
+
+        return {
+          data: null,
+          message: `Shortened link with the ID:${input.id} have successfully been deleted.`,
+        };
+      });
     }),
 });

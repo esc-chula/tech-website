@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
-export const techMonthStampRouter = createTRPCRouter({
+export const techmonthRouter = createTRPCRouter({
   createStamp: publicProcedure
     .input(z.object({ studentId: z.string(), eventId: z.string() }))
     .query(async ({ ctx, input }) => {

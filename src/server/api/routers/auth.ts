@@ -16,54 +16,68 @@ export const authRouter = createTRPCRouter({
   login: publicProcedure
     .input(z.object({ username: z.string(), password: z.string() }))
     .query(async ({ ctx, input }): Promise<Response<StudentLoginResponse>> => {
-      const response = await grpc.account
-        .studentLogin({
-          username: input.username,
-          password: input.password,
-          verifyWithLdap: true,
-        })
-        .catch((error) => {
-          throw new Error(
-            error instanceof Error ? error.message : "Something went wrong",
-          );
+      try {
+        const response = await grpc.account
+          .studentLogin({
+            username: input.username,
+            password: input.password,
+            verifyWithLdap: true,
+          })
+          .catch((error) => {
+            throw new Error(
+              error instanceof Error
+                ? error.message
+                : "Something went wrong logging in",
+            );
+          });
+
+        if (!response.account || !response.student?.studentId) {
+          throw new Error("Invalid response data");
+        }
+
+        const user = await ctx.db.user.findUnique({
+          where: {
+            oidcId: response.account.publicId,
+          },
         });
 
-      if (!response.account || !response.student?.studentId) {
-        throw new Error("Invalid response data");
-      }
+        if (user) {
+          return {
+            success: true,
+            message: "Login successful",
+            data: response,
+          };
+        }
 
-      const user = await ctx.db.user.findUnique({
-        where: {
-          oidcId: response.account.publicId,
-        },
-      });
+        await ctx.db.user
+          .create({
+            data: {
+              oidcId: response.account.publicId,
+              studentId: response.student.studentId,
+            },
+          })
+          .catch((error) => {
+            throw new Error(
+              error instanceof Error
+                ? error.message
+                : "Something went wrong creating user",
+            );
+          });
 
-      if (user) {
         return {
           success: true,
           message: "Login successful",
           data: response,
         };
-      }
-
-      await ctx.db.user
-        .create({
-          data: {
-            oidcId: response.account.publicId,
-            studentId: response.student.studentId,
-          },
-        })
-        .catch((error) => {
-          throw new Error(
+      } catch (error) {
+        return {
+          success: false,
+          message: "Failed to login",
+          errors: [
             error instanceof Error ? error.message : "Something went wrong",
-          );
-        });
-
-      return {
-        success: true,
-        message: "Login successful",
-        data: response,
-      };
+          ],
+        };
+      }
     }),
 
   me: protectedProcedure.query(
@@ -80,7 +94,9 @@ export const authRouter = createTRPCRouter({
           })
           .catch((error) => {
             throw new Error(
-              error instanceof Error ? error.message : "Something went wrong",
+              error instanceof Error
+                ? error.message
+                : "Something went wrong getting user data",
             );
           });
 

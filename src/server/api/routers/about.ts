@@ -1,25 +1,35 @@
-import { type GithubMemberProps } from "@/types/about";
+import { type GithubMember } from "@/types/about";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-// import { TRPCError } from "@trpc/server";
+import { type Response } from "@/types/server";
 
 export const aboutRouter = createTRPCRouter({
-  get: publicProcedure.query(async () => {
-    const response = await fetch(
-      `https://api.github.com/orgs/esc-chula/public_members?per_page=200`,
-    );
+  getMembers: publicProcedure.query(
+    async (): Promise<Response<GithubMember[]>> => {
+      try {
+        const response = await fetch(
+          `https://api.github.com/orgs/esc-chula/public_members?per_page=200`,
+        );
 
-    if (!response.ok) {
-      return {
-        data: null,
-        message: "Error : Can't get ESC members",
-      };
-    }
+        if (!response.ok) {
+          throw new Error("Fetch failed");
+        }
 
-    const data: GithubMemberProps[] =
-      (await response.json()) as GithubMemberProps[];
-    return {
-      data,
-      message: "Successfully get ESC members",
-    };
-  }),
+        const data = (await response.json()) as GithubMember[];
+
+        return {
+          success: true,
+          message: "Successfully fetched members",
+          data,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: "Failed to fetch members from Github",
+          errors: [
+            error instanceof Error ? error.message : "Something went wrong",
+          ],
+        };
+      }
+    },
+  ),
 });

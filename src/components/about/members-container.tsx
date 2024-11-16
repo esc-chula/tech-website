@@ -2,11 +2,15 @@ import { api } from "@/trpc/server";
 import MemberButton from "./member-button";
 
 export const MemberContainer = async () => {
-  const members = (await api.aboutMember.get()).data;
+  const response = await api.about.getMembers();
+
+  if (!response.success) {
+    return null;
+  }
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2">
-      {members?.map((member, index) => (
+      {response.data.map((member, index) => (
         <MemberButton
           key={index}
           nameTag={member.login}
