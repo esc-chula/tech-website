@@ -14,16 +14,16 @@ export default async function UserBox() {
         </div>
         <div>
           {res.success ? (
-            res.data.student?.firstNameEn ? (
+            res.data.firstNameEn ? (
               <>
-                <p className="font-medium">{res.data.student.firstNameEn}</p>
+                <p className="font-medium">{res.data.firstNameEn}</p>
                 <p className="text-sm">
-                  {res.success ? res.data.student?.studentId : "Please log in"}
+                  {res.success ? res.data.studentId : "Please log in"}
                 </p>
               </>
             ) : (
               <>
-                <p className="font-medium">{res.data.student?.studentId}</p>
+                <p className="font-medium">{res.data.studentId}</p>
               </>
             )
           ) : (

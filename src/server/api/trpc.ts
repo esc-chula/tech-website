@@ -4,17 +4,35 @@ import { ZodError } from "zod";
 
 import { db } from "@/server/db";
 import { getSIDFromHeader } from "@/lib/auth";
-import { getSession } from "../auth";
+import { grpc } from "../auth/grpc";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const sessionId = getSIDFromHeader(opts.headers);
-  const session = sessionId
-    ? await getSession(sessionId).catch(() => null)
+
+  const me = sessionId
+    ? await grpc.account
+        .me({
+          sessionId,
+        })
+        .catch((error) => {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message:
+              error instanceof Error ? error.message : "Something went wrong",
+          });
+        })
+    : null;
+
+  const user = me?.account
+    ? await db.user.findUnique({ where: { oidcId: me.account.publicId } })
     : null;
 
   return {
     db,
-    session,
+    session: {
+      ...me?.session,
+      user,
+    },
     ...opts,
   };
 };
@@ -82,6 +100,7 @@ const authMiddleware = t.middleware(async ({ ctx, next }) => {
   if (!ctx.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
+
   return next();
 });
 export const protectedProcedure = t.procedure.use(authMiddleware);

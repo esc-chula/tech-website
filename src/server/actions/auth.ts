@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { api } from "@/trpc/server";
 import { type Response } from "@/types/server";
-import { type MeResponse } from "@/generated/intania/auth/account/v1/account";
+import { type Student } from "@/generated/intania/auth/student/v1/student";
 
 export async function login(
   username: string,
@@ -52,14 +52,14 @@ export async function login(
   }
 }
 
-export async function me(): Promise<Response<MeResponse>> {
+export async function me(): Promise<Response<Student>> {
   try {
     const cookieStore = cookies();
     const sid = cookieStore.get("sid")?.value;
     if (!sid) {
       return {
         success: false,
-        message: "Failed to get user data",
+        message: "Unauthorized",
         errors: ["Session ID not found"],
       };
     }

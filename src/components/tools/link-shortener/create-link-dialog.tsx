@@ -2,10 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -20,9 +22,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { createShortenedLink } from "@/server/actions/link-shortener";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 
 const formSchema = z.object({
-  name: z.string().optional(),
+  name: z.string().max(50, {
+    message: "Name must be less than 50 characters",
+  }),
   slug: z
     .string()
     .min(1, {
@@ -38,6 +46,9 @@ const formSchema = z.object({
 });
 
 export default function CreateLinkDialog() {
+  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,68 +58,109 @@ export default function CreateLinkDialog() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const res = await createShortenedLink({
+        name: values.name,
+        slug: values.slug,
+        url: values.url,
+      });
+
+      if (!res.success) {
+        console.error(res.errors);
+        toast({
+          title: "Failed to create shortened link",
+          description: res.message,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Shortened link created",
+        description: res.message,
+      });
+
+      form.reset();
+      setOpen(false);
+    } catch (error) {
+      console.error(error);
+
+      toast({
+        title: "Failed to create shortened link",
+        description:
+          error instanceof Error ? error.message : "Something went wrong",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
-    <DialogContent className="md:max-w-md">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <DialogHeader>
-            <DialogTitle>Shorten a link</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="My website" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="slug"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Slug</FormLabel>
-                  <FormControl>
-                    <Input placeholder="my-website" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This will be shortened in intania.link/xxx
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="primary" type="submit">
-              Save
-            </Button>
-          </DialogFooter>
-        </form>
-      </Form>
-    </DialogContent>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="default">
+          <Plus size={16} />
+          New
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="md:max-w-md">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <DialogHeader>
+              <DialogTitle>Shorten a link</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="My website" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="slug"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Slug</FormLabel>
+                    <FormControl>
+                      <Input placeholder="my-website" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This will be shortened in intania.link/xxx
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="primary" type="submit">
+                Save
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 }

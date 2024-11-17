@@ -14,3 +14,19 @@ export async function getSession(
     throw error;
   }
 }
+
+export async function getOIDCPublicId(sessionId: string): Promise<string> {
+  try {
+    const session = await grpc.account.me({
+      sessionId,
+    });
+
+    if (!session.account) {
+      throw new Error("Unauthorized");
+    }
+
+    return session.account.publicId;
+  } catch (error) {
+    throw error;
+  }
+}

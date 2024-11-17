@@ -9,10 +9,8 @@ export const appRouter = createTRPCRouter({
   about: aboutRouter,
   auth: authRouter,
   techmonth: techmonthRouter,
-  tools: {
-    linkShortener: linkShortenerRouter,
-    qrCode: qrCodeRouter,
-  },
+  linkShortener: linkShortenerRouter,
+  qrCode: qrCodeRouter,
 });
 
 export type AppRouter = typeof appRouter;

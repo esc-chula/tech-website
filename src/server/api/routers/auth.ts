@@ -6,11 +6,9 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { grpc } from "@/server/auth/grpc";
-import {
-  type MeResponse,
-  type StudentLoginResponse,
-} from "@/generated/intania/auth/account/v1/account";
+import { type StudentLoginResponse } from "@/generated/intania/auth/account/v1/account";
 import { type Response } from "@/types/server";
+import { type Student } from "@/generated/intania/auth/student/v1/student";
 
 export const authRouter = createTRPCRouter({
   login: publicProcedure
@@ -32,7 +30,7 @@ export const authRouter = createTRPCRouter({
           });
 
         if (!response.account || !response.student?.studentId) {
-          throw new Error("Invalid response data");
+          throw new Error("Authorized only for students");
         }
 
         const user = await ctx.db.user.findUnique({
@@ -80,40 +78,30 @@ export const authRouter = createTRPCRouter({
       }
     }),
 
-  me: protectedProcedure.query(
-    async ({ ctx }): Promise<Response<MeResponse>> => {
-      try {
-        const sessionId = ctx.session?.id;
-        if (!sessionId) {
-          throw new Error("Session not found");
-        }
-
-        const response = await grpc.account
-          .me({
-            sessionId,
-          })
-          .catch((error) => {
-            throw new Error(
-              error instanceof Error
-                ? error.message
-                : "Something went wrong getting user data",
-            );
-          });
-
-        return {
-          success: true,
-          message: "User data retrieved",
-          data: response,
-        };
-      } catch (error) {
-        return {
-          success: false,
-          message: "Failed to get user data",
-          errors: [
-            error instanceof Error ? error.message : "Something went wrong",
-          ],
-        };
+  me: protectedProcedure.query(async ({ ctx }): Promise<Response<Student>> => {
+    try {
+      if (!ctx.session) {
+        throw new Error("Unauthorized");
       }
-    },
-  ),
+
+      const userData = ctx.session.user;
+      if (!userData) {
+        throw new Error("Unauthorized");
+      }
+
+      return {
+        success: true,
+        message: "User data retrieved",
+        data: userData,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Failed to get user data",
+        errors: [
+          error instanceof Error ? error.message : "Something went wrong",
+        ],
+      };
+    }
+  }),
 });

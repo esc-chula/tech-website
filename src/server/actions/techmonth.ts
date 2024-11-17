@@ -117,7 +117,7 @@ export async function addStamp(eventId: string): Promise<Response<null>> {
     }
   }
 
-  const userStamps = await api.techMonthStamp
+  const userStamps = await api.techmonth
     .getStampsByStudentId({
       studentId,
     })
@@ -142,7 +142,7 @@ export async function addStamp(eventId: string): Promise<Response<null>> {
     };
   }
 
-  await api.techMonthStamp.createStamp({
+  await api.techmonth.createStamp({
     studentId,
     eventId,
   });
