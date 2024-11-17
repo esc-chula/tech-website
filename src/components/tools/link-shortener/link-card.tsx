@@ -1,7 +1,9 @@
-import Card from "@/components/ui/card";
-import Link from "next/link";
-import CopyButton from "./copy-button";
-import { Eye } from "lucide-react";
+import { Eye } from 'lucide-react';
+import Link from 'next/link';
+
+import { Card } from '~/components/ui/card';
+
+import CopyButton from './copy-button';
 
 interface LinkCardProps {
   editedAt: Date;
@@ -11,20 +13,20 @@ interface LinkCardProps {
   count: number;
 }
 
-export default function LinkCard({
+const LinkCard: React.FC<LinkCardProps> = ({
   editedAt,
   name,
   url,
   slug,
   count,
-}: LinkCardProps) {
+}) => {
   return (
     <Card className="relative space-y-1">
       <CopyButton
+        className="absolute right-4 top-4 h-auto p-0 hover:bg-transparent"
         value={`https://intania.link/${slug}`}
-        className="absolute right-4 top-4"
       />
-      <Link href={`/tools/link-shortener/${slug}`} className="h-full space-y-3">
+      <Link className="h-full space-y-3" href={`/tools/link-shortener/${slug}`}>
         <div className="space-y-1">
           <div className="flex justify-between">
             <h3 className="space-x-0.5 truncate text-xl font-semibold">
@@ -44,14 +46,16 @@ export default function LinkCard({
             <p className="text-xs sm:text-sm">{count}</p>
           </div>
           <p className="text-xs sm:text-sm">
-            {editedAt.toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
+            {editedAt.toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
             })}
           </p>
         </div>
       </Link>
     </Card>
   );
-}
+};
+
+export default LinkCard;

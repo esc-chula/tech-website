@@ -1,21 +1,23 @@
-import { type Metadata } from "next";
+import { type Metadata } from 'next';
 
-import Background from "./_components/background";
+import Background from './_components/background';
 
 export const metadata: Metadata = {
-  title: "Intania Tech Month 2024",
+  title: 'Intania Tech Month 2024',
   description:
-    "เดือนแห่งการเรียนรู้และสร้างสรรค์เทคโนโลยีจากชมรม TECH ใน INTANIA",
-  icons: [{ rel: "icon", url: "/techmonth/favicon.ico" }],
+    'เดือนแห่งการเรียนรู้และสร้างสรรค์เทคโนโลยีจากชมรม TECH ใน INTANIA',
+  icons: [{ rel: 'icon', url: '/techmonth/favicon.ico' }],
 };
 
-export default function Layout({
+const Layout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}) => {
   return (
     <body className="bg-techmonth-black text-techmonth-white">
       {children}
       <Background />
     </body>
   );
-}
+};
+
+export default Layout;

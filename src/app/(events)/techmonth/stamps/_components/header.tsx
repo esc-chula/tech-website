@@ -1,18 +1,25 @@
-"use client";
+'use client';
 
-import { logout } from "@/server/actions/techmonth";
+import { logout } from '~/server/actions/techmonth';
 
-export default function Header({ studentId }: { studentId: string }) {
+interface HeaderProps {
+  studentId: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ studentId }) => {
   return (
     <div className="flex w-full items-center justify-between text-2xl lg:text-3xl">
       <p>{studentId}</p>
       <button
-        onClick={() => {
-          logout().catch(console.error);
+        type="button"
+        onClick={async () => {
+          await logout();
         }}
       >
         logout
       </button>
     </div>
   );
-}
+};
+
+export default Header;

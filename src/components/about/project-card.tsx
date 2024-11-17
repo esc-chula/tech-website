@@ -1,8 +1,9 @@
-import Link from "next/link";
-import Card from "../ui/card";
-import { SiGithub } from "@icons-pack/react-simple-icons";
-import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { SiGithub } from '@icons-pack/react-simple-icons';
+import { ArrowUpRight } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { Card } from '../ui/card';
 
 interface ProjectCardProps {
   title: string;
@@ -12,31 +13,31 @@ interface ProjectCardProps {
   githubLink?: string;
 }
 
-export default function ProjectCard({
+const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
   description,
   image,
   projectLink,
   githubLink,
-}: ProjectCardProps) {
+}) => {
   return (
     <Card className="overflow-hidden p-0">
       <div className="group relative aspect-video w-full">
         <Link
-          href={projectLink}
-          target="_blank"
-          rel="noopener noreferrer"
           className="absolute inset-0 z-10 flex items-center justify-center gap-1 bg-black/50 text-sm opacity-0 duration-200 group-hover:opacity-100"
+          href={projectLink}
+          rel="noopener noreferrer"
+          target="_blank"
         >
-          <span>Visit Project</span> <ArrowUpRight size={12} className="mb-1" />
+          <span>Visit Project</span> <ArrowUpRight className="mb-1" size={12} />
         </Link>
-        <Image src={image} alt={title} fill className="z-0 object-cover" />
+        <Image fill alt={title} className="z-0 object-cover" src={image} />
       </div>
       <div className="flex flex-col gap-1.5 p-4">
         <div className="flex justify-between gap-4">
           <h4 className="font-semibold">{title}</h4>
           {githubLink ? (
-            <Link href={githubLink} target="_blank" rel="noopener noreferrer">
+            <Link href={githubLink} rel="noopener noreferrer" target="_blank">
               <SiGithub />
             </Link>
           ) : null}
@@ -45,4 +46,6 @@ export default function ProjectCard({
       </div>
     </Card>
   );
-}
+};
+
+export default ProjectCard;

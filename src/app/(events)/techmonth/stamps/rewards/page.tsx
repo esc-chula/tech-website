@@ -1,12 +1,13 @@
-import { cookies } from "next/headers";
-import Header from "../_components/header";
-import { redirect } from "next/navigation";
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export default function RewardsPage() {
+import Header from '../_components/header';
+
+const Page: React.FC = () => {
   const cookieStore = cookies();
-  const studentId = cookieStore.get("studentId")?.value;
+  const studentId = cookieStore.get('studentId')?.value;
   if (!studentId) {
-    redirect("/techmonth/login");
+    redirect('/techmonth/login');
   }
 
   return (
@@ -24,4 +25,6 @@ export default function RewardsPage() {
       </div>
     </main>
   );
-}
+};
+
+export default Page;

@@ -1,0 +1,6 @@
+node_modules/**/*
+pnpm-lock.yaml
+.gitignore
+.prettierignore
+.nvmrc
+.npmrc

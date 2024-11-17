@@ -1,35 +1,35 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
-export default function HeroSection(): JSX.Element {
+const HeroSection: React.FC = () => {
   return (
     <div
-      id="hero"
       className="flex min-h-screen w-full max-w-screen-xl flex-col px-8 pt-14 font-tiny5 text-techmonth-white md:px-16 xl:px-4"
+      id="hero"
     >
       <header className="flex h-10 w-full justify-between text-2xl md:h-12 md:text-4xl lg:h-16 lg:text-5xl">
         <div className="flex flex-wrap items-center gap-5">
           <Image
-            src="/techmonth/assets/esc_icon.svg"
             alt=""
             className="h-full"
-            width={55}
             height={65}
+            src="/techmonth/assets/esc_icon.svg"
+            width={55}
           />
           <h3>TECH ESC</h3>
         </div>
         <Link
+          className="z-50 h-full"
           href="https://www.instagram.com/escchula"
           rel="noopener noreferrer"
           target="_blank"
-          className="z-50 h-full"
         >
           <Image
-            src="/techmonth/assets/instagram_icon.svg"
-            className="pointer-events-none size-full object-fill"
             alt=""
-            width={45}
+            className="pointer-events-none size-full object-fill"
             height={45}
+            src="/techmonth/assets/instagram_icon.svg"
+            width={45}
           />
         </Link>
       </header>
@@ -39,11 +39,11 @@ export default function HeroSection(): JSX.Element {
             Intania
           </h1>
           <Image
-            src="/techmonth/assets/tech_logo.svg"
             alt="Tech"
-            width={801}
-            height={223}
             className="w-full max-w-96 md:w-1/2 lg:w-auto lg:min-w-96 lg:max-w-lg"
+            height={223}
+            src="/techmonth/assets/tech_logo.svg"
+            width={801}
           />
           <div className="flex items-baseline gap-6">
             <span className="text-2xl md:text-4xl lg:text-5xl">@!4%^23#</span>
@@ -54,10 +54,10 @@ export default function HeroSection(): JSX.Element {
           <div className="mt-4 flex gap-2">
             <p>Sponsored By</p>
             <Image
-              src="/techmonth/assets/cleverse_logo.svg"
               alt="Cleverse"
-              width={100}
               height={100}
+              src="/techmonth/assets/cleverse_logo.svg"
+              width={100}
             />
           </div>
         </section>
@@ -75,12 +75,14 @@ export default function HeroSection(): JSX.Element {
           </p>
         </section>
         <Link
-          href="/techmonth/stamps"
           className="mx-auto h-fit w-min whitespace-nowrap bg-techmonth-yellow px-4 py-2 text-center font-tiny5 text-xl text-techmonth-black duration-300 ease-in-out hover:translate-x-2 md:text-2xl lg:hidden lg:px-5 lg:py-2.5 lg:text-3xl"
+          href="/techmonth/stamps"
         >
           COLLECT STAMP -&gt;
         </Link>
       </main>
     </div>
   );
-}
+};
+
+export default HeroSection;

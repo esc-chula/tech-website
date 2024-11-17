@@ -1,12 +1,15 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
 
-export default function LoginButton() {
+import { Button } from '~/components/ui/button';
+
+const LoginButton: React.FC = () => {
   return (
     <Link href="/login">
-      <Button variant="primary" className="px-5" size="sm">
+      <Button className="px-5" size="sm" variant="primary">
         Log in
       </Button>
     </Link>
   );
-}
+};
+
+export default LoginButton;

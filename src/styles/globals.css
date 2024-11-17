@@ -5,8 +5,8 @@
 @layer base {
   :root {
     /* Font Family */
-    --font-sans: "IBM Plex Sans Thai";
-    --font-mono: "IBM Plex Mono";
+    --font-sans: 'IBM Plex Sans Thai';
+    --font-mono: 'IBM Plex Mono';
 
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;

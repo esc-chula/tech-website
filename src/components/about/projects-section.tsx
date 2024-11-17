@@ -1,13 +1,15 @@
-import { Suspense } from "react";
-import { Section } from "@/components/ui/section";
-import { Title } from "@/components/ui/title";
-import ProjectsContainer from "./projects-container";
-import ProjectsLoading from "./projects-loading";
+import { Suspense } from 'react';
 
-export const ProjectsSection = () => {
+import { Section } from '~/components/ui/section';
+import { Title } from '~/components/ui/title';
+
+import ProjectsContainer from './projects-container';
+import ProjectsLoading from './projects-loading';
+
+const ProjectsSection: React.FC = () => {
   return (
     <Section className="gap-6 bg-neutral-950">
-      <Title variant="sectionTitle" color="primary" className="text-4xl">
+      <Title className="text-4xl" color="primary" variant="sectionTitle">
         Our Projects
       </Title>
 
@@ -19,3 +21,5 @@ export const ProjectsSection = () => {
     </Section>
   );
 };
+
+export default ProjectsSection;

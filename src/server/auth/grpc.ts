@@ -1,5 +1,6 @@
-import { credentials, type ServiceError } from "@grpc/grpc-js";
-import { env } from "@/env";
+import { type ServiceError, credentials } from '@grpc/grpc-js';
+
+import { env } from '~/env';
 import {
   AccountServiceClient,
   type IntrospectSessionRequest,
@@ -8,14 +9,14 @@ import {
   type MeResponse,
   type StudentLoginRequest,
   type StudentLoginResponse,
-} from "@/generated/intania/auth/account/v1/account";
+} from '~/generated/intania/auth/account/v1/account';
 import {
   type EditStudentRequest,
   type EditStudentResponse,
   type ListStudentMappingRequest,
   type ListStudentMappingResponse,
   StudentServiceClient,
-} from "@/generated/intania/auth/student/v1/student";
+} from '~/generated/intania/auth/student/v1/student';
 
 const addr = env.GRPC_ADDRESS;
 
@@ -32,11 +33,12 @@ function r<T>(
   resolve: (response: T) => void,
   reject: (reason?: ServiceError) => void,
 ) {
-  return function (err: ServiceError | null, response: T) {
+  return (err: ServiceError | null, response: T) => {
     if (err) {
-      return reject(err);
+      reject(err);
+      return;
     }
-    return resolve(response);
+    resolve(response);
   };
 }
 

@@ -1,14 +1,14 @@
-"use client";
+/* eslint-disable react/no-array-index-key -- use key */
+'use client';
 
-import { useWindowSize } from "@/hooks/use-window-size";
-import { type Event } from "@/types/techmonth";
-import React, { useEffect, useState } from "react";
-import Stamp from "./stamp";
+import React, { useEffect, useState } from 'react';
 
-export default function StampsLadder({
-  numberOfRows,
-  stampsWithEvent,
-}: {
+import { useWindowSize } from '~/hooks/use-window-size';
+import { type Event } from '~/types/techmonth';
+
+import Stamp from './stamp';
+
+interface StampsLadderProps {
   numberOfRows: number;
   stampsWithEvent: {
     event: Event | undefined;
@@ -16,7 +16,12 @@ export default function StampsLadder({
     studentId: string;
     eventId: string;
   }[];
-}) {
+}
+
+const StampsLadder: React.FC<StampsLadderProps> = ({
+  numberOfRows,
+  stampsWithEvent,
+}) => {
   const { width: windowWidth } = useWindowSize();
   const [numberOfColumns, setNumberOfColumns] = useState(0);
 
@@ -36,7 +41,7 @@ export default function StampsLadder({
 
   return (
     <div
-      className={`grid`}
+      className="grid"
       style={{
         gridTemplateColumns: `repeat(${numberOfColumns}, minmax(0, 1fr))`,
       }}
@@ -104,4 +109,6 @@ export default function StampsLadder({
       })}
     </div>
   );
-}
+};
+
+export default StampsLadder;

@@ -1,35 +1,46 @@
-"use client";
+'use client';
 
-import { login } from "@/server/actions/techmonth";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useState } from 'react';
 
-export default function LoginPageWithSuspense() {
+import { useToast } from '~/hooks/use-toast';
+import { login } from '~/server/actions/techmonth';
+
+const LoginPageWithSuspense: React.FC = () => {
   return (
     <Suspense fallback="Loading...">
       <LoginPage />
     </Suspense>
   );
-}
+};
 
-function LoginPage() {
+export default LoginPageWithSuspense;
+
+const LoginPage: React.FC = () => {
+  const { toast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const callbackUrl = searchParams.get("callbackUrl");
+  const callbackUrl = searchParams.get('callbackUrl');
 
   const [loading, setLoading] = useState(false);
 
-  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const formHandler = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
-    const studentId = formData.get("studentId");
+    const studentId = formData.get('studentId');
 
     const regex = /^6\d{7}21$/;
 
     if (!regex.test(studentId as string)) {
-      alert("Invalid student ID");
+      toast({
+        title: 'Invalid student ID',
+        description: 'Please enter a valid student ID',
+        variant: 'destructive',
+      });
       return;
     }
     setLoading(true);
@@ -38,7 +49,7 @@ function LoginPage() {
     if (callbackUrl) {
       router.push(callbackUrl);
     } else {
-      router.push("/techmonth/stamps");
+      router.push('/techmonth/stamps');
     }
   };
 
@@ -50,18 +61,18 @@ function LoginPage() {
           IN
         </h2>
         <form
-          onSubmit={formHandler}
           className="flex flex-col items-start justify-between"
+          onSubmit={formHandler}
         >
           <input
+            className="h-16 w-full border-4 border-techmonth-white bg-transparent p-4 text-2xl text-techmonth-white outline-none placeholder:text-techmonth-white lg:w-1/2"
             name="studentId"
             placeholder="Fill your student ID"
-            className="h-16 w-full border-4 border-techmonth-white bg-transparent p-4 text-2xl text-techmonth-white outline-none placeholder:text-techmonth-white lg:w-1/2"
           />
           <button
-            type="submit"
             className="mt-40 bg-techmonth-yellow px-6 py-2 text-3xl text-techmonth-black duration-200 hover:translate-x-3"
             disabled={loading}
+            type="submit"
           >
             {loading ? `LOADING...` : `GO gO Go ->`}
           </button>
@@ -69,4 +80,4 @@ function LoginPage() {
       </div>
     </main>
   );
-}
+};

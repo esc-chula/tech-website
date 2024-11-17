@@ -1,12 +1,20 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { Button } from '~/components/ui/button';
 import {
+  Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+  DialogTrigger,
+} from '~/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -15,100 +23,146 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
+} from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { useToast } from '~/hooks/use-toast';
+import { createShortenedLink } from '~/server/actions/link-shortener';
 
 const formSchema = z.object({
-  name: z.string().optional(),
+  name: z.string().max(50, {
+    message: 'Name must be less than 50 characters',
+  }),
   slug: z
     .string()
     .min(1, {
-      message: "Slug is required",
+      message: 'Slug is required',
     })
     .max(50)
     .regex(/^[a-z0-9-]+$/i, {
-      message: "Please enter a valid slug",
+      message: 'Please enter a valid slug',
     }),
   url: z.string().url({
-    message: "Please enter a valid URL",
+    message: 'Please enter a valid URL',
   }),
 });
 
-export default function CreateLinkDialog() {
+const CreateLinkDialog: React.FC = () => {
+  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      slug: "",
-      url: "",
+      name: '',
+      slug: '',
+      url: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
+    try {
+      setLoading(true);
+
+      const res = await createShortenedLink({
+        name: values.name,
+        slug: values.slug,
+        url: values.url,
+      });
+
+      if (!res.success) {
+        console.error(res.errors);
+        toast({
+          title: 'Failed to create shortened link',
+          description: res.message,
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      form.reset();
+      setOpen(false);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+
+      toast({
+        title: 'Failed to create shortened link',
+        description:
+          error instanceof Error ? error.message : 'Something went wrong',
+        variant: 'destructive',
+      });
+    }
   }
 
   return (
-    <DialogContent className="md:max-w-md">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <DialogHeader>
-            <DialogTitle>Shorten a link</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="My website" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="slug"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Slug</FormLabel>
-                  <FormControl>
-                    <Input placeholder="my-website" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This will be shortened in intania.link/xxx
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="primary" type="submit">
-              Save
-            </Button>
-          </DialogFooter>
-        </form>
-      </Form>
-    </DialogContent>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="default">
+          <Plus size={16} />
+          New
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="md:max-w-md">
+        <Form {...form}>
+          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle>Shorten a link</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="My website" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="slug"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Slug</FormLabel>
+                    <FormControl>
+                      <Input placeholder="my-website" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This will be shortened in intania.link/xxx
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <DialogFooter>
+              <Button disabled={loading} type="submit" variant="primary">
+                Save
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
-}
+};
+
+export default CreateLinkDialog;

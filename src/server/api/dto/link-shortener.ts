@@ -1,10 +1,22 @@
-import {z} from "Zod";
+import { z } from 'Zod';
 
 export const CreateShortenedLinkDto = z.object({
   name: z.string(),
-  url: z.string(),
   slug: z.string(),
-  count: z.string(),
-  userId: z.string(),
-  id: z.string().optional(),
-})
+  url: z.string(),
+});
+
+export const GetShortenedLinkBySlugDto = z.object({
+  slug: z.string(),
+});
+
+export const UpdateShortenedLinkDto = z.object({
+  id: z.number(),
+  name: z.string(),
+  slug: z.string(),
+  url: z.string(),
+});
+
+export const DeleteShortenedLinkDto = z.object({
+  id: z.number(),
+});

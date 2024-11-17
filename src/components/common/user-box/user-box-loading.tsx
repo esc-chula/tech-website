@@ -1,6 +1,6 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from '~/components/ui/skeleton';
 
-export default function UserBoxLoading() {
+const UserBoxLoading: React.FC = () => {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-neutral-800 px-4 py-5">
       <div className="flex items-center gap-4">
@@ -12,4 +12,6 @@ export default function UserBoxLoading() {
       </div>
     </div>
   );
-}
+};
+
+export default UserBoxLoading;

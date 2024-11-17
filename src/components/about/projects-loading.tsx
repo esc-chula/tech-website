@@ -1,6 +1,6 @@
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from '../ui/skeleton';
 
-export default function ProjectsLoading() {
+const ProjectsLoading: React.FC = () => {
   return (
     <div className="flex flex-col gap-5">
       <Skeleton className="h-8 w-40" />
@@ -13,4 +13,6 @@ export default function ProjectsLoading() {
       </div>
     </div>
   );
-}
+};
+
+export default ProjectsLoading;

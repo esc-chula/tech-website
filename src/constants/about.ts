@@ -1,3 +1,3 @@
 export const yearLabels = {
-  ESC67: "<initiation>",
+  ESC67: '<initiation>',
 };
