@@ -85,7 +85,6 @@ const CreateLinkDialog: React.FC = () => {
       setLoading(false);
     } catch (error) {
       console.error(error);
-
       toast({
         title: 'Failed to create shortened link',
         description:

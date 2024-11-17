@@ -3,7 +3,9 @@ import { notFound } from 'next/navigation';
 import BackButton from '~/components/common/button/back-button';
 import CopyButton from '~/components/tools/link-shortener/copy-button';
 import DeleteButton from '~/components/tools/link-shortener/delete-button';
+import EditLinkCard from '~/components/tools/link-shortener/edit-link-card';
 import QrCodeButton from '~/components/tools/link-shortener/qr-code-button';
+import { Card } from '~/components/ui/card';
 import { api } from '~/trpc/server';
 
 interface PageProps {
@@ -41,6 +43,10 @@ const Page: React.FC<PageProps> = async ({ params }) => {
             <DeleteButton slug={slug} />
           </div>
         </div>
+      </div>
+      <div className="flex gap-4">
+        <EditLinkCard className="w-1/3" shortenedLink={res.data} />
+        <Card className="w-2/3">test</Card>
       </div>
     </>
   );

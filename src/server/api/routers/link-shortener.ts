@@ -203,60 +203,70 @@ export const linkShortenerRouter = createTRPCRouter({
 
   update: protectedProcedure
     .input(UpdateShortenedLinkDto)
-    .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user?.id;
-      if (!userId) {
-        throw new Error('Unauthorized');
-      }
+    .mutation(async ({ ctx, input }): Promise<Response<ShortenedLink>> => {
+      try {
+        const userId = ctx.session.user?.id;
+        if (!userId) {
+          throw new Error('Unauthorized');
+        }
 
-      const res = await ctx.db.$transaction(async (tx) => {
-        const currentShortenedLink = await tx.userShortenedLink.findUnique({
-          where: {
-            id: input.id,
-          },
+        const res = await ctx.db.$transaction(async (tx) => {
+          const currentShortenedLink = await tx.userShortenedLink.findUnique({
+            where: {
+              id: input.id,
+            },
+          });
+
+          if (
+            currentShortenedLink === null ||
+            currentShortenedLink.userId !== userId
+          ) {
+            return {
+              data: null,
+              message: `The shortened link with ID:${input.id} might not exist or The user with ID:${userId} might not be associated with it.`,
+              error: `Invalid ID or User ID provided.`,
+            };
+          }
+
+          const updatedShortenedLink = await tx.userShortenedLink.update({
+            where: {
+              id: input.id,
+            },
+            data: {
+              name: input.name,
+              slug: input.slug,
+              url: input.url,
+            },
+          });
+
+          return {
+            data: updatedShortenedLink,
+            message: `Shortened link with the ID:${input.id} have successfully been updated.`,
+          };
         });
 
-        if (
-          currentShortenedLink === null ||
-          currentShortenedLink.userId !== userId
-        ) {
+        if (res.error ?? !res.data) {
           return {
-            data: null,
-            message: `The shortened link with ID:${input.id} might not exist or The user with ID:${userId} might not be associated with it.`,
-            error: `Invalid ID or User ID provided.`,
+            success: false,
+            message: res.message,
+            errors: [res.error],
           };
         }
 
-        const updatedShortenedLink = await tx.userShortenedLink.update({
-          where: {
-            id: input.id,
-          },
-          data: {
-            name: input.name,
-            slug: input.slug,
-            url: input.url,
-          },
-        });
-
         return {
-          data: updatedShortenedLink,
-          message: `Shortened link with the ID:${input.id} have successfully been updated.`,
+          success: true,
+          message: res.message,
+          data: res.data,
         };
-      });
-
-      if (res.error ?? !res.data) {
+      } catch (error) {
         return {
           success: false,
-          message: res.message,
-          errors: [res.error],
+          message: 'Failed to update shortened link',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
         };
       }
-
-      return {
-        success: true,
-        message: res.message,
-        data: res.data,
-      };
     }),
 
   delete: protectedProcedure
