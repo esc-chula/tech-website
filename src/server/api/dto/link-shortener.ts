@@ -6,6 +6,10 @@ export const CreateShortenedLinkDto = z.object({
   url: z.string(),
 });
 
+export const GetShortenedLinkBySlugDto = z.object({
+  slug: z.string(),
+});
+
 export const UpdateShortenedLinkDto = z.object({
   id: z.number(),
   name: z.string(),

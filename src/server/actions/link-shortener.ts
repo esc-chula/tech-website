@@ -53,3 +53,42 @@ export async function createShortenedLink({
     };
   }
 }
+
+export async function deleteShortenedLink(slug: string) {
+  try {
+    const cookieStore = cookies();
+    const sid = cookieStore.get("sid")?.value;
+    if (!sid) {
+      return {
+        success: false,
+        message: "Unauthorized",
+        errors: ["Session ID not found"],
+      };
+    }
+
+    const res = await api.linkShortener.deleteBySlug({
+      slug,
+    });
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message ?? "Failed to delete shortened link",
+        errors: res.errors,
+      };
+    }
+
+    revalidatePath("/tools/link-shortener");
+
+    return {
+      success: true,
+      message: "Shortened link deleted",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to delete shortened link",
+      errors: [error instanceof Error ? error.message : "Something went wrong"],
+    };
+  }
+}

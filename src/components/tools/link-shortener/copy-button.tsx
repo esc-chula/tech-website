@@ -3,6 +3,7 @@
 import { Check, Copy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface CopyButtonProps {
   value: string;
@@ -33,16 +34,12 @@ export default function CopyButton({ value, className }: CopyButtonProps) {
   }, [success]);
 
   return (
-    <button
+    <Button
+      variant="transparent"
+      className={cn(success ? "cursor-default" : "cursor-pointer", className)}
       onClick={copy}
-      type="button"
-      className={cn(
-        "relative p-1 outline-none",
-        success ? "cursor-default" : "cursor-pointer",
-        className,
-      )}
     >
       {success ? <Check size={16} /> : <Copy size={16} />}
-    </button>
+    </Button>
   );
 }

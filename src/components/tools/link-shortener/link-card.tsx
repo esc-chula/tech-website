@@ -22,7 +22,7 @@ export default function LinkCard({
     <Card className="relative space-y-1">
       <CopyButton
         value={`https://intania.link/${slug}`}
-        className="absolute right-4 top-4"
+        className="absolute right-4 top-4 h-auto p-0 hover:bg-transparent"
       />
       <Link href={`/tools/link-shortener/${slug}`} className="h-full space-y-3">
         <div className="space-y-1">

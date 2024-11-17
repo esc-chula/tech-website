@@ -2,6 +2,7 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   CreateShortenedLinkDto,
   DeleteShortenedLinkDto,
+  GetShortenedLinkBySlugDto,
   UpdateShortenedLinkDto,
 } from "@/server/api/dto/link-shortener";
 import { type ShortenedLink } from "@/types/link-shortener";
@@ -101,6 +102,44 @@ export const linkShortenerRouter = createTRPCRouter({
     },
   ),
 
+  getBySlug: protectedProcedure
+    .input(GetShortenedLinkBySlugDto)
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user?.id;
+      if (!userId) {
+        throw new Error("Unauthorized");
+      }
+
+      const shortenedLink = await ctx.db.userShortenedLink
+        .findFirst({
+          where: {
+            slug: input.slug,
+            userId,
+          },
+        })
+        .catch((error) => {
+          throw new Error(
+            error instanceof Error
+              ? error.message
+              : "Something went wrong fetching shortened link",
+          );
+        });
+
+      if (!shortenedLink) {
+        return {
+          success: false,
+          message: `Shortened link with the slug "${input.slug}" not found`,
+          errors: ["Shortened link not found"],
+        };
+      }
+
+      return {
+        success: true,
+        message: `Successfully fetched shortened link with the slug "${input.slug}"`,
+        data: shortenedLink,
+      };
+    }),
+
   update: protectedProcedure
     .input(UpdateShortenedLinkDto)
     .mutation(async ({ ctx, input }) => {
@@ -192,6 +231,57 @@ export const linkShortenerRouter = createTRPCRouter({
         return {
           data: null,
           message: `Shortened link with the ID:${input.id} have successfully been deleted.`,
+        };
+      });
+
+      if (res.error ?? !res.data) {
+        return {
+          success: false,
+          message: res.message ?? "Failed to delete shortened link",
+          errors: [res.error],
+        };
+      }
+
+      return {
+        success: true,
+        message: res.message,
+        data: res.data,
+      };
+    }),
+
+  deleteBySlug: protectedProcedure
+    .input(GetShortenedLinkBySlugDto)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user?.id;
+      if (!userId) {
+        throw new Error("Unauthorized");
+      }
+
+      const res = await ctx.db.$transaction(async (tx) => {
+        const currentShortenedLink = await tx.userShortenedLink.findFirst({
+          where: {
+            slug: input.slug,
+            userId,
+          },
+        });
+
+        if (!currentShortenedLink) {
+          return {
+            data: null,
+            message: `The shortened link with the slug "${input.slug}" might not exist or The user with ID:${userId} might not be associated with it.`,
+            error: `Invalid slug or User ID provided.`,
+          };
+        }
+
+        await tx.userShortenedLink.delete({
+          where: {
+            id: currentShortenedLink.id,
+          },
+        });
+
+        return {
+          data: null,
+          message: `Shortened link with the slug "${input.slug}" have successfully been deleted.`,
         };
       });
 
