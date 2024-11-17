@@ -1,41 +1,42 @@
-import Image from "next/image";
-import { StampCollection } from "./stamp-collection";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
+
+import StampCollection from './stamp-collection';
 
 const sources = [
-  "/techmonth/assets/clubs/robo_racer.png",
-  "/techmonth/assets/clubs/quant.png",
-  "/techmonth/assets/clubs/eic.png",
-  "/techmonth/assets/clubs/thinc.png",
-  "/techmonth/assets/clubs/gdsc.png",
-  "/techmonth/assets/clubs/grdc.png",
-  "/techmonth/assets/clubs/cubs.png",
+  '/techmonth/assets/clubs/robo_racer.png',
+  '/techmonth/assets/clubs/quant.png',
+  '/techmonth/assets/clubs/eic.png',
+  '/techmonth/assets/clubs/thinc.png',
+  '/techmonth/assets/clubs/gdsc.png',
+  '/techmonth/assets/clubs/grdc.png',
+  '/techmonth/assets/clubs/cubs.png',
 ];
 
-export default function TechMonthSection(): JSX.Element {
+const TechMonthSection: React.FC = () => {
   return (
     <div
-      id="techmonth"
       className="flex min-h-screen w-full max-w-screen-xl flex-col gap-40 px-8 py-28 md:px-16 xl:px-4"
+      id="techmonth"
     >
       <article>
         <h2 className="max-w-4xl text-center font-ibm-plex-sans-thai text-5xl leading-normal md:text-7xl lg:text-left lg:text-8xl">
-          เดือนแห่งการ<span className="text-techmonth-magenta">เรียนรู้</span>{" "}
+          เดือนแห่งการ<span className="text-techmonth-magenta">เรียนรู้</span>{' '}
           <span className="text-techmonth-green">สร้างสรรค์</span>เทคโนโลยี
         </h2>
         <p className="text-center font-ibm-plex-sans-thai text-xl md:text-3xl lg:text-left lg:text-4xl">
-          จากชมรม <span className="font-tiny5">TECH</span> ใน{" "}
+          จากชมรม <span className="font-tiny5">TECH</span> ใน{' '}
           <span className="font-tiny5">INTANIA</span>
         </p>
         <div className="mx-auto mt-16 grid w-fit grid-cols-4 gap-6 md:gap-8 lg:mt-24 lg:grid-cols-7">
-          {sources.map((src, i) => (
+          {sources.map((src) => (
             <Image
-              src={src}
-              key={i}
+              key={src}
               alt=""
-              width={120}
-              height={120}
               className="aspect-square object-contain"
+              height={120}
+              src={src}
+              width={120}
             />
           ))}
         </div>
@@ -51,8 +52,8 @@ export default function TechMonthSection(): JSX.Element {
             เพื่อแลกของรางวัลด้วย!
           </p>
           <Link
-            href="/techmonth/stamps"
             className="mx-auto h-fit w-min whitespace-nowrap bg-techmonth-yellow px-4 py-2 text-center font-tiny5 text-xl text-techmonth-black duration-300 ease-in-out hover:translate-x-2 md:text-2xl lg:px-5 lg:py-2.5 lg:text-3xl"
+            href="/techmonth/stamps"
           >
             COLLECT STAMP -&gt;
           </Link>
@@ -60,4 +61,6 @@ export default function TechMonthSection(): JSX.Element {
       </article>
     </div>
   );
-}
+};
+
+export default TechMonthSection;

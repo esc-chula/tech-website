@@ -1,9 +1,9 @@
-import Navigation from "./_components/navigation";
-import HeroSection from "./_components/section-hero";
-import ScheduleSection from "./_components/section-schedule";
-import TechMonthSection from "./_components/section-techmonth";
+import Navigation from './_components/navigation';
+import HeroSection from './_components/section-hero';
+import ScheduleSection from './_components/section-schedule';
+import TechMonthSection from './_components/section-techmonth';
 
-export default function Page(): JSX.Element {
+const Page: React.FC = () => {
   return (
     <>
       <Navigation />
@@ -14,4 +14,6 @@ export default function Page(): JSX.Element {
       </main>
     </>
   );
-}
+};
+
+export default Page;

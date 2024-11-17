@@ -1,9 +1,11 @@
-"use server";
+/* eslint-disable @typescript-eslint/require-await -- server actions need to be async */
+'use server';
 
-import { cookies } from "next/headers";
-import { api } from "@/trpc/server";
-import { type Response } from "@/types/server";
-import { type Student } from "@/generated/intania/auth/student/v1/student";
+import { cookies } from 'next/headers';
+
+import { type Student } from '~/generated/intania/auth/student/v1/student';
+import { api } from '~/trpc/server';
+import { type Response } from '~/types/server';
 
 export async function login(
   username: string,
@@ -28,13 +30,13 @@ export async function login(
     if (!sid || !expiredAt) {
       return {
         success: false,
-        message: "Failed to login",
-        errors: ["Invalid session data"],
+        message: 'Failed to login',
+        errors: ['Invalid session data'],
       };
     }
 
     const cookieStore = cookies();
-    cookieStore.set("sid", sid, {
+    cookieStore.set('sid', sid, {
       expires: new Date(expiredAt),
       httpOnly: true,
     });
@@ -46,8 +48,8 @@ export async function login(
   } catch (error) {
     return {
       success: false,
-      message: "Failed to login",
-      errors: [error instanceof Error ? error.message : "Something went wrong"],
+      message: 'Failed to login',
+      errors: [error instanceof Error ? error.message : 'Something went wrong'],
     };
   }
 }
@@ -55,12 +57,12 @@ export async function login(
 export async function me(): Promise<Response<Student>> {
   try {
     const cookieStore = cookies();
-    const sid = cookieStore.get("sid")?.value;
+    const sid = cookieStore.get('sid')?.value;
     if (!sid) {
       return {
         success: false,
-        message: "Unauthorized",
-        errors: ["Session ID not found"],
+        message: 'Unauthorized',
+        errors: ['Session ID not found'],
       };
     }
 
@@ -68,32 +70,32 @@ export async function me(): Promise<Response<Student>> {
     if (!res.success) {
       return {
         success: false,
-        message: "Failed to get user data",
+        message: 'Failed to get user data',
         errors: res.errors,
       };
     }
 
     return {
       success: true,
-      message: "User data fetched",
+      message: 'User data fetched',
       data: res.data,
     };
   } catch (error) {
     return {
       success: false,
-      message: "Failed to get user data",
-      errors: [error instanceof Error ? error.message : "Something went wrong"],
+      message: 'Failed to get user data',
+      errors: [error instanceof Error ? error.message : 'Something went wrong'],
     };
   }
 }
 
 export async function logout(): Promise<Response<null>> {
   const cookieStore = cookies();
-  cookieStore.delete("sid");
+  cookieStore.delete('sid');
 
   return {
     success: true,
-    message: "Logged out",
+    message: 'Logged out',
     data: null,
   };
 }

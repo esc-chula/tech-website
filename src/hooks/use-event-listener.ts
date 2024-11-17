@@ -1,5 +1,8 @@
-import { type RefObject, useEffect, useRef } from "react";
-import { useIsomorphicLayoutEffect } from "./use-isomorphic-layout-effect";
+/* eslint-disable @typescript-eslint/no-unnecessary-condition -- we need to check if the value is null */
+/* eslint-disable @typescript-eslint/no-invalid-void-type -- we need to check if the value is null */
+import { type RefObject, useEffect, useRef } from 'react';
+
+import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
 
 function useEventListener<K extends keyof MediaQueryListEventMap>(
   eventName: K,
@@ -48,7 +51,7 @@ function useEventListener<
   ) => void,
   element?: RefObject<T>,
   options?: boolean | AddEventListenerOptions,
-) {
+): void {
   const savedHandler = useRef(handler);
 
   useIsomorphicLayoutEffect(() => {

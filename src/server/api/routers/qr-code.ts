@@ -1,8 +1,8 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { type QRcode } from "@/types/qr-code";
-import { CreateQrCodeDto } from "@/server/api/dto/qr-code";
+import { CreateQrCodeDto } from '~/server/api/dto/qr-code';
+import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { type QRcode } from '~/types/qr-code';
 
 export const qrCodeRouter = createTRPCRouter({
   create: publicProcedure
@@ -64,16 +64,10 @@ export const qrCodeRouter = createTRPCRouter({
           editedAt: new Date(),
         },
       });
-      if (newQrCode === null) {
-        return {
-          data: null,
-          error: `No QR code found for ID ${input.userId}`,
-        };
-      }
 
       return {
         data: newQrCode,
-        message: `Updated QrCode for ${user?.id}`,
+        message: `Updated QrCode for ID ${input.userId}`,
       };
     }),
 
@@ -94,7 +88,7 @@ export const qrCodeRouter = createTRPCRouter({
 
       await ctx.db.userQrCode.delete({
         where: {
-          id: Number(user?.id),
+          id: Number(user.id),
         },
       });
 

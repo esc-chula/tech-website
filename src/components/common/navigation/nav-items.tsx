@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
-import { heroLinks } from "@/constants/home";
-import Link from "next/link";
-import { Link as Scroll } from "react-scroll";
-import { useCloseNavMenu } from "./nav-menu";
+import Link from 'next/link';
+import { Link as Scroll } from 'react-scroll';
 
-export default function NavItems() {
+import { heroLinks } from '~/constants/home';
+
+import { useCloseNavMenu } from './nav-menu';
+
+const NavItems: React.FC = () => {
   const closeNavMenu = useCloseNavMenu();
 
   return (
@@ -15,32 +17,33 @@ export default function NavItems() {
           return (
             <Scroll
               key={link.href}
-              to={link.href}
-              spy={true}
-              smooth={true}
+              smooth
+              spy
+              className="cursor-pointer border-b border-neutral-800 px-7 py-5 font-semibold text-white hover:bg-white/5 lg:text-lg"
               duration={700}
               offset={-100}
-              className="cursor-pointer border-b border-neutral-800 px-7 py-5 font-semibold text-white hover:bg-white/5 lg:text-lg"
+              to={link.href}
               onClick={closeNavMenu}
             >
               {link.label}
             </Scroll>
           );
-        } else {
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              target={link.external ? "_blank" : ""}
-              rel={link.external ? "noopener noreferrer" : ""}
-              className="border-b border-neutral-800 px-7 py-5 font-semibold text-white hover:bg-white/5 lg:text-lg"
-              onClick={closeNavMenu}
-            >
-              {link.label}
-            </Link>
-          );
         }
+        return (
+          <Link
+            key={link.href}
+            className="border-b border-neutral-800 px-7 py-5 font-semibold text-white hover:bg-white/5 lg:text-lg"
+            href={link.href}
+            rel={link.external ? 'noopener noreferrer' : ''}
+            target={link.external ? '_blank' : ''}
+            onClick={closeNavMenu}
+          >
+            {link.label}
+          </Link>
+        );
       })}
     </div>
   );
-}
+};
+
+export default NavItems;

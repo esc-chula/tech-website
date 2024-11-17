@@ -1,9 +1,10 @@
-import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-import { techmonthRouter } from "./routers/techmonth";
-import { aboutRouter } from "./routers/about";
-import { authRouter } from "./routers/auth";
-import { linkShortenerRouter } from "./routers/link-shortener";
-import { qrCodeRouter } from "./routers/qr-code";
+import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
+
+import { aboutRouter } from './routers/about';
+import { authRouter } from './routers/auth';
+import { linkShortenerRouter } from './routers/link-shortener';
+import { qrCodeRouter } from './routers/qr-code';
+import { techmonthRouter } from './routers/techmonth';
 
 export const appRouter = createTRPCRouter({
   about: aboutRouter,

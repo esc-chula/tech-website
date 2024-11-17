@@ -1,26 +1,27 @@
-"use client";
+'use client';
 
-import { Check, Copy } from "lucide-react";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Check, Copy } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+import { Button } from '~/components/ui/button';
+import { cn } from '~/lib/utils';
 
 interface CopyButtonProps {
   value: string;
   className?: string;
 }
 
-export default function CopyButton({ value, className }: CopyButtonProps) {
+const CopyButton: React.FC<CopyButtonProps> = ({ value, className }) => {
   const [success, setSuccess] = useState(false);
 
-  const copy = async () => {
+  const copy = async (): Promise<void> => {
     if (success) return;
 
     try {
       await navigator.clipboard.writeText(value);
       setSuccess(true);
     } catch (error) {
-      console.error("Failed to copy: ", error);
+      console.error('Failed to copy: ', error);
     }
   };
 
@@ -35,11 +36,13 @@ export default function CopyButton({ value, className }: CopyButtonProps) {
 
   return (
     <Button
+      className={cn(success ? 'cursor-default' : 'cursor-pointer', className)}
       variant="transparent"
-      className={cn(success ? "cursor-default" : "cursor-pointer", className)}
       onClick={copy}
     >
       {success ? <Check size={16} /> : <Copy size={16} />}
     </Button>
   );
-}
+};
+
+export default CopyButton;

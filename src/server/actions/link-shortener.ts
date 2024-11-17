@@ -1,8 +1,11 @@
-"use server";
+'use server';
 
-import { api } from "@/trpc/server";
-import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
+import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
+
+import { api } from '~/trpc/server';
+import { type ShortenedLink } from '~/types/link-shortener';
+import { type Response } from '~/types/server';
 
 export async function createShortenedLink({
   name,
@@ -12,15 +15,15 @@ export async function createShortenedLink({
   name: string;
   slug: string;
   url: string;
-}) {
+}): Promise<Response<ShortenedLink>> {
   try {
     const cookieStore = cookies();
-    const sid = cookieStore.get("sid")?.value;
+    const sid = cookieStore.get('sid')?.value;
     if (!sid) {
       return {
         success: false,
-        message: "Unauthorized",
-        errors: ["Session ID not found"],
+        message: 'Unauthorized',
+        errors: ['Session ID not found'],
       };
     }
 
@@ -33,36 +36,38 @@ export async function createShortenedLink({
     if (!res.success) {
       return {
         success: false,
-        message: res.message ?? "Failed to create shortened link",
+        message: res.message ?? 'Failed to create shortened link',
         errors: res.errors,
       };
     }
 
-    revalidatePath("/tools/link-shortener");
+    revalidatePath('/tools/link-shortener');
 
     return {
       success: true,
-      message: "Shortened link created",
+      message: 'Shortened link created',
       data: res.data,
     };
   } catch (error) {
     return {
       success: false,
-      message: "Failed to create shortened link",
-      errors: [error instanceof Error ? error.message : "Something went wrong"],
+      message: 'Failed to create shortened link',
+      errors: [error instanceof Error ? error.message : 'Something went wrong'],
     };
   }
 }
 
-export async function deleteShortenedLink(slug: string) {
+export async function deleteShortenedLink(
+  slug: string,
+): Promise<Response<null>> {
   try {
     const cookieStore = cookies();
-    const sid = cookieStore.get("sid")?.value;
+    const sid = cookieStore.get('sid')?.value;
     if (!sid) {
       return {
         success: false,
-        message: "Unauthorized",
-        errors: ["Session ID not found"],
+        message: 'Unauthorized',
+        errors: ['Session ID not found'],
       };
     }
 
@@ -73,22 +78,23 @@ export async function deleteShortenedLink(slug: string) {
     if (!res.success) {
       return {
         success: false,
-        message: res.message ?? "Failed to delete shortened link",
+        message: res.message,
         errors: res.errors,
       };
     }
 
-    revalidatePath("/tools/link-shortener");
+    revalidatePath('/tools/link-shortener');
 
     return {
       success: true,
-      message: "Shortened link deleted",
+      message: 'Shortened link deleted',
+      data: null,
     };
   } catch (error) {
     return {
       success: false,
-      message: "Failed to delete shortened link",
-      errors: [error instanceof Error ? error.message : "Something went wrong"],
+      message: 'Failed to delete shortened link',
+      errors: [error instanceof Error ? error.message : 'Something went wrong'],
     };
   }
 }

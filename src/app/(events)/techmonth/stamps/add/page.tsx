@@ -1,7 +1,8 @@
-import { cookies } from "next/headers";
-import { notFound, redirect } from "next/navigation";
-import { getEventByEventId } from "@/server/actions/techmonth";
-import { api } from "@/trpc/server";
+import { cookies } from 'next/headers';
+import { notFound, redirect } from 'next/navigation';
+
+import { getEventByEventId } from '~/server/actions/techmonth';
+import { api } from '~/trpc/server';
 
 interface AddStampPageProps {
   searchParams: {
@@ -9,11 +10,9 @@ interface AddStampPageProps {
   };
 }
 
-export default async function AddStampPage({
-  searchParams,
-}: AddStampPageProps): Promise<JSX.Element> {
+const Page: React.FC<AddStampPageProps> = async ({ searchParams }) => {
   const cookieStore = cookies();
-  const studentId = cookieStore.get("studentId")?.value;
+  const studentId = cookieStore.get('studentId')?.value;
   if (!studentId) {
     redirect(
       `/techmonth/login?callbackUrl=${encodeURIComponent(`/techmonth/stamps/add?code=${searchParams.code}`)}`,
@@ -25,13 +24,12 @@ export default async function AddStampPage({
     return notFound();
   }
 
-  const { data: event, error } = await getEventByEventId(eventId);
-  if (!event) {
-    return notFound();
+  const res = await getEventByEventId(eventId);
+  if (!res.success) {
+    redirect('/techmonth/stamps');
   }
-  if (error) {
-    redirect("/techmonth/stamps");
-  }
+
+  const event = res.data;
 
   if (event.stampStrictDate) {
     const today = new Date();
@@ -41,7 +39,7 @@ export default async function AddStampPage({
     }
   }
 
-  const userStamps = await api.techMonthStamp.getStampsByStudentId({
+  const userStamps = await api.techmonth.getStampsByStudentId({
     studentId,
   });
 
@@ -50,13 +48,15 @@ export default async function AddStampPage({
   );
 
   if (hasAlreadyStamped) {
-    redirect("/techmonth/stamps");
+    redirect('/techmonth/stamps');
   }
 
-  await api.techMonthStamp.createStamp({
+  await api.techmonth.createStamp({
     studentId,
     eventId,
   });
 
-  redirect("/techmonth/stamps");
-}
+  redirect('/techmonth/stamps');
+};
+
+export default Page;

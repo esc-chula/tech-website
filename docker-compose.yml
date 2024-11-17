@@ -5,7 +5,7 @@ services:
     container_name: tech-website-postgres
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -18,9 +18,9 @@ services:
   hydra:
     image: oryd/hydra:v2.2.0
     ports:
-      - "4444:4444" # Public port
-      - "4445:4445" # Admin port, don't expose this port in production
-      - "9090:9090" # Port for development oauth client
+      - '4444:4444' # Public port
+      - '4445:4445' # Admin port, don't expose this port in production
+      - '9090:9090' # Port for development oauth client
     command: serve all --dev
     environment:
       DSN: postgres://hydra:secret@hydradb:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
@@ -59,22 +59,22 @@ services:
         condition: service_started
     environment:
       APP_DB_URL: postgres://postgres:123456@auth-db:5432/intania-auth
-      APP_PORT: "3000"
+      APP_PORT: '3000'
       APP_REDIS_URL: auth-redis:6379
-      APP_REDIS_PASSWORD: "123456"
-      APP_TOKEN_TTL: "3600"
-      APP_MOCK_LDAP: "1"
+      APP_REDIS_PASSWORD: '123456'
+      APP_TOKEN_TTL: '3600'
+      APP_MOCK_LDAP: '1'
 
   auth-db:
     image: postgres:16-bookworm
     hostname: auth-db
     environment:
-      POSTGRES_PASSWORD: "123456"
+      POSTGRES_PASSWORD: '123456'
       POSTGRES_DB: intania-auth
     volumes:
       - auth-db:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 2s
       timeout: 2s
       retries: 5
@@ -84,7 +84,7 @@ services:
     hostname: auth-redis
     ports:
       - 6379:6379
-    command: ["redis-server", "--requirepass", "123456"]
+    command: ['redis-server', '--requirepass', '123456']
 
   auth-migrations:
     image: ghcr.io/esc-chula/migrators:2c391cfa190345c2476328a40b15aca5ce3deaac
@@ -94,7 +94,7 @@ services:
         condition: service_healthy
     environment:
       LIQUIBASE_COMMAND_USERNAME: postgres
-      LIQUIBASE_COMMAND_PASSWORD: "123456"
+      LIQUIBASE_COMMAND_PASSWORD: '123456'
       LIQUIBASE_COMMAND_URL: jdbc:postgresql://auth-db:5432/intania-auth
       LIQUIBASE_COMMAND_CHANGELOG_FILE: migrators/auth/master.xml
     command:

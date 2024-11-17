@@ -1,14 +1,14 @@
-import { z } from "zod";
+import { z } from 'zod';
 
+import { type StudentLoginResponse } from '~/generated/intania/auth/account/v1/account';
+import { type Student } from '~/generated/intania/auth/student/v1/student';
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from "@/server/api/trpc";
-import { grpc } from "@/server/auth/grpc";
-import { type StudentLoginResponse } from "@/generated/intania/auth/account/v1/account";
-import { type Response } from "@/types/server";
-import { type Student } from "@/generated/intania/auth/student/v1/student";
+} from '~/server/api/trpc';
+import { grpc } from '~/server/auth/grpc';
+import { type Response } from '~/types/server';
 
 export const authRouter = createTRPCRouter({
   login: publicProcedure
@@ -21,16 +21,16 @@ export const authRouter = createTRPCRouter({
             password: input.password,
             verifyWithLdap: true,
           })
-          .catch((error) => {
+          .catch((error: unknown) => {
             throw new Error(
               error instanceof Error
                 ? error.message
-                : "Something went wrong logging in",
+                : 'Something went wrong logging in',
             );
           });
 
         if (!response.account || !response.student?.studentId) {
-          throw new Error("Authorized only for students");
+          throw new Error('Authorized only for students');
         }
 
         const user = await ctx.db.user.findUnique({
@@ -42,7 +42,7 @@ export const authRouter = createTRPCRouter({
         if (user) {
           return {
             success: true,
-            message: "Login successful",
+            message: 'Login successful',
             data: response,
           };
         }
@@ -54,52 +54,49 @@ export const authRouter = createTRPCRouter({
               studentId: response.student.studentId,
             },
           })
-          .catch((error) => {
+          .catch((error: unknown) => {
             throw new Error(
               error instanceof Error
                 ? error.message
-                : "Something went wrong creating user",
+                : 'Something went wrong creating user',
             );
           });
 
         return {
           success: true,
-          message: "Login successful",
+          message: 'Login successful',
           data: response,
         };
       } catch (error) {
         return {
           success: false,
-          message: "Failed to login",
+          message: 'Failed to login',
           errors: [
-            error instanceof Error ? error.message : "Something went wrong",
+            error instanceof Error ? error.message : 'Something went wrong',
           ],
         };
       }
     }),
 
-  me: protectedProcedure.query(async ({ ctx }): Promise<Response<Student>> => {
+  me: protectedProcedure.query(({ ctx }): Response<Student> => {
     try {
-      if (!ctx.session) {
-        throw new Error("Unauthorized");
+      if (!ctx.session.user) {
+        throw new Error('Unauthorized');
       }
 
       const userData = ctx.session.user;
-      if (!userData) {
-        throw new Error("Unauthorized");
-      }
 
       return {
         success: true,
-        message: "User data retrieved",
+        message: 'User data retrieved',
         data: userData,
       };
     } catch (error) {
       return {
         success: false,
-        message: "Failed to get user data",
+        message: 'Failed to get user data',
         errors: [
-          error instanceof Error ? error.message : "Something went wrong",
+          error instanceof Error ? error.message : 'Something went wrong',
         ],
       };
     }

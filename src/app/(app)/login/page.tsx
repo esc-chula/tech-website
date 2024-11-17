@@ -1,14 +1,15 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import LoginForm from "@/components/login/login-form";
-import Card from "@/components/ui/card";
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export default function Page() {
+import LoginForm from '~/components/login/login-form';
+import { Card } from '~/components/ui/card';
+
+const Page: React.FC = () => {
   const cookieStore = cookies();
-  const sid = cookieStore.get("sid")?.value;
+  const sid = cookieStore.get('sid')?.value;
 
   if (sid) {
-    redirect("/");
+    redirect('/');
   }
 
   return (
@@ -18,4 +19,6 @@ export default function Page() {
       </Card>
     </div>
   );
-}
+};
+
+export default Page;

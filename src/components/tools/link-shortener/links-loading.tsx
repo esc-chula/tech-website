@@ -1,6 +1,6 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from '~/components/ui/skeleton';
 
-export default function LinksLoading() {
+const LinksLoading: React.FC = () => {
   return (
     <>
       <Skeleton className="h-36 w-full" />
@@ -10,4 +10,6 @@ export default function LinksLoading() {
       <Skeleton className="h-36 w-full" />
     </>
   );
-}
+};
+
+export default LinksLoading;

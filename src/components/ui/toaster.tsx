@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import { useToast } from "@/hooks/use-toast";
+import { useEffect, useState } from 'react';
+
 import {
   Toast,
   ToastClose,
@@ -8,11 +9,11 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+} from '~/components/ui/toast';
+import { useToast } from '~/hooks/use-toast';
+import { cn } from '~/lib/utils';
 
-export function Toaster() {
+export const Toaster = (): React.ReactNode => {
   const { toasts } = useToast();
 
   const [isClient, setIsClient] = useState(false);
@@ -27,23 +28,23 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
+      {toasts.map(({ id, title, description, action, ...props }) => {
         return (
           <Toast
             key={id}
             {...props}
             className={cn(
-              "",
-              props.variant === "destructive"
-                ? ""
-                : "border border-neutral-800 bg-neutral-950/70 text-white backdrop-blur-lg",
+              '',
+              props.variant === 'destructive'
+                ? ''
+                : 'border border-neutral-800 bg-neutral-950/70 text-white backdrop-blur-lg',
             )}
           >
             <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
-              {description && (
+              {title ? <ToastTitle>{title}</ToastTitle> : null}
+              {description ? (
                 <ToastDescription>{description}</ToastDescription>
-              )}
+              ) : null}
             </div>
             {action}
             <ToastClose />
@@ -53,4 +54,4 @@ export function Toaster() {
       <ToastViewport />
     </ToastProvider>
   );
-}
+};

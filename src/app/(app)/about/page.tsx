@@ -1,13 +1,15 @@
-import { MembersSection } from "@/components/about/members-section";
-import { ProjectsSection } from "@/components/about/projects-section";
-import { BackButton } from "@/components/common/button/back-button";
+import MembersSection from '~/components/about/members-section';
+import ProjectsSection from '~/components/about/projects-section';
+import BackButton from '~/components/common/button/back-button';
 
-export default function Page() {
+const Page: React.FC = () => {
   return (
     <>
-      <BackButton href="/" fixed />
+      <BackButton fixed href="/" />
       <ProjectsSection />
       <MembersSection />
     </>
   );
-}
+};
+
+export default Page;

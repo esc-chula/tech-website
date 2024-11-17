@@ -1,13 +1,15 @@
-import { Section } from "@/components/ui/section";
-import { Title } from "@/components/ui/title";
-import { Suspense } from "react";
-import { MembersLoading } from "./members-loading";
-import { MemberContainer } from "./members-container";
+import { Suspense } from 'react';
 
-export const MembersSection = async () => {
+import { Section } from '~/components/ui/section';
+import { Title } from '~/components/ui/title';
+
+import MemberContainer from './members-container';
+import MembersLoading from './members-loading';
+
+const MembersSection: React.FC = () => {
   return (
     <Section className="gap-6">
-      <Title variant="sectionTitle" color="primary" className="text-4xl">
+      <Title className="text-4xl" color="primary" variant="sectionTitle">
         Members
       </Title>
       <p className="max-w-3xl text-center font-medium">
@@ -21,3 +23,5 @@ export const MembersSection = async () => {
     </Section>
   );
 };
+
+export default MembersSection;

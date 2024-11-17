@@ -1,7 +1,7 @@
 export function getSIDFromHeader(headers: Headers): string | null {
-  const cookiesString = headers.get("cookie");
-  const cookies = cookiesString?.split(";").reduce((acc, cookie) => {
-    const [key, value] = cookie.split("=").map((v) => v.trim()) as [
+  const cookiesString = headers.get('cookie');
+  const cookies = cookiesString?.split(';').reduce((acc, cookie) => {
+    const [key, value] = cookie.split('=').map((v) => v.trim()) as [
       string,
       string,
     ];

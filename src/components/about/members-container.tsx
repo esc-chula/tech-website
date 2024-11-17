@@ -1,7 +1,8 @@
-import { api } from "@/trpc/server";
-import MemberButton from "./member-button";
+import { api } from '~/trpc/server';
 
-export const MemberContainer = async () => {
+import MemberButton from './member-button';
+
+const MemberContainer: React.FC = async () => {
   const response = await api.about.getMembers();
 
   if (!response.success) {
@@ -10,14 +11,16 @@ export const MemberContainer = async () => {
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2">
-      {response.data.map((member, index) => (
+      {response.data.map((member) => (
         <MemberButton
-          key={index}
+          key={member.id}
+          imgLink={member.avatar_url}
           nameTag={member.login}
           url={member.html_url}
-          imgLink={member.avatar_url}
         />
       ))}
     </div>
   );
 };
+
+export default MemberContainer;

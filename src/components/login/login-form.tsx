@@ -1,8 +1,14 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { useToast } from '~/hooks/use-toast';
+import { login } from '~/server/actions/auth';
+
+import { Button } from '../ui/button';
 import {
   Form,
   FormControl,
@@ -10,42 +16,44 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { login } from "@/server/actions/auth";
-import { useRouter } from "next/navigation";
+} from '../ui/form';
+import { Input } from '../ui/input';
 
 const formSchema = z.object({
   studentId: z.string().min(10, {
-    message: "Student ID must be at least 10 characters.",
+    message: 'Student ID must be at least 10 characters.',
   }),
   password: z.string(),
 });
 
-export default function LoginForm() {
+const LoginForm: React.FC = () => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      studentId: "",
-      password: "",
+      studentId: '',
+      password: '',
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     const res = await login(values.studentId, values.password);
     if (res.success) {
-      router.push("/");
+      router.push('/');
     } else {
-      alert(res.errors.join(", "));
+      toast({
+        title: 'Failed to login',
+        description: res.errors.join(', '),
+        variant: 'destructive',
+      });
     }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="studentId"
@@ -76,4 +84,6 @@ export default function LoginForm() {
       </form>
     </Form>
   );
-}
+};
+
+export default LoginForm;

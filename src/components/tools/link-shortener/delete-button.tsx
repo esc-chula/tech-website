@@ -1,4 +1,8 @@
-"use client";
+'use client';
+
+import { Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import {
   AlertDialog,
@@ -9,25 +13,22 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { deleteShortenedLink } from "@/server/actions/link-shortener";
-import { Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+} from '~/components/ui/alert-dialog';
+import { Button } from '~/components/ui/button';
+import { useToast } from '~/hooks/use-toast';
+import { deleteShortenedLink } from '~/server/actions/link-shortener';
 
 interface DeleteButtonProps {
   slug: string;
 }
 
-export default function DeleteButton({ slug }: DeleteButtonProps) {
+const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
   const router = useRouter();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const deleteHandler = async () => {
+  const deleteHandler = async (): Promise<void> => {
     try {
       setLoading(true);
 
@@ -36,13 +37,13 @@ export default function DeleteButton({ slug }: DeleteButtonProps) {
       setLoading(false);
       setOpen(false);
 
-      router.push("/tools/link-shortener");
+      router.push('/tools/link-shortener');
     } catch (error) {
       toast({
-        title: "Failed to delete link",
+        title: 'Failed to delete link',
         description:
-          error instanceof Error ? error.message : "Something went wrong",
-        variant: "destructive",
+          error instanceof Error ? error.message : 'Something went wrong',
+        variant: 'destructive',
       });
     }
   };
@@ -65,9 +66,9 @@ export default function DeleteButton({ slug }: DeleteButtonProps) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button
+            disabled={loading}
             variant="destructive"
             onClick={deleteHandler}
-            disabled={loading}
           >
             Delete
           </Button>
@@ -75,4 +76,6 @@ export default function DeleteButton({ slug }: DeleteButtonProps) {
       </AlertDialogContent>
     </AlertDialog>
   );
-}
+};
+
+export default DeleteButton;

@@ -1,9 +1,12 @@
-import { User } from "lucide-react";
-import { me } from "@/server/actions/auth";
-import LoginButton from "../button/login-button";
-import LogoutButton from "../button/logout-button";
+/* eslint-disable no-nested-ternary -- to handle cases */
+import { User } from 'lucide-react';
 
-export default async function UserBox() {
+import { me } from '~/server/actions/auth';
+
+import LoginButton from '../button/login-button';
+import LogoutButton from '../button/logout-button';
+
+const UserBox: React.FC = async () => {
   const res = await me();
 
   return (
@@ -17,14 +20,10 @@ export default async function UserBox() {
             res.data.firstNameEn ? (
               <>
                 <p className="font-medium">{res.data.firstNameEn}</p>
-                <p className="text-sm">
-                  {res.success ? res.data.studentId : "Please log in"}
-                </p>
+                <p className="text-sm">{res.data.studentId}</p>
               </>
             ) : (
-              <>
-                <p className="font-medium">{res.data.studentId}</p>
-              </>
+              <p className="font-medium">{res.data.studentId}</p>
             )
           ) : (
             <>
@@ -37,4 +36,6 @@ export default async function UserBox() {
       {res.success ? <LogoutButton /> : <LoginButton />}
     </div>
   );
-}
+};
+
+export default UserBox;

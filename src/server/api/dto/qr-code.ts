@@ -1,4 +1,4 @@
-import { z } from "Zod";
+import { z } from 'Zod';
 
 export const CreateQrCodeDto = z.object({
   name: z.string(),

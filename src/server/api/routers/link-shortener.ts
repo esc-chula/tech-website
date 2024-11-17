@@ -1,12 +1,12 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   CreateShortenedLinkDto,
   DeleteShortenedLinkDto,
   GetShortenedLinkBySlugDto,
   UpdateShortenedLinkDto,
-} from "@/server/api/dto/link-shortener";
-import { type ShortenedLink } from "@/types/link-shortener";
-import { type Response } from "@/types/server";
+} from '~/server/api/dto/link-shortener';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
+import { type ShortenedLink } from '~/types/link-shortener';
+import { type Response } from '~/types/server';
 
 export const linkShortenerRouter = createTRPCRouter({
   create: protectedProcedure
@@ -14,7 +14,7 @@ export const linkShortenerRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }): Promise<Response<ShortenedLink>> => {
       const userId = ctx.session.user?.id;
       if (!userId) {
-        throw new Error("Unauthorized");
+        throw new Error('Unauthorized');
       }
 
       const res = await ctx.db.$transaction(async (tx) => {
@@ -51,7 +51,7 @@ export const linkShortenerRouter = createTRPCRouter({
       if (res.error ?? !res.data) {
         return {
           success: false,
-          message: res.message ?? "Failed to create shortened link",
+          message: res.message,
           errors: [res.error],
         };
       }
@@ -68,7 +68,7 @@ export const linkShortenerRouter = createTRPCRouter({
       try {
         const userId = ctx.session.user?.id;
         if (!userId) {
-          throw new Error("Unauthorized");
+          throw new Error('Unauthorized');
         }
 
         const userShortenedLink = await ctx.db.userShortenedLink
@@ -77,25 +77,25 @@ export const linkShortenerRouter = createTRPCRouter({
               userId,
             },
           })
-          .catch((error) => {
+          .catch((error: unknown) => {
             throw new Error(
               error instanceof Error
                 ? error.message
-                : "Something went wrong fetching shortened links",
+                : 'Something went wrong fetching shortened links',
             );
           });
 
         return {
           success: true,
-          message: "Successfully fetched shortened links",
+          message: 'Successfully fetched shortened links',
           data: userShortenedLink,
         };
       } catch (error) {
         return {
           success: false,
-          message: "Failed to fetch shortened links",
+          message: 'Failed to fetch shortened links',
           errors: [
-            error instanceof Error ? error.message : "Something went wrong",
+            error instanceof Error ? error.message : 'Something went wrong',
           ],
         };
       }
@@ -105,39 +105,100 @@ export const linkShortenerRouter = createTRPCRouter({
   getBySlug: protectedProcedure
     .input(GetShortenedLinkBySlugDto)
     .query(async ({ ctx, input }) => {
-      const userId = ctx.session.user?.id;
-      if (!userId) {
-        throw new Error("Unauthorized");
-      }
+      try {
+        const userId = ctx.session.user?.id;
+        if (!userId) {
+          throw new Error('Unauthorized');
+        }
 
-      const shortenedLink = await ctx.db.userShortenedLink
-        .findFirst({
-          where: {
-            slug: input.slug,
-            userId,
-          },
-        })
-        .catch((error) => {
-          throw new Error(
-            error instanceof Error
-              ? error.message
-              : "Something went wrong fetching shortened link",
-          );
-        });
+        const shortenedLink = await ctx.db.userShortenedLink
+          .findFirst({
+            where: {
+              slug: input.slug,
+              userId,
+            },
+          })
+          .catch((error: unknown) => {
+            throw new Error(
+              error instanceof Error
+                ? error.message
+                : 'Something went wrong fetching shortened link',
+            );
+          });
 
-      if (!shortenedLink) {
+        if (!shortenedLink) {
+          return {
+            success: false,
+            message: `Shortened link with the slug "${input.slug}" not found`,
+            errors: ['Shortened link not found'],
+          };
+        }
+
+        return {
+          success: true,
+          message: `Successfully fetched shortened link with the slug "${input.slug}"`,
+          data: shortenedLink,
+        };
+      } catch (error) {
         return {
           success: false,
-          message: `Shortened link with the slug "${input.slug}" not found`,
-          errors: ["Shortened link not found"],
+          message: 'Failed to fetch shortened link',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
         };
       }
+    }),
 
-      return {
-        success: true,
-        message: `Successfully fetched shortened link with the slug "${input.slug}"`,
-        data: shortenedLink,
-      };
+  getBySlugWithStats: protectedProcedure
+    .input(GetShortenedLinkBySlugDto)
+    .query(async ({ ctx, input }) => {
+      try {
+        const userId = ctx.session.user?.id;
+        if (!userId) {
+          throw new Error('Unauthorized');
+        }
+
+        const shortenedLink = await ctx.db.userShortenedLink
+          .findFirst({
+            where: {
+              slug: input.slug,
+              userId,
+            },
+            include: {
+              userShortenedLinkVisitedRecords: true,
+            },
+          })
+          .catch((error: unknown) => {
+            throw new Error(
+              error instanceof Error
+                ? error.message
+                : 'Something went wrong fetching shortened link',
+            );
+          });
+
+        if (!shortenedLink) {
+          return {
+            success: false,
+            message: `Shortened link with the slug "${input.slug}" not found`,
+            errors: ['Shortened link not found'],
+          };
+        }
+
+        return {
+          success: true,
+          message: `Successfully fetched shortened link with the slug "${input.slug}"`,
+          data: shortenedLink,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Failed to fetch shortened link',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
+        };
+      }
     }),
 
   update: protectedProcedure
@@ -145,7 +206,7 @@ export const linkShortenerRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user?.id;
       if (!userId) {
-        throw new Error("Unauthorized");
+        throw new Error('Unauthorized');
       }
 
       const res = await ctx.db.$transaction(async (tx) => {
@@ -156,7 +217,7 @@ export const linkShortenerRouter = createTRPCRouter({
         });
 
         if (
-          currentShortenedLink == null ||
+          currentShortenedLink === null ||
           currentShortenedLink.userId !== userId
         ) {
           return {
@@ -186,7 +247,7 @@ export const linkShortenerRouter = createTRPCRouter({
       if (res.error ?? !res.data) {
         return {
           success: false,
-          message: res.message ?? "Failed to update shortened link",
+          message: res.message,
           errors: [res.error],
         };
       }
@@ -203,7 +264,7 @@ export const linkShortenerRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user?.id;
       if (!userId) {
-        throw new Error("Unauthorized");
+        throw new Error('Unauthorized');
       }
 
       const res = await ctx.db.$transaction(async (tx) => {
@@ -212,7 +273,7 @@ export const linkShortenerRouter = createTRPCRouter({
         });
 
         if (
-          currentShortenedLink == null ||
+          currentShortenedLink === null ||
           currentShortenedLink.userId !== userId
         ) {
           return {
@@ -237,7 +298,7 @@ export const linkShortenerRouter = createTRPCRouter({
       if (res.error ?? !res.data) {
         return {
           success: false,
-          message: res.message ?? "Failed to delete shortened link",
+          message: res.message,
           errors: [res.error],
         };
       }
@@ -251,10 +312,10 @@ export const linkShortenerRouter = createTRPCRouter({
 
   deleteBySlug: protectedProcedure
     .input(GetShortenedLinkBySlugDto)
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }): Promise<Response<null>> => {
       const userId = ctx.session.user?.id;
       if (!userId) {
-        throw new Error("Unauthorized");
+        throw new Error('Unauthorized');
       }
 
       const res = await ctx.db.$transaction(async (tx) => {
@@ -288,15 +349,15 @@ export const linkShortenerRouter = createTRPCRouter({
       if (res.error ?? !res.data) {
         return {
           success: false,
-          message: res.message ?? "Failed to delete shortened link",
-          errors: [res.error],
+          message: res.message,
+          errors: [res.error ?? 'Failed to delete shortened link'],
         };
       }
 
       return {
         success: true,
         message: res.message,
-        data: res.data,
+        data: null,
       };
     }),
 });

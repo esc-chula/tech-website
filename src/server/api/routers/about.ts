@@ -1,6 +1,6 @@
-import { type GithubMember } from "@/types/about";
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { type Response } from "@/types/server";
+import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { type GithubMember } from '~/types/about';
+import { type Response } from '~/types/server';
 
 export const aboutRouter = createTRPCRouter({
   getMembers: publicProcedure.query(
@@ -11,22 +11,22 @@ export const aboutRouter = createTRPCRouter({
         );
 
         if (!response.ok) {
-          throw new Error("Fetch failed");
+          throw new Error('Fetch failed');
         }
 
         const data = (await response.json()) as GithubMember[];
 
         return {
           success: true,
-          message: "Successfully fetched members",
+          message: 'Successfully fetched members',
           data,
         };
       } catch (error) {
         return {
           success: false,
-          message: "Failed to fetch members from Github",
+          message: 'Failed to fetch members from Github',
           errors: [
-            error instanceof Error ? error.message : "Something went wrong",
+            error instanceof Error ? error.message : 'Something went wrong',
           ],
         };
       }

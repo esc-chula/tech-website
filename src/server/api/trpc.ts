@@ -1,12 +1,27 @@
-import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
-import { ZodError } from "zod";
+import { TRPCError, initTRPC } from '@trpc/server';
+import superjson from 'superjson';
+import { ZodError } from 'zod';
 
-import { db } from "@/server/db";
-import { getSIDFromHeader } from "@/lib/auth";
-import { grpc } from "../auth/grpc";
+import { getSIDFromHeader } from '~/lib/auth';
+import { db } from '~/server/db';
 
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+import { grpc } from '../auth/grpc';
+
+interface TRPCContext {
+  db: typeof db;
+  session: {
+    user: {
+      id: number;
+      oidcId: string;
+      studentId: string;
+    } | null;
+  };
+  headers: Headers;
+}
+
+export const createTRPCContext = async (opts: {
+  headers: Headers;
+}): Promise<TRPCContext> => {
   const sessionId = getSIDFromHeader(opts.headers);
 
   const me = sessionId
@@ -14,11 +29,11 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
         .me({
           sessionId,
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
+            code: 'INTERNAL_SERVER_ERROR',
             message:
-              error instanceof Error ? error.message : "Something went wrong",
+              error instanceof Error ? error.message : 'Something went wrong',
           });
         })
     : null;
@@ -84,7 +99,9 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   if (t._config.isDev) {
     // artificial delay in dev
     const waitMs = Math.floor(Math.random() * 400) + 100;
-    await new Promise((resolve) => setTimeout(resolve, waitMs));
+    await new Promise((resolve) => {
+      setTimeout(resolve, waitMs);
+    });
   }
 
   const result = await next();
@@ -97,8 +114,8 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 export const publicProcedure = t.procedure.use(timingMiddleware);
 
 const authMiddleware = t.middleware(async ({ ctx, next }) => {
-  if (!ctx.session) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+  if (!ctx.session.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
 
   return next();

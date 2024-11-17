@@ -1,20 +1,22 @@
-import { getEvents } from "@/server/actions/techmonth";
-import { api } from "@/trpc/server";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import Header from "./_components/header";
-import Link from "next/link";
-import StampsLadder from "./_components/stamps_ladder";
-import { Modal, ModalContent, TriggerModal } from "./_components/add_modal";
+import { cookies } from 'next/headers';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-export default async function StampsPage(): Promise<JSX.Element> {
+import { getEvents } from '~/server/actions/techmonth';
+import { api } from '~/trpc/server';
+
+import { Modal, ModalContent, TriggerModal } from './_components/add-modal';
+import Header from './_components/header';
+import StampsLadder from './_components/stamps-ladder';
+
+const Page: React.FC = async () => {
   const cookieStore = cookies();
-  const studentId = cookieStore.get("studentId")?.value;
+  const studentId = cookieStore.get('studentId')?.value;
   if (!studentId) {
-    redirect("/techmonth/login");
+    redirect('/techmonth/login');
   }
 
-  const stamps = await api.techMonthStamp.getStampsByStudentId({
+  const stamps = await api.techmonth.getStampsByStudentId({
     studentId,
   });
 
@@ -42,8 +44,8 @@ export default async function StampsPage(): Promise<JSX.Element> {
                 <span className="text-techmonth-green">STAMPS</span> BOOK
               </h2>
               <Link
-                href="/techmonth/stamps/rewards"
                 className="w-max font-press-start-2p text-techmonth-magenta underline hover:text-techmonth-yellow"
+                href="/techmonth/stamps/rewards"
               >{`REWARDS ->`}</Link>
             </div>
             <TriggerModal className="mt-4 h-min bg-techmonth-yellow px-6 py-2 text-2xl text-techmonth-black duration-200 hover:translate-x-3 lg:text-3xl">
@@ -58,4 +60,6 @@ export default async function StampsPage(): Promise<JSX.Element> {
       </main>
     </Modal>
   );
-}
+};
+
+export default Page;

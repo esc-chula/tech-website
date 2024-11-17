@@ -1,11 +1,12 @@
-import { BackButton } from "@/components/common/button/back-button";
-import { Title } from "@/components/ui/title";
-import CreateLinkDialog from "@/components/tools/link-shortener/create-link-dialog";
-import LinksContainer from "@/components/tools/link-shortener/links-container";
-import LinksLoading from "@/components/tools/link-shortener/links-loading";
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-export default function Page() {
+import BackButton from '~/components/common/button/back-button';
+import CreateLinkDialog from '~/components/tools/link-shortener/create-link-dialog';
+import LinksContainer from '~/components/tools/link-shortener/links-container';
+import LinksLoading from '~/components/tools/link-shortener/links-loading';
+import { Title } from '~/components/ui/title';
+
+const Page: React.FC = () => {
   return (
     <>
       <BackButton href="/" />
@@ -23,4 +24,6 @@ export default function Page() {
       </div>
     </>
   );
-}
+};
+
+export default Page;

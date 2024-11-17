@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
+
+import { cn } from '~/lib/utils';
 
 interface NavMenuContextProps {
   isOpen: boolean;
@@ -13,7 +14,11 @@ const NavMenuContext = createContext<NavMenuContextProps>({
   setIsOpen: () => null,
 });
 
-export const NavMenu = ({ children }: { children: React.ReactNode }) => {
+interface NavMenuProps {
+  children: React.ReactNode;
+}
+
+export const NavMenu: React.FC<NavMenuProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -25,7 +30,7 @@ export const NavMenu = ({ children }: { children: React.ReactNode }) => {
 
 type NavMenuTriggerProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const NavMenuTrigger = ({ ...props }: NavMenuTriggerProps) => {
+export const NavMenuTrigger: React.FC<NavMenuTriggerProps> = ({ ...props }) => {
   const { setIsOpen } = useContext(NavMenuContext);
 
   return (
@@ -51,14 +56,14 @@ interface NavMenuContentProps {
   children: React.ReactNode;
 }
 
-export function NavMenuContent({ children }: NavMenuContentProps) {
+export const NavMenuContent: React.FC<NavMenuContentProps> = ({ children }) => {
   const { isOpen, setIsOpen } = useContext(NavMenuContext);
 
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     }
   }
 
@@ -66,16 +71,17 @@ export function NavMenuContent({ children }: NavMenuContentProps) {
     <>
       <nav
         className={cn(
-          "fixed left-0 right-0 top-16 z-40 border-b border-neutral-800 bg-neutral-950/70 backdrop-blur-lg duration-300 ease-in-out",
-          isOpen ? "translate-y-0" : "translate-y-[calc(-100%-4rem)]",
+          'fixed left-0 right-0 top-16 z-40 border-b border-neutral-800 bg-neutral-950/70 backdrop-blur-lg duration-300 ease-in-out',
+          isOpen ? 'translate-y-0' : 'translate-y-[calc(-100%-4rem)]',
         )}
       >
         {children}
       </nav>
       <div
+        aria-hidden="true"
         className={cn(
-          "fixed inset-0 z-30 bg-black/50 backdrop-blur-sm duration-300 ease-in-out",
-          isOpen ? "opacity-100" : "pointer-events-none opacity-0",
+          'fixed inset-0 z-30 bg-black/50 backdrop-blur-sm duration-300 ease-in-out',
+          isOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         onClick={() => {
           setIsOpen(false);
@@ -83,4 +89,4 @@ export function NavMenuContent({ children }: NavMenuContentProps) {
       />
     </>
   );
-}
+};

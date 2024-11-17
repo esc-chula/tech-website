@@ -1,6 +1,12 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { Button } from '~/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '~/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -17,35 +23,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { createShortenedLink } from "@/server/actions/link-shortener";
-import { Plus } from "lucide-react";
-import { useState } from "react";
+} from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { useToast } from '~/hooks/use-toast';
+import { createShortenedLink } from '~/server/actions/link-shortener';
 
 const formSchema = z.object({
   name: z.string().max(50, {
-    message: "Name must be less than 50 characters",
+    message: 'Name must be less than 50 characters',
   }),
   slug: z
     .string()
     .min(1, {
-      message: "Slug is required",
+      message: 'Slug is required',
     })
     .max(50)
     .regex(/^[a-z0-9-]+$/i, {
-      message: "Please enter a valid slug",
+      message: 'Please enter a valid slug',
     }),
   url: z.string().url({
-    message: "Please enter a valid URL",
+    message: 'Please enter a valid URL',
   }),
 });
 
-export default function CreateLinkDialog() {
+const CreateLinkDialog: React.FC = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -53,13 +54,13 @@ export default function CreateLinkDialog() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      slug: "",
-      url: "",
+      name: '',
+      slug: '',
+      url: '',
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     try {
       setLoading(true);
 
@@ -72,17 +73,12 @@ export default function CreateLinkDialog() {
       if (!res.success) {
         console.error(res.errors);
         toast({
-          title: "Failed to create shortened link",
+          title: 'Failed to create shortened link',
           description: res.message,
-          variant: "destructive",
+          variant: 'destructive',
         });
         return;
       }
-
-      toast({
-        title: "Shortened link created",
-        description: res.message,
-      });
 
       form.reset();
       setOpen(false);
@@ -91,10 +87,10 @@ export default function CreateLinkDialog() {
       console.error(error);
 
       toast({
-        title: "Failed to create shortened link",
+        title: 'Failed to create shortened link',
         description:
-          error instanceof Error ? error.message : "Something went wrong",
-        variant: "destructive",
+          error instanceof Error ? error.message : 'Something went wrong',
+        variant: 'destructive',
       });
     }
   }
@@ -109,7 +105,7 @@ export default function CreateLinkDialog() {
       </DialogTrigger>
       <DialogContent className="md:max-w-md">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
               <DialogTitle>Shorten a link</DialogTitle>
             </DialogHeader>
@@ -158,7 +154,7 @@ export default function CreateLinkDialog() {
               />
             </div>
             <DialogFooter>
-              <Button variant="primary" type="submit" disabled={loading}>
+              <Button disabled={loading} type="submit" variant="primary">
                 Save
               </Button>
             </DialogFooter>
@@ -167,4 +163,6 @@ export default function CreateLinkDialog() {
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default CreateLinkDialog;

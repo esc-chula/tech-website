@@ -1,7 +1,7 @@
-import { Section } from "@/components/ui/section";
-import { Title } from "@/components/ui/title";
+import { Section } from '~/components/ui/section';
+import { Title } from '~/components/ui/title';
 
-export const AboutSection = () => {
+const AboutSection: React.FC = () => {
   return (
     <Section className="gap-4">
       <Title className="text-5xl">About</Title>
@@ -21,3 +21,5 @@ export const AboutSection = () => {
     </Section>
   );
 };
+
+export default AboutSection;
