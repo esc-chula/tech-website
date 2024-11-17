@@ -48,6 +48,7 @@ const formSchema = z.object({
 export default function CreateLinkDialog() {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,6 +61,8 @@ export default function CreateLinkDialog() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      setLoading(true);
+
       const res = await createShortenedLink({
         name: values.name,
         slug: values.slug,
@@ -83,6 +86,7 @@ export default function CreateLinkDialog() {
 
       form.reset();
       setOpen(false);
+      setLoading(false);
     } catch (error) {
       console.error(error);
 
@@ -154,7 +158,7 @@ export default function CreateLinkDialog() {
               />
             </div>
             <DialogFooter>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" disabled={loading}>
                 Save
               </Button>
             </DialogFooter>
