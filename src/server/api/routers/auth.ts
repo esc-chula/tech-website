@@ -1,14 +1,14 @@
-import { z } from 'zod';
-
 import { type StudentLoginResponse } from '~/generated/intania/auth/account/v1/account';
 import { type Student } from '~/generated/intania/auth/student/v1/student';
 import { createTRPCRouter, trpc } from '~/server/api/trpc';
 import { grpc } from '~/server/auth/grpc';
 import { type Response } from '~/types/server';
 
+import { LoginDto } from '../dto/auth';
+
 export const authRouter = createTRPCRouter({
   login: trpc
-    .input(z.object({ username: z.string(), password: z.string() }))
+    .input(LoginDto)
     .query(async ({ ctx, input }): Promise<Response<StudentLoginResponse>> => {
       let response: StudentLoginResponse;
 
