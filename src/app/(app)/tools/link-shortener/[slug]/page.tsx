@@ -1,11 +1,12 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import BackButton from '~/components/common/button/back-button';
 import CopyButton from '~/components/tools/link-shortener/copy-button';
 import DeleteButton from '~/components/tools/link-shortener/delete-button';
-import EditLinkCard from '~/components/tools/link-shortener/edit-link-card';
+import LinkEditCard from '~/components/tools/link-shortener/link-edit-card';
+import LinkStatsCard from '~/components/tools/link-shortener/link-stats-card';
 import QrCodeButton from '~/components/tools/link-shortener/qr-code-button';
-import { Card } from '~/components/ui/card';
 import { api } from '~/trpc/server';
 
 interface PageProps {
@@ -30,13 +31,19 @@ const Page: React.FC<PageProps> = async ({ params }) => {
       <BackButton href="/tools/link-shortener" />
       <div className="pb-10 pt-24">
         <div className="flex items-center justify-between">
-          <h3 className="space-x-0.5 truncate text-3xl font-semibold">
-            <span className="hidden text-neutral-500 sm:inline">
-              intania.link
-            </span>
-            <span className="text-neutral-500">/</span>
-            <span className="text-amber-300">{slug}</span>
-          </h3>
+          <Link
+            href={`https://intania.link/${slug}`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <h3 className="space-x-0.5 truncate text-3xl font-semibold">
+              <span className="hidden text-neutral-500 sm:inline">
+                intania.link
+              </span>
+              <span className="text-neutral-500">/</span>
+              <span className="text-amber-300">{slug}</span>
+            </h3>
+          </Link>
           <div className="flex items-center">
             <QrCodeButton />
             <CopyButton value={`https://intania.link/${slug}`} />
@@ -44,9 +51,9 @@ const Page: React.FC<PageProps> = async ({ params }) => {
           </div>
         </div>
       </div>
-      <div className="flex gap-4">
-        <EditLinkCard className="w-1/3" shortenedLink={res.data} />
-        <Card className="w-2/3">test</Card>
+      <div className="flex flex-col lg:flex-row gap-4 pb-16">
+        <LinkEditCard className="lg:w-1/3" shortenedLink={res.data} />
+        <LinkStatsCard className="lg:w-2/3" shortenedLink={res.data} />
       </div>
     </>
   );

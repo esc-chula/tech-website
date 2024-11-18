@@ -46,7 +46,7 @@ const formSchema = z.object({
   }),
 });
 
-const CreateLinkDialog: React.FC = () => {
+const LinkCreateDialog: React.FC = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -164,4 +164,4 @@ const CreateLinkDialog: React.FC = () => {
   );
 };
 
-export default CreateLinkDialog;
+export default LinkCreateDialog;

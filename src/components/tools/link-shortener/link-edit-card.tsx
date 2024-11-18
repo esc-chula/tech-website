@@ -41,12 +41,12 @@ const formSchema = z.object({
   }),
 });
 
-interface EditLinkCardProps {
+interface LinkEditCardProps {
   className?: string;
   shortenedLink: ShortenedLink;
 }
 
-const EditLinkCard: React.FC<EditLinkCardProps> = ({
+const LinkEditCard: React.FC<LinkEditCardProps> = ({
   className,
   shortenedLink,
 }) => {
@@ -101,7 +101,7 @@ const EditLinkCard: React.FC<EditLinkCardProps> = ({
   }
 
   return (
-    <Card className={cn('', className)}>
+    <Card className={cn('h-min', className)}>
       <Form {...form}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-4">
@@ -157,4 +157,4 @@ const EditLinkCard: React.FC<EditLinkCardProps> = ({
   );
 };
 
-export default EditLinkCard;
+export default LinkEditCard;
