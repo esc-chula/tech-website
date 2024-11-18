@@ -76,41 +76,35 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
-    try {
-      setLoading(true);
+    setLoading(true);
 
-      const res = await updateShortenedLink({
-        id: shortenedLink.id,
-        name: values.name,
-        slug: values.slug,
-        url: values.url,
-      });
+    const res = await updateShortenedLink({
+      id: shortenedLink.id,
+      name: values.name,
+      slug: values.slug,
+      url: values.url,
+    });
 
-      if (!res.success) {
-        console.error(res.errors);
-        toast({
-          title: 'Failed to create shortened link',
-          description: res.message,
-          variant: 'destructive',
-        });
-        return;
-      }
+    if (!res.success) {
+      console.error(res.errors);
 
-      if (res.data.slug !== shortenedLink.slug) {
-        router.push(`/tools/link-shortener/${res.data.slug}`);
-      }
-
-      setLoading(false);
-      setAlertOpen(false);
-    } catch (error) {
-      console.error(error);
       toast({
         title: 'Failed to create shortened link',
-        description:
-          error instanceof Error ? error.message : 'Something went wrong',
+        description: res.message,
         variant: 'destructive',
       });
+
+      setLoading(false);
+
+      return;
     }
+
+    if (res.data.slug !== shortenedLink.slug) {
+      router.push(`/tools/link-shortener/${res.data.slug}`);
+    }
+
+    setLoading(false);
+    setAlertOpen(false);
   }
 
   return (
@@ -167,7 +161,7 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
               <Button
                 disabled={loading || !form.formState.isDirty}
                 type="button"
-                variant="primary"
+                variant={form.formState.isDirty ? 'primary' : 'default'}
               >
                 Save
               </Button>

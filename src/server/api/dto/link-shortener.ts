@@ -17,6 +17,6 @@ export const UpdateShortenedLinkDto = z.object({
   url: z.string(),
 });
 
-export const DeleteShortenedLinkDto = z.object({
-  id: z.number(),
+export const DeleteShortenedLinkBySlugDto = z.object({
+  slug: z.string(),
 });

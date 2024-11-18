@@ -29,23 +29,28 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
   const [loading, setLoading] = useState(false);
 
   const deleteHandler = async (): Promise<void> => {
-    try {
-      setLoading(true);
+    setLoading(true);
 
-      await deleteShortenedLink(slug);
+    const res = await deleteShortenedLink(slug);
 
-      setLoading(false);
-      setOpen(false);
+    if (!res.success) {
+      console.error(res.errors);
 
-      router.push('/tools/link-shortener');
-    } catch (error) {
       toast({
         title: 'Failed to delete link',
-        description:
-          error instanceof Error ? error.message : 'Something went wrong',
+        description: res.message ?? 'Something went wrong',
         variant: 'destructive',
       });
+
+      setLoading(false);
+
+      return;
     }
+
+    setLoading(false);
+    setOpen(false);
+
+    router.push('/tools/link-shortener');
   };
 
   return (

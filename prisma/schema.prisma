@@ -44,7 +44,7 @@ model UserShortenedLinkVisitedRecord {
     utmCampaignContent String?
 
     userShortenedLinkId Int
-    userShortenedLink   UserShortenedLink @relation(fields: [userShortenedLinkId], references: [id], name: "UserShortenedLinkVisitedRecords")
+    userShortenedLink   UserShortenedLink @relation(fields: [userShortenedLinkId], references: [id], name: "UserShortenedLinkVisitedRecords", onUpdate: Cascade, onDelete: Cascade)
 
     editedAt DateTime @default(now())
 }

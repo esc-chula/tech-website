@@ -40,15 +40,20 @@ const LoginForm: React.FC = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     const res = await login(values.studentId, values.password);
-    if (res.success) {
-      router.push('/');
-    } else {
+
+    if (!res.success) {
+      console.error(res.errors);
+
       toast({
         title: 'Failed to login',
-        description: res.errors.join(', '),
+        description: res.message ?? 'Something went wrong',
         variant: 'destructive',
       });
+
+      return;
     }
+
+    router.push('/');
   }
 
   return (
