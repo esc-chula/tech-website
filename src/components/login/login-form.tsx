@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -29,6 +29,9 @@ const formSchema = z.object({
 const LoginForm: React.FC = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  console.log('searchParams', searchParams);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,15 +43,22 @@ const LoginForm: React.FC = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     const res = await login(values.studentId, values.password);
-    if (res.success) {
-      router.push('/');
-    } else {
+
+    if (!res.success) {
+      console.error(res.errors);
+
       toast({
         title: 'Failed to login',
-        description: res.errors.join(', '),
+        description: res.message ?? 'Something went wrong',
         variant: 'destructive',
       });
+
+      return;
     }
+
+    const redirectUrl = searchParams.get('redirectUrl');
+
+    router.push(redirectUrl ?? '/');
   }
 
   return (

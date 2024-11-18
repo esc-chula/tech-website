@@ -11,82 +11,58 @@ export async function login(
   username: string,
   password: string,
 ): Promise<Response<null>> {
-  try {
-    const res = await api.auth.login({
-      username,
-      password,
-    });
+  const res = await api.auth.login({
+    username,
+    password,
+  });
 
-    if (!res.success) {
-      return {
-        success: false,
-        errors: res.errors,
-      };
-    }
-
-    const sid = res.data.session?.id;
-    const expiredAt = res.data.session?.expiresAt;
-
-    if (!sid || !expiredAt) {
-      return {
-        success: false,
-        message: 'Failed to login',
-        errors: ['Invalid session data'],
-      };
-    }
-
-    const cookieStore = cookies();
-    cookieStore.set('sid', sid, {
-      expires: new Date(expiredAt),
-      httpOnly: true,
-    });
-
-    return {
-      success: true,
-      data: null,
-    };
-  } catch (error) {
+  if (!res.success) {
     return {
       success: false,
-      message: 'Failed to login',
-      errors: [error instanceof Error ? error.message : 'Something went wrong'],
+      message: res.message,
+      errors: res.errors,
     };
   }
+
+  const sid = res.data.session?.id;
+  const expiredAt = res.data.session?.expiresAt;
+
+  if (!sid || !expiredAt) {
+    return {
+      success: false,
+      message: 'Failed to login, please try again',
+      errors: ['Invalid session data'],
+    };
+  }
+
+  const cookieStore = cookies();
+  cookieStore.set('sid', sid, {
+    expires: new Date(expiredAt),
+    httpOnly: true,
+  });
+
+  return {
+    success: true,
+    data: null,
+  };
 }
 
 export async function me(): Promise<Response<Student>> {
-  try {
-    const cookieStore = cookies();
-    const sid = cookieStore.get('sid')?.value;
-    if (!sid) {
-      return {
-        success: false,
-        message: 'Unauthorized',
-        errors: ['Session ID not found'],
-      };
-    }
+  const res = await api.auth.me();
 
-    const res = await api.auth.me();
-    if (!res.success) {
-      return {
-        success: false,
-        message: 'Failed to get user data',
-        errors: res.errors,
-      };
-    }
-
-    return {
-      success: true,
-      message: 'User data fetched',
-      data: res.data,
-    };
-  } catch (error) {
+  if (!res.success) {
     return {
       success: false,
-      message: 'Failed to get user data',
-      errors: [error instanceof Error ? error.message : 'Something went wrong'],
+      message: res.message,
+      errors: res.errors,
     };
   }
+
+  return {
+    success: true,
+    message: 'User data fetched',
+    data: res.data,
+  };
 }
 
 export async function logout(): Promise<Response<null>> {

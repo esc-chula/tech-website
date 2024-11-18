@@ -36,15 +36,15 @@ model UserShortenedLink {
 
 model UserShortenedLinkVisitedRecord {
     id                 Int     @id @default(autoincrement())
+    utmCampaignId      String?
     utmCampaignSource  String?
     utmCampaignMedium  String?
     utmCampaignName    String?
-    utmCampaignId      String?
     utmCampaignTerm    String?
     utmCampaignContent String?
 
     userShortenedLinkId Int
-    userShortenedLink   UserShortenedLink @relation(fields: [userShortenedLinkId], references: [id], name: "UserShortenedLinkVisitedRecords")
+    userShortenedLink   UserShortenedLink @relation(fields: [userShortenedLinkId], references: [id], name: "UserShortenedLinkVisitedRecords", onUpdate: Cascade, onDelete: Cascade)
 
     editedAt DateTime @default(now())
 }

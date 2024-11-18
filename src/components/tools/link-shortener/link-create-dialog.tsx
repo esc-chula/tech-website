@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { env } from '~/env';
 import { useToast } from '~/hooks/use-toast';
 import { createShortenedLink } from '~/server/actions/link-shortener';
 
@@ -46,7 +47,7 @@ const formSchema = z.object({
   }),
 });
 
-const CreateLinkDialog: React.FC = () => {
+const LinkCreateDialog: React.FC = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -85,7 +86,6 @@ const CreateLinkDialog: React.FC = () => {
       setLoading(false);
     } catch (error) {
       console.error(error);
-
       toast({
         title: 'Failed to create shortened link',
         description:
@@ -133,7 +133,8 @@ const CreateLinkDialog: React.FC = () => {
                       <Input placeholder="my-website" {...field} />
                     </FormControl>
                     <FormDescription>
-                      This will be shortened in intania.link/xxx
+                      This will be shortened in{' '}
+                      {env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN.split('//')[1]}/xxx
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -165,4 +166,4 @@ const CreateLinkDialog: React.FC = () => {
   );
 };
 
-export default CreateLinkDialog;
+export default LinkCreateDialog;
