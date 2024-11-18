@@ -47,3 +47,8 @@ export type UtmGroupedData = Record<
   string,
   Record<string, Record<string, number>>
 >;
+
+export interface UtmGroupResult {
+  groups: UtmGroupedData;
+  selectedTagCount: Record<string, number>;
+}

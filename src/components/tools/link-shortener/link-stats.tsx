@@ -1,12 +1,12 @@
-import type { UtmGroupedData, UtmTag } from '~/types/link-shortener';
+import type { UtmGroupResult, UtmTag } from '~/types/link-shortener';
 
 interface LinkStatsProps {
   groupBy: UtmTag[1];
-  groupedData: UtmGroupedData;
+  groupedData: UtmGroupResult;
 }
 
 const LinkStats: React.FC<LinkStatsProps> = ({ groupBy, groupedData }) => {
-  const entries = Object.entries(groupedData);
+  const entries = Object.entries(groupedData.groups);
 
   if (entries.length === 0) {
     return (
@@ -23,29 +23,38 @@ const LinkStats: React.FC<LinkStatsProps> = ({ groupBy, groupedData }) => {
     <div key={primaryValue} className="py-2 flex flex-col">
       <hr className="border-neutral-700" />
       <div className="flex flex-col gap-2 pt-6 pb-4">
-        <h5 className="font-semibold text-lg">{primaryValue}</h5>
-        {Object.entries(utmData).map(
-          ([utmKey, values]) =>
-            Object.keys(values).length > 0 && (
-              <div key={utmKey} className="">
-                <div className="flex justify-between items-center">
-                  <p className="text-sm text-neutral-500">{utmKey}</p>
-                  <p className="text-neutral-600 text-sm font-medium">Count</p>
-                </div>
-                <div className="flex flex-col gap-1">
-                  {Object.entries(values).map(([value, count]) => (
+        <div className="flex justify-between items-center">
+          <h5 className="font-semibold text-lg">{primaryValue}</h5>
+          <span className="text-sm text-neutral-400">
+            Total: {groupedData.selectedTagCount[primaryValue]}
+          </span>
+        </div>
+
+        {Object.entries(utmData)
+          .filter(([, values]) => Object.keys(values).length > 0)
+          .map(([utmKey, values]) => (
+            <div key={utmKey}>
+              <div className="flex justify-between items-center py-1.5">
+                <p className="text-sm text-neutral-500">
+                  {utmKey.replace('utmCampaign', '')}
+                </p>
+                <p className="text-neutral-600 text-sm font-medium">Count</p>
+              </div>
+              <div className="flex flex-col">
+                {Object.entries(values)
+                  .sort(([, a], [, b]) => b - a)
+                  .map(([value, count]) => (
                     <div
                       key={value}
-                      className="hover:bg-neutral-900 py-2 px-3 rounded-lg text-sm flex items-center justify-between"
+                      className="hover:bg-neutral-900 rounded-lg py-2 px-3 text-sm flex items-center justify-between"
                     >
-                      <span className="font-semibold">{value}</span>
-                      <span className="">{count}</span>
+                      <span className="font-medium">{value}</span>
+                      <span className="text-neutral-400">{count}</span>
                     </div>
                   ))}
-                </div>
               </div>
-            ),
-        )}
+            </div>
+          ))}
       </div>
     </div>
   ));
