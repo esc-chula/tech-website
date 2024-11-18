@@ -2,6 +2,7 @@ import { Eye } from 'lucide-react';
 import Link from 'next/link';
 
 import { Card } from '~/components/ui/card';
+import { env } from '~/env';
 
 import CopyButton from './copy-button';
 
@@ -24,14 +25,14 @@ const LinkCard: React.FC<LinkCardProps> = ({
     <Card className="relative space-y-1">
       <CopyButton
         className="absolute right-4 top-4 h-auto p-0 hover:bg-transparent"
-        value={`https://intania.link/${slug}`}
+        value={`${env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN}/${slug}`}
       />
       <Link className="h-full space-y-3" href={`/tools/link-shortener/${slug}`}>
         <div className="space-y-1">
           <div className="flex justify-between">
             <h3 className="space-x-0.5 truncate text-xl font-semibold">
               <span className="hidden text-neutral-500 sm:inline">
-                intania.link
+                {env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN.split('//')[1]}
               </span>
               <span className="text-neutral-500">/</span>
               <span className="text-amber-300">{slug}</span>

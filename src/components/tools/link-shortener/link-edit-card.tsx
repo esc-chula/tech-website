@@ -28,6 +28,7 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { env } from '~/env';
 import { useToast } from '~/hooks/use-toast';
 import { cn } from '~/lib/utils';
 import { updateShortenedLink } from '~/server/actions/link-shortener';
@@ -140,7 +141,8 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
                     <Input placeholder="my-website" {...field} />
                   </FormControl>
                   <FormDescription>
-                    This will be shortened in intania.link/xxx
+                    This will be shortened in{' '}
+                    {env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN.split('//')[1]}/xxx
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

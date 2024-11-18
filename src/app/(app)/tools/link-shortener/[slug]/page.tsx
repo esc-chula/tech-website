@@ -7,6 +7,7 @@ import DeleteButton from '~/components/tools/link-shortener/delete-button';
 import LinkEditCard from '~/components/tools/link-shortener/link-edit-card';
 import LinkStatsCard from '~/components/tools/link-shortener/link-stats-card';
 import QrCodeButton from '~/components/tools/link-shortener/qr-code-button';
+import { env } from '~/env';
 import { api } from '~/trpc/server';
 
 interface PageProps {
@@ -32,13 +33,13 @@ const Page: React.FC<PageProps> = async ({ params }) => {
       <div className="pb-10 pt-24">
         <div className="flex items-center justify-between">
           <Link
-            href={`https://intania.link/${slug}`}
+            href={`${env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN}/${slug}`}
             rel="noopener noreferrer"
             target="_blank"
           >
             <h3 className="space-x-0.5 truncate text-3xl font-semibold">
               <span className="hidden text-neutral-500 sm:inline">
-                intania.link
+                {env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN.split('//')[1]}
               </span>
               <span className="text-neutral-500">/</span>
               <span className="text-amber-300">{slug}</span>
@@ -46,7 +47,9 @@ const Page: React.FC<PageProps> = async ({ params }) => {
           </Link>
           <div className="flex items-center">
             <QrCodeButton />
-            <CopyButton value={`https://intania.link/${slug}`} />
+            <CopyButton
+              value={`${env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN}/${slug}`}
+            />
             <DeleteButton slug={slug} />
           </div>
         </div>

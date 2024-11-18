@@ -66,11 +66,16 @@ const LinkStatsCard: React.FC<LinkStatsCardProps> = ({
           </SelectContent>
         </Select>
       </div>
-      <div className="py-4">
+      <div className="">
         {groupBy && groupedData ? (
           <LinkStats groupBy={groupBy} groupedData={groupedData} />
         ) : (
-          <>please select tag to group</>
+          <div className="py-2 flex flex-col">
+            <hr className="border-neutral-700" />
+            <p className="text-sm text-neutral-400 text-center pt-12 pb-8">
+              Select a UTM tag to view stats
+            </p>
+          </div>
         )}
       </div>
     </Card>
