@@ -6,6 +6,16 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '~/components/ui/alert-dialog';
 import { Button } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
 import {
@@ -53,6 +63,7 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -89,6 +100,7 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
       }
 
       setLoading(false);
+      setAlertOpen(false);
     } catch (error) {
       console.error(error);
       toast({
@@ -148,9 +160,36 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
               )}
             />
           </div>
-          <Button disabled={loading} type="submit" variant="primary">
-            Save
-          </Button>
+          <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+            <AlertDialogTrigger asChild>
+              <Button
+                disabled={loading || !form.formState.isDirty}
+                type="button"
+                variant="primary"
+              >
+                Save
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <Button
+                  disabled={loading}
+                  variant="primary"
+                  onClick={form.handleSubmit(onSubmit)}
+                >
+                  Save
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </form>
       </Form>
     </Card>
