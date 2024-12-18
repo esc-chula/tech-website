@@ -3,6 +3,8 @@ import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { env } from '~/env';
+
 import { Card } from '../ui/card';
 
 interface ProjectCardProps {
@@ -31,7 +33,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         >
           <span>Visit Project</span> <ArrowUpRight className="mb-1" size={12} />
         </Link>
-        <Image fill alt={title} className="z-0 object-cover" src={image} />
+        <Image
+          fill
+          alt={title}
+          className="z-0 object-cover"
+          src={`${env.DIRECTUS_URL}/assets/${image}`}
+        />
       </div>
       <div className="flex flex-col gap-1.5 p-4">
         <div className="flex justify-between gap-4">
