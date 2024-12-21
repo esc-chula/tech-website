@@ -1,13 +1,19 @@
 export function getSIDFromHeader(headers: Headers): string | null {
   const cookiesString = headers.get('cookie');
-  const cookies = cookiesString?.split(';').reduce((acc, cookie) => {
-    const [key, value] = cookie.split('=').map((v) => v.trim()) as [
-      string,
-      string,
-    ];
-    Object.assign(acc, { [key]: value });
-    return acc;
-  }, {}) as Record<string, string>;
+
+  if (!cookiesString) {
+    return null;
+  }
+
+  const cookies = cookiesString
+    .split(';')
+    .reduce<Record<string, string>>((acc, cookie) => {
+      const [key, value] = cookie.split('=').map((v) => v.trim());
+      if (key && value) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
 
   const sessionId = cookies.sid;
 
