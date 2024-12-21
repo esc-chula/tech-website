@@ -23,7 +23,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
     slug,
   });
 
-  if (!res.success || !res.data) {
+  if (!res.success) {
     notFound();
   }
 
