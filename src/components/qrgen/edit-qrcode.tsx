@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { default as QRCode } from 'qrcode';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { base64ESCLogo } from '~/app/assets/esc-logo';
 import { cn, isURL } from '~/lib/utils';
 
 interface QrCode {
@@ -38,8 +37,6 @@ const EditQRCode: React.FC<{
     '#FFD700', // Gold
     '#FF4500', // Orange Red
   ];
-
-  const logoOptions: string[] = [base64ESCLogo];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -266,7 +263,7 @@ const EditQRCode: React.FC<{
                     />
                   </div>
                 </label>
-                {logoOptions.map((logo: string, idx) => (
+                {/* {logoOptions.map((logo: string, idx) => (
                   <label
                     key={logo}
                     className="relative flex justify-center items-center"
@@ -300,7 +297,7 @@ const EditQRCode: React.FC<{
                       />
                     </div>
                   </label>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>
