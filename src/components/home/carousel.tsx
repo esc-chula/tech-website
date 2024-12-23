@@ -41,30 +41,6 @@ const HeroCarousel: React.FC<CarouselProps> = ({ slides }) => {
           </div>
         </React.Fragment>
       ))}
-      {/* <div>
-        <Image alt="banner" src="assets/mock/banner.jpg" />
-        <p className="legend">Legend 1</p>
-      </div>
-      <div>
-        <Image alt="banner" src="assets/mock/banner.jpg" />
-        <p className="legend">Legend 2</p>
-      </div>
-      <div>
-        <Image alt="banner" src="assets/mock/banner.jpg" />
-        <p className="legend">Legend 3</p>
-      </div>
-      <div>
-        <Image alt="banner" src="assets/mock/banner.jpg" />
-        <p className="legend">Legend 4</p>
-      </div>
-      <div>
-        <Image alt="banner" src="assets/mock/banner.jpg" />
-        <p className="legend">Legend 5</p>
-      </div>
-      <div>
-        <Image alt="banner" src="assets/mock/banner.jpg" />
-        <p className="legend">Legend 6</p>
-      </div> */}
     </Carousel>
   );
 };
