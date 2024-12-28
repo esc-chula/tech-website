@@ -1,6 +1,5 @@
 export const colorOptions = [
   '#000000', // Black
-  '#FFFFFF', // White
   '#1E90FF', // Dodger Blue
   '#32CD32', // Lime Green
   '#FFD700', // Gold

@@ -4,13 +4,9 @@ import { logoOptions } from '~/constants/qr-code-generator';
 
 interface QrCodeLogoProps {
   logoName: string | null;
-  backgroundColor: string;
 }
 
-const QrCodeLogo: React.FC<QrCodeLogoProps> = ({
-  logoName,
-  backgroundColor,
-}) => {
+const QrCodeLogo: React.FC<QrCodeLogoProps> = ({ logoName }) => {
   if (!logoName) {
     return null;
   }
@@ -23,13 +19,13 @@ const QrCodeLogo: React.FC<QrCodeLogoProps> = ({
 
   return (
     <div className="absolute inset-0 flex justify-center items-center">
-      <div className="relative select-none flex justify-center items-center p-1 w-1/5 aspect-square">
+      <div className="relative select-none flex justify-center items-center p-1 w-1/6 aspect-square">
         <Image
           fill
           alt="Logo"
           className="object-contain p-1"
           src={logo.data}
-          style={{ backgroundColor }}
+          style={{ backgroundColor: '#fafafa' }}
         />
       </div>
     </div>
