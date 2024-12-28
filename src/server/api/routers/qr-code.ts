@@ -6,6 +6,15 @@ import { type QRcode } from '~/types/qr-code';
 
 export const qrCodeRouter = createTRPCRouter({
   create: trpc.input(CreateQrCodeDto).mutation(async ({ ctx, input }) => {
+    const userId = ctx.session.user?.id;
+    if (!userId) {
+      return {
+        success: false,
+        message: 'Unauthorized',
+        errors: ['Session ID not found'],
+      };
+    }
+
     const newQrCode: QRcode = await ctx.db.userQrCode.create({
       data: {
         name: input.name,
@@ -13,7 +22,7 @@ export const qrCodeRouter = createTRPCRouter({
         qrCode: input.qrCode,
         color: input.color,
         logo: input.logo,
-        userId: Number(input.userId),
+        userId: Number(userId),
       },
     });
     return {
