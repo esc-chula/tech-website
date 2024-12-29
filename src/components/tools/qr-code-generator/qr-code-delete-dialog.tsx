@@ -14,42 +14,40 @@ import {
   AlertDialogTrigger,
 } from '~/components/ui/alert-dialog';
 import { Button } from '~/components/ui/button';
-// import { useToast } from '~/hooks/use-toast';
+import { useToast } from '~/hooks/use-toast';
+import { deleteQRCode } from '~/server/actions/qr-code';
 
 interface DeleteQRCodeProps {
   name: string;
-  id: number;
+  id: string;
 }
 
-const DeleteQRCode: React.FC<DeleteQRCodeProps> = ({ name }) => {
-  // const { toast } = useToast();
+const DeleteQRCode: React.FC<DeleteQRCodeProps> = ({ id, name }) => {
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // const deleteHandler = async (): Promise<void> => {
-  //   setLoading(true);
+  const deleteHandler = async (): Promise<void> => {
+    setLoading(true);
 
-  // Delete api
-  // const res = await
+    const res = await deleteQRCode({ id });
 
-  // if (!res.success) {
-  //   console.error(res.errors);
+    if (!res.success) {
+      console.error(res.errors);
 
-  //   toast({
-  //     title: 'Failed to delete qr code',
-  //     description: res.message ?? 'Something went wrong',
-  //     variant: 'destructive',
-  //   });
+      toast({
+        title: 'Failed to delete qr code',
+        description: res.message ?? 'Something went wrong',
+        variant: 'destructive',
+      });
 
-  //   setLoading(false);
+      setLoading(false);
+      return;
+    }
 
-  //   return;
-  // }
-
-  //   setLoading(false);
-  //   setOpen(false);
-  //   window.location.reload();
-  // };
+    setLoading(false);
+    setOpen(false);
+  };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -71,9 +69,9 @@ const DeleteQRCode: React.FC<DeleteQRCodeProps> = ({ name }) => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button
-            // disabled={loading}
+            disabled={loading}
             variant="destructive"
-            onClick={() => setOpen(false)}
+            onClick={deleteHandler}
           >
             Delete
           </Button>
