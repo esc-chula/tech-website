@@ -25,6 +25,17 @@ export const qrCodeRouter = createTRPCRouter({
         userId: Number(userId),
       },
     });
+
+    await ctx.db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        userQrCodes: {
+          connect: { id: newQrCode.id },
+        },
+      },
+    });
     return {
       data: newQrCode,
       message: `Created QRcode for ID ${input.userId}`,
@@ -34,13 +45,13 @@ export const qrCodeRouter = createTRPCRouter({
   get: trpc
     .input(z.object({ userId: z.string() }))
     .query(async ({ ctx, input }) => {
-      const qrCode = await ctx.db.userQrCode.findFirst({
+      const qrCode = await ctx.db.userQrCode.findMany({
         where: {
           userId: Number(input.userId),
         },
       });
 
-      if (qrCode === null) {
+      if (qrCode.length === 0) {
         return {
           data: null,
           error: `No QR code found for ID ${input.userId}`,
@@ -49,22 +60,18 @@ export const qrCodeRouter = createTRPCRouter({
 
       return {
         data: qrCode,
-        message: `Updated for ID ${input.userId}`,
+        message: `QRcodes for ID ${input.userId}`,
       };
     }),
 
   update: trpc.input(CreateQrCodeDto).mutation(async ({ ctx, input }) => {
-    const user = await ctx.db.userQrCode.findFirst({
-      where: {
-        userId: Number(input.userId),
-      },
-    });
+    const { id, ...inputWithoutId } = input;
     const newQrCode = await ctx.db.userQrCode.update({
       where: {
-        id: Number(user?.id),
+        id: Number(id),
       },
       data: {
-        ...input,
+        ...inputWithoutId,
         userId: Number(input.userId),
         editedAt: new Date(),
       },
@@ -77,29 +84,16 @@ export const qrCodeRouter = createTRPCRouter({
   }),
 
   delete: trpc
-    .input(z.object({ userId: z.string() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.userQrCode.findFirst({
-        where: {
-          userId: Number(input.userId),
-        },
-      });
-      if (user === null) {
-        return {
-          data: null,
-          error: `No Qr code found for ID ${input.userId}`,
-        };
-      }
-
       await ctx.db.userQrCode.delete({
         where: {
-          id: Number(user.id),
+          id: Number(input.id),
         },
       });
 
       return {
-        data: user,
-        message: `Deleted QrCode for ${input.userId}`,
+        message: `Deleted QrCode for ${input.id}`,
       };
     }),
 });
