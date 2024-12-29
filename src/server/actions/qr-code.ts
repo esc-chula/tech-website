@@ -12,25 +12,23 @@ export async function createQRCode({
   qrCode,
   color,
   logo,
-  userId,
 }: {
   name: string;
   url: string;
   qrCode: string;
   color: string;
   logo: string;
-  userId: string;
 }): Promise<Response<QRcode>> {
-  const res = await api.qrCode.create({
+  const data = {
     name,
     url,
     qrCode,
     color,
     logo,
-    userId,
-  });
+  };
+  const res = await api.qrCode.create(data);
 
-  if (res.data === undefined) {
+  if (!res.success) {
     return {
       success: false,
       errors: [`Failed to create QR code for ${name}`],
