@@ -1,12 +1,13 @@
 'use client';
 
-import { History, SquarePen, Trash2 } from 'lucide-react';
+import { History, SquarePen } from 'lucide-react';
 import Image from 'next/image';
 
 import { Button } from '~/components/ui/button';
 import { logoOptions } from '~/constants/qr-code-generator';
 import { type QRcode } from '~/types/qr-code';
 
+import DeleteQRCode from './qr-code-delete-dialog';
 import QrCodeLogo from './qr-code-logo';
 
 interface QrCodeCardProps {
@@ -114,9 +115,7 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
             <button type="button">
               <SquarePen size={24} />
             </button>
-            <button type="button">
-              <Trash2 size={24} />
-            </button>
+            <DeleteQRCode id={data.id} name={data.name} />
           </div>
         </div>
         <p className="font-semibold text-amber-300 text-sm">{data.url}</p>

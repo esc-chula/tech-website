@@ -153,7 +153,6 @@ const QRCodeCreateDialog: React.FC = () => {
       <DialogTrigger asChild>
         <button
           className="hidden md:flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full h-full"
-          disabled={loading}
           type="button"
         >
           <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full w-1/2 aspect-square">
