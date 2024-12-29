@@ -15,6 +15,21 @@ export const qrCodeRouter = createTRPCRouter({
       };
     }
 
+    const existingQrCode = await ctx.db.userQrCode.findFirst({
+      where: {
+        name: input.name,
+        userId: Number(userId),
+      },
+    });
+
+    if (existingQrCode) {
+      return {
+        success: false,
+        message: 'Duplicate QR Code name',
+        errors: ['A QR Code with this name already exists for the user.'],
+      };
+    }
+
     const newQrCode: QRcode = await ctx.db.userQrCode.create({
       data: {
         name: input.name,
