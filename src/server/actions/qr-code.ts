@@ -19,19 +19,19 @@ export async function createQRCode({
   color: string;
   logo: string;
 }): Promise<Response<QRcode>> {
-  const data = {
+  const res = await api.qrCode.create({
     name,
     url,
     qrCode,
     color,
     logo,
-  };
-  const res = await api.qrCode.create(data);
+  });
 
   if (!res.success) {
     return {
       success: false,
-      errors: [`Failed to create QR code for ${name}`],
+      message: res.message,
+      errors: res.errors,
     };
   }
 
@@ -41,5 +41,71 @@ export async function createQRCode({
     success: true,
     message: `Successfully created QR code for ${name}`,
     data: res.data,
+  };
+}
+
+export async function updateQRCode({
+  id,
+  name,
+  url,
+  qrCode,
+  color,
+  logo,
+}: {
+  id: number;
+  name: string;
+  url: string;
+  qrCode: string;
+  color: string;
+  logo: string;
+}): Promise<Response<QRcode>> {
+  const res = await api.qrCode.update({
+    id,
+    name,
+    url,
+    qrCode,
+    color,
+    logo,
+  });
+
+  if (!res.success) {
+    return {
+      success: false,
+      errors: res.errors,
+    };
+  }
+
+  revalidatePath('/tools/qr-code-generator');
+
+  return {
+    success: true,
+    message: `Successfully updated QR code for ${name}`,
+    data: res.data,
+  };
+}
+
+export async function deleteQRCode({
+  id,
+}: {
+  id: string;
+}): Promise<Response<null>> {
+  const res = await api.qrCode.delete({ id });
+
+  if (!res.success) {
+    return {
+      success: false,
+      message: res.message,
+      errors: res.errors
+        ? res.errors
+        : [`Failed to delete QR code with ID:${id}`],
+    };
+  }
+
+  revalidatePath('/tools/qr-code-generator');
+
+  return {
+    success: true,
+    message: `Successfully deleted QR code with ID ${id}`,
+    data: null,
   };
 }

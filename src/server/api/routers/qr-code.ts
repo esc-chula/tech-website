@@ -30,7 +30,7 @@ export const qrCodeRouter = createTRPCRouter({
           if (existingQrCode) {
             return {
               message: `The QR Code with ${input.name} have already been used. Please use a different name.`,
-              error: 'Duplicate QR Code name',
+              error: 'The QR Code name already exists',
             };
           }
 
@@ -135,73 +135,76 @@ export const qrCodeRouter = createTRPCRouter({
     };
   }),
 
-  update: trpc.input(UpdateQrCodeDto).mutation(async ({ ctx, input }) => {
-    const userId = ctx.session.user?.id;
-    if (!userId) {
-      return {
-        success: false,
-        message: 'Unauthorized',
-        errors: ['Session ID not found'],
-      };
-    }
-    const { id, ...inputWithoutId } = input;
-
-    const res = await ctx.db.$transaction(async (tx) => {
-      try {
-        const currentQrCode = await tx.userQrCode.findFirst({
-          where: {
-            id: Number(id),
-            userId,
-          },
-        });
-
-        if (!currentQrCode) {
-          return {
-            message: `The QR Code with ID:${id} might not exist or The user with ID:${userId} might not be associated with it.`,
-            error: 'Invalid QR Code ID or User ID provided.',
-          };
-        }
-
-        await tx.userQrCode.update({
-          where: {
-            id: Number(id),
-            userId,
-          },
-          data: {
-            ...inputWithoutId,
-            userId: Number(userId),
-            editedAt: new Date(),
-          },
-        });
-
+  update: trpc
+    .input(UpdateQrCodeDto)
+    .mutation(async ({ ctx, input }): Promise<Response<QRcode>> => {
+      const userId = ctx.session.user?.id;
+      if (!userId) {
         return {
-          message: `The QR Code with ID:${id} have successfully been updated.`,
-          data: null,
-        };
-      } catch (error) {
-        return {
-          data: null,
-          message: `Failed to update QR Code with ID:${id}`,
-          error:
-            error instanceof Error ? error.message : 'Something went wrong',
+          success: false,
+          message: 'Unauthorized',
+          errors: ['Session ID not found'],
         };
       }
-    });
+      const { id, ...inputWithoutId } = input;
 
-    if (res.error) {
+      const res = await ctx.db.$transaction(async (tx) => {
+        try {
+          const currentQrCode = await tx.userQrCode.findFirst({
+            where: {
+              id: Number(id),
+              userId,
+            },
+          });
+
+          if (!currentQrCode) {
+            return {
+              data: null,
+              message: `The QR Code might not exist or The user with ID:${userId} might not be associated with it.`,
+              error: 'Invalid QR Code ID or User ID provided.',
+            };
+          }
+
+          const updateQRCode = await tx.userQrCode.update({
+            where: {
+              id: Number(id),
+              userId,
+            },
+            data: {
+              ...inputWithoutId,
+              userId: Number(userId),
+              editedAt: new Date(),
+            },
+          });
+
+          return {
+            message: `The QR Code have successfully been updated.`,
+            data: updateQRCode,
+          };
+        } catch (error) {
+          return {
+            data: null,
+            message: `Failed to update QR Code`,
+            error:
+              error instanceof Error ? error.message : 'Something went wrong',
+          };
+        }
+      });
+
+      if (res.error ?? !res.data) {
+        return {
+          success: false,
+          message: res.message,
+          errors: [res.error],
+        };
+      }
+
       return {
-        success: false,
+        success: true,
         message: res.message,
-        errors: [res.error],
+        data: res.data,
       };
-    }
-
-    return {
-      success: true,
-      message: res.message,
-      data: null,
-    };
-  }),
+    }),
 
   delete: trpc
     .input(z.object({ id: z.string() }))
@@ -226,7 +229,7 @@ export const qrCodeRouter = createTRPCRouter({
 
           if (!currentQrCode) {
             return {
-              message: `The QR Code with ID:${input.id} might not exist or The user with ID:${userId} might not be associated with it.`,
+              message: `The QR Code might not exist or The user with ID:${userId} might not be associated with it.`,
               error: 'Invalid QR Code ID or User ID provided.',
             };
           }
@@ -239,13 +242,13 @@ export const qrCodeRouter = createTRPCRouter({
           });
 
           return {
-            message: `The QR Code with ID:${input.id} have successfully been deleted.`,
+            message: `The QR Code have successfully been deleted.`,
             data: null,
           };
         } catch (error) {
           return {
             data: null,
-            message: `Failed to delete QR Code with ID:${input.id}`,
+            message: `Failed to delete QR Code`,
             error:
               error instanceof Error ? error.message : 'Something went wrong',
           };
