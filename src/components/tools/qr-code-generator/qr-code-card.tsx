@@ -107,18 +107,22 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col gap-6 bg-black p-6 rounded-3xl w-full">
+    <div className="flex flex-col gap-6 bg-black p-6 rounded-3xl w-full max-w-[350px] place-self-center min-h-[420px] h-full">
       <div className="flex flex-col">
         <div className="flex justify-between items-center">
-          <h3 className="font-semibold text-2xl truncate">{data.name}</h3>
+          <h3 className="font-semibold text-amber-300 text-xl truncate">
+            {data.name}
+          </h3>
           <div className="flex gap-3">
             <button type="button">
               <SquarePen size={24} />
             </button>
-            <DeleteQRCode id={data.id} name={data.name} />
+            <DeleteQRCode id={data.id.toString()} name={data.name} />
           </div>
         </div>
-        <p className="font-semibold text-amber-300 text-sm">{data.url}</p>
+        <p className="text-xs text-neutral-500 line-clamp-1 w-full text-pretty truncate">
+          {data.url}
+        </p>
       </div>
 
       <div className="flex flex-col items-center px-[15%] gap-2">
@@ -133,7 +137,7 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
         </div>
         <div className="flex items-center gap-1 text-neutral-500">
           <History size={16} />
-          <p className="font-semibold text-sm">
+          <p className="text-xs sm:text-sm">
             {data.editedAt.toLocaleDateString('en-GB', {
               day: 'numeric',
               month: 'short',

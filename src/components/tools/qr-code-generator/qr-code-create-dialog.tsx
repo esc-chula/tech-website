@@ -29,7 +29,6 @@ import { Input } from '~/components/ui/input';
 import { colorOptions } from '~/constants/qr-code-generator';
 import { useToast } from '~/hooks/use-toast';
 import { isURL } from '~/lib/utils';
-import { me } from '~/server/actions/auth';
 import { createQRCode } from '~/server/actions/qr-code';
 
 import ColorSelector from './color-selector';
@@ -104,38 +103,34 @@ const QRCodeCreateDialog: React.FC = () => {
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     try {
       setLoading(true);
-      const userResponse = await me();
-      if (userResponse.success) {
-        const res = await createQRCode({
-          name: values.name,
-          url: values.url,
-          qrCode: qrCodeData,
-          color: selectedColor,
-          logo: selectedLogo ? selectedLogo.name : '',
-          userId: userResponse.data.id.toString(),
-        });
 
-        if (!res.success) {
-          console.error('Failed to create QR code:', res.errors);
-          toast({
-            title: 'Failed to create QR code',
-            description: res.message,
-            variant: 'destructive',
-          });
-          return;
-        }
+      const res = await createQRCode({
+        name: values.name,
+        url: values.url,
+        qrCode: qrCodeData,
+        color: selectedColor,
+        logo: selectedLogo ? selectedLogo.name : '',
+      });
 
-        form.reset();
-        setOpen(false);
-        setLoading(false);
-      } else {
-        console.error('Failed to fetch user:', userResponse.message);
+      if (!res.success) {
+        console.error(res.errors);
         toast({
           title: 'Failed to create QR code',
-          description: userResponse.message,
+          description: res.message,
           variant: 'destructive',
         });
+
+        if (res.errors[0] === 'The QR Code name already exists') {
+          form.setError('name', {
+            message: 'The QR Code name already exists',
+          });
+        }
+        setLoading(false);
+        return;
       }
+
+      form.reset();
+      setOpen(false);
       setLoading(false);
     } catch (error) {
       console.error('Failed to create QR');
@@ -152,11 +147,11 @@ const QRCodeCreateDialog: React.FC = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button
-          className="hidden md:flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full h-full"
+          className="hidden md:flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full max-w-[350px] place-self-center min-h-[420px] h-full"
           type="button"
         >
-          <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full w-1/2 aspect-square">
-            <Plus color="#262626" size={60} strokeWidth={4} />
+          <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full w-5/12 aspect-square">
+            <Plus color="#262626" size={52} strokeWidth={4} />
           </div>
         </button>
       </DialogTrigger>

@@ -17,7 +17,7 @@ const LogoSelector: React.FC<LogoSelectorProps> = ({
   setLogo,
 }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <Label>{title}</Label>
       <div className="flex flex-wrap gap-2">
         <button

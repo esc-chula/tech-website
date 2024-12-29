@@ -14,12 +14,13 @@ const ColorSelector: React.FC<ColorSelectorProps> = ({
   setColor,
 }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <Label>{title}</Label>
       <div className="flex flex-wrap gap-2">
         {colorOptions.map((colorOption) => (
           <button
             key={colorOption}
+            aria-label={`Select color ${colorOption}`}
             style={{ backgroundColor: colorOption }}
             type="button"
             className={cn(
@@ -27,7 +28,9 @@ const ColorSelector: React.FC<ColorSelectorProps> = ({
               colorOption === color && 'border-[3px] border-neutral-400',
             )}
             onClick={() => setColor(colorOption)}
-          />
+          >
+            <span className="sr-only">{`Select color ${colorOption}`}</span>
+          </button>
         ))}
       </div>
     </div>
