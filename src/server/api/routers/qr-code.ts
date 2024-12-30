@@ -165,6 +165,23 @@ export const qrCodeRouter = createTRPCRouter({
             };
           }
 
+          const existingQrCode = await tx.userQrCode.findFirst({
+            where: {
+              name: input.name,
+              userId: Number(userId),
+              NOT: {
+                id: Number(id),
+              },
+            },
+          });
+
+          if (existingQrCode) {
+            return {
+              message: `The QR Code with ${input.name} have already been used. Please use a different name.`,
+              error: 'The QR Code name already exists',
+            };
+          }
+
           const updateQRCode = await tx.userQrCode.update({
             where: {
               id: Number(id),

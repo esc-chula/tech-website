@@ -1,6 +1,6 @@
 'use client';
 
-import { History, SquarePen } from 'lucide-react';
+import { History } from 'lucide-react';
 import Image from 'next/image';
 
 import { Button } from '~/components/ui/button';
@@ -8,6 +8,7 @@ import { logoOptions } from '~/constants/qr-code-generator';
 import { type QRcode } from '~/types/qr-code';
 
 import DeleteQRCode from './qr-code-delete-dialog';
+import EditQRCode from './qr-code-edit-dialog';
 import QrCodeLogo from './qr-code-logo';
 
 interface QrCodeCardProps {
@@ -107,16 +108,14 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col gap-6 bg-black p-6 rounded-3xl w-full max-w-[350px] place-self-center min-h-[420px] h-full">
+    <div className="flex flex-col gap-6 bg-black p-6 rounded-3xl w-full max-w-[350px] place-self-center md:min-h-[420px] h-full">
       <div className="flex flex-col">
         <div className="flex justify-between items-center">
-          <h3 className="font-semibold text-amber-300 text-xl truncate">
+          <h3 className="flex-grow font-semibold text-amber-300 text-xl truncate">
             {data.name}
           </h3>
-          <div className="flex gap-3">
-            <button type="button">
-              <SquarePen size={24} />
-            </button>
+          <div className="flex">
+            <EditQRCode data={data} />
             <DeleteQRCode id={data.id.toString()} name={data.name} />
           </div>
         </div>

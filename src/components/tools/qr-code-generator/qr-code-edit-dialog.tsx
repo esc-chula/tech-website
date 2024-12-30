@@ -1,119 +1,93 @@
 'use client';
-import { X } from 'lucide-react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { SquarePen } from 'lucide-react';
 import Image from 'next/image';
 import { default as QRCode } from 'qrcode';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { cn, isURL } from '~/lib/utils';
+import { Button } from '~/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '~/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { logoOptions } from '~/constants/qr-code-generator';
+import { useToast } from '~/hooks/use-toast';
+import { isURL } from '~/lib/utils';
+import { updateQRCode } from '~/server/actions/qr-code';
+import { type QRcode } from '~/types/qr-code';
 
-interface QrCode {
-  name: string;
-  url: string;
-  image_data: string;
+import ColorSelector from './color-selector';
+import LogoSelector from './logo-selector';
+import QrCodeLogo from './qr-code-logo';
+
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(1, {
+      message: 'Name is required',
+    })
+    .max(50, {
+      message: 'Name must be less than 50 characters',
+    }),
+  url: z.string().url({
+    message: 'Please enter a valid URL',
+  }),
+});
+
+interface EditQRCodeProps {
+  data: QRcode;
 }
 
-const EditQRCode: React.FC<{
-  onCreate: (data: QrCode) => void;
-  onCancel: () => void;
-}> = ({ onCreate, onCancel }) => {
-  const [qrCodeData, setQrCodeData] = useState<string>('');
-  const [selectedColor, setSelectedColor] = useState<string>('#000000');
-  const [selectedLogo, setSelectedLogo] = useState<string | undefined>(
-    undefined,
+const EditQRCode: React.FC<EditQRCodeProps> = ({ data }) => {
+  const [open, setOpen] = useState(false);
+  const [url, setUrl] = useState(data.url);
+  const [qrCodeData, setQrCodeData] = useState(data.qrCode);
+  const [selectedColor, setSelectedColor] = useState<string>(data.color);
+  const [selectedLogo, setSelectedLogo] = useState<{
+    name: string;
+    data: string;
+  } | null>(
+    data.logo
+      ? {
+          name: data.logo,
+          data: logoOptions.find((logo) => logo.name === data.logo)?.data ?? '',
+        }
+      : null,
   );
-  const [isSelectedLogo, setIsSelectedLogo] = useState<boolean>(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    url: '',
-    image_data: '',
-  });
-  const [errorName, setErrorName] = useState<boolean>(false);
-  const [errorURL, setErrorURL] = useState<boolean>(false);
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
-  const colorOptions: string[] = [
-    '#000000', // Black
-    '#1E90FF', // Dodger Blue
-    '#32CD32', // Lime Green
-    '#FFD700', // Gold
-    '#FF4500', // Orange Red
-  ];
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (): void => {
-    if (formData.name === '') {
-      setErrorName(true);
-      return;
-    }
-    if (formData.url === '' || !isURL(formData.url)) {
-      setErrorURL(true);
-      return;
-    }
-    // Create form
-    const data: QrCode = {
-      name: formData.name.trim(),
-      url: formData.url.trim(),
-      image_data: qrCodeData,
-    };
-    // api for create new QrCoed
-    onCreate(data);
-  };
-
-  const previewContent = useMemo(() => {
-    if (!qrCodeData) {
-      return (
-        <div className="flex justify-center items-center p-3 w-full h-full">
-          <p className="text-center text-neutral-400">
-            Enter a valid URL to generate QR code
-          </p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="relative flex justify-center items-center w-full aspect-square">
-        <Image
-          alt="QR Code"
-          className="w-full h-full"
-          height={0}
-          src={qrCodeData}
-          width={0}
-        />
-        {isSelectedLogo && selectedLogo !== undefined ? (
-          <div className="absolute inset-0 flex justify-center items-center">
-            <div className="relative flex justify-center items-center p-1 w-full aspect-square">
-              <Image
-                alt="Logo"
-                className="bg-white p-1 w-1/5 aspect-square object-contain"
-                height={30}
-                objectFit="contain"
-                src={selectedLogo}
-                width={30}
-              />
-            </div>
-          </div>
-        ) : null}
-      </div>
-    );
-  }, [qrCodeData, isSelectedLogo, selectedLogo]);
+  const isUrlValid = useMemo(() => isURL(url), [url]);
 
   useEffect(() => {
-    const generated = async (): Promise<void> => {
-      if (!formData.url || !isURL(formData.url)) {
-        setQrCodeData('');
+    const generate = async (): Promise<void> => {
+      if (!isUrlValid) {
         return;
       }
 
       try {
-        const qrCodeGen = await QRCode.toDataURL(formData.url, {
+        const qrCodeGen = await QRCode.toDataURL(url, {
           errorCorrectionLevel: 'Q',
           margin: 1,
           color: {
             dark: selectedColor,
-            light: '#ffffff',
+            light: '#fafafa',
           },
           width: 256,
         });
@@ -123,209 +97,165 @@ const EditQRCode: React.FC<{
       }
     };
 
-    generated().catch((error: unknown) => {
+    generate().catch((error: unknown) => {
       console.error('QR Code generation error:', error);
     });
-  }, [formData.url, selectedColor]);
+  }, [isUrlValid, selectedColor, url]);
 
-  useEffect(() => {
-    if (formData.name !== '') {
-      setErrorName(false);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: data.name,
+      url: data.url,
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
+    try {
+      setLoading(true);
+
+      const res = await updateQRCode({
+        id: data.id,
+        name: values.name,
+        url: values.url,
+        qrCode: qrCodeData,
+        color: selectedColor,
+        logo: selectedLogo ? selectedLogo.name : '',
+      });
+
+      if (!res.success) {
+        console.error(res.errors);
+        toast({
+          title: 'Failed to update QR code',
+          description: res.message,
+          variant: 'destructive',
+        });
+
+        if (res.errors[0] === 'The QR Code name already exists') {
+          form.setError('name', {
+            message: 'The QR Code name already exists',
+          });
+        }
+        setLoading(false);
+        return;
+      }
+
+      form.reset();
+      setOpen(false);
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to update QR');
+      toast({
+        title: 'Failed to update QR code',
+        description:
+          error instanceof Error ? error.message : 'Something went wrong',
+        variant: 'destructive',
+      });
     }
-    if (formData.url !== '' && isURL(formData.url)) {
-      setErrorURL(false);
-    }
-  }, [formData.name, formData.url]);
+  }
 
   return (
-    <div
-      className="flex flex-col justify-between items-start p-8 rounded-3xl w-full max-w-[550px] h-fit max-h-[750px] text-white"
-      style={{
-        background: 'linear-gradient(146.88deg, #404040 0%, #262626 100%)',
-      }}
-    >
-      <div className="space-y-8 w-full">
-        <h2 className="font-bold text-center text-xl md:text-2xl lg:text-3xl">
-          Create New QR Code
-        </h2>
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <label
-              className="font-bold text-sm sm:text-base md:text-lg"
-              htmlFor="name"
-            >
-              QR Code Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              placeholder="Enter QR code name"
-              type="text"
-              value={formData.name}
-              className={cn(
-                `w-full border bg-white text-sm sm:text-base rounded-2xl py-2 px-4 text-black`,
-                errorName ? 'border-red-500' : 'border-neutral-400',
-              )}
-              onChange={handleInputChange}
-            />
-            {errorName ? (
-              <p className="text-red-500 text-sm">Please enter a name</p>
-            ) : null}
-          </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="transparent">
+          <SquarePen size={16} />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="md:max-w-md">
+        <Form {...form}>
+          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+            {/* header */}
+            <DialogHeader>
+              <DialogTitle>Create QR Code</DialogTitle>
+            </DialogHeader>
 
-          <div className="space-y-2">
-            <label
-              className="font-bold text-sm sm:text-base md:text-lg"
-              htmlFor="url"
-            >
-              URL
-            </label>
-            <input
-              id="url"
-              name="url"
-              placeholder="Enter URL to generate QR code"
-              type="text"
-              value={formData.url}
-              className={cn(
-                `w-full border bg-white text-sm sm:text-base rounded-2xl py-2 px-4 text-black`,
-                errorName ? 'border-red-500' : 'border-neutral-400',
-              )}
-              onChange={handleInputChange}
-            />
-            {errorURL ? (
-              <p className="text-red-500 text-sm">
-                Please enter a valid URL. Include http:// or https://
-              </p>
-            ) : null}
-          </div>
-        </div>
-
-        <div className="flex flex-row justify-between items-start gap-2">
-          <div className="flex flex-col justify-start items-center gap-y-4 px-2 w-64">
-            <div className="font-bold text-center text-lg">Preview</div>
-            <div className="bg-white w-full aspect-square">
-              {previewContent}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3 px-2">
+            {/* form */}
             <div className="space-y-2">
-              <h3 className="font-medium text-base">Select Color</h3>
-              <div className="flex flex-wrap gap-2">
-                {colorOptions.map((color, idx) => (
-                  <label
-                    key={color}
-                    className="relative flex justify-center items-center"
-                  >
-                    <input
-                      checked={selectedColor === color}
-                      className="hidden"
-                      id={`color-${idx}`}
-                      type="radio"
-                      value={color}
-                      onChange={() => setSelectedColor(color)}
-                    />
-                    <label className="sr-only" htmlFor={`color-${idx}`}>
-                      {`Select color ${color}`}
-                    </label>
-                    <span
-                      className={`w-6 h-6 rounded-full cursor-pointer ${selectedColor === color ? 'border-2 border-black' : ''}`}
-                      style={{ backgroundColor: color }}
-                    />
-                  </label>
-                ))}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-medium text-base">Logo</h3>
-              <div className="flex flex-wrap gap-2">
-                <label className="relative flex justify-center items-center">
-                  <input
-                    checked={selectedLogo === undefined}
-                    className="hidden"
-                    id="logo-none"
-                    type="radio"
-                    value={undefined}
-                    onChange={() => {
-                      setIsSelectedLogo(false);
-                      setSelectedLogo(undefined);
-                    }}
-                  />
-                  <label className="sr-only" htmlFor="logo-none">
-                    Select color none
-                  </label>
-                  <div className="flex w-10 lg:w-12 aspect-square">
-                    <div className="flex justify-center items-center bg-white p-3 rounded-full w-full aspect-square">
-                      <X color="black" />
-                    </div>
-                    <span
-                      className={`absolute  w-10 lg:w-12 aspect-square rounded-full cursor-pointer ${selectedLogo === undefined ? 'border-2 border-black' : ''}`}
-                    />
-                  </div>
-                </label>
-                {/* {logoOptions.map((logo: string, idx) => (
-                  <label
-                    key={logo}
-                    className="relative flex justify-center items-center"
-                  >
-                    <input
-                      checked={selectedLogo === logo}
-                      className="hidden"
-                      id={`logo-${idx}`}
-                      type="radio"
-                      value={logo}
-                      onChange={() => {
-                        setIsSelectedLogo(true);
-                        setSelectedLogo(logo);
-                      }}
-                    />
-                    <label className="sr-only" htmlFor={`logo-${idx}`}>
-                      {`Select color ${logo}`}
-                    </label>
-                    <div className="flex w-10 lg:w-12 aspect-square">
-                      <div className="flex justify-center items-center bg-white p-3 rounded-full w-full aspect-square">
-                        <Image
-                          alt=""
-                          className="w-full"
-                          height={0}
-                          src={logo}
-                          width={0}
-                        />
-                      </div>
-                      <span
-                        className={`absolute w-10 lg:w-12 aspect-square rounded-full cursor-pointer ${selectedLogo === logo ? 'border-2 border-black' : ''}`}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="My QR Code"
+                        {...field}
+                        onChange={(e) => {
+                          form.setValue('name', e.target.value);
+                        }}
                       />
-                    </div>
-                  </label>
-                ))} */}
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="https://example.com"
+                        {...field}
+                        value={url}
+                        onChange={(e) => {
+                          setUrl(e.target.value);
+                          form.setValue('url', e.target.value);
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* preview */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="relative w-full aspect-square grid place-content-center bg-white select-none">
+                {isUrlValid ? (
+                  <>
+                    <Image
+                      fill
+                      alt="preview"
+                      className="object-contain"
+                      src={qrCodeData}
+                    />
+                    <QrCodeLogo logoName={selectedLogo?.name ?? null} />
+                  </>
+                ) : (
+                  <p className="text-center text-neutral-400">
+                    Enter a valid URL to preview QR code
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-5">
+                <ColorSelector
+                  color={selectedColor}
+                  setColor={(color) => setSelectedColor(color)}
+                  title="Select Foreground Color"
+                />
+                <LogoSelector
+                  logo={selectedLogo}
+                  setLogo={(logo) => setSelectedLogo(logo)}
+                  title="Select Logo"
+                />
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex gap-x-4 mt-6 w-full">
-        <button
-          className="bg-neutral-300 hover:bg-neutral-400 py-2 rounded-2xl w-1/2 font-semibold text-black text-sm md:text-base lg:text-lg transition"
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            onCancel();
-          }}
-        >
-          Cancel
-        </button>
-        <button
-          className="bg-amber-300 hover:bg-amber-400 py-2 rounded-2xl w-1/2 font-semibold text-black text-sm md:text-base lg:text-lg transition"
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            handleSubmit;
-          }}
-        >
-          Generate QR Code
-        </button>
-      </div>
-    </div>
+
+            {/* footer */}
+            <DialogFooter>
+              <Button disabled={loading} type="submit" variant="primary">
+                Save
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
