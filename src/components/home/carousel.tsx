@@ -19,10 +19,25 @@ const HeroCarousel: React.FC<CarouselProps> = ({ slides }) => {
       className="col-span-5"
       showArrows={false}
       showStatus={false}
+      showThumbs={false}
+      renderIndicator={(onClickHandler, isSelected, index, label) => (
+        <li
+          key={index}
+          aria-label={`${label} ${index + 1}`}
+          className={`rounded-full h-2 w-2 cursor-pointer inline-block mx-1 bg-white float-right ${isSelected ? 'opacity-100' : 'opacity-30'}`}
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role -- This element is interactive as an indicator
+          role="button"
+          tabIndex={0}
+          title={`${label} ${index + 1}`}
+          value={index}
+          onClick={onClickHandler}
+          onKeyDown={onClickHandler}
+        />
+      )}
     >
       {slides.map((slide) => (
         <React.Fragment key={slide.id}>
-          <div className="relative col-span-5 aspect-video bg-neutral-700 lg:aspect-[4/2]">
+          <div className="h-full col-span-5 aspect-video bg-neutral-700 lg:aspect-[4/2]">
             <Image
               fill
               alt={slide.title}
@@ -30,7 +45,7 @@ const HeroCarousel: React.FC<CarouselProps> = ({ slides }) => {
               src={slide.image}
             />
             <div className="absolute z-10 h-full w-full bg-gradient-to-t from-black to-transparent to-35%" />
-            <div className="absolute z-20 flex h-full flex-col justify-end p-4 lg:gap-1 lg:px-7 lg:py-6">
+            <div className="absolute z-20 flex h-full flex-col justify-end text-left p-4 lg:gap-1 lg:px-7 lg:py-6">
               <h4 className="align-bottom text-lg font-semibold text-white lg:text-2xl">
                 {slide.title}
               </h4>
