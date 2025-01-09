@@ -14,9 +14,7 @@ const Page: React.FC = () => {
         <Title className="hidden lg:inline">QR Code Generator</Title>
         <div className="flex w-full items-center justify-between">
           <h2 className="text-2xl font-medium">Your QR Codes</h2>
-          <div className="md:hidden">
-            <QRCodeCreateButton />
-          </div>
+          <QRCodeCreateButton />
         </div>
         <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           <Suspense>
