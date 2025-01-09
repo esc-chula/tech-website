@@ -100,6 +100,17 @@ const QRCodeCreateDialog: React.FC = () => {
     },
   });
 
+  const resetForm = (): void => {
+    form.reset({
+      name: '',
+      url: '',
+    });
+    setUrl('');
+    setQrCodeData('');
+    setSelectedColor(colorOptions[0] ?? '');
+    setSelectedLogo(null);
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     try {
       setLoading(true);
@@ -129,7 +140,7 @@ const QRCodeCreateDialog: React.FC = () => {
         return;
       }
 
-      form.reset();
+      resetForm();
       setOpen(false);
       setLoading(false);
     } catch (error) {
