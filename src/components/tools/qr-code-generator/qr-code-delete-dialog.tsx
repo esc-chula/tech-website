@@ -59,11 +59,11 @@ const DeleteQRCode: React.FC<DeleteQRCodeProps> = ({ id, name }) => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you absolutely sure to delete {name}?
+            Are you sure you want to delete the QR code &quot;{name}&quot; ?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. Deleting this QR code will permanently
+            remove it from your account and all associated data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
