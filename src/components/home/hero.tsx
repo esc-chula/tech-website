@@ -1,32 +1,30 @@
-import Image from 'next/image';
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
+
+import { env } from '~/env';
+import { getCarousel } from '~/server/actions/hero';
 
 import NavItems from '../common/navigation/nav-items';
 import UserBox from '../common/user-box/user-box';
 import UserBoxLoading from '../common/user-box/user-box-loading';
 import { Card } from '../ui/card';
 
-const Hero: React.FC = () => {
+import HeroCarousel from './carousel';
+
+const Hero: React.FC = async () => {
+  const res = await getCarousel();
+  if (!res.success) {
+    return <div>Something went wrong ...</div>;
+  }
+  const slides = res.data;
+  slides.map((slide) => {
+    slide.image = `${env.DIRECTUS_URL}/assets/${slide.image}`;
+    return slide;
+  });
+
   return (
     <Card className="grid w-full overflow-hidden p-0 lg:grid-cols-7">
       {/* banner */}
-      <div className="relative col-span-5 aspect-video bg-neutral-700 lg:aspect-[4/2]">
-        <Image
-          fill
-          alt="banner"
-          className="select-none object-cover"
-          src="/assets/mock/banner.png"
-        />
-        <div className="absolute z-10 h-full w-full bg-gradient-to-t from-black to-transparent to-35%" />
-        <div className="absolute z-20 flex h-full flex-col justify-end p-4 lg:gap-1 lg:px-7 lg:py-6">
-          <h4 className="align-bottom text-lg font-semibold text-white lg:text-2xl">
-            TECH website is now open!
-          </h4>
-          <p className="align-bottom text-xs font-light text-white">
-            A place of tools and knowledges for geeks.
-          </p>
-        </div>
-      </div>
+      <HeroCarousel slides={slides} />
 
       {/* menu */}
       <div className="col-span-2 hidden flex-col justify-between lg:flex">
