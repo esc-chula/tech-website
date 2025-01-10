@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import BackButton from '~/components/common/button/back-button';
 import QRCodeCreateButton from '~/components/tools/qr-code-generator/qr-code-create-button';
 import QRCodeCreateDialog from '~/components/tools/qr-code-generator/qr-code-create-dialog';
+import QRCodeLoading from '~/components/tools/qr-code-generator/qr-code-loading';
 import QRCodesContainer from '~/components/tools/qr-code-generator/qr-codes-container';
 import { Title } from '~/components/ui/title';
 
@@ -17,7 +18,7 @@ const Page: React.FC = () => {
           <QRCodeCreateButton />
         </div>
         <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-          <Suspense>
+          <Suspense fallback={<QRCodeLoading />}>
             <QRCodeCreateDialog />
             <QRCodesContainer />
           </Suspense>
