@@ -1,13 +1,9 @@
 import { cn } from '~/lib/utils';
 
-export const Skeleton: React.FC = ({
+export const Skeleton: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
+}) => {
   return (
-    <div
-      className={cn('animate-pulse rounded-md bg-neutral-800', className)}
-      {...props}
-    />
+    <div className={cn('animate-pulse rounded-md bg-neutral-800', className)} />
   );
 };
