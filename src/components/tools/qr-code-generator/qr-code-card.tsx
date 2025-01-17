@@ -16,8 +16,34 @@ interface QrCodeCardProps {
 }
 
 const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
-  const handleDownloadQrCode = (): void => {
-    // Create a canvas element and its context for drawing
+  const drawRoundedRect = (
+    context: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number,
+  ): void => {
+    context.beginPath();
+    context.moveTo(x + radius, y);
+    context.lineTo(x + width - radius, y);
+    context.arcTo(x + width, y, x + width, y + radius, radius);
+    context.lineTo(x + width, y + height - radius);
+    context.arcTo(
+      x + width,
+      y + height,
+      x + width - radius,
+      y + height,
+      radius,
+    );
+    context.lineTo(x + radius, y + height);
+    context.arcTo(x, y + height, x, y + height - radius, radius);
+    context.lineTo(x, y + radius);
+    context.arcTo(x, y, x + radius, y, radius);
+    context.closePath();
+  };
+
+  const handleDownloadQrCode = async (): Promise<void> => {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
 
@@ -26,85 +52,86 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
       return;
     }
 
-    // Load QR code image
-    const qrCodeImage = new window.Image();
-    qrCodeImage.crossOrigin = 'anonymous'; // Enable cross-origin for downloaded images
-    qrCodeImage.src = data.qrCode;
-
-    qrCodeImage.onload = () => {
-      // Set canvas size to match QR code dimensions
-      canvas.width = qrCodeImage.width;
-      canvas.height = qrCodeImage.height;
-      context.drawImage(qrCodeImage, 0, 0);
-
-      // Draw a styled box for the logo
-      if (data.logo) {
-        const logoImage = new window.Image();
-        logoImage.crossOrigin = 'anonymous'; // Enable cross-origin for downloaded images
-        const logoData =
-          logoOptions.find((logo) => logo.name === data.logo)?.data ?? '';
-        logoImage.src = logoData;
-
-        logoImage.onload = () => {
-          // Calculate logo box dimensions and position
-          const boxSize = canvas.width / 6;
-          const boxX = (canvas.width - boxSize) / 2;
-          const boxY = (canvas.height - boxSize) / 2;
-
-          // Draw the box with background color and border radius
-          context.fillStyle = '#fafafa'; // Box background color
-          context.strokeStyle = 'none'; // Optional border color
-          context.beginPath();
-          context.roundRect(boxX, boxY, boxSize, boxSize, 0); // Rounded corners
-          context.fill();
-
-          // Draw the logo inside the box
-          const logoPadding = boxSize * 0.1; // Padding inside the box
-          const availableWidth = boxSize - 2 * logoPadding;
-          const availableHeight = boxSize - 2 * logoPadding;
-
-          // Calculate the logo dimensions while maintaining aspect ratio
-          let logoWidth = logoImage.width;
-          let logoHeight = logoImage.height;
-
-          const widthRatio = availableWidth / logoWidth;
-          const heightRatio = availableHeight / logoHeight;
-          const scale = Math.min(widthRatio, heightRatio);
-
-          logoWidth *= scale;
-          logoHeight *= scale;
-
-          // Center the logo within the box
-          const logoX = boxX + (boxSize - logoWidth) / 2;
-          const logoY = boxY + (boxSize - logoHeight) / 2;
-
-          // Draw the logo on the canvas
-          context.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight);
-
-          // Trigger download
-          triggerDownload();
-        };
-
-        logoImage.onerror = () => {
-          console.error('Failed to load logo image.');
-          triggerDownload(); // Proceed without the logo if it fails to load
-        };
-      } else {
-        // Trigger download if no logo exists
-        triggerDownload();
+    const triggerDownload = (dataUrl: string): void => {
+      try {
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `${data.name}.png`;
+        link.click();
+      } catch (error) {
+        console.error('Failed to trigger download:', error);
       }
     };
 
-    qrCodeImage.onerror = () => {
-      console.error('Failed to load QR code image.');
-    };
+    try {
+      // Load QR code image directly from URL
+      const qrCodeImage = new window.Image();
+      qrCodeImage.crossOrigin = 'anonymous'; // Enable cross-origin loading
+      qrCodeImage.src = data.qrCode;
 
-    const triggerDownload = (): void => {
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = `${data.name}.png`;
-      link.click();
-    };
+      await new Promise((resolve) => {
+        qrCodeImage.onload = () => {
+          // Set canvas size and draw QR code
+          canvas.width = qrCodeImage.width;
+          canvas.height = qrCodeImage.height;
+          context.drawImage(qrCodeImage, 0, 0);
+          resolve(null);
+        };
+      });
+
+      // If logo exists, process and draw it
+      if (data.logo) {
+        const logoData = logoOptions.find(
+          (logo) => logo.name === data.logo,
+        )?.data;
+        if (logoData) {
+          const logoImage = new window.Image();
+          logoImage.crossOrigin = 'anonymous'; // Ensure cross-origin loading
+          logoImage.src = logoData;
+
+          console.log('logoImage', logoImage.src);
+
+          await new Promise((resolve) => {
+            logoImage.onload = () => {
+              const boxSize = canvas.width / 6;
+              const boxX = (canvas.width - boxSize) / 2;
+              const boxY = (canvas.height - boxSize) / 2;
+
+              // Draw the box background
+              context.fillStyle = '#fafafa';
+              drawRoundedRect(context, boxX, boxY, boxSize, boxSize, 0);
+              context.fill();
+
+              // Calculate logo dimensions
+              const logoPadding = boxSize * 0.1;
+              const availableWidth = boxSize - 2 * logoPadding;
+              const availableHeight = boxSize - 2 * logoPadding;
+
+              const widthRatio = availableWidth / logoImage.width;
+              const heightRatio = availableHeight / logoImage.height;
+              const scale = Math.min(widthRatio, heightRatio);
+
+              const logoWidth = logoImage.width * scale;
+              const logoHeight = logoImage.height * scale;
+
+              // Center the logo
+              const logoX = boxX + (boxSize - logoWidth) / 2;
+              const logoY = boxY + (boxSize - logoHeight) / 2;
+
+              // Draw the logo
+              context.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight);
+              resolve(null);
+            };
+          });
+        }
+      }
+
+      // Convert final canvas to data URL and trigger download
+      const finalDataUrl = canvas.toDataURL('image/png');
+      triggerDownload(finalDataUrl);
+    } catch (error) {
+      console.error('Error processing images:', error);
+    }
   };
 
   return (

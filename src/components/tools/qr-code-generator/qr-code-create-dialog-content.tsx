@@ -1,21 +1,18 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import { default as QRCode } from 'qrcode';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '~/components/ui/button';
 import {
-  Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '~/components/ui/dialog';
 import {
   Form,
@@ -33,6 +30,7 @@ import { createQRCode } from '~/server/actions/qr-code';
 
 import ColorSelector from './color-selector';
 import LogoSelector from './logo-selector';
+import { CreateDialogContext } from './qr-code-create-dialog-context';
 import QrCodeLogo from './qr-code-logo';
 
 const formSchema = z.object({
@@ -49,8 +47,8 @@ const formSchema = z.object({
   }),
 });
 
-const QRCodeCreateButton: React.FC = () => {
-  const [open, setOpen] = useState(false);
+const QRCodeCreateDialogContent: React.FC = () => {
+  const { setOpen } = useContext(CreateDialogContext);
   const [url, setUrl] = useState('');
   const [qrCodeData, setQrCodeData] = useState('');
   const [selectedColor, setSelectedColor] = useState<string>(
@@ -155,103 +153,95 @@ const QRCodeCreateButton: React.FC = () => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default">
-          <Plus size={16} />
-          New
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="md:max-w-md">
-        <Form {...form}>
-          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-            {/* header */}
-            <DialogHeader>
-              <DialogTitle>Create QR Code</DialogTitle>
-            </DialogHeader>
+    <DialogContent className="md:max-w-md">
+      <Form {...form}>
+        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+          {/* header */}
+          <DialogHeader>
+            <DialogTitle>Create QR Code</DialogTitle>
+          </DialogHeader>
 
-            {/* form */}
-            <div className="space-y-2">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="My QR Code" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="url"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>URL</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="https://example.com"
-                        {...field}
-                        value={url}
-                        onChange={(e) => {
-                          setUrl(e.target.value);
-                          form.setValue('url', e.target.value);
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* preview */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative w-full aspect-square grid place-content-center bg-white select-none">
-                {isUrlValid ? (
-                  <>
-                    <Image
-                      fill
-                      alt="preview"
-                      className="object-contain"
-                      src={qrCodeData}
+          {/* form */}
+          <div className="space-y-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="My QR Code" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>URL</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="https://example.com"
+                      {...field}
+                      value={url}
+                      onChange={(e) => {
+                        setUrl(e.target.value);
+                        form.setValue('url', e.target.value);
+                      }}
                     />
-                    <QrCodeLogo logoName={selectedLogo?.name ?? null} />
-                  </>
-                ) : (
-                  <p className="text-center text-neutral-400">
-                    Enter a valid URL to preview QR code
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-col gap-5">
-                <ColorSelector
-                  color={selectedColor}
-                  setColor={(color) => setSelectedColor(color)}
-                  title="Select Foreground Color"
-                />
-                <LogoSelector
-                  logo={selectedLogo}
-                  setLogo={(logo) => setSelectedLogo(logo)}
-                  title="Select Logo"
-                />
-              </div>
-            </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-            {/* footer */}
-            <DialogFooter>
-              <Button disabled={loading} type="submit" variant="primary">
-                Save
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+          {/* preview */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="relative w-full aspect-square grid place-content-center bg-white select-none">
+              {isUrlValid ? (
+                <>
+                  <Image
+                    fill
+                    alt="preview"
+                    className="object-contain"
+                    src={qrCodeData}
+                  />
+                  <QrCodeLogo logoName={selectedLogo?.name ?? null} />
+                </>
+              ) : (
+                <p className="text-center text-neutral-400">
+                  Enter a valid URL to preview QR code
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-5">
+              <ColorSelector
+                color={selectedColor}
+                setColor={(color) => setSelectedColor(color)}
+                title="Select Foreground Color"
+              />
+              <LogoSelector
+                logo={selectedLogo}
+                setLogo={(logo) => setSelectedLogo(logo)}
+                title="Select Logo"
+              />
+            </div>
+          </div>
+
+          {/* footer */}
+          <DialogFooter>
+            <Button disabled={loading} type="submit" variant="primary">
+              Save
+            </Button>
+          </DialogFooter>
+        </form>
+      </Form>
+    </DialogContent>
   );
 };
 
-export default QRCodeCreateButton;
+export default QRCodeCreateDialogContent;
