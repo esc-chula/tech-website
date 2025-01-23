@@ -1,13 +1,11 @@
 import { createContext } from 'react';
 
-interface QRCodeCreateDialogProps {
-  isShowButton: boolean;
+interface OpenContextProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const CreateDialogContext = createContext<QRCodeCreateDialogProps>({
-  isShowButton: false,
+export const OpenContext = createContext<OpenContextProps>({
   open: false,
   setOpen: () => null,
 });

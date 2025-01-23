@@ -1,23 +1,28 @@
 'use client';
+
 import { useState } from 'react';
 
 import { Dialog } from '~/components/ui/dialog';
 
 import QRCodeCreateDialogContent from './qr-code-create-dialog-content';
-import { CreateDialogContext } from './qr-code-create-dialog-context';
-import QRCodeCreateDialogTrigger from './qr-code-create-dialog-trigger';
+import { OpenContext } from './qr-code-open-context';
 
-const QRCodeCreateDialog: React.FC<{ isShowButton?: boolean }> = ({
-  isShowButton = false,
+interface QRCodeCreateDialogContentProps {
+  children?: React.ReactNode;
+}
+
+const QRCodeCreateDialog: React.FC<QRCodeCreateDialogContentProps> = ({
+  children,
 }) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
+
   return (
-    <CreateDialogContext.Provider value={{ isShowButton, open, setOpen }}>
+    <OpenContext.Provider value={{ open, setOpen }}>
       <Dialog open={open} onOpenChange={setOpen}>
-        <QRCodeCreateDialogTrigger />
         <QRCodeCreateDialogContent />
+        {children}
       </Dialog>
-    </CreateDialogContext.Provider>
+    </OpenContext.Provider>
   );
 };
 

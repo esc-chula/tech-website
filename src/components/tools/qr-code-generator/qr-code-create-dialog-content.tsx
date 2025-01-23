@@ -30,8 +30,8 @@ import { createQRCode } from '~/server/actions/qr-code';
 
 import ColorSelector from './color-selector';
 import LogoSelector from './logo-selector';
-import { CreateDialogContext } from './qr-code-create-dialog-context';
 import QrCodeLogo from './qr-code-logo';
+import { OpenContext } from './qr-code-open-context';
 
 const formSchema = z.object({
   name: z
@@ -48,7 +48,7 @@ const formSchema = z.object({
 });
 
 const QRCodeCreateDialogContent: React.FC = () => {
-  const { setOpen } = useContext(CreateDialogContext);
+  const { setOpen } = useContext(OpenContext);
   const [url, setUrl] = useState('');
   const [qrCodeData, setQrCodeData] = useState('');
   const [selectedColor, setSelectedColor] = useState<string>(
