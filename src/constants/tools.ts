@@ -11,12 +11,12 @@ export const tools = [
     href: '/tools/qr-code-generator',
     image: '/assets/tools/qr-code.png',
   },
-  {
-    title: 'Intania OAuth',
-    description: 'Create and use OAuth for your app',
-    href: '/tools/oauth',
-    image: '/assets/tools/oauth.png',
-  },
+  // {
+  //   title: 'Intania OAuth',
+  //   description: 'Create and use OAuth for your app',
+  //   href: '/tools/oauth',
+  //   image: '/assets/tools/oauth.png',
+  // },
   {
     title: 'Report Bug',
     description: 'Found a bug? Report to us!',
