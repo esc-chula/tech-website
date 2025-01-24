@@ -70,6 +70,8 @@ services:
     image: postgres:16-bookworm
     restart: unless-stopped
     hostname: auth-db
+    ports:
+      - 5433:5432
     environment:
       POSTGRES_PASSWORD: '123456'
       POSTGRES_DB: intania-auth
