@@ -1,0 +1,53 @@
+name: CD - Deploy to Kubernetes
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI - Build and Push Docker Image"]
+    types:
+      - completed
+
+env:
+  GITOPS_REPO: esc-chula/infra
+  GITOPS_DEPLOYMENT_PATH: apps/tech-website/base/deployment.yaml
+  IMAGE_NAME: ghcr.io/${{ github.repository }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Download Image Tag Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: image-tag
+          path: .
+
+      - name: Read Image Tag from Artifact
+        id: get-image-tag
+        run: echo "image_tag=$(cat image_tag.txt)" >> $GITHUB_OUTPUT
+
+      - name: Checkout GitOps repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          token: ${{ secrets.GITOPS_TOKEN }}
+          path: gitops
+
+      - name: Update image tag in deployment.yaml
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq -i '.spec.template.spec.containers[0].image = "${{ env.IMAGE_NAME }}:${{ steps.get-image-tag.outputs.image_tag }}"' gitops/${{ env.GITOPS_DEPLOYMENT_PATH }}
+
+      - name: Commit and push changes to GitOps repo
+        run: |
+          cd gitops
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "build: Update ${{ env.GITOPS_DEPLOYMENT_PATH }} to ${{ steps.get-image-tag.outputs.image_tag }}"
+          git push
