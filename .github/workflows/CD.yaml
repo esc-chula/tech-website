@@ -8,8 +8,8 @@ on:
       - completed
 
 env:
-  GITOPS_REPO: esc-chula/infra
-  GITOPS_DEPLOYMENT_PATH: apps/tech-website/base/deployment.yaml
+  GITOPS_REPO: esc-chula/tech-website-gitops
+  GITOPS_DEPLOYMENT_PATH: base/deployment.yaml
   IMAGE_NAME: ghcr.io/${{ github.repository }}
 
 jobs:
