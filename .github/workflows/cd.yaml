@@ -1,8 +1,9 @@
 name: CD - Deploy to Kubernetes
 
 on:
+  workflow_dispatch:
   workflow_run:
-    workflows: ["Release"]
+    workflows: ['Release']
     types:
       - completed
 

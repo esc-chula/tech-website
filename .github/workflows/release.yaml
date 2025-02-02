@@ -100,17 +100,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
-      - name: Repository to lowercase
+      - name: Repository to lowercase and set release tag
         env:
           REPOSITORY: ${{ github.repository }}
+          TAG: ${{ github.event.inputs.target }}
         run: |
           echo "IMAGE_NAME=ghcr.io/${REPOSITORY@L}" >> "$GITHUB_ENV"
+          echo "RELEASE_TAG=${TAG#v}" >> "$GITHUB_ENV"
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v3
         with:
           file: Dockerfile
           push: true
-          tags: ${{ github.event.inputs.target }}
+          tags: ${{ env.IMAGE_NAME }}/${{ env.RELEASE_TAG }}
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
