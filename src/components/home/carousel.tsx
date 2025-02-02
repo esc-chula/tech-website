@@ -42,7 +42,6 @@ const HeroCarousel: React.FC<CarouselProps> = ({ slides }) => {
       )}
     >
       {slides
-        .filter((slide) => slide.active)
         .sort((a, b) => b.priority - a.priority)
         .map((slide) =>
           slide.url ? (

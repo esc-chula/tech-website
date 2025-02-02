@@ -15,7 +15,7 @@ export async function getCarousel(): Promise<Response<Slide[]>> {
     return {
       success: true,
       message: 'Successfully fetched slides',
-      data: projects as never as Slide[],
+      data: (projects as never as Slide[]).filter((slide) => slide.active),
     };
   } catch (error) {
     return {
