@@ -33,9 +33,12 @@ export const Section: React.FC<SectionProps> = ({
       </div>
       <div
         className={cn(
-          'absolute -left-[50vw] -right-[50vw] bottom-0 top-0 -z-10 h-full',
+          'absolute bottom-0 top-0 -z-10 h-full w-screen',
           classNameWithBg,
         )}
+        style={{
+          marginLeft: 'calc(50% - 50vw)',
+        }}
       />
     </section>
   );

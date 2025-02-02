@@ -28,7 +28,7 @@ const tiny5 = localFont({
 });
 const ibmPlexSansThai = IBMPlexSansThai({
   subsets: ['latin'],
-  weight: ['400'],
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
   variable: '--font-ibm-plex-sans-thai',
 });
 

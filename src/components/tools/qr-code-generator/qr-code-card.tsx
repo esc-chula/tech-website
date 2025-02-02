@@ -138,7 +138,7 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
     <div className="flex flex-col gap-6 bg-black p-6 rounded-3xl w-full max-w-[350px] place-self-center md:min-h-[420px] h-full">
       <div className="flex flex-col">
         <div className="flex justify-between items-center">
-          <h3 className="flex-grow font-semibold text-amber-300 text-xl truncate">
+          <h3 className="flex-grow font-semibold text-primary text-xl truncate">
             {data.name}
           </h3>
           <div className="flex">

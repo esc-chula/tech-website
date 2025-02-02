@@ -7,7 +7,7 @@ export const heroLinks = [
   },
   {
     label: 'Documentations',
-    href: 'https://esc67.notion.site',
+    href: 'https://docs.intania.org',
     scroll: false,
     external: true,
   },

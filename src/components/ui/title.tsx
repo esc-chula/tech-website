@@ -6,7 +6,7 @@ const titleVariants = cva('text-center', {
   variants: {
     color: {
       white: 'text-white',
-      primary: 'text-amber-300',
+      primary: 'text-primary',
     },
     variant: {
       pageTitle: 'text-3xl md:text-4xl font-semibold uppercase',

@@ -8,7 +8,7 @@ const Home: React.FC = () => {
       <h1 className="hidden">ESC Technology Department Website</h1>
       <Hero />
       <div className="flex w-full text-left text-2xl font-semibold lg:text-4xl lg:font-bold">
-        Tools & Apps
+        Tools & Services
       </div>
       <section
         className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-3"

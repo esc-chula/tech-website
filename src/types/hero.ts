@@ -3,4 +3,7 @@ export interface Slide {
   title: string;
   description: string;
   image: string;
+  priority: number;
+  url: string;
+  active: boolean;
 }

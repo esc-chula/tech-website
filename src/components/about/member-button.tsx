@@ -14,7 +14,7 @@ const MemberButton: React.FC<MemberButtonProps> = ({
 }) => {
   return (
     <Link
-      className="flex h-14 items-center justify-start gap-4 rounded-lg bg-gradient-to-b from-neutral-700 to-neutral-800 px-4"
+      className="flex h-14 text-xs sm:text-sm md:text-base items-center justify-start gap-2 sm:gap-4 rounded-lg bg-gradient-to-b from-neutral-700 to-neutral-800 px-3 sm:px-4"
       href={url}
       rel="noopener noreferrer"
       target="_blank"

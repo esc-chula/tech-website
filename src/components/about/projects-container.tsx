@@ -11,21 +11,24 @@ const ProjectsContainer: React.FC = async () => {
     return <div>Something went wrong ...</div>;
   }
   const projects = res.data;
+  const years = [...new Set(projects.map((project) => project.year))];
 
   return (
     <>
-      {projects.map((project) => (
-        <React.Fragment key={project.year}>
+      {years.map((year) => (
+        <React.Fragment key={year}>
           <h3 className="flex items-center gap-1">
-            <span className="text-lg font-semibold uppercase">
-              {project.year}
-            </span>
+            <span className="text-lg font-semibold uppercase">{year}</span>
             <span className="text-sm font-medium normal-case text-neutral-600">
-              {yearLabels[project.year as keyof typeof yearLabels]}
+              {yearLabels[year as keyof typeof yearLabels]}
             </span>
           </h3>
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-            <ProjectCard {...project} />
+            {projects
+              .filter((project) => project.year === year)
+              .map((project) => (
+                <ProjectCard key={project.title} {...project} />
+              ))}
           </div>
         </React.Fragment>
       ))}

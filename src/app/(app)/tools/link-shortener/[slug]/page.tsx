@@ -42,7 +42,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
                 {env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN.split('//')[1]}
               </span>
               <span className="text-neutral-500">/</span>
-              <span className="text-amber-300">{slug}</span>
+              <span className="text-primary">{slug}</span>
             </h3>
           </Link>
           <div className="flex items-center">

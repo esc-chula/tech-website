@@ -13,9 +13,9 @@ const MembersSection: React.FC = () => {
         Members
       </Title>
       <p className="max-w-3xl text-center font-medium">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation
+        ฝ่าย TECH กรรมการนิสิตคณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย
+        คือที่รวบรวมแก๊งเดฟชั้นเทพจากวิศวะจุฬาฯ
+        ที่รวมตัวกันมาสร้างนวัตกรรมและเทคโนโลยีให้กับ Intania นั่นเอง!
       </p>
       <Suspense fallback={<MembersLoading />}>
         <MemberContainer />

@@ -8,7 +8,7 @@ import ProjectsLoading from './projects-loading';
 
 const ProjectsSection: React.FC = () => {
   return (
-    <Section className="gap-6 bg-neutral-950">
+    <Section className="gap-6 pt-5 bg-neutral-950">
       <Title className="text-4xl" color="primary" variant="sectionTitle">
         Our Projects
       </Title>

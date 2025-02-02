@@ -25,38 +25,70 @@ const config = {
       },
       colors: {
         // SHADCN
-        border: 'hsl(var(--border) / <alpha-value>)',
-        input: 'hsl(var(--input) / <alpha-value>)',
-        ring: 'hsl(var(--ring) / <alpha-value>)',
-        background: 'hsl(var(--background) / <alpha-value>)',
-        foreground: 'hsl(var(--foreground) / <alpha-value>)',
+        border:
+          'color-mix(in srgb, var(--border) calc(<alpha-value> * 100%), transparent)',
+        input:
+          'color-mix(in srgb, var(--input) calc(<alpha-value> * 100%), transparent)',
+        ring: 'color-mix(in srgb, var(--ring) calc(<alpha-value> * 100%), transparent)',
+        background:
+          'color-mix(in srgb, var(--background) calc(<alpha-value> * 100%), transparent)',
+        foreground:
+          'color-mix(in srgb, var(--foreground) calc(<alpha-value> * 100%), transparent)',
         primary: {
-          DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
-          foreground: 'hsl(var(--primary-foreground) / <alpha-value>)',
+          DEFAULT:
+            'color-mix(in srgb, var(--primary) calc(<alpha-value> * 100%), transparent)',
+          foreground:
+            'color-mix(in srgb, var(--primary-foreground) calc(<alpha-value> * 100%), transparent)',
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary) / <alpha-value>)',
-          foreground: 'hsl(var(--secondary-foreground) / <alpha-value>)',
+          DEFAULT:
+            'color-mix(in srgb, var(--secondary) calc(<alpha-value> * 100%), transparent)',
+          foreground:
+            'color-mix(in srgb, var(--secondary-foreground) calc(<alpha-value> * 100%), transparent)',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive) / <alpha-value>)',
-          foreground: 'hsl(var(--destructive-foreground) / <alpha-value>)',
+          DEFAULT:
+            'color-mix(in srgb, var(--destructive) calc(<alpha-value> * 100%), transparent)',
+          foreground:
+            'color-mix(in srgb, var(--destructive-foreground) calc(<alpha-value> * 100%), transparent)',
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted) / <alpha-value>)',
-          foreground: 'hsl(var(--muted-foreground) / <alpha-value>)',
+          DEFAULT:
+            'color-mix(in srgb, var(--muted) calc(<alpha-value> * 100%), transparent)',
+          foreground:
+            'color-mix(in srgb, var(--muted-foreground) calc(<alpha-value> * 100%), transparent)',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent) / <alpha-value>)',
-          foreground: 'hsl(var(--accent-foreground) / <alpha-value>)',
+          DEFAULT:
+            'color-mix(in srgb, var(--accent) calc(<alpha-value> * 100%), transparent)',
+          foreground:
+            'color-mix(in srgb, var(--accent-foreground) calc(<alpha-value> * 100%), transparent)',
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover) / <alpha-value>)',
-          foreground: 'hsl(var(--popover-foreground) / <alpha-value>)',
+          DEFAULT:
+            'color-mix(in srgb, var(--popover) calc(<alpha-value> * 100%), transparent)',
+          foreground:
+            'color-mix(in srgb, var(--popover-foreground) calc(<alpha-value> * 100%), transparent)',
         },
         card: {
-          DEFAULT: 'hsl(var(--card) / <alpha-value>)',
-          foreground: 'hsl(var(--card-foreground) / <alpha-value>)',
+          DEFAULT:
+            'color-mix(in srgb, var(--card) calc(<alpha-value> * 100%), transparent)',
+          foreground:
+            'color-mix(in srgb, var(--card-foreground) calc(<alpha-value> * 100%), transparent)',
+        },
+
+        // ESC
+        carmine: {
+          50: 'color-mix(in srgb, var(--esc-carmine-50) calc(<alpha-value> * 100%), transparent)',
+          100: 'color-mix(in srgb, var(--esc-carmine-100) calc(<alpha-value> * 100%), transparent)',
+          200: 'color-mix(in srgb, var(--esc-carmine-200) calc(<alpha-value> * 100%), transparent)',
+          300: 'color-mix(in srgb, var(--esc-carmine-300) calc(<alpha-value> * 100%), transparent)',
+          400: 'color-mix(in srgb, var(--esc-carmine-400) calc(<alpha-value> * 100%), transparent)',
+          500: 'color-mix(in srgb, var(--esc-carmine-500) calc(<alpha-value> * 100%), transparent)',
+          600: 'color-mix(in srgb, var(--esc-carmine-600) calc(<alpha-value> * 100%), transparent)',
+          700: 'color-mix(in srgb, var(--esc-carmine-700) calc(<alpha-value> * 100%), transparent)',
+          800: 'color-mix(in srgb, var(--esc-carmine-800) calc(<alpha-value> * 100%), transparent)',
+          900: 'color-mix(in srgb, var(--esc-carmine-900) calc(<alpha-value> * 100%), transparent)',
         },
 
         // TECH MONTH
