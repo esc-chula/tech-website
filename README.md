@@ -1,28 +1,5 @@
 # Tech Department Website
 
-## Getting Started
+## Contributing
 
-### Local Development
-
-1. Clone this repo
-
-   `git clone https://github.com/esc-chula/tech-website.git`
-
-2. Create `.env` file by remove .example from `.env.exmaple` file
-
-3. Run
-
-```bash
-# install the dependencies
-pnpm install
-
-# start db
-docker compose up postgres
-
-# start dev
-pnpm dev
-```
-
-### Data Base
-
-- [Prisma](https://www.prisma.io/docs/orm)
+Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.

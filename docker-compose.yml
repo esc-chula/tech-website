@@ -1,37 +1,115 @@
 name: tech-website
 services:
-  postgres:
+  db:
     image: postgres:latest
-    container_name: tech-website-postgres
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: tech-website
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
     networks:
       - default
 
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        DIRECTUS_URL: ${DIRECTUS_URL}
-    container_name: tech-website-web
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-    networks:
-      - default
+  hydra:
+    image: oryd/hydra:v2.2.0
     restart: unless-stopped
+    ports:
+      - '4444:4444' # Public port
+      - '4445:4445' # Admin port, don't expose this port in production
+      - '9090:9090' # Port for development oauth client
+    command: serve all --dev
+    environment:
+      DSN: postgres://hydra:secret@hydradb:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+      SECRETS_SYSTEM: youReallyNeedToChangeThis
+      URLS_SELF_ISSUER: http://127.0.0.1:4444 #iss
+      URLS_CONSENT: http://localhost:3000/oauth2/consent
+      URLS_LOGIN: http://localhost:3000/oauth2/login
+    depends_on:
+      - hydra-migrate
+
+  hydra-migrate:
+    image: oryd/hydra:v2.2.0
+    restart: on-failure
+    command: migrate sql -e --yes
+    environment:
+      DSN: postgres://hydra:secret@hydra-db:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+    depends_on:
+      - hydra-db
+
+  hydra-db:
+    image: postgres:16-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hydra
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: hydra
+
+  auth:
+    image: ghcr.io/esc-chula/intania-auth:b0801f1601d51129a974ba2cd52fcbc908f8104a
+    restart: unless-stopped
+    ports:
+      - 3001:3000
+    depends_on:
+      auth-migrations:
+        condition: service_completed_successfully
+      auth-redis:
+        condition: service_started
+    environment:
+      APP_DB_URL: postgres://postgres:123456@auth-db:5432/intania-auth
+      APP_PORT: '3000'
+      APP_REDIS_URL: auth-redis:6379
+      APP_REDIS_PASSWORD: '123456'
+      APP_TOKEN_TTL: '3600'
+      APP_MOCK_LDAP: '1'
+
+  auth-db:
+    image: postgres:16-bookworm
+    restart: unless-stopped
+    hostname: auth-db
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: '123456'
+      POSTGRES_DB: intania-auth
+    volumes:
+      - auth-db:/var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 2s
+      timeout: 2s
+      retries: 5
+
+  auth-redis:
+    image: redis:7.2-bookworm
+    restart: unless-stopped
+    hostname: auth-redis
+    ports:
+      - 6379:6379
+    command: ['redis-server', '--requirepass', '123456']
+
+  auth-migrations:
+    image: ghcr.io/esc-chula/migrators:2c391cfa190345c2476328a40b15aca5ce3deaac
+    restart: on-failure:3
+    depends_on:
+      auth-db:
+        condition: service_healthy
+    environment:
+      LIQUIBASE_COMMAND_USERNAME: postgres
+      LIQUIBASE_COMMAND_PASSWORD: '123456'
+      LIQUIBASE_COMMAND_URL: jdbc:postgresql://auth-db:5432/intania-auth
+      LIQUIBASE_COMMAND_CHANGELOG_FILE: migrators/auth/master.xml
+    command:
+      - --log-level=info
+      - update
 
 volumes:
-  postgres-data:
+  db:
+  hydra-db:
+  auth-db:
 
 networks:
   default:

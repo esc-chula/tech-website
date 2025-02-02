@@ -1,18 +1,19 @@
-import { postRouter } from "@/server/api/routers/post";
-import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-import { techMonthStampRouter } from "./routers/techmonth";
+import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
 
-/**
- * This is the primary router for your server.
- *
- * All routers added in /api/routers should be manually added here.
- */
+import { aboutRouter } from './routers/about';
+import { authRouter } from './routers/auth';
+import { linkShortenerRouter } from './routers/link-shortener';
+import { qrCodeRouter } from './routers/qr-code';
+import { techmonthRouter } from './routers/techmonth';
+
 export const appRouter = createTRPCRouter({
-  post: postRouter,
-  techMonthStamp: techMonthStampRouter,
+  about: aboutRouter,
+  auth: authRouter,
+  techmonth: techmonthRouter,
+  linkShortener: linkShortenerRouter,
+  qrCode: qrCodeRouter,
 });
 
-// export type definition of API
 export type AppRouter = typeof appRouter;
 
 /**
