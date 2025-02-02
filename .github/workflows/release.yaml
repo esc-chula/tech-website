@@ -106,29 +106,11 @@ jobs:
         run: |
           echo "IMAGE_NAME=ghcr.io/${REPOSITORY@L}" >> "$GITHUB_ENV"
 
-      - name: Gather tags name
-        env:
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          SHA: ${{ github.sha }}
-          REF: ${{ github.ref }}
-        id: tags
-        run: |
-          RESULT="$IMAGE_NAME:latest,$IMAGE_NAME:$SHA"
-
-          case "$REF" in
-          refs/tags/v*)
-              RESULT="${RESULT},$IMAGE_NAME:${REF#refs/tags/v}"
-          ;;
-          esac
-
-          echo "tags = $RESULT"
-          echo "tags=$RESULT" >> "$GITHUB_OUTPUT"
-
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v3
         with:
           file: Dockerfile
           push: true
-          tags: ${{ steps.tags.outputs.tags }}
+          tags: ${{ github.event.inputs.target }}
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
