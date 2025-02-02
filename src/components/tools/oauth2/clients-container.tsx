@@ -1,0 +1,15 @@
+import type { OAuth2Client } from '@ory/hydra-client';
+
+import { listOAuth2Clients } from '~/server/actions/oauth';
+
+const ClientsContainer: React.FC = async () => {
+  const res = await listOAuth2Clients();
+
+  if (!res.success) {
+    return <p>Failed to fetch OAuth 2.0 clients</p>;
+  }
+
+  return res.data.map((client: OAuth2Client) => JSON.stringify(client));
+};
+
+export default ClientsContainer;
