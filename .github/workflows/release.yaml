@@ -113,6 +113,6 @@ jobs:
         with:
           file: Dockerfile
           push: true
-          tags: ${{ env.IMAGE_NAME }}/${{ env.RELEASE_TAG }}
+          tags: ${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
