@@ -2,29 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.9](https://github.com/esc-chula/intania-oidc-new/compare/v0.0.8..v0.0.9) - 2025-02-02
-
-### <!-- 1 -->🐛 Bug Fixes
-
-- Cd workflow typo - ([c03ef3a](https://github.com/esc-chula/intania-oidc-new/commit/c03ef3a62cac005096e114267c859205bd0ce3f2))
-
-## [0.0.8](https://github.com/esc-chula/intania-oidc-new/compare/v0.0.7..v0.0.8) - 2025-02-02
-
-### <!-- 1 -->🐛 Bug Fixes
-
-- Release tag workflow - ([b3d844d](https://github.com/esc-chula/intania-oidc-new/commit/b3d844d6ca44e7cb2a639d65849dfaaff8ce8085))
-
-## [0.0.7](https://github.com/esc-chula/intania-oidc-new/compare/v0.0.6..v0.0.7) - 2025-02-02
-
-### <!-- 1 -->🐛 Bug Fixes
-
-- Release the cd workflow - ([979a243](https://github.com/esc-chula/intania-oidc-new/commit/979a24346bed4a152262bbaf5c748ee5f42a838c))
-- Naming convention - ([0388a9e](https://github.com/esc-chula/intania-oidc-new/commit/0388a9e0c0d321cd5453a67985ff9257176c8234))
-- Naming convention - ([805e5c2](https://github.com/esc-chula/intania-oidc-new/commit/805e5c253abdedf46313c0c6007987bb7442d103))
-
 ## [0.0.6](https://github.com/esc-chula/intania-oidc-new/compare/v0.0.5..v0.0.6) - 2025-02-02
 
-### <!-- 0 -->⛰️  Features
+### <!-- 0 -->⛰️ Features
 
 - Add release workflow for version tagging and changelog generation - ([6154426](https://github.com/esc-chula/intania-oidc-new/commit/615442613b0291100ddd527bcec974570fffb7c6))
 
@@ -54,7 +34,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.1](https://github.com/esc-chula/intania-oidc-new/compare/..v0.0.1) - 2025-01-30
 
-### <!-- 0 -->⛰️  Features
+### <!-- 0 -->⛰️ Features
 
 - Init - ([c4a13fc](https://github.com/esc-chula/intania-oidc-new/commit/c4a13fcd15c5c3a8fa84e6980ec8d966674a27c4))
 - Set up directus - ([2806906](https://github.com/esc-chula/intania-oidc-new/commit/280690685bfcb851d0b619356c507d2ebd19a6ff))

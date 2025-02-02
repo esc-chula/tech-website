@@ -34,7 +34,7 @@ jobs:
 
       - name: Update package.json Version
         run: |
-          PACKAGEJSON=$(jq --indent 4 '.version = ("${{ github.event.inputs.target }}" | sub("v"; ""))' package.json)
+          PACKAGEJSON=$(jq --indent 2 '.version = ("${{ github.event.inputs.target }}" | sub("v"; ""))' package.json)
           echo "$PACKAGEJSON" > package.json
 
       - name: Commit & Tag Release

@@ -1,7 +1,6 @@
 name: CD - Deploy to Kubernetes
 
 on:
-  workflow_dispatch:
   workflow_run:
     workflows: ["Release"]
     types:
@@ -24,7 +23,7 @@ jobs:
       - name: Download Release Tag Artifact
         uses: dawidd6/action-download-artifact@v8
         with:
-          workflow: Release.yaml
+          workflow: release.yaml
           workflow_conclusion: success
           name: release-tag
           path: .
@@ -48,8 +47,8 @@ jobs:
       - name: Commit and push changes to GitOps repo
         run: |
           cd gitops
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "build(deploy): Update deployment.yaml for ${{ env.RELEASE_TAG }}"
           git push
