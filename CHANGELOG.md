@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.9](https://github.com/esc-chula/intania-oidc-new/compare/v0.0.8..v0.0.9) - 2025-02-02
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Cd workflow typo - ([c03ef3a](https://github.com/esc-chula/intania-oidc-new/commit/c03ef3a62cac005096e114267c859205bd0ce3f2))
+
 ## [0.0.8](https://github.com/esc-chula/intania-oidc-new/compare/v0.0.7..v0.0.8) - 2025-02-02
 
 ### <!-- 1 -->🐛 Bug Fixes
