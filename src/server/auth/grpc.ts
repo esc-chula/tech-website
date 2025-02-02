@@ -1,6 +1,6 @@
 import { type ServiceError, credentials } from '@grpc/grpc-js';
+import { env } from 'next-runtime-env';
 
-import { env } from '~/env';
 import {
   AccountServiceClient,
   type IntrospectSessionRequest,
@@ -18,14 +18,14 @@ import {
   StudentServiceClient,
 } from '~/generated/intania/auth/student/v1/student';
 
-const addr = env.GRPC_ADDRESS;
+const GRPC_ADDRESS = env('GRPC_ADDRESS') ?? '127.0.0.1:3001';
 
 const accountClient = new AccountServiceClient(
-  addr,
+  GRPC_ADDRESS,
   credentials.createInsecure(),
 );
 const studentClient = new StudentServiceClient(
-  addr,
+  GRPC_ADDRESS,
   credentials.createInsecure(),
 );
 

@@ -1,4 +1,4 @@
-import { z } from 'Zod';
+import { z } from 'zod';
 
 export const LoginDto = z.object({
   username: z.string(),

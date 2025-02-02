@@ -6,6 +6,7 @@ import {
   Press_Start_2P as PressStart2P,
 } from 'next/font/google';
 import localFont from 'next/font/local';
+import { PublicEnvScript } from 'next-runtime-env';
 
 import { Toaster } from '~/components/ui/toaster';
 import { cn } from '~/lib/utils';
@@ -44,6 +45,9 @@ const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
         ibmPlexSansThai.variable,
       )}
     >
+      <head>
+        <PublicEnvScript />
+      </head>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
         <Toaster />
