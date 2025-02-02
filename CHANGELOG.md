@@ -2,18 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.2](https://github.com/esc-chula/intania-oidc-new/compare/v0.1.1..v0.1.2) - 2025-02-02
-
-### <!-- 1 -->🐛 Bug Fixes
-
-- Build after release - ([6c21be3](https://github.com/esc-chula/intania-oidc-new/commit/6c21be38fbf7a4af743e3f64a070bc89638976cc))
-
 ## [0.1.1](https://github.com/esc-chula/intania-oidc-new/compare/v0.1.0..v0.1.1) - 2025-02-02
 
 ### <!-- 1 -->🐛 Bug Fixes
 
 - Build step - ([68340f6](https://github.com/esc-chula/intania-oidc-new/commit/68340f6834a08b86665ad5bac277388989aba5fd))
 - One for all - ([c6f837b](https://github.com/esc-chula/intania-oidc-new/commit/c6f837b67711133eceb640437fc68dcec04d8e8a))
+- Build after release - ([6c21be3](https://github.com/esc-chula/intania-oidc-new/commit/6c21be38fbf7a4af743e3f64a070bc89638976cc))
+- Build release tagging - ([75bc9e0](https://github.com/esc-chula/intania-oidc-new/commit/75bc9e0822ab46d4e98d6ad03ad114a6729205e0))
 
 ### Miscellaneous Tasks
 
