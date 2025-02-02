@@ -24,7 +24,7 @@ jobs:
       - name: Download Release Tag Artifact
         uses: dawidd6/action-download-artifact@v8
         with:
-          workflow: Release.yml
+          workflow: Release.yaml
           workflow_conclusion: success
           name: release-tag
           path: .
