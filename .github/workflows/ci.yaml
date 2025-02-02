@@ -31,7 +31,7 @@ jobs:
         env:
           REPOSITORY: ${{ github.repository }}
         run: |
-          echo "IMAGE_NAME=${REPOSITORY@L}" >> "$GITHUB_ENV"
+          echo "IMAGE_NAME=ghcr.io/${REPOSITORY@L}" >> "$GITHUB_ENV"
 
       - name: Gather tags name
         env:
