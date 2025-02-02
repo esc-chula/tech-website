@@ -20,14 +20,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          filter: "blob:none"
+          filter: 'blob:none'
           fetch-depth: 0
 
       - name: Generate a Changelog
         uses: orhun/git-cliff-action@v3
         with:
           config: cliff.toml
-          args: "--verbose --tag ${{ github.event.inputs.target }}"
+          args: '--verbose --tag ${{ github.event.inputs.target }}'
         env:
           OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
@@ -40,7 +40,7 @@ jobs:
       - name: Commit & Tag Release
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore(release): prepare for ${{ github.event.inputs.target }}"
+          commit_message: 'chore(release): prepare for ${{ github.event.inputs.target }}'
           tagging_message: ${{ github.event.inputs.target }}
 
       - name: Save Release Tag as Artifact
@@ -81,3 +81,54 @@ jobs:
           body_path: CHANGES.md
           tag_name: ${{ github.event.inputs.target }}
           generate_release_notes: true
+
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to the Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Repository to lowercase
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          echo "IMAGE_NAME=ghcr.io/${REPOSITORY@L}" >> "$GITHUB_ENV"
+
+      - name: Gather tags name
+        env:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          SHA: ${{ github.sha }}
+          REF: ${{ github.ref }}
+        id: tags
+        run: |
+          RESULT="$IMAGE_NAME:latest,$IMAGE_NAME:$SHA"
+
+          case "$REF" in
+          refs/tags/v*)
+              RESULT="${RESULT},$IMAGE_NAME:${REF#refs/tags/v}"
+          ;;
+          esac
+
+          echo "tags = $RESULT"
+          echo "tags=$RESULT" >> "$GITHUB_OUTPUT"
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          file: Dockerfile
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
