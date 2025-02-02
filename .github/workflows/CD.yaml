@@ -3,7 +3,7 @@ name: CD - Deploy to Kubernetes
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["CI - Build and Push Docker Image"]
+    workflows: ["Release"]
     types:
       - completed
 
@@ -21,17 +21,8 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Download Image Tag Artifact from CI Run
-        uses: dawidd6/action-download-artifact@v8
-        with:
-          workflow: CI.yaml
-          workflow_conclusion: success
-          name: image-tag
-          path: .
-
-      - name: Read Image Tag from Artifact
-        id: get-image-tag
-        run: echo "image_tag=$(cat image_tag.txt)" >> $GITHUB_OUTPUT
+      - name: Extract Release Tag
+        run: echo "RELEASE_TAG=${{ github.event.workflow_run.head_branch }}" >> $GITHUB_ENV
 
       - name: Checkout GitOps repository
         uses: actions/checkout@v4
@@ -43,7 +34,7 @@ jobs:
       - name: Update image tag in deployment.yaml
         uses: mikefarah/yq@master
         with:
-          cmd: yq -i '.spec.template.spec.containers[0].image = "${{ env.IMAGE_NAME }}:${{ steps.get-image-tag.outputs.image_tag }}"' gitops/${{ env.GITOPS_DEPLOYMENT_PATH }}
+          cmd: yq -i '.spec.template.spec.containers[0].image = "${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}"' gitops/${{ env.GITOPS_DEPLOYMENT_PATH }}
 
       - name: Commit and push changes to GitOps repo
         run: |
