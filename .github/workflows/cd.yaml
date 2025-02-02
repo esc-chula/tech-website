@@ -21,8 +21,17 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Extract Release Tag
-        run: echo "RELEASE_TAG=${{ github.event.workflow_run.head_branch }}" >> $GITHUB_ENV
+      - name: Download Release Tag Artifact
+        uses: dawidd6/action-download-artifact@v8
+        with:
+          workflow: Release.yml
+          workflow_conclusion: success
+          name: release-tag
+          path: .
+
+      - name: Read Release Tag from Artifact
+        id: get-release-tag
+        run: echo "RELEASE_TAG=$(cat release_tag.txt)" >> $GITHUB_ENV
 
       - name: Checkout GitOps repository
         uses: actions/checkout@v4
@@ -42,5 +51,5 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "build: Update ${{ env.GITOPS_DEPLOYMENT_PATH }} to ${{ steps.get-image-tag.outputs.image_tag }}"
+          git commit -m "build(deploy): Update deployment.yaml for ${{ env.RELEASE_TAG }}"
           git push
