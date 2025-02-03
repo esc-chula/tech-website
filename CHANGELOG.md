@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.2](https://github.com/esc-chula/intania-oidc-new/compare/v0.1.1..v0.1.2) - 2025-02-03
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Stripped prefix version - ([a146718](https://github.com/esc-chula/intania-oidc-new/commit/a1467188ad94356ba86870f0cc3b926aad4249ea))
+- Cache does not work because context change - ([96c4e56](https://github.com/esc-chula/intania-oidc-new/commit/96c4e569b8dbac63b0ee192bd7a41da37a2a1fb4))
+
 ## [0.1.1](https://github.com/esc-chula/intania-oidc-new/compare/v0.1.0..v0.1.1) - 2025-02-02
 
 ### <!-- 1 -->🐛 Bug Fixes
