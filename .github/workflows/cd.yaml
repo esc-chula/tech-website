@@ -29,9 +29,11 @@ jobs:
           if [[ "${{ github.event.workflow_run.name }}" == "Release" ]]; then
             echo "DEPLOYMENT_PATH=${{ env.PROD_DEPLOYMENT_PATH }}" >> "$GITHUB_ENV"
             echo "DEPLOY_TYPE=minor" >> "$GITHUB_ENV"
+            echo "USE_SHA=false" >> "$GITHUB_ENV"
           elif [[ "${{ github.event.workflow_run.name }}" == "CI - Build and Push Docker Image" ]]; then
             echo "DEPLOYMENT_PATH=${{ env.STAGING_DEPLOYMENT_PATH }}" >> "$GITHUB_ENV"
             echo "DEPLOY_TYPE=patch" >> "$GITHUB_ENV"
+            echo "USE_SHA=true" >> "$GITHUB_ENV"
           fi
 
       - name: Read Release Tag from Artifact
@@ -55,11 +57,24 @@ jobs:
           name: image-tag
           path: .
 
+      - name: Download Image SHA Artifact (for Staging)
+        if: env.USE_SHA == 'true'
+        uses: dawidd6/action-download-artifact@v8
+        with:
+          workflow: ${{ github.event.workflow_run.name }}.yaml
+          workflow_conclusion: success
+          name: image-sha
+          path: .
+
       - name: Read Image Tag from Artifact
         id: get-image-tag
         run: echo "IMAGE_TAG=$(cat image_tag.txt)" >> "$GITHUB_ENV"
 
-      - name: Update Image Tag in Kustomization YAML
+      - name: Read Image SHA from Artifact (for Staging)
+        if: env.USE_SHA == 'true'
+        run: echo "IMAGE_TAG=$(cat image_sha.txt)" >> "$GITHUB_ENV"
+
+      - name: Update Image Tag in GitOps Repository
         run: |
           DEPLOYMENT_PATH="gitops/${{ env.DEPLOYMENT_PATH }}"
 

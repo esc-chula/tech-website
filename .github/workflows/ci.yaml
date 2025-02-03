@@ -29,7 +29,8 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           echo "IMAGE_NAME=ghcr.io/${REPOSITORY@L}" >> "$GITHUB_ENV"
-          echo "IMAGE_TAG=$SHA" >> "$GITHUB_ENV"
+          echo "IMAGE_TAG=latest" >> "$GITHUB_ENV"  # Default to 'latest'
+          echo "SHA_TAG=$SHA" >> "$GITHUB_ENV"     # Save SHA separately
 
       - name: Download Release Tag Artifact (if triggered by Release)
         if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.name == 'Release' }}
@@ -60,16 +61,23 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}  # Only Release tag or 'latest'
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
 
-      - name: Save Release Tag as Artifact
-        run: echo "${{ env.IMAGE_TAG }}" > image_tag.txt
+      - name: Save Image Tag and SHA as Artifact
+        run: |
+          echo "${{ env.SHA_TAG }}" > image_sha.txt
+          echo "${{ env.IMAGE_TAG }}" > image_tag.txt
 
-      - name: Upload Release Tag Artifact
+      - name: Upload Image Tag Artifact
         uses: actions/upload-artifact@v4
         with:
           name: image-tag
           path: image_tag.txt
+
+      - name: Upload Image SHA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-sha
+          path: image_sha.txt
