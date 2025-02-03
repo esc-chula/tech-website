@@ -23,9 +23,6 @@ jobs:
           filter: 'blob:none'
           fetch-depth: 0
 
-      - name: Check if Tag Exists
-        run: git tag --list | grep -q ${{ github.event.inputs.target }} || exit 78
-
       - name: Generate a Changelog
         uses: orhun/git-cliff-action@v3
         with:
@@ -51,8 +48,8 @@ jobs:
       - name: Upload Release Tag Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-tag
-          path: release_tag.txt
+          name: image-tag
+          path: image_tag.txt
 
   release_github:
     name: Create GitHub Release

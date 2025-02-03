@@ -27,11 +27,11 @@ jobs:
         id: determine-env
         run: |
           if [[ "${{ github.event.workflow_run.name }}" == "Release" ]]; then
-            echo "DEPLOYMENT_PATH=${{ env.PROD_DEPLOYMENT_PATH }}" >> $GITHUB_ENV
-            echo "DEPLOY_TYPE=minor" >> $GITHUB_ENV
+            echo "DEPLOYMENT_PATH=${{ env.PROD_DEPLOYMENT_PATH }}" >> "$GITHUB_ENV"
+            echo "DEPLOY_TYPE=minor" >> "$GITHUB_ENV"
           elif [[ "${{ github.event.workflow_run.name }}" == "CI - Build and Push Docker Image" ]]; then
-            echo "DEPLOYMENT_PATH=${{ env.STAGING_DEPLOYMENT_PATH }}" >> $GITHUB_ENV
-            echo "DEPLOY_TYPE=patch" >> $GITHUB_ENV
+            echo "DEPLOYMENT_PATH=${{ env.STAGING_DEPLOYMENT_PATH }}" >> "$GITHUB_ENV"
+            echo "DEPLOY_TYPE=patch" >> "$GITHUB_ENV"
           fi
 
       - name: Read Release Tag from Artifact
@@ -57,7 +57,7 @@ jobs:
 
       - name: Read Image Tag from Artifact
         id: get-image-tag
-        run: echo "IMAGE_TAG=$(cat image_tag.txt)" >> $GITHUB_ENV
+        run: echo "IMAGE_TAG=$(cat image_tag.txt)" >> "$GITHUB_ENV"
 
       - name: Update Image Tag in Kustomization YAML
         run: |
