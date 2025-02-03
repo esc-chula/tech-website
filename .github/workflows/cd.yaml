@@ -31,7 +31,9 @@ jobs:
 
       - name: Read Release Tag from Artifact
         id: get-release-tag
-        run: echo "RELEASE_TAG=$(cat release_tag.txt)" >> $GITHUB_ENV
+        run: |
+          VERSION="$(cat release_tag.txt)"
+          echo "RELEASE_TAG=${VERSION#v}" >> "$GITHUB_ENV"
 
       - name: Checkout GitOps repository
         uses: actions/checkout@v4
