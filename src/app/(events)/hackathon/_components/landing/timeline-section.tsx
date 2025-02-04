@@ -26,7 +26,7 @@ const timelines = [
   },
 ];
 
-const Timeline: React.FC = () => {
+const TimelineSection: React.FC = () => {
   return (
     <Section offsetThreshold={2000} title="TIMELINE">
       <div className="relative flex flex-col gap-6">
@@ -38,7 +38,7 @@ const Timeline: React.FC = () => {
   );
 };
 
-export default Timeline;
+export default TimelineSection;
 
 interface TimelineCardProps {
   active?: boolean;

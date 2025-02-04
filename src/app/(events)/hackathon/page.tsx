@@ -4,7 +4,7 @@ import GridTunnel from './_components/landing/grid-tunnel';
 import Hero from './_components/landing/hero';
 import OffsetRevealer from './_components/landing/offset-revealer';
 import Prize from './_components/landing/prize';
-import Timeline from './_components/landing/timeline';
+import TimelineSection from './_components/landing/timeline-section';
 import GridTunnelContextProvider from './_contexts/grid-tunnel-context';
 
 const Page: React.FC = () => {
@@ -34,7 +34,7 @@ const Page: React.FC = () => {
           <div className="h-[1570px]" />
         </div>
         <ContainerLines />
-        <Timeline />
+        <TimelineSection />
       </div>
     </GridTunnelContextProvider>
   );

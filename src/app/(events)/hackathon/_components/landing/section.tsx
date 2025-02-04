@@ -22,7 +22,7 @@ const Section: React.FC<SectionProps> = ({
   const { offset } = useGridTunnelContext();
 
   return (
-    <div
+    <section
       className={cn('duration-700 px-3 sm:px-8', className)}
       style={{
         opacity: offsetThreshold ? (offset > offsetThreshold ? 1 : 0) : 1,
@@ -38,7 +38,7 @@ const Section: React.FC<SectionProps> = ({
           {children}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
