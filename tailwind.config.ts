@@ -19,9 +19,14 @@ const config = {
         mono: ['var(--font-mono)', ...fontFamily.mono],
 
         // TECH MONTH
+        'ibm-plex-sans-thai': 'var(--font-ibm-plex-sans-thai)',
         'press-start-2p': 'var(--font-press-start-2p)',
         tiny5: 'var(--font-tiny5)',
-        'ibm-plex-sans-thai': 'var(--font-ibm-plex-sans-thai)',
+
+        // HACKATHON
+        ndot47: 'var(--font-ndot47)',
+        geistMono: 'var(--font-geist-mono)',
+        geistSans: 'var(--font-geist-sans)',
       },
       colors: {
         // SHADCN
@@ -98,6 +103,11 @@ const config = {
           magenta: '#C782EA',
           yellow: '#FFEB0A',
           black: '#1C1C1C',
+        },
+
+        // HACKATHON
+        hackathon: {
+          primary: '#FF0909',
         },
       },
       borderRadius: {

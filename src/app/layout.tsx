@@ -1,14 +1,17 @@
 import '~/styles/globals.css';
 
 import { type Metadata } from 'next';
-import {
-  IBM_Plex_Sans_Thai as IBMPlexSansThai,
-  Press_Start_2P as PressStart2P,
-} from 'next/font/google';
-import localFont from 'next/font/local';
 import { PublicEnvScript } from 'next-runtime-env';
 
 import { Toaster } from '~/components/ui/toaster';
+import {
+  geistMono,
+  geistSans,
+  ibmPlexSansThai,
+  ndot47,
+  pressStart2P,
+  tiny5,
+} from '~/lib/fonts';
 import { cn } from '~/lib/utils';
 import { TRPCReactProvider } from '~/trpc/react';
 
@@ -18,21 +21,6 @@ export const metadata: Metadata = {
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 };
 
-const pressStart2P = PressStart2P({
-  subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-press-start-2p',
-});
-const tiny5 = localFont({
-  src: '../../public/techmonth/fonts/Tiny5-Regular.ttf',
-  variable: '--font-tiny5',
-});
-const ibmPlexSansThai = IBMPlexSansThai({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700'],
-  variable: '--font-ibm-plex-sans-thai',
-});
-
 const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
   children,
 }) => {
@@ -40,9 +28,12 @@ const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
     <html
       lang="en"
       className={cn(
+        ibmPlexSansThai.variable,
         pressStart2P.variable,
         tiny5.variable,
-        ibmPlexSansThai.variable,
+        ndot47.variable,
+        geistMono.variable,
+        geistSans.variable,
       )}
     >
       <head>
