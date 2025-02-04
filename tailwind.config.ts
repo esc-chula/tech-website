@@ -108,6 +108,7 @@ const config = {
         // HACKATHON
         hackathon: {
           primary: '#FF0909',
+          background: '#171717',
         },
       },
       borderRadius: {

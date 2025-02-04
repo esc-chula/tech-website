@@ -1,7 +1,12 @@
+'use client';
+
 import Image from 'next/image';
-import React from 'react';
+
+import { useGridTunnelContext } from '../../_contexts/grid-tunnel-context';
 
 const Credits: React.FC = () => {
+  const { offset } = useGridTunnelContext();
+
   return (
     <>
       <div className="flex flex-col items-center gap-5">
@@ -54,7 +59,13 @@ const Credits: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="-z-10 rounded-full absolute w-[400px] sm:w-[600px] md:w-[800px] aspect-square bg-hackathon-radial-gradient" />
+      <div
+        className="-z-10 rounded-full absolute w-[200px] sm:w-[400px] md:w-[600px] aspect-square bg-hackathon-radial-gradient"
+        style={{
+          // opacity from 100 to 0, start from offset 1400 to 1900
+          opacity: Math.max(0, 1 - (offset - 1400) / 500),
+        }}
+      />
     </>
   );
 };

@@ -1,8 +1,10 @@
+import ContainerLines from './_components/landing/container-lines';
 import Credits from './_components/landing/credits';
 import GridTunnel from './_components/landing/grid-tunnel';
 import Hero from './_components/landing/hero';
 import OffsetRevealer from './_components/landing/offset-revealer';
 import Prize from './_components/landing/prize';
+import Timeline from './_components/landing/timeline';
 import GridTunnelContextProvider from './_contexts/grid-tunnel-context';
 
 const Page: React.FC = () => {
@@ -29,12 +31,10 @@ const Page: React.FC = () => {
               <Credits />
             </OffsetRevealer>
           </GridTunnel>
-          <div className="h-[170vh]" />
+          <div className="h-[1570px]" />
         </div>
-        <div>
-          <div className="w-screen text-center text-9xl">TECH</div>
-          <div className="h-screen" />
-        </div>
+        <ContainerLines />
+        <Timeline />
       </div>
     </GridTunnelContextProvider>
   );

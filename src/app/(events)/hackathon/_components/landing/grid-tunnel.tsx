@@ -3,7 +3,7 @@
 
 import { useGridTunnelContext } from '../../_contexts/grid-tunnel-context';
 
-const gridSquares = Array(300).fill(0);
+const gridSquares = Array(320).fill(0);
 
 const walls = [
   // left
@@ -52,7 +52,12 @@ const GridTunnel: React.FC<GridTunnelProps> = ({ children }) => {
   const { offset, perspective } = useGridTunnelContext();
 
   return (
-    <div className="top-0 left-0 sticky w-screen h-screen bg-neutral-900">
+    <div
+      className="top-0 left-0 sticky w-screen overflow-hidden h-dvh bg-hackathon-background"
+      style={{
+        zIndex: offset > 2100 ? -10 : 0,
+      }}
+    >
       <div
         style={{
           perspective: `${perspective}px`,
@@ -85,7 +90,7 @@ const GridTunnel: React.FC<GridTunnelProps> = ({ children }) => {
               {gridSquares.map((_, idx) => (
                 <div
                   key={`cell-${idx}`}
-                  className="bg-neutral-900 hover:bg-opacity-50 delay-50 duration-200 h-16"
+                  className="bg-hackathon-background hover:bg-opacity-50 delay-50 duration-200 h-16"
                 />
               ))}
             </div>
