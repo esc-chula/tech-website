@@ -3,7 +3,7 @@
 
 import { useGridTunnelContext } from '../../_contexts/grid-tunnel-context';
 
-const gridSquares = Array(320).fill(0);
+const gridSquares = Array(330).fill(0);
 
 const walls = [
   // left

@@ -29,12 +29,14 @@ const Section: React.FC<SectionProps> = ({
       }}
     >
       <div className="mx-auto max-w-screen-xl flex">
-        <div className="sticky w-14 sm:w-24 h-screen top-0">
-          <h2 className="font-ndot47 text-5xl sm:text-8xl [writing-mode:vertical-lr]">
+        <div className="sticky w-12 sm:w-24 h-screen top-0">
+          <h2 className="font-ndot47 pt-8 select-none text-4xl sm:text-8xl [writing-mode:vertical-lr]">
             {title}
           </h2>
         </div>
-        <div className="min-h-screen pl-3 sm:pl-5">{children}</div>
+        <div className="min-h-screen px-3 sm:px-5 w-full ml-1.5 sm:ml-3">
+          {children}
+        </div>
       </div>
     </div>
   );
