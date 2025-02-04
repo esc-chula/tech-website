@@ -116,6 +116,9 @@ importers:
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
+      simple-icons:
+        specifier: ^14.5.0
+        version: 14.5.0
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
@@ -3813,6 +3816,10 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
+
+  simple-icons@14.5.0:
+    resolution: {integrity: sha512-Jn68BKShJ1KHV28ayiV4PCLZV2XK0xVfT6i3AtW6PuMT3S9jILezgOQXCOKj4Y9GasjZYqHbkSvOHCePCVxfyA==}
+    engines: {node: '>=0.12.18'}
 
   simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
@@ -8170,6 +8177,8 @@ snapshots:
       object-inspect: 1.13.3
 
   signal-exit@4.1.0: {}
+
+  simple-icons@14.5.0: {}
 
   simple-swizzle@0.2.2:
     dependencies:
