@@ -136,6 +136,10 @@ const config = {
           'linear-gradient(119.65deg, #FFFFFF 0%, #D2D2D2 108.38%)',
         'background-gradient-prop':
           'radial-gradient(50% 50% at 50% 50%, #982C32 0%, rgba(255, 255, 255, 0) 100%)',
+
+        // HACKATHON
+        'hackathon-radial-gradient':
+          'radial-gradient(50% 50% at 50% 50%, rgba(255, 9, 9, 0.15) 0%, rgba(255, 9, 9, 0.00) 100%)',
       },
     },
   },
