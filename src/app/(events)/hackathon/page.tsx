@@ -15,7 +15,7 @@ import GridTunnelContextProvider from './_contexts/grid-tunnel-context';
 const Page: React.FC = () => {
   return (
     <GridTunnelContextProvider>
-      <main className="relative">
+      <div className="relative">
         <AnimatedGridTunnel>
           <OffsetRevealer className="gap-8 sm:gap-10 md:gap-12">
             <Hero />
@@ -45,7 +45,7 @@ const Page: React.FC = () => {
         <ObjectivesSection />
 
         <Footer />
-      </main>
+      </div>
     </GridTunnelContextProvider>
   );
 };

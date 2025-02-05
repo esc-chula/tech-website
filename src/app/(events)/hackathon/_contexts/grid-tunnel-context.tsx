@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { cn } from '~/lib/utils';
+
 interface GridTunnelContextProps {
   offset: number;
   setOffset: (offset: number) => void;
@@ -44,20 +46,23 @@ const GridTunnelContextProvider: React.FC<GridTunnelContextProviderProps> = ({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  if (offset === null) {
-    return null;
-  }
-
   return (
     <GridTunnelContext.Provider
       value={{
-        offset,
+        offset: offset ?? 0,
         setOffset,
         perspective,
         setPerspective,
       }}
     >
-      {children}
+      <main
+        className={cn(
+          'duration-200',
+          offset !== null ? 'opacity-100' : 'opacity-0',
+        )}
+      >
+        {children}
+      </main>
     </GridTunnelContext.Provider>
   );
 };
