@@ -1,4 +1,4 @@
-FROM node:20-slim AS base
+FROM node:20-alpine AS base
 
 ##### DEPENDENCIES
 
@@ -45,6 +45,8 @@ RUN \
 
 FROM base AS runner
 WORKDIR /app
+
+RUN apk add --no-cache libc6-compat openssl
 
 ENV NODE_ENV=production
 
