@@ -34,7 +34,7 @@ const Section: React.FC<SectionProps> = ({
             {title}
           </h2>
         </div>
-        <div className="min-h-screen px-3 sm:px-5 w-full ml-1.5 sm:ml-3">
+        <div className="min-h-screen pr-3 sm:pr-5 w-full pl-4 sm:pl-8 pb-32">
           {children}
         </div>
       </div>

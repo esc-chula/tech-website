@@ -1,8 +1,8 @@
 import Footer from './_components/common/footer';
 import Socials from './_components/common/socials';
+import AnimatedGridTunnel from './_components/landing/animated-grid-tunnel';
 import ContainerLines from './_components/landing/container-lines';
 import Credits from './_components/landing/credits';
-import GridTunnel from './_components/landing/grid-tunnel';
 import Hero from './_components/landing/hero';
 import ObjectivesSection from './_components/landing/objectives-section';
 import OffsetRevealer from './_components/landing/offset-revealer';
@@ -16,7 +16,7 @@ const Page: React.FC = () => {
   return (
     <GridTunnelContextProvider>
       <main className="relative">
-        <GridTunnel>
+        <AnimatedGridTunnel>
           <OffsetRevealer className="gap-8 sm:gap-10 md:gap-12">
             <Hero />
           </OffsetRevealer>
@@ -34,7 +34,7 @@ const Page: React.FC = () => {
           >
             <Credits />
           </OffsetRevealer>
-        </GridTunnel>
+        </AnimatedGridTunnel>
 
         <Socials />
         <ContainerLines />

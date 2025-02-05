@@ -7,9 +7,9 @@ const ContainerLines: React.FC = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none px-3 sm:px-8">
-      <div className="mx-auto max-w-screen-xl h-screen pl-[48px] sm:pl-[110px]">
+      <div className="mx-auto max-w-screen-xl h-screen pl-[46.5px] sm:pl-[110px]">
         <div
-          className="w-full h-full flex justify-between duration-[50]"
+          className="w-full h-full flex justify-between duration-[50ms]"
           style={{
             // height from 0% to 100%, start from offset 1900 to 2600
             height: `${Math.max(0, Math.min(100, (offset - 1900) / 7))}%`,
