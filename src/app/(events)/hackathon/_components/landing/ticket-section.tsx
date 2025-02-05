@@ -14,25 +14,25 @@ const TicketSection: React.FC = () => {
     <Section title="TICKET">
       <div className="flex flex-col-reverse gap-5 sm:gap-7 justify-end lg:grid w-full h-full lg:grid-cols-5">
         <div className="lg:col-span-3 flex flex-col gap-4 sm:gap-6">
-          <p className="text-sm sm:text-base">
+          <p className="text-sm sm:text-base text-white/80">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
             rem sequi officiis aspernatur at perferendis quos nemo illum
             explicabo quisquam sit, neque obcaecati nisi magnam veniam commodi
             amet. Mollitia, eaque?
           </p>
-          <p className="text-sm sm:text-base">
+          <p className="text-sm sm:text-base text-white/80">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
             rem sequi officiis aspernatur at perferendis quos nemo illum
             explicabo quisquam sit, neque obcaecati nisi magnam veniam commodi
             amet. Mollitia, eaque?
           </p>
-          <p className="text-sm sm:text-base">
+          <p className="text-sm sm:text-base text-white/80">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
             rem sequi officiis aspernatur at perferendis quos nemo illum
             explicabo quisquam sit, neque obcaecati nisi magnam veniam commodi
             amet. Mollitia, eaque?
           </p>
-          <p className="text-sm sm:text-base">
+          <p className="text-sm sm:text-base text-white/80">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
             rem sequi officiis aspernatur at perferendis quos nemo illum
             explicabo quisquam sit, neque obcaecati nisi magnam veniam commodi

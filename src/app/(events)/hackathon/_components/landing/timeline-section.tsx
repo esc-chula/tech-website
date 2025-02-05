@@ -77,11 +77,13 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
         )}
       />
       <div className="flex flex-col gap-3">
-        <h5 className="font-ndot47 text-3xl md:text-5xl select-none">
+        <h4 className="font-ndot47 text-3xl md:text-5xl select-none">
           {title}
-        </h5>
+        </h4>
         <p className="text-white/60">{date}</p>
-        <p className="text-xs sm:text-sm md:text-base">{description}</p>
+        <p className="text-xs sm:text-sm md:text-base text-white/90">
+          {description}
+        </p>
       </div>
     </div>
   );
