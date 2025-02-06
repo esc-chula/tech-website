@@ -56,7 +56,7 @@ const PrizesSection: React.FC = () => {
               </div>
             ))}
           </PrizeCard>
-          <PrizeCard prize={1000000} title="Innovation Support">
+          <PrizeCard prize={1000000} title="Innovation Fund">
             <p className="text-sm text-white/70">
               1-on-1 mentorship with industry experts
             </p>
