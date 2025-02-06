@@ -1,4 +1,5 @@
 import { createEnv } from '@t3-oss/env-nextjs';
+import { env as runtimeEnv } from 'next-runtime-env';
 import { z } from 'zod';
 
 export const env = createEnv({
@@ -20,8 +21,9 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     DIRECTUS_URL: process.env.DIRECTUS_URL,
     GRPC_ADDRESS: process.env.GRPC_ADDRESS,
-    NEXT_PUBLIC_SHORTENED_LINK_ORIGIN:
-      process.env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN,
+    NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: runtimeEnv(
+      'NEXT_PUBLIC_SHORTENED_LINK_ORIGIN',
+    ),
   },
 
   skipValidation: Boolean(process.env.SKIP_ENV_VALIDATION),

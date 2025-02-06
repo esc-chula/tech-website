@@ -30,6 +30,19 @@ services:
     networks:
       - default
 
+  link:
+    image: ghcr.io/esc-chula/intania-link:latest
+    restart: unless-stopped
+    ports:
+      - '3002:3000'
+    environment:
+      DATABASE_URL: 'postgresql://postgres:password@db:5432/tech-website'
+      NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: 'G-XXXXXXXXXX'
+    depends_on:
+      - db
+    networks:
+      - default
+
   hydra:
     image: oryd/hydra:v2.2.0
     restart: unless-stopped

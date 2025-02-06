@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
-import { env } from 'next-runtime-env';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -26,11 +25,11 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { env } from '~/env';
 import { useToast } from '~/hooks/use-toast';
 import { createShortenedLink } from '~/server/actions/link-shortener';
 
-const SHORTENED_LINK_ORIGIN =
-  env('NEXT_PUBLIC_SHORTENED_LINK_ORIGIN') ?? 'https://intania.link';
+const SHORTENED_LINK_ORIGIN = env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN;
 
 const formSchema = z.object({
   name: z.string().max(50, {
