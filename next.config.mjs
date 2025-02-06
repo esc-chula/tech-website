@@ -2,7 +2,22 @@
 const config = {
   output: 'standalone',
   images: {
-    domains: ['avatars.githubusercontent.com', 'cms.intania.org'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
+        pathname: '/.*',
+        search: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cms.intania.org',
+        port: '',
+        pathname: '/.*',
+        search: '',
+      },
+    ],
   },
 };
 

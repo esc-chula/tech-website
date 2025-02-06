@@ -1,5 +1,21 @@
 name: tech-website
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_URL: 'postgresql://postgres:password@db:5432/tech-website'
+      DIRECTUS_URL: 'https://cms.intania.org'
+      GRPC_ADDRESS: 'auth:3000'
+      NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: 'http://localhost:3002'
+    depends_on:
+      - db
+    networks:
+      - default
+
   db:
     image: postgres:latest
     restart: unless-stopped
