@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { env } from 'next-runtime-env';
 
 import BackButton from '~/components/common/button/back-button';
 import CopyButton from '~/components/tools/link-shortener/copy-button';
@@ -7,8 +8,10 @@ import DeleteButton from '~/components/tools/link-shortener/delete-button';
 import LinkEditCard from '~/components/tools/link-shortener/link-edit-card';
 import LinkStatsCard from '~/components/tools/link-shortener/link-stats-card';
 import QrCodeButton from '~/components/tools/link-shortener/qr-code-button';
-import { env } from '~/env';
 import { api } from '~/trpc/server';
+
+const SHORTENED_LINK_ORIGIN =
+  env('NEXT_PUBLIC_SHORTENED_LINK_ORIGIN') ?? 'https://intania.link';
 
 interface PageProps {
   params: {
@@ -33,13 +36,13 @@ const Page: React.FC<PageProps> = async ({ params }) => {
       <div className="pb-10 pt-24">
         <div className="flex items-center justify-between">
           <Link
-            href={`${env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN}/${slug}`}
+            href={`${SHORTENED_LINK_ORIGIN}/${slug}`}
             rel="noopener noreferrer"
             target="_blank"
           >
             <h3 className="space-x-0.5 truncate text-3xl font-semibold">
               <span className="hidden text-neutral-500 sm:inline">
-                {env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN.split('//')[1]}
+                {SHORTENED_LINK_ORIGIN.split('//')[1]}
               </span>
               <span className="text-neutral-500">/</span>
               <span className="text-primary">{slug}</span>
@@ -47,9 +50,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
           </Link>
           <div className="flex items-center">
             <QrCodeButton />
-            <CopyButton
-              value={`${env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN}/${slug}`}
-            />
+            <CopyButton value={`${SHORTENED_LINK_ORIGIN}/${slug}`} />
             <DeleteButton slug={slug} />
           </div>
         </div>

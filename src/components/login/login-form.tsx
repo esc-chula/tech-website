@@ -31,8 +31,6 @@ const LoginForm: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  console.log('searchParams', searchParams);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
