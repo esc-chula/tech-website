@@ -14,7 +14,7 @@ export const env = createEnv({
   },
 
   client: {
-    NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: z.string(),
+    NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: z.string().optional(),
   },
 
   runtimeEnv: {
