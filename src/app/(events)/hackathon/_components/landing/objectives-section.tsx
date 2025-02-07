@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { cn } from '~/lib/utils';
 
@@ -11,7 +11,7 @@ const objectives = ['Intania', 'Innovate', 'Impressive'];
 const ObjectivesSection: React.FC = () => {
   return (
     <Section title="WTH">
-      <div className="flex flex-col pt-10 sm:pt-0 md:pt-5 px-0 md:px-5">
+      <div className="flex flex-col pt-6 sm:pt-0 md:pt-5 px-0 md:px-5">
         <span className="font-ndot47 text-2xl md:text-4xl text-white/50 select-none">
           what the HACK?!
         </span>
@@ -60,7 +60,11 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
   const [isCollapsed, setIsCollapsed] = useState(index !== 1);
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const contentHeight = contentRef.current?.clientHeight;
+  const [contentHeight, setContentHeight] = useState(0);
+
+  useEffect(() => {
+    setContentHeight(contentRef.current?.clientHeight ?? 0);
+  }, [contentRef]);
 
   return (
     <div className="flex flex-col">
@@ -87,12 +91,12 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
           isCollapsed ? 'h-0' : 'h-40',
         )}
         style={{
-          height: isCollapsed ? 0 : contentHeight,
+          height: isCollapsed ? 0 : `${contentHeight + 40}px`,
         }}
       >
         <div
           ref={contentRef}
-          className="flex flex-col gap-4 md:gap-6 pt-4 pb-8 md:pb-10 md:px-2"
+          className="flex flex-col gap-4 md:gap-6 pt-4 md:px-2"
         >
           <hr className="border-b md:border-b-2 border-white/25" />
           {children}
