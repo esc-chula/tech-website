@@ -15,7 +15,9 @@ const MultiInput: React.FC<MultiInputProps> = ({
   onChange,
   ...props
 }) => {
-  const [inputs, setInputs] = useState<string[]>(value ?? ['']);
+  const [inputs, setInputs] = useState<string[]>(
+    !value || value.length === 0 ? [''] : value,
+  );
 
   useEffect(() => {
     onChange(inputs);
@@ -42,7 +44,7 @@ const MultiInput: React.FC<MultiInputProps> = ({
           />
           {index === 0 ? null : (
             <button
-              className="aspect-square rounded-full p-1.5 border-white/10 border"
+              className="aspect-square rounded-full p-1.5 border-white/10 hover:bg-white/5 border"
               type="button"
               onClick={() => {
                 if (inputs.length === 1) {
@@ -61,7 +63,7 @@ const MultiInput: React.FC<MultiInputProps> = ({
       ))}
       <div className="flex justify-center">
         <button
-          className="aspect-square rounded-full p-1.5 border-white/10 border"
+          className="aspect-square rounded-full p-1.5 border-white/10 hover:bg-white/5 border"
           type="button"
           onClick={() => setInputs([...inputs, ''])}
         >

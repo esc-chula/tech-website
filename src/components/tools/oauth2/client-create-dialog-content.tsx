@@ -58,6 +58,7 @@ const ClientCreateDialogContent: React.FC = () => {
     defaultValues: {
       name: '',
       scope: 'openid',
+      redirect_uris: [''],
     },
   });
 
@@ -101,10 +102,10 @@ const ClientCreateDialogContent: React.FC = () => {
 
       await createOauthClient(values);
 
-      router.refresh();
-
       setOpen(false);
       setLoading(false);
+
+      router.refresh();
     } catch (error) {
       setLoading(false);
 

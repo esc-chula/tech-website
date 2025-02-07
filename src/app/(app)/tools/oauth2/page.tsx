@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import BackButton from '~/components/common/button/back-button';
 import ClientCreateDialog from '~/components/tools/oauth2/client-create-dialog';
 import ClientCreateDialogTrigger from '~/components/tools/oauth2/client-create-dialog-trigger';
@@ -13,7 +15,11 @@ const Page: React.FC = () => {
             <h2 className="text-2xl font-medium">Your Clients</h2>
             <ClientCreateDialogTrigger variant="button" />
           </div>
-          <ClientsContainer />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full">
+            <Suspense fallback={<p>Loading...</p>}>
+              <ClientsContainer />
+            </Suspense>
+          </div>
         </ClientCreateDialog>
       </div>
     </>

@@ -1,18 +1,61 @@
-import { OAuth2Client } from "@ory/hydra-client";
-import { Card } from "~/components/ui/card";
+import { type OAuth2Client } from '@ory/hydra-client';
+import { SquarePen } from 'lucide-react';
+
+import { Button } from '~/components/ui/button';
+import { Card } from '~/components/ui/card';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+
+import ClientDeleteDialog from './client-delete-dialog';
 
 interface OAuth2ClientCardProps {
-    client: OAuth2Client
+  client: OAuth2Client;
 }
 
-const OAuth2ClientCard: React.FC<OAuth2ClientCardProps> = ({ client }: OAuth2ClientCardProps) => {
-    return (
-        <Card>
-            <h3>id: {client.client_id}</h3>
-            <h3>secret: {client.client_secret}</h3>
-            <h3>name: {client.client_name}</h3>
-        </Card>
-    )
-}
+const OAuth2ClientCard: React.FC<OAuth2ClientCardProps> = ({
+  client,
+}: OAuth2ClientCardProps) => {
+  if (
+    !client.client_id ||
+    !client.client_name ||
+    !client.created_at ||
+    !client.redirect_uris
+  ) {
+    return null;
+  }
+
+  return (
+    <Card>
+      <div className="flex justify-between">
+        <h3 className="font-semibold text-xl text-primary">
+          {client.client_name}
+        </h3>
+        <div className="flex">
+          <Button variant="transparent">
+            <SquarePen size={16} />
+          </Button>
+          <ClientDeleteDialog id={client.client_id} name={client.client_name} />
+        </div>
+      </div>
+      <p className="text-xs md:text-sm text-neutral-500">
+        {new Date(client.created_at).toLocaleString()}
+      </p>
+      <div className="flex flex-col pt-4 gap-4 pb-2">
+        <div>
+          <Label>Client ID</Label>
+          <Input className="mt-2" value={client.client_id} />
+        </div>
+        <div>
+          <Label>Scope</Label>
+          <Input className="mt-2" value={client.scope} />
+        </div>
+        <div>
+          <Label>Redirect URIs</Label>
+          <Input className="mt-2" value={client.redirect_uris.join(', ')} />
+        </div>
+      </div>
+    </Card>
+  );
+};
 
 export default OAuth2ClientCard;

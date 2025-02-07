@@ -36,7 +36,15 @@ export async function listOAuth2Clients(): Promise<Response<OAuth2Client[]>> {
     return {
       success: true,
       message: 'Successfully fetched OAuth 2.0 clients',
-      data: clients.data,
+      data: clients.data.sort((a, b) => {
+        if (!a.created_at || !b.created_at) {
+          return 0;
+        }
+
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      }),
     };
   } catch (error) {
     return {
