@@ -1,12 +1,11 @@
 import { type OAuth2Client } from '@ory/hydra-client';
-import { SquarePen } from 'lucide-react';
 
-import { Button } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 
-import ClientDeleteDialog from './client-delete-dialog';
+import ClientDeleteDialogTrigger from './client-delete-dialog-trigger';
+import ClientEditDialogTrigger from './client-edit-dialog-trigger';
 
 interface OAuth2ClientCardProps {
   client: OAuth2Client;
@@ -31,10 +30,11 @@ const OAuth2ClientCard: React.FC<OAuth2ClientCardProps> = ({
           {client.client_name}
         </h3>
         <div className="flex">
-          <Button variant="transparent">
-            <SquarePen size={16} />
-          </Button>
-          <ClientDeleteDialog id={client.client_id} name={client.client_name} />
+          <ClientEditDialogTrigger data={client} />
+          <ClientDeleteDialogTrigger
+            id={client.client_id}
+            name={client.client_name}
+          />
         </div>
       </div>
       <p className="text-xs md:text-sm text-neutral-500">

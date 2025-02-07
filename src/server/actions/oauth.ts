@@ -1,6 +1,6 @@
 'use server';
 
-import type { JsonPatch, OAuth2Client } from '@ory/hydra-client';
+import type { OAuth2Client } from '@ory/hydra-client';
 
 import { hydra } from '~/lib/hydra';
 import { type Response } from '~/types/server';
@@ -113,10 +113,20 @@ export async function createOAuth2Client(
 
 export async function updateOAuth2Client(
   id: string,
-  body: JsonPatch[],
+  body: OAuth2Client,
 ): Promise<Response<OAuth2Client>> {
   try {
-    const client = await hydra.patchOAuth2Client({ id, jsonPatch: body });
+    const patchBody = Object.entries(body).map(
+      ([key, value]:
+        | [key: string, value: unknown]
+        | [key: string, value: unknown[]]) => ({
+        op: 'replace',
+        path: `/${key}`,
+        value,
+      }),
+    );
+
+    const client = await hydra.patchOAuth2Client({ id, jsonPatch: patchBody });
 
     if (client.status !== 200) {
       return {

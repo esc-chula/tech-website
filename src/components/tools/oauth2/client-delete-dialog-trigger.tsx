@@ -18,12 +18,12 @@ import { Button } from '~/components/ui/button';
 import { useToast } from '~/hooks/use-toast';
 import { deleteOAuth2Client } from '~/server/actions/oauth';
 
-interface ClientDeleteDialogProps {
+interface ClientDeleteDialogTriggerProps {
   name: string;
   id: string;
 }
 
-const ClientDeleteDialog: React.FC<ClientDeleteDialogProps> = ({
+const ClientDeleteDialogTrigger: React.FC<ClientDeleteDialogTriggerProps> = ({
   id,
   name,
 }) => {
@@ -89,4 +89,4 @@ const ClientDeleteDialog: React.FC<ClientDeleteDialogProps> = ({
   );
 };
 
-export default ClientDeleteDialog;
+export default ClientDeleteDialogTrigger;

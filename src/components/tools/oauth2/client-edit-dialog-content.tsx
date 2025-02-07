@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -26,10 +26,9 @@ import {
 import { Input } from '~/components/ui/input';
 import { scopes } from '~/constants/oauth';
 import { useToast } from '~/hooks/use-toast';
-import { me } from '~/server/actions/auth';
-import { createOAuth2Client } from '~/server/actions/oauth';
+import { updateOAuth2Client } from '~/server/actions/oauth';
 
-import { useClientCreateDialog } from './client-create-dialog-context';
+import { useClientEditDialog } from './client-edit-dialog-context';
 import MultiInput from './multi-input';
 
 const formSchema = z.object({
@@ -45,11 +44,11 @@ const formSchema = z.object({
   redirect_uris: z.array(z.string().url()).nonempty(),
 });
 
-const ClientCreateDialogContent: React.FC = () => {
+const ClientEditDialogContent: React.FC = () => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const { setOpen } = useClientCreateDialog();
+  const { setOpen, data } = useClientEditDialog();
 
   const [loading, setLoading] = useState(false);
 
@@ -62,19 +61,14 @@ const ClientCreateDialogContent: React.FC = () => {
     },
   });
 
-  async function createOAuthClient(
+  async function editOAuthClient(
     values: z.infer<typeof formSchema>,
   ): Promise<void> {
-    const meRes = await me();
-
-    if (!meRes.success) {
-      throw new Error('Failed to fetch user information');
+    if (!data.client_id) {
+      throw new Error('Invalid client ID');
     }
 
-    const { studentId } = meRes.data;
-
-    // for more information please see https://www.ory.sh/docs/hydra/reference/api#tag/oAuth2/operation/setOAuth2Client
-    const createRes = await createOAuth2Client({
+    const res = await updateOAuth2Client(data.client_id, {
       client_name: values.name,
       scope: values.scope
         .split(' ')
@@ -82,25 +76,18 @@ const ClientCreateDialogContent: React.FC = () => {
         .filter((s) => scopes.includes(s))
         .join(' '),
       redirect_uris: values.redirect_uris,
-      owner: studentId,
-
-      response_types: ['id_token'],
-      grant_types: ['authorization_code'],
-      token_endpoint_auth_method: 'client_secret_post',
     });
 
-    if (!createRes.success) {
+    if (!res.success) {
       throw new Error('Failed to create OAuth 2.0 client');
     }
-
-    console.log(createRes.data);
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     try {
       setLoading(true);
 
-      await createOAuthClient(values);
+      await editOAuthClient(values);
 
       setOpen(false);
       setLoading(false);
@@ -117,6 +104,26 @@ const ClientCreateDialogContent: React.FC = () => {
       });
     }
   }
+
+  useEffect(() => {
+    if (
+      data.client_id &&
+      data.client_name &&
+      data.scope &&
+      data.redirect_uris
+    ) {
+      form.setValue('name', data.client_name);
+      form.setValue('scope', data.scope);
+      if (data.redirect_uris.length === 0) {
+        form.setValue('redirect_uris', ['']);
+      } else {
+        form.setValue(
+          'redirect_uris',
+          data.redirect_uris as [string, ...string[]],
+        );
+      }
+    }
+  }, [data, form]);
 
   return (
     <DialogContent className="md:max-w-md">
@@ -215,4 +222,4 @@ const ClientCreateDialogContent: React.FC = () => {
   );
 };
 
-export default ClientCreateDialogContent;
+export default ClientEditDialogContent;
