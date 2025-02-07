@@ -30,6 +30,7 @@ import { me } from '~/server/actions/auth';
 import { createOAuth2Client } from '~/server/actions/oauth';
 
 import { useClientCreateDialog } from './client-create-dialog-context';
+import { useClientSecretDialog } from './client-secret-dialog-context';
 import MultiInput from './multi-input';
 
 const formSchema = z.object({
@@ -50,6 +51,7 @@ const ClientCreateDialogContent: React.FC = () => {
   const { toast } = useToast();
 
   const { setOpen } = useClientCreateDialog();
+  const { setOpen: setSecretDialogOpen, setSecret } = useClientSecretDialog();
 
   const [loading, setLoading] = useState(false);
 
@@ -93,7 +95,16 @@ const ClientCreateDialogContent: React.FC = () => {
       throw new Error('Failed to create OAuth 2.0 client');
     }
 
-    console.log(createRes.data);
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
+
+    if (!createRes.data.client_secret) {
+      throw new Error('Client secret not found');
+    }
+
+    setSecret(createRes.data.client_secret);
+    setSecretDialogOpen(true);
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {

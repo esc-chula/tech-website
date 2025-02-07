@@ -131,7 +131,7 @@ const ClientEditDialogContent: React.FC = () => {
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           {/* header */}
           <DialogHeader>
-            <DialogTitle>Create OAuth 2.0 Client</DialogTitle>
+            <DialogTitle>Edit OAuth 2.0 Client</DialogTitle>
           </DialogHeader>
 
           {/* form */}

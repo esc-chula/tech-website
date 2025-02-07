@@ -3,7 +3,8 @@
 import { Plus } from 'lucide-react';
 
 import { Button } from '~/components/ui/button';
-import { DialogTrigger } from '~/components/ui/dialog';
+
+import { useClientCreateDialog } from './client-create-dialog-context';
 
 interface ClientCreateDialogTriggerProps {
   variant: 'button' | 'card';
@@ -12,28 +13,34 @@ interface ClientCreateDialogTriggerProps {
 const ClientCreateDialogTrigger: React.FC<ClientCreateDialogTriggerProps> = ({
   variant,
 }) => {
+  const { setOpen } = useClientCreateDialog();
+
   switch (variant) {
     case 'button':
       return (
-        <DialogTrigger asChild>
-          <Button variant="default">
-            <Plus size={16} />
-            New
-          </Button>
-        </DialogTrigger>
+        <Button
+          variant="default"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          <Plus size={16} />
+          New
+        </Button>
       );
     case 'card':
       return (
-        <DialogTrigger asChild>
-          <button
-            className="hidden md:flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full max-w-[350px] place-self-center min-h-[420px] h-full"
-            type="button"
-          >
-            <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full w-5/12 aspect-square">
-              <Plus color="#262626" size={52} strokeWidth={4} />
-            </div>
-          </button>
-        </DialogTrigger>
+        <button
+          className="hidden md:flex min-h-80 justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full place-self-center h-full"
+          type="button"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full w-5/12 aspect-square">
+            <Plus color="#262626" size={52} strokeWidth={4} />
+          </div>
+        </button>
       );
     default:
       return null;
