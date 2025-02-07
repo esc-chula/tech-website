@@ -3,7 +3,7 @@ import ClientCreateDialog from '~/components/tools/oauth2/client-create-dialog';
 import ClientCreateDialogTrigger from '~/components/tools/oauth2/client-create-dialog-trigger';
 import ClientsContainer from '~/components/tools/oauth2/clients-container';
 
-const Page: React.FC = () => {
+const Page: React.FC = async () => {
   return (
     <>
       <BackButton href="/" />
