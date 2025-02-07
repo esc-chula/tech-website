@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -16,15 +17,20 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { scopes } from '~/constants/oauth';
+import { useToast } from '~/hooks/use-toast';
+import { me } from '~/server/actions/auth';
+import { createOAuth2Client } from '~/server/actions/oauth';
 
 import { useClientCreateDialog } from './client-create-dialog-context';
-import { createOAuth2Client } from '~/server/actions/oauth';
+import MultiInput from './multi-input';
 
 const formSchema = z.object({
   name: z
@@ -35,37 +41,58 @@ const formSchema = z.object({
     .max(50, {
       message: 'Name must be less than 50 characters',
     }),
+  scope: z.string(),
+  redirect_uris: z.array(z.string().url()).nonempty(),
 });
 
 const ClientCreateDialogContent: React.FC = () => {
+  const router = useRouter();
+  const { toast } = useToast();
+
   const { setOpen } = useClientCreateDialog();
+
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
+      scope: 'openid',
     },
   });
 
-  async function createOauthClient(values: z.infer<typeof formSchema>) {
+  async function createOauthClient(
+    values: z.infer<typeof formSchema>,
+  ): Promise<void> {
+    const meRes = await me();
+
+    if (!meRes.success) {
+      throw new Error('Failed to fetch user information');
+    }
+
+    const { studentId } = meRes.data;
+
     // for more information please see https://www.ory.sh/docs/hydra/reference/api#tag/oAuth2/operation/setOAuth2Client
-    const create = await createOAuth2Client({
-      // Redirect URI for relying party.
-      redirect_uris: ['http://127.0.0.1:9090/callback'],
-      // Scope which relying party wish to use, space separated scope, important scopes are openid and email
-      scope: 'openid email',
-      // Flow they supported.
-      response_types: ['code', 'token', 'id_token', 'code token', 'token id_token', 'code id_token', 'code token id_token'],
-      grant_types: ['authorization_code'],
-      owner: '6530000021',
+    const createRes = await createOAuth2Client({
       client_name: values.name,
+      scope: values.scope
+        .split(' ')
+        .map((s) => s.trim())
+        .filter((s) => scopes.includes(s))
+        .join(' '),
+      redirect_uris: values.redirect_uris,
+      owner: studentId,
+
+      response_types: ['id_token'],
+      grant_types: ['authorization_code'],
       token_endpoint_auth_method: 'client_secret_post',
     });
 
-    if (create.success) {
-      console.log({ huh: create.data })
+    if (!createRes.success) {
+      throw new Error('Failed to create OAuth 2.0 client');
     }
+
+    console.log(createRes.data);
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
@@ -74,14 +101,19 @@ const ClientCreateDialogContent: React.FC = () => {
 
       await createOauthClient(values);
 
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      });
+      router.refresh();
 
       setOpen(false);
       setLoading(false);
     } catch (error) {
+      setLoading(false);
+
       console.error(error);
+      toast({
+        title: 'Failed to create OAuth 2.0 client',
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: 'destructive',
+      });
     }
   }
 
@@ -103,17 +135,75 @@ const ClientCreateDialogContent: React.FC = () => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="My QR Code" {...field} />
+                    <Input placeholder="Name of your client" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="scope"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Scope</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ex. openid profile student_id email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Please fill in the scope with a space between each scope.
+                    <br />
+                    <a
+                      className="underline"
+                      href="https://docs.intania.org/TECH/oauth2/scopes"
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      Available scopes
+                    </a>
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="redirect_uris"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Redirect URIs</FormLabel>
+                  <FormControl>
+                    <MultiInput
+                      placeholder="Ex. https://intania.org/callback"
+                      {...field}
+                    />
+                  </FormControl>
+                  {form.formState.errors.redirect_uris ? (
+                    <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-red-500">
+                      Please enter a valid URL
+                    </p>
+                  ) : null}
+                </FormItem>
+              )}
+            />
           </div>
+
+          <DialogDescription>
+            Using OAuth 2.0 to infringe on the privacy of others is the
+            responsibility of the creator. Engineering Student Committee of
+            Chulalongkorn University is not responsible for any misuse of OAuth
+            2.0.
+          </DialogDescription>
+          <DialogDescription>
+            After created, client secret will be shown once and cannot be
+            retrieved again
+          </DialogDescription>
 
           {/* footer */}
           <DialogFooter>
-            <DialogDescription>After created, client secret will be shown once and cannot be retrieved again</DialogDescription>
             <Button disabled={loading} type="submit" variant="primary">
               Save
             </Button>

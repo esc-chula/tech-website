@@ -5,9 +5,25 @@ import type { JsonPatch, OAuth2Client } from '@ory/hydra-client';
 import { hydra } from '~/lib/hydra';
 import { type Response } from '~/types/server';
 
+import { me } from './auth';
+
 export async function listOAuth2Clients(): Promise<Response<OAuth2Client[]>> {
   try {
-    const clients = await hydra.listOAuth2Clients();
+    const res = await me();
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: 'Failed to fetch OAuth 2.0 clients',
+        errors: ['Failed to fetch user information'],
+      };
+    }
+
+    const { studentId } = res.data;
+
+    const clients = await hydra.listOAuth2Clients({
+      owner: studentId,
+    });
 
     if (clients.status !== 200) {
       return {
