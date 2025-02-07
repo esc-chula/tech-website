@@ -10,6 +10,7 @@ export const env = createEnv({
       .default('development'),
     DIRECTUS_URL: z.string().url(),
     GRPC_ADDRESS: z.string(),
+    HYDRA_ADMIN_URL: z.string().url(),
   },
 
   client: {
@@ -21,6 +22,7 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     DIRECTUS_URL: process.env.DIRECTUS_URL,
     GRPC_ADDRESS: process.env.GRPC_ADDRESS,
+    HYDRA_ADMIN_URL: process.env.HYDRA_ADMIN_URL,
     NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: runtimeEnv(
       'NEXT_PUBLIC_SHORTENED_LINK_ORIGIN',
     ),

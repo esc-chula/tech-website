@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import BackButton from '~/components/common/button/back-button';
-import CopyButton from '~/components/tools/link-shortener/copy-button';
+import CopyButton from '~/components/common/button/copy-button';
 import DeleteButton from '~/components/tools/link-shortener/delete-button';
 import LinkEditCard from '~/components/tools/link-shortener/link-edit-card';
 import LinkStatsCard from '~/components/tools/link-shortener/link-stats-card';
