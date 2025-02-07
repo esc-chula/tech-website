@@ -2,9 +2,8 @@
 
 import type { JsonPatch, OAuth2Client } from '@ory/hydra-client';
 
+import { hydra } from '~/lib/hydra';
 import { type Response } from '~/types/server';
-
-import { hydra } from '../hydra/hydra';
 
 export async function listOAuth2Clients(): Promise<Response<OAuth2Client[]>> {
   try {
