@@ -16,6 +16,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
       actions: write
@@ -71,6 +72,7 @@ jobs:
             PROCESSED_TAG="$RAW_TAG"
           fi
           echo "IMAGE_TAG=$PROCESSED_TAG" >> "$GITHUB_ENV"
+
       - name: Read Image SHA from Artifact (for Staging)
         if: env.USE_SHA == 'true'
         run: echo "IMAGE_TAG=$(cat image_sha.txt)" >> "$GITHUB_ENV"
