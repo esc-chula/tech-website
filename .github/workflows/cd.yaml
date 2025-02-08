@@ -2,6 +2,15 @@ name: CD - Deploy to Kubernetes
 
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Select the branch to deploy'
+        required: true
+        default: 'develop'
+        type: choice
+        options:
+          - develop
+          - main
   workflow_run:
     workflows: ['CI - Build and Push Docker Image', 'Release']
     types:
@@ -21,13 +30,25 @@ jobs:
       contents: write
       actions: write
 
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: |
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.name == 'CI - Build and Push Docker Image' && github.event.workflow_run.head_branch == 'develop') ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.branch == 'main' || github.event.inputs.branch == 'develop'))
 
     steps:
       - name: Determine Deployment Environment
         id: determine-env
         run: |
-          if [[ "${{ github.event.workflow_run.name }}" == "Release" ]]; then
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            if [[ "${{ github.event.inputs.branch }}" == "main" ]]; then
+              echo "DEPLOYMENT_PATH=${{ env.PROD_DEPLOYMENT_PATH }}" >> "$GITHUB_ENV"
+              echo "DEPLOY_TYPE=minor" >> "$GITHUB_ENV"
+              echo "USE_SHA=false" >> "$GITHUB_ENV"
+            else
+              echo "DEPLOYMENT_PATH=${{ env.STAGING_DEPLOYMENT_PATH }}" >> "$GITHUB_ENV"
+              echo "DEPLOY_TYPE=patch" >> "$GITHUB_ENV"
+              echo "USE_SHA=true" >> "$GITHUB_ENV"
+            fi
+          elif [[ "${{ github.event.workflow_run.name }}" == "Release" ]]; then
             echo "DEPLOYMENT_PATH=${{ env.PROD_DEPLOYMENT_PATH }}" >> "$GITHUB_ENV"
             echo "DEPLOY_TYPE=minor" >> "$GITHUB_ENV"
             echo "USE_SHA=false" >> "$GITHUB_ENV"
@@ -36,6 +57,7 @@ jobs:
             echo "DEPLOY_TYPE=patch" >> "$GITHUB_ENV"
             echo "USE_SHA=true" >> "$GITHUB_ENV"
           fi
+
       - name: Checkout GitOps Repository
         uses: actions/checkout@v4
         with:
@@ -49,7 +71,7 @@ jobs:
         with:
           workflow: ${{ github.event.workflow_run.name }}.yaml
           workflow_conclusion: success
-          name: release-tag # Changed from image-tag to release-tag for Release workflow
+          name: release-tag
           path: .
 
       - name: Download Image SHA Artifact (for Staging)
