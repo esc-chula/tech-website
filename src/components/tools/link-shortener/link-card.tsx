@@ -6,7 +6,8 @@ import { env } from '~/env';
 
 import CopyButton from '../../common/button/copy-button';
 
-const SHORTENED_LINK_ORIGIN = env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN;
+const SHORTENED_LINK_ORIGIN =
+  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link';
 
 interface LinkCardProps {
   editedAt: Date;

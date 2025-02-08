@@ -10,7 +10,8 @@ import QrCodeButton from '~/components/tools/link-shortener/qr-code-button';
 import { env } from '~/env';
 import { api } from '~/trpc/server';
 
-const SHORTENED_LINK_ORIGIN = env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN;
+const SHORTENED_LINK_ORIGIN =
+  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link';
 
 interface PageProps {
   params: {

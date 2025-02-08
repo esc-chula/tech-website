@@ -29,7 +29,8 @@ import { env } from '~/env';
 import { useToast } from '~/hooks/use-toast';
 import { createShortenedLink } from '~/server/actions/link-shortener';
 
-const SHORTENED_LINK_ORIGIN = env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN;
+const SHORTENED_LINK_ORIGIN =
+  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link';
 
 const formSchema = z.object({
   name: z.string().max(50, {
