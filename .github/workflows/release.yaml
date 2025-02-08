@@ -1,5 +1,4 @@
 name: Release
-
 on:
   workflow_dispatch:
     inputs:
@@ -51,7 +50,7 @@ jobs:
       - name: Upload Release Tag Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-tag # Changed from image-tag to release-tag for clarity
+          name: release-tag
           path: release_tag.txt
   release_github:
     name: Create GitHub Release

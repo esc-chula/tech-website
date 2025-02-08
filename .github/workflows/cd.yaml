@@ -35,14 +35,7 @@ jobs:
             echo "DEPLOY_TYPE=patch" >> "$GITHUB_ENV"
             echo "USE_SHA=true" >> "$GITHUB_ENV"
           fi
-
-      - name: Read Release Tag from Artifact
-        id: get-release-tag
-        run: |
-          VERSION="$(cat release_tag.txt)"
-          echo "RELEASE_TAG=${VERSION#v}" >> "$GITHUB_ENV"
-
-      - name: Checkout GitOps repository
+      - name: Checkout GitOps Repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.GITOPS_REPO }}
