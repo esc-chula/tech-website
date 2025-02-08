@@ -88,7 +88,7 @@ const ClientCreateDialogContent: React.FC = () => {
 
       response_types: ['code'],
       grant_types: ['authorization_code'],
-      token_endpoint_auth_method: 'client_secret_post',
+      token_endpoint_auth_method: 'client_secret_basic',
     });
 
     if (!createRes.success) {
