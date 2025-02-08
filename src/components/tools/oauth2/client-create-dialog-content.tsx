@@ -86,7 +86,7 @@ const ClientCreateDialogContent: React.FC = () => {
       redirect_uris: values.redirect_uris,
       owner: studentId,
 
-      response_types: ['id_token'],
+      response_types: ['code'],
       grant_types: ['authorization_code'],
       token_endpoint_auth_method: 'client_secret_post',
     });
