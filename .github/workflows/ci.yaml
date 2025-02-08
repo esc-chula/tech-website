@@ -28,7 +28,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           SHA: ${{ github.sha }}
         run: |
-          echo "IMAGE_NAME=ghcr.io/${REPOSITORY@L}" >> "$GITHUB_ENV"
+          echo "IMAGE_NAME=ghcr.io/${REPOSITORY,,}" >> "$GITHUB_ENV"
           echo "IMAGE_TAG=latest" >> "$GITHUB_ENV"  # Default to 'latest'
           echo "SHA_TAG=$SHA" >> "$GITHUB_ENV"     # Save SHA separately
 
@@ -43,7 +43,15 @@ jobs:
 
       - name: Use Release Tag (if available)
         if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.name == 'Release' }}
-        run: echo "IMAGE_TAG=$(cat release_tag.txt)" >> "$GITHUB_ENV"
+        run: |
+          RAW_TAG=$(cat release_tag.txt)
+          # Remove 'v' prefix if the tag matches vX.X.X format
+          if [[ $RAW_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            PROCESSED_TAG="${RAW_TAG#v}"
+          else
+            PROCESSED_TAG="$RAW_TAG"
+          fi
+          echo "IMAGE_TAG=$PROCESSED_TAG" >> "$GITHUB_ENV"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -60,8 +68,7 @@ jobs:
         with:
           file: Dockerfile
           push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}  # Only Release tag or 'latest'
+          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
 

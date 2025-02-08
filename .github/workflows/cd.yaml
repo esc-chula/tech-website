@@ -50,11 +50,12 @@ jobs:
           path: gitops
 
       - name: Download Image Tag Artifact
+        if: env.USE_SHA == 'false'
         uses: dawidd6/action-download-artifact@v8
         with:
           workflow: ${{ github.event.workflow_run.name }}.yaml
           workflow_conclusion: success
-          name: image-tag
+          name: release-tag # Changed from image-tag to release-tag for Release workflow
           path: .
 
       - name: Download Image SHA Artifact (for Staging)
@@ -68,8 +69,15 @@ jobs:
 
       - name: Read Image Tag from Artifact
         id: get-image-tag
-        run: echo "IMAGE_TAG=$(cat image_tag.txt)" >> "$GITHUB_ENV"
-
+        run: |
+          RAW_TAG=$(cat release_tag.txt)  # Changed from image_tag.txt to release_tag.txt for Release workflow
+          # Remove 'v' prefix if the tag matches vX.X.X format
+          if [[ $RAW_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            PROCESSED_TAG="${RAW_TAG#v}"
+          else
+            PROCESSED_TAG="$RAW_TAG"
+          fi
+          echo "IMAGE_TAG=$PROCESSED_TAG" >> "$GITHUB_ENV"
       - name: Read Image SHA from Artifact (for Staging)
         if: env.USE_SHA == 'true'
         run: echo "IMAGE_TAG=$(cat image_sha.txt)" >> "$GITHUB_ENV"
