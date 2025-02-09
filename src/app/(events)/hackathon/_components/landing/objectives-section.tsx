@@ -11,7 +11,13 @@ const objectives = ['Intania', 'Innovate', 'Impressive'];
 
 const ObjectivesSection: React.FC = () => {
   return (
-    <Section title="WTH">
+    <Section
+      title={
+        <>
+          WT<span className="text-hackathon-primary">H</span>
+        </>
+      }
+    >
       <div className="flex flex-col pt-6 sm:pt-0 md:pt-5 px-0 md:px-5">
         <span className="font-ndot47 text-2xl md:text-4xl text-white/50 select-none">
           what the HACK?!
@@ -76,9 +82,9 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
         type="button"
         onClick={() => setIsCollapsed((prev) => !prev)}
       >
-        <h2 className="font-ndot47 text-4xl md:text-6xl lowercase select-none duration-75 group-hover:text-hackathon-primary">
+        <h3 className="font-ndot47 text-4xl md:text-6xl lowercase select-none duration-75 group-hover:text-hackathon-primary">
           {title}
-        </h2>
+        </h3>
         <span
           className={cn(
             'font-ndot47 text-2xl md:text-5xl select-none text-white/60 group-hover:text-white',
