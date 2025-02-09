@@ -47,10 +47,10 @@ const contents = [
     title: 'Step-by-Step',
     children: (
       <>
-        <div className="p-4 rounded-3xl border-2 border-white/10 flex gap-2">
-          <span className="relative font-ndot47 text-3xl md:text-4xl min-w-6 text-hackathon-primary text-center select-none">
+        <div className="p-4 rounded-3xl border-2 border-white/10 flex flex-col md:flex-row gap-2">
+          <span className="relative font-ndot47 text-3xl md:text-4xl min-w-6 text-hackathon-primary md:text-center select-none">
             1
-            <div className="-z-10 rounded-full absolute w-40 aspect-square top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] bg-hackathon-radial-gradient opacity-70" />
+            <div className="-z-10 rounded-full absolute w-40 aspect-square top-1/2 left-2 md:left-1/2 -translate-x-1/2 -translate-y-1/2 md:-translate-y-[60%] bg-hackathon-radial-gradient opacity-70" />
           </span>
           <div>
             <h4 className="font-semibold">Find Your Tickets</h4>
@@ -60,19 +60,18 @@ const contents = [
             </p>
           </div>
         </div>
-        <div className="p-4 rounded-3xl border-2 border-white/10 flex gap-2">
+        <div className="p-4 rounded-3xl border-2 border-white/10 flex flex-col md:flex-row gap-2">
           <span className="font-ndot47 text-3xl md:text-4xl min-w-6 text-white/70 select-none">
             2
           </span>
           <div>
             <h4 className="font-semibold">Register Your Ticket</h4>
             <p className="text-white/70 text-sm md:text-base">
-              Each Ticket Code must be claimed in
-              “https://intania.tech/hackathon/ticket”
+              Each Ticket Code must be claimed at Register page.
             </p>
           </div>
         </div>
-        <div className="p-4 rounded-3xl border-2 border-white/10 flex gap-2">
+        <div className="p-4 rounded-3xl border-2 border-white/10 flex flex-col md:flex-row gap-2">
           <span className="font-ndot47 text-3xl md:text-4xl min-w-6 text-white/30 select-none">
             3
           </span>
