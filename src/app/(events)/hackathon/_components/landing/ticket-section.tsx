@@ -23,7 +23,7 @@ const contents = [
         </p>
         <p className="text-sm sm:text-base text-white/90">
           ✅ Each team must have at least 2 students from Faculty of
-          Engineering, Chulalongkorn University’s.
+          Engineering, Chulalongkorn University.
         </p>
       </>
     ),
@@ -34,7 +34,7 @@ const contents = [
       <>
         <p className="text-sm sm:text-base text-white/90">
           🚀 When the tickets are released, it’s game on! Each team must find{' '}
-          <span className="font-bold underline">2 ticket codes</span> before
+          <span className="font-bold underline">2 Ticket Codes</span> before
           they can combine them into a{' '}
           <span className="font-bold underline">Team Ticket</span> to secure
           their spot in the hackathon.
@@ -48,7 +48,7 @@ const contents = [
     children: (
       <>
         <div className="p-4 rounded-3xl border-2 border-white/10 flex gap-2">
-          <span className="relative font-ndot47 text-3xl md:text-4xl w-10 text-hackathon-primary text-center select-none">
+          <span className="relative font-ndot47 text-3xl md:text-4xl min-w-6 text-hackathon-primary text-center select-none">
             1
             <div className="-z-10 rounded-full absolute w-40 aspect-square top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] bg-hackathon-radial-gradient opacity-70" />
           </span>
@@ -56,31 +56,31 @@ const contents = [
             <h4 className="font-semibold">Find Your Tickets</h4>
             <p className="text-white/70 text-sm md:text-base">
               Follow the hints and Easter eggs on our social media & LINE
-              OpenChat to locate your two individual tickets.
+              OpenChat to locate your two Ticket Codes.
             </p>
           </div>
         </div>
         <div className="p-4 rounded-3xl border-2 border-white/10 flex gap-2">
-          <span className="font-ndot47 text-3xl md:text-4xl w-10 text-white/70 select-none">
+          <span className="font-ndot47 text-3xl md:text-4xl min-w-6 text-white/70 select-none">
             2
           </span>
           <div>
             <h4 className="font-semibold">Register Your Ticket</h4>
             <p className="text-white/70 text-sm md:text-base">
-              Each ticket must be claimed using a Chulalongkorn University
-              Engineering Student account.
+              Each Ticket Code must be claimed in
+              “https://intania.tech/hackathon/ticket”
             </p>
           </div>
         </div>
         <div className="p-4 rounded-3xl border-2 border-white/10 flex gap-2">
-          <span className="font-ndot47 text-3xl md:text-4xl w-10 text-white/30 select-none">
+          <span className="font-ndot47 text-3xl md:text-4xl min-w-6 text-white/30 select-none">
             3
           </span>
           <div>
             <h4 className="font-semibold">Combine Your Tickets</h4>
             <p className="text-white/70 text-sm md:text-base">
-              Once your team has collected 2 tickets, you can merge them into a
-              Team Ticket to complete your registration.
+              Once your team has collected 2 Ticket Codes, you can merge them
+              into a Team Ticket to complete your registration in the website.
             </p>
           </div>
         </div>
@@ -101,7 +101,7 @@ const TicketSection: React.FC = () => {
       }
     >
       <div className="flex flex-col-reverse gap-5 sm:gap-7 justify-end lg:grid w-full h-full lg:grid-cols-5 pt-6 md:pt-5">
-        <div className="lg:col-span-3 flex flex-col gap-4 sm:gap-6 px-0 md:px-5">
+        <div className="lg:col-span-3 flex flex-col gap-6 sm:gap-8 px-0 md:px-5">
           {contents.map((content) => (
             <ScrollRevealer
               key={content.title}

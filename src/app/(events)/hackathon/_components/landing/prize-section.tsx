@@ -4,7 +4,7 @@ const PrizeSection: React.FC = () => {
       {/* <p className="text-5xl sm:text-6xl md:text-8xl font-ndot47">
         1,<span className="text-hackathon-primary">111</span>,111
       </p> */}
-      <p className="text-5xl sm:text-6xl md:text-8xl font-ndot47">
+      <p className="text-5xl sm:text-6xl md:text-8xl font-ndot47 select-none">
         ?<span className="text-hackathon-primary">?</span>???
       </p>
       <p className="text-lg sm:text-xl md:text-2xl font-semibold">Prize Pool</p>

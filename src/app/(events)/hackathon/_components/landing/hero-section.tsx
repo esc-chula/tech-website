@@ -12,7 +12,7 @@ const HeroSection: React.FC = () => {
       </Button>
       <div className="absolute w-full flex justify-center items-center flex-col">
         <p className="absolute top-[124px] sm:top-[136px] md:top-44 text-xs md:text-sm opacity-50">
-          Open for registration 17 Feb
+          Ticket release on 17 Feb
           <span className="hidden md:inline">ruary</span> 2025
         </p>
       </div>

@@ -7,7 +7,74 @@ import { cn } from '~/lib/utils';
 
 import Section from './section';
 
-const objectives = ['Intania', 'Innovate', 'Impressive'];
+const objectives = [
+  {
+    title: 'Intania',
+    children: (
+      <>
+        <p>
+          This hackathon is designed to unleash the full potential of
+          engineering students from Chulalongkorn University’s Faculty of
+          Engineering (Intania).
+        </p>
+        <p className="text-lg md:text-xl font-semibold">
+          “Made in{' '}
+          <span className="text-hackathon-primary font-bold">Intania</span>”
+        </p>
+        <p>
+          A statement that represents real innovation with a global impact. This
+          is where the brightest minds come together to solve problems, create
+          groundbreaking technology, and make a difference in the world.
+        </p>
+      </>
+    ),
+  },
+  {
+    title: 'Innovate',
+    children: (
+      <>
+        <p className="text-lg md:text-xl font-semibold">
+          Discovery → Ideation →{' '}
+          <span className="text-white font-bold underline">POC Creation</span> →{' '}
+          <span className="text-hackathon-primary font-bold">Execution</span>
+        </p>
+        <p>
+          Unlike typical competitions, Intania Hackathon is a{' '}
+          <span className="font-bold">REAL</span> hackathon. Our goal is not
+          just ideas but tangible innovation. This event pushes teams to go
+          beyond ideation and develop a real Proof of Concept (POC).
+        </p>
+        <p>
+          The best products / solutions / or innovations will receive support
+          and funding to turn their ideas into reality, making this more than
+          just a competition—it’s the start of something big.
+        </p>
+      </>
+    ),
+  },
+  {
+    title: 'Impressive',
+    children: (
+      <>
+        <p>
+          From the moment you decided to participate, you’ll experience an event
+          like no other—a competition that no one has ever participated in
+          before, and one they will never forget.
+        </p>
+        <p>
+          We aim to make Intania Hackathon the most{' '}
+          <span className="text-white font-semibold">
+            thrilling,{' '}
+            <span className="text-hackathon-primary font-bold">fun</span>, and
+            memorable
+          </span>{' '}
+          tech event ever. This isn’t just about winning—it’s about the
+          experience, and the community.
+        </p>
+      </>
+    ),
+  },
+];
 
 const ObjectivesSection: React.FC = () => {
   return (
@@ -23,27 +90,10 @@ const ObjectivesSection: React.FC = () => {
           what the HACK?!
         </span>
         {objectives.map((objective, index) => (
-          <ScrollRevealer key={objective}>
-            <ObjectiveCard index={index} title={objective}>
-              <div className="flex flex-col gap-5">
-                <p className="text-sm md:text-base">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Eveniet excepturi modi nemo eligendi autem, natus dignissimos,
-                  quae hic error aliquid cupiditate distinctio quasi quia
-                  pariatur. Voluptatibus id iste molestias debitis!
-                </p>
-                <p className="text-sm md:text-base">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Eveniet excepturi modi nemo eligendi autem, natus dignissimos,
-                  quae hic error aliquid cupiditate distinctio quasi quia
-                  pariatur. Voluptatibus id iste molestias debitis!
-                </p>
-                <p className="text-sm md:text-base">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Eveniet excepturi modi nemo eligendi autem, natus dignissimos,
-                  quae hic error aliquid cupiditate distinctio quasi quia
-                  pariatur. Voluptatibus id iste molestias debitis!
-                </p>
+          <ScrollRevealer key={objective.title}>
+            <ObjectiveCard index={index} title={objective.title}>
+              <div className="flex flex-col gap-5 text-white/90 text-sm md:text-base">
+                {objective.children}
               </div>
             </ObjectiveCard>
           </ScrollRevealer>
@@ -66,7 +116,7 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
   index,
   title,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(index !== 1);
+  const [isCollapsed, setIsCollapsed] = useState(index !== 0);
 
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
