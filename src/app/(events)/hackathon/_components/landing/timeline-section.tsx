@@ -36,7 +36,7 @@ const details = [
   },
 ];
 
-const timelines = [
+const contents = [
   {
     title: 'Ticket Release',
     children: (
@@ -110,9 +110,9 @@ const TimelineSection: React.FC = () => {
       }
     >
       <div className="relative flex flex-col gap-6">
-        {timelines.map((timeline) => (
-          <ScrollRevealer key={timeline.title}>
-            <TimelineCard {...timeline} />
+        {contents.map((content) => (
+          <ScrollRevealer key={content.title}>
+            <TimelineCard {...content} />
           </ScrollRevealer>
         ))}
       </div>

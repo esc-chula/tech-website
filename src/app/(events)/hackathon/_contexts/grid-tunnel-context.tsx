@@ -57,7 +57,7 @@ const GridTunnelContextProvider: React.FC<GridTunnelContextProviderProps> = ({
     >
       <main
         className={cn(
-          'duration-500 ease-in-out relative',
+          'duration-500 ease-in-out',
           offset !== null ? 'opacity-100' : 'opacity-0',
         )}
       >

@@ -15,39 +15,41 @@ import GridTunnelContextProvider from './_contexts/grid-tunnel-context';
 const Page: React.FC = () => {
   return (
     <GridTunnelContextProvider>
-      {/* fixed components */}
-      <Socials />
-      <ContainerLines />
+      <div className="relative">
+        {/* fixed components */}
+        <Socials />
+        <ContainerLines />
 
-      {/* hero grid tunnel */}
-      <AnimatedGridTunnel>
-        <OffsetRevealer className="gap-8 sm:gap-10 md:gap-12">
-          <HeroSection />
-        </OffsetRevealer>
-        <OffsetRevealer
-          className="gap-2 sm:gap-4 md:gap-6"
-          offsetThreshold={500}
-          zPosition={-750}
-        >
-          <PrizeSection />
-        </OffsetRevealer>
-        <OffsetRevealer
-          className="gap-8 sm:gap-10 md:gap-12"
-          offsetThreshold={1100}
-          zPosition={-1600}
-        >
-          <SponsorsSection />
-        </OffsetRevealer>
-      </AnimatedGridTunnel>
+        {/* hero grid tunnel */}
+        <AnimatedGridTunnel>
+          <OffsetRevealer className="gap-8 sm:gap-10 md:gap-12">
+            <HeroSection />
+          </OffsetRevealer>
+          <OffsetRevealer
+            className="gap-2 sm:gap-4 md:gap-6"
+            offsetThreshold={500}
+            zPosition={-750}
+          >
+            <PrizeSection />
+          </OffsetRevealer>
+          <OffsetRevealer
+            className="gap-8 sm:gap-10 md:gap-12"
+            offsetThreshold={1100}
+            zPosition={-1600}
+          >
+            <SponsorsSection />
+          </OffsetRevealer>
+        </AnimatedGridTunnel>
 
-      {/* info sections */}
-      <TimelineSection />
-      <TicketSection />
-      {/* <PrizesSection /> */}
-      <ObjectivesSection />
-      {/* TODO: judges, swags */}
+        {/* info sections */}
+        <TimelineSection />
+        <TicketSection />
+        {/* <PrizesSection /> */}
+        <ObjectivesSection />
+        {/* TODO: judges, swags */}
 
-      <Footer />
+        <Footer />
+      </div>
     </GridTunnelContextProvider>
   );
 };
