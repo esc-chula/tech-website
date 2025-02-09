@@ -17,29 +17,27 @@ export const metadata: Metadata = {
     'Student hackathon',
     'Hackathon tickets Thailand',
   ],
+  metadataBase: new URL('https://intania.tech/hackathon'),
   openGraph: {
     title: 'Intania Hackathon - The real 48-hour innovation challenge!',
     description:
       'Join Intania Hackathon, The real 48-hour innovation challenge! Build, innovate, and create groundbreaking solutions with top engineering students. Compete, collaborate, and bring your ideas to life! Secure your ticket and be part of the next big innovation made in Intania.',
     images: {
-      type: 'image/jpeg',
-      url: '/hackathon/og-image.jpg',
-      secureUrl: 'https://intania.tech/hackathon/og-image.jpg',
+      url: 'https://intania.tech/hackathon/og-image.jpg',
       alt: 'Intania Hackathon',
       width: 1200,
       height: 750,
     },
+    locale: 'th_TH',
+    type: 'website',
   },
   twitter: {
-    creator: 'Engineering Student Committee, Chulalongkorn University',
     card: 'summary_large_image',
     title: 'Intania Hackathon - The real 48-hour innovation challenge!',
     description:
       'Join Intania Hackathon, The real 48-hour innovation challenge! Build, innovate, and create groundbreaking solutions with top engineering students. Compete, collaborate, and bring your ideas to life! Secure your ticket and be part of the next big innovation made in Intania.',
     images: {
-      type: 'image/jpeg',
-      url: '/hackathon/og-image.jpg',
-      secureUrl: 'https://intania.tech/hackathon/og-image.jpg',
+      url: 'https://intania.tech/hackathon/og-image.jpg',
       alt: 'Intania Hackathon',
       width: 1200,
       height: 750,
