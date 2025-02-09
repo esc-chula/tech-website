@@ -17,7 +17,7 @@ interface ScrollRevealerProps extends HTMLMotionProps<'div'> {
 const ScrollRevealer: React.FC<ScrollRevealerProps> = ({
   children,
   delay = 0.3,
-  initialTranslateY = '25%',
+  initialTranslateY = '20%',
   ...props
 }) => {
   const ref = useRef(null);
@@ -38,7 +38,7 @@ const ScrollRevealer: React.FC<ScrollRevealerProps> = ({
       initial="hidden"
       transition={{
         type: 'tween',
-        duration: 0.7,
+        duration: 0.5,
         delay,
         ease: 'easeOut',
       }}
