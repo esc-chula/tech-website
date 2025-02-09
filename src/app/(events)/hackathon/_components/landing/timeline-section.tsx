@@ -1,5 +1,4 @@
-import React from 'react';
-
+import ScrollRevealer from '~/components/common/animation/scroll-revealer';
 import { cn } from '~/lib/utils';
 
 import Section from './section';
@@ -31,7 +30,9 @@ const TimelineSection: React.FC = () => {
     <Section offsetThreshold={2000} title="TIMELINE">
       <div className="relative flex flex-col gap-6">
         {timelines.map((timeline) => (
-          <TimelineCard key={timeline.title} {...timeline} />
+          <ScrollRevealer key={timeline.title}>
+            <TimelineCard {...timeline} />
+          </ScrollRevealer>
         ))}
       </div>
     </Section>

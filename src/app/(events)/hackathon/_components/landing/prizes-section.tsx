@@ -1,3 +1,5 @@
+import ScrollRevealer from '~/components/common/animation/scroll-revealer';
+
 import Section from './section';
 
 const competitionPrizes = [
@@ -37,39 +39,43 @@ const PrizesSection: React.FC = () => {
           <div className="-z-10 rounded-full absolute w-[200px] md:w-[250px] top-1/2 -mt-5 sm:-mt-5 md:-mt-6 -left-10 sm:-left-7 md:left-3 -translate-y-1/2 aspect-[5/4] bg-hackathon-radial-gradient opacity-60" />
         </div>
         <div className="grid lg:grid-cols-2 gap-5 sm:gap-10 w-full sm:px-5 lg:px-8">
-          <PrizeCard prize={111111} title="Competition Prize">
-            {competitionPrizes.map((prize) => (
-              <div key={prize.title}>
-                <div className="flex justify-between items-center">
-                  <p className="text-sm sm:text-base font-semibold text-white/70">
-                    {prize.title}
-                  </p>
-                  <p className="text-xl sm:text-2xl font-bold font-geistMono">
-                    {prize.prize.toLocaleString()}
-                  </p>
+          <ScrollRevealer initialTranslateY="15%">
+            <PrizeCard prize={111111} title="Competition Prize">
+              {competitionPrizes.map((prize) => (
+                <div key={prize.title}>
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm sm:text-base font-semibold text-white/70">
+                      {prize.title}
+                    </p>
+                    <p className="text-xl sm:text-2xl font-bold font-geistMono">
+                      {prize.prize.toLocaleString()}
+                    </p>
+                  </div>
+                  {prize.description ? (
+                    <span className="absolute -mt-1 text-xs font-normal text-white/50">
+                      {prize.description}
+                    </span>
+                  ) : null}
                 </div>
-                {prize.description ? (
-                  <span className="absolute -mt-1 text-xs font-normal text-white/50">
-                    {prize.description}
-                  </span>
-                ) : null}
-              </div>
-            ))}
-          </PrizeCard>
-          <PrizeCard prize={1000000} title="Innovation Fund">
-            <p className="text-sm text-white/70">
-              1-on-1 mentorship with industry experts
-            </p>
-            <p className="text-sm text-white/70">
-              Access to exclusive startup programs
-            </p>
-            <p className="text-sm text-white/70">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Consequuntur iste dolorem similique, tempore quae officia minus
-              fuga aliquid sint tenetur adipisci doloremque? Sapiente sunt nobis
-              voluptates et quaerat, ipsam dicta?
-            </p>
-          </PrizeCard>
+              ))}
+            </PrizeCard>
+          </ScrollRevealer>
+          <ScrollRevealer delay={0.5} initialTranslateY="15%">
+            <PrizeCard prize={1000000} title="Innovation Fund">
+              <p className="text-sm text-white/70">
+                1-on-1 mentorship with industry experts
+              </p>
+              <p className="text-sm text-white/70">
+                Access to exclusive startup programs
+              </p>
+              <p className="text-sm text-white/70">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Consequuntur iste dolorem similique, tempore quae officia minus
+                fuga aliquid sint tenetur adipisci doloremque? Sapiente sunt
+                nobis voluptates et quaerat, ipsam dicta?
+              </p>
+            </PrizeCard>
+          </ScrollRevealer>
         </div>
       </div>
     </Section>
@@ -86,7 +92,7 @@ interface PrizeCardProps {
 
 const PrizeCard: React.FC<PrizeCardProps> = ({ children, prize, title }) => {
   return (
-    <div className="flex flex-col gap-4 rounded-3xl border-2 border-white/10 p-6">
+    <div className="flex flex-col gap-4 rounded-3xl border-2 border-white/10 p-6 h-full">
       <div className="select-none">
         <h4 className="font-ndot47 text-3xl md:text-5xl">
           {prize.toLocaleString()}

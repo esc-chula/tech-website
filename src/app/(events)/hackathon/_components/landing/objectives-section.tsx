@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import ScrollRevealer from '~/components/common/animation/scroll-revealer';
 import { cn } from '~/lib/utils';
 
 import Section from './section';
@@ -16,28 +17,30 @@ const ObjectivesSection: React.FC = () => {
           what the HACK?!
         </span>
         {objectives.map((objective, index) => (
-          <ObjectiveCard key={objective} index={index} title={objective}>
-            <div className="flex flex-col gap-5">
-              <p className="text-sm md:text-base">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Eveniet excepturi modi nemo eligendi autem, natus dignissimos,
-                quae hic error aliquid cupiditate distinctio quasi quia
-                pariatur. Voluptatibus id iste molestias debitis!
-              </p>
-              <p className="text-sm md:text-base">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Eveniet excepturi modi nemo eligendi autem, natus dignissimos,
-                quae hic error aliquid cupiditate distinctio quasi quia
-                pariatur. Voluptatibus id iste molestias debitis!
-              </p>
-              <p className="text-sm md:text-base">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Eveniet excepturi modi nemo eligendi autem, natus dignissimos,
-                quae hic error aliquid cupiditate distinctio quasi quia
-                pariatur. Voluptatibus id iste molestias debitis!
-              </p>
-            </div>
-          </ObjectiveCard>
+          <ScrollRevealer key={objective}>
+            <ObjectiveCard index={index} title={objective}>
+              <div className="flex flex-col gap-5">
+                <p className="text-sm md:text-base">
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Eveniet excepturi modi nemo eligendi autem, natus dignissimos,
+                  quae hic error aliquid cupiditate distinctio quasi quia
+                  pariatur. Voluptatibus id iste molestias debitis!
+                </p>
+                <p className="text-sm md:text-base">
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Eveniet excepturi modi nemo eligendi autem, natus dignissimos,
+                  quae hic error aliquid cupiditate distinctio quasi quia
+                  pariatur. Voluptatibus id iste molestias debitis!
+                </p>
+                <p className="text-sm md:text-base">
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Eveniet excepturi modi nemo eligendi autem, natus dignissimos,
+                  quae hic error aliquid cupiditate distinctio quasi quia
+                  pariatur. Voluptatibus id iste molestias debitis!
+                </p>
+              </div>
+            </ObjectiveCard>
+          </ScrollRevealer>
         ))}
       </div>
     </Section>
@@ -76,14 +79,14 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
         <h2 className="font-ndot47 text-4xl md:text-6xl lowercase select-none duration-75 group-hover:text-hackathon-primary">
           {title}
         </h2>
-        <p
+        <span
           className={cn(
-            'font-ndot47 text-2xl md:text-5xl text-white/60 group-hover:text-white',
-            isCollapsed ? '' : '-mt-2 mb-2',
+            'font-ndot47 text-2xl md:text-5xl select-none text-white/60 group-hover:text-white',
+            isCollapsed ? '' : '-mt-[1.4%] mb-[1.4%]',
           )}
         >
           {isCollapsed ? '+' : '_'}
-        </p>
+        </span>
       </button>
       <div
         className={cn(
