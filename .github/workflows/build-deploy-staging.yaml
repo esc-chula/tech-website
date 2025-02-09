@@ -72,10 +72,7 @@ jobs:
           DEPLOYMENT_PATH="gitops/${{ env.STAGING_DEPLOYMENT_PATH }}"
 
           # Update the `newTag` field inside `images` list
-          yq -i '(.images[] | select(.name == "tech-website")).newTag = "${{ env.IMAGE_TAG }}"' "$DEPLOYMENT_PATH"
-
-          # Update the patch for the container image in the `Deployment`
-          yq -i '(.patches[] | select(.target.kind == "Deployment" and .target.name == "tech-website")).patch |= sub("value:.*", "value: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}")' "$DEPLOYMENT_PATH"
+          yq -i '(.images[] | select(.name == "ghcr.io/esc-chula/tech-website")).newTag = "${{ env.IMAGE_TAG }}"' "$DEPLOYMENT_PATH"
 
       - name: Commit and Push Changes to GitOps Repo
         run: |
