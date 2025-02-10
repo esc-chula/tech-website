@@ -24,12 +24,12 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import MultiInput from '~/components/ui/multi-input';
 import { scopes } from '~/constants/oauth';
 import { useToast } from '~/hooks/use-toast';
 import { updateOAuth2Client } from '~/server/actions/oauth';
 
 import { useClientEditDialog } from './client-edit-dialog-context';
-import MultiInput from './multi-input';
 
 const formSchema = z.object({
   name: z

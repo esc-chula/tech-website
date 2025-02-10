@@ -4,14 +4,16 @@ import { aboutRouter } from './routers/about';
 import { authRouter } from './routers/auth';
 import { linkShortenerRouter } from './routers/link-shortener';
 import { qrCodeRouter } from './routers/qr-code';
+import { roleRouter } from './routers/role';
 import { techmonthRouter } from './routers/techmonth';
 
 export const appRouter = createTRPCRouter({
   about: aboutRouter,
   auth: authRouter,
-  techmonth: techmonthRouter,
   linkShortener: linkShortenerRouter,
   qrCode: qrCodeRouter,
+  role: roleRouter,
+  techmonth: techmonthRouter,
 });
 
 export type AppRouter = typeof appRouter;

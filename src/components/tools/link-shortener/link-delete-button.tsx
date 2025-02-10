@@ -51,6 +51,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
     setOpen(false);
 
     router.push('/tools/link-shortener');
+    router.refresh();
   };
 
   return (

@@ -29,9 +29,10 @@ import { useToast } from '~/hooks/use-toast';
 import { me } from '~/server/actions/auth';
 import { createOAuth2Client } from '~/server/actions/oauth';
 
+import MultiInput from '../../ui/multi-input';
+
 import { useClientCreateDialog } from './client-create-dialog-context';
 import { useClientSecretDialog } from './client-secret-dialog-context';
-import MultiInput from './multi-input';
 
 const formSchema = z.object({
   name: z

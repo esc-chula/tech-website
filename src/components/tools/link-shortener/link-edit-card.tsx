@@ -32,6 +32,7 @@ import { env } from '~/env';
 import { useToast } from '~/hooks/use-toast';
 import { cn } from '~/lib/utils';
 import { updateShortenedLink } from '~/server/actions/link-shortener';
+import { checkAppRole } from '~/server/actions/role';
 import { type ShortenedLink } from '~/types/link-shortener';
 
 const SHORTENED_LINK_ORIGIN =
@@ -82,29 +83,63 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setLoading(true);
 
-    const res = await updateShortenedLink({
+    const resCheck = await checkAppRole({ appId: 'esc', role: 'admin' });
+    if (!resCheck.success) {
+      setLoading(false);
+
+      toast({
+        title: 'Failed to check role',
+        description: resCheck.message ?? 'Something went wrong',
+        variant: 'destructive',
+      });
+
+      console.error(resCheck.errors);
+
+      return;
+    }
+
+    const { data: isAuthorized } = resCheck;
+
+    if (
+      !isAuthorized &&
+      (values.slug.includes('-esc-') ||
+        values.slug.includes('-esc') ||
+        values.slug.startsWith('esc'))
+    ) {
+      form.setError('slug', {
+        type: 'manual',
+        message: 'You do not have permission to have “esc” in the slug',
+      });
+
+      setLoading(false);
+      setAlertOpen(false);
+
+      return;
+    }
+
+    const resUpdate = await updateShortenedLink({
       id: shortenedLink.id,
       name: values.name,
       slug: values.slug,
       url: values.url,
     });
 
-    if (!res.success) {
+    if (!resUpdate.success) {
       setLoading(false);
 
       toast({
         title: 'Failed to create shortened link',
-        description: res.message ?? 'Something went wrong',
+        description: resUpdate.message ?? 'Something went wrong',
         variant: 'destructive',
       });
 
-      console.error(res.errors);
+      console.error(resUpdate.errors);
 
       return;
     }
 
-    if (res.data.slug !== shortenedLink.slug) {
-      router.push(`/tools/link-shortener/${res.data.slug}`);
+    if (resUpdate.data.slug !== shortenedLink.slug) {
+      router.push(`/tools/link-shortener/${resUpdate.data.slug}`);
     }
 
     setLoading(false);

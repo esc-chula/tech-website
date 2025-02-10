@@ -26,6 +26,7 @@ import { Input } from '~/components/ui/input';
 import { env } from '~/env';
 import { useToast } from '~/hooks/use-toast';
 import { createShortenedLink } from '~/server/actions/link-shortener';
+import { checkAppRole } from '~/server/actions/role';
 
 import { useLinkCreateDialog } from './link-create-dialog-context';
 
@@ -70,22 +71,53 @@ const LinkCreateDialogContent: React.FC = () => {
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setLoading(true);
 
-    const res = await createShortenedLink({
+    const resCheck = await checkAppRole({ appId: 'esc', role: 'admin' });
+    if (!resCheck.success) {
+      setLoading(false);
+
+      toast({
+        title: 'Failed to check role',
+        description: resCheck.message ?? 'Something went wrong',
+        variant: 'destructive',
+      });
+
+      console.error(resCheck.errors);
+
+      return;
+    }
+
+    const { data: isAuthorized } = resCheck;
+
+    if (
+      !isAuthorized &&
+      (values.slug.includes('-esc-') ||
+        values.slug.includes('-esc') ||
+        values.slug.startsWith('esc'))
+    ) {
+      form.setError('slug', {
+        type: 'manual',
+        message: 'You do not have permission to have “esc” in the slug',
+      });
+
+      setLoading(false);
+      return;
+    }
+
+    const resCreate = await createShortenedLink({
       name: values.name,
       slug: values.slug,
       url: values.url,
     });
-
-    if (!res.success) {
+    if (!resCreate.success) {
       setLoading(false);
 
       toast({
         title: 'Failed to create shortened link',
-        description: res.message ?? 'Something went wrong',
+        description: resCreate.message ?? 'Something went wrong',
         variant: 'destructive',
       });
 
-      console.error(res.errors);
+      console.error(resCreate.errors);
 
       return;
     }
@@ -126,7 +158,17 @@ const LinkCreateDialogContent: React.FC = () => {
                 <FormItem>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input placeholder="my-website" {...field} />
+                    <Input
+                      placeholder="my-website"
+                      {...field}
+                      onChange={(e) => {
+                        const sanitizedValue = e.target.value
+                          .toLowerCase()
+                          .replace(/[^a-z0-9-]+/g, '-');
+
+                        field.onChange(sanitizedValue);
+                      }}
+                    />
                   </FormControl>
                   <FormDescription>
                     This will be shortened in{' '}
