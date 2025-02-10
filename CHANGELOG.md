@@ -2,16 +2,55 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0](https://github.com/esc-chula/intania-oidc-new/compare/v0.1.4..v0.2.0) - 2025-02-10
+
+### <!-- 0 -->⛰️  Features
+
+- User service role and migrations - ([ede1d61](https://github.com/esc-chula/intania-oidc-new/commit/ede1d615e3175e505e5e142c7883e6213548c718))
+- Gtag - ([3d150c4](https://github.com/esc-chula/intania-oidc-new/commit/3d150c4976fba1a9b1db914895a4a751c857f9ec))
+- Page titles - ([3a40ab7](https://github.com/esc-chula/intania-oidc-new/commit/3a40ab7b5cb0c65d569f3173389cab5d034a9ca0))
+- Permission controls - ([68e6bcd](https://github.com/esc-chula/intania-oidc-new/commit/68e6bcdcdd8d49c2e58e8f30e63dc478e3803f1f))
+- Made in intania - ([57dc69a](https://github.com/esc-chula/intania-oidc-new/commit/57dc69ac5c5ba2fd6e221a232586c50b05786e4a))
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Image remotePatterns - ([e8a897c](https://github.com/esc-chula/intania-oidc-new/commit/e8a897c2396e99f5d0e833d3994a79a28d8fbd64))
+- Env - ([c1ac0ae](https://github.com/esc-chula/intania-oidc-new/commit/c1ac0ae219d23c2ce78d70fe87a7cc78774ad43a))
+- Change response_types - ([46f019f](https://github.com/esc-chula/intania-oidc-new/commit/46f019f6805d3e1991549e05c353b32988e9c397))
+- Undefined env - ([4839de3](https://github.com/esc-chula/intania-oidc-new/commit/4839de300e8c3b8e09d4195d6dc60141a56d4bae))
+- Use `client_secret_basic` - ([8b07934](https://github.com/esc-chula/intania-oidc-new/commit/8b07934a777573c3e3d452ad2bcf18cc96f8b66b))
+- Overflow text - ([3c80b71](https://github.com/esc-chula/intania-oidc-new/commit/3c80b718878fe3d812b67fa997b577206db36f94))
+- Add trigger - ([6458fe2](https://github.com/esc-chula/intania-oidc-new/commit/6458fe21af58301244222d35b90118e53971403e))
+- Carousel description overflow text - ([9e2a9d1](https://github.com/esc-chula/intania-oidc-new/commit/9e2a9d19143aaccd8d8858bdf35af252ebcee0f9))
+- Fixed back button - ([299ae2f](https://github.com/esc-chula/intania-oidc-new/commit/299ae2f30518cd7786e2e623d18de935b0e34067))
+- About page details - ([455baa2](https://github.com/esc-chula/intania-oidc-new/commit/455baa2d6a898e1ea39f78574156744d8093abb0))
+
+### Miscellaneous Tasks
+
+- Prod and staging pipelines ([#33](https://github.com/esc-chula/intania-oidc-new/issues/33)) - ([b27d689](https://github.com/esc-chula/intania-oidc-new/commit/b27d68971ec59d94c568adaf759cf3a494fe8f9f))
+
+### Refactor
+
+- Link shortener - ([8665a4d](https://github.com/esc-chula/intania-oidc-new/commit/8665a4db47ab9365b774b654d2d0361116ffe91e))
+
+### Build
+
+- Cd support dispatch - ([159783a](https://github.com/esc-chula/intania-oidc-new/commit/159783ad0c3d30ed84a94e228f6f3b06b45b4dfa))
+- Combined workflows - ([861500c](https://github.com/esc-chula/intania-oidc-new/commit/861500c1ebcb82a12943d08623e9d14a9807313d))
+- Fix yq patches - ([4855d4c](https://github.com/esc-chula/intania-oidc-new/commit/4855d4c783aea45f6f47111e35e0588b6322302c))
+
 ## [0.1.4](https://github.com/esc-chula/intania-oidc-new/compare/v0.1.3..v0.1.4) - 2025-02-06
 
 ### <!-- 1 -->🐛 Bug Fixes
 
 - Dockerfile openssl - ([de04f3d](https://github.com/esc-chula/intania-oidc-new/commit/de04f3da5996de1d2fa0028df801e371d50cf29f))
 - Fuck pnpm@10.0.0 - ([6f335fe](https://github.com/esc-chula/intania-oidc-new/commit/6f335fe0806f363477a31f0e30c9042ad114c78c))
+- Next config remotePatterns - ([0a389f3](https://github.com/esc-chula/intania-oidc-new/commit/0a389f30fb916a047f7c1777266c3e72cbc38aa7))
 
 ### Build
 
 - Fix env and prisma - ([ecde18b](https://github.com/esc-chula/intania-oidc-new/commit/ecde18b30590d6858f34515e9687a37a95f06b47))
+- Fix env - ([1cf6643](https://github.com/esc-chula/intania-oidc-new/commit/1cf6643794e426f97723c55b9604e4c7fd9d5153))
 
 ## [0.1.3](https://github.com/esc-chula/intania-oidc-new/compare/v0.1.2..v0.1.3) - 2025-02-05
 
