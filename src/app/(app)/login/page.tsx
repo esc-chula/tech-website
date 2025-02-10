@@ -1,9 +1,14 @@
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 import LoginForm from '~/components/login/login-form';
 import { Card } from '~/components/ui/card';
+
+export const metadata: Metadata = {
+  title: 'Intania Tech - Login',
+};
 
 interface PageProps {
   searchParams: {

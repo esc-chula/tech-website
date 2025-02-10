@@ -17,10 +17,10 @@ export const tools = [
     href: '/tools/oauth2',
     image: '/assets/tools/oauth2.png',
   },
-  {
-    title: 'Report Bug',
-    description: 'Found a bug? Report to us!',
-    href: '/tools/bug-report',
-    image: '/assets/tools/bug-report.png',
-  },
+  // {
+  //   title: 'Report Bug',
+  //   description: 'Found a bug? Report to us!',
+  //   href: '/tools/bug-report',
+  //   image: '/assets/tools/bug-report.png',
+  // },
 ];

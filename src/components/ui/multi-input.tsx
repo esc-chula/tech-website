@@ -23,12 +23,6 @@ const MultiInput: React.FC<MultiInputProps> = ({
     onChange(inputs);
   }, [inputs, onChange]);
 
-  //   useEffect(() => {
-  //     if (value) {
-  //       setInputs(value);
-  //     }
-  //   }, [value]);
-
   return (
     <div className="flex flex-col gap-3">
       {inputs.map((input, index) => (
@@ -42,7 +36,15 @@ const MultiInput: React.FC<MultiInputProps> = ({
             }}
             {...props}
           />
-          {index === 0 ? null : (
+          {index === inputs.length - 1 ? (
+            <button
+              className="aspect-square rounded-full p-1.5 border-white/10 hover:bg-white/5 border"
+              type="button"
+              onClick={() => setInputs([...inputs, ''])}
+            >
+              <Plus size={14} />
+            </button>
+          ) : (
             <button
               className="aspect-square rounded-full p-1.5 border-white/10 hover:bg-white/5 border"
               type="button"
@@ -61,15 +63,6 @@ const MultiInput: React.FC<MultiInputProps> = ({
           )}
         </div>
       ))}
-      <div className="flex justify-center">
-        <button
-          className="aspect-square rounded-full p-1.5 border-white/10 hover:bg-white/5 border"
-          type="button"
-          onClick={() => setInputs([...inputs, ''])}
-        >
-          <Plus size={14} />
-        </button>
-      </div>
     </div>
   );
 };

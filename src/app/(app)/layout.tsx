@@ -4,7 +4,7 @@ import Background from '~/components/common/background';
 import NavHeader from '~/components/common/navigation/nav-header';
 
 export const metadata: Metadata = {
-  title: '<intania.tech>',
+  title: 'Intania Tech',
   description: '',
 };
 

@@ -29,9 +29,10 @@ import { useToast } from '~/hooks/use-toast';
 import { me } from '~/server/actions/auth';
 import { createOAuth2Client } from '~/server/actions/oauth';
 
+import MultiInput from '../../ui/multi-input';
+
 import { useClientCreateDialog } from './client-create-dialog-context';
 import { useClientSecretDialog } from './client-secret-dialog-context';
-import MultiInput from './multi-input';
 
 const formSchema = z.object({
   name: z
@@ -123,7 +124,8 @@ const ClientCreateDialogContent: React.FC = () => {
       console.error(error);
       toast({
         title: 'Failed to create OAuth 2.0 client',
-        description: error instanceof Error ? error.message : 'Unknown error',
+        description:
+          error instanceof Error ? error.message : 'Something went wrong',
         variant: 'destructive',
       });
     }

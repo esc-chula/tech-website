@@ -34,7 +34,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
     const res = await deleteShortenedLink(slug);
 
     if (!res.success) {
-      console.error(res.errors);
+      setLoading(false);
 
       toast({
         title: 'Failed to delete link',
@@ -42,7 +42,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
         variant: 'destructive',
       });
 
-      setLoading(false);
+      console.error(res.errors);
 
       return;
     }
@@ -51,6 +51,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
     setOpen(false);
 
     router.push('/tools/link-shortener');
+    router.refresh();
   };
 
   return (
