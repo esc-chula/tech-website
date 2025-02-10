@@ -1,9 +1,14 @@
+import { type Metadata } from 'next';
 import { Suspense } from 'react';
 
 import BackButton from '~/components/common/button/back-button';
 import LinkCreateDialog from '~/components/tools/link-shortener/link-create-dialog';
 import LinksContainer from '~/components/tools/link-shortener/links-container';
 import LinksLoading from '~/components/tools/link-shortener/links-loading';
+
+export const metadata: Metadata = {
+  title: 'Intania Tech - Link Shortener',
+};
 
 const Page: React.FC = () => {
   return (

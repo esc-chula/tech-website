@@ -1,3 +1,4 @@
+import { type Metadata } from 'next';
 import { Suspense } from 'react';
 
 import BackButton from '~/components/common/button/back-button';
@@ -7,6 +8,10 @@ import ClientEditDialog from '~/components/tools/oauth2/client-edit-dialog';
 import ClientSecretDialog from '~/components/tools/oauth2/client-secret-dialog';
 import ClientsContainer from '~/components/tools/oauth2/clients-container';
 import ClientsLoading from '~/components/tools/oauth2/clients-loading';
+
+export const metadata: Metadata = {
+  title: 'Intania Tech - OAuth2.0',
+};
 
 const Page: React.FC = () => {
   return (
