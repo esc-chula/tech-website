@@ -31,7 +31,7 @@ const ClientCreateDialogTrigger: React.FC<ClientCreateDialogTriggerProps> = ({
     case 'card':
       return (
         <button
-          className="hidden md:flex min-h-80 justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full place-self-center h-full"
+          className="flex min-h-36 md:min-h-80 justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full place-self-center h-full"
           type="button"
           onClick={() => {
             setOpen(true);

@@ -31,7 +31,7 @@ const LinkCreateDialogTrigger: React.FC<LinkCreateDialogTriggerProps> = ({
     case 'card':
       return (
         <button
-          className="hidden md:flex h-36 justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full place-self-center"
+          className="flex h-36 justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full place-self-center"
           type="button"
           onClick={() => {
             setOpen(true);
