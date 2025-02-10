@@ -58,7 +58,7 @@ const HeroCarousel: React.FC<CarouselProps> = ({ slides }) => {
                   <h4 className="align-bottom text-lg font-semibold text-white lg:text-2xl">
                     {slide.title}
                   </h4>
-                  <p className="align-bottom text-xs md:text-sm font-light text-white pr-20">
+                  <p className="hidden md:inline align-bottom text-xs md:text-sm font-light text-white pr-20">
                     {slide.description}
                   </p>
                 </div>
@@ -80,7 +80,7 @@ const HeroCarousel: React.FC<CarouselProps> = ({ slides }) => {
                 <h4 className="align-bottom text-lg font-semibold text-white lg:text-2xl">
                   {slide.title}
                 </h4>
-                <p className="align-bottom text-xs md:text-sm font-light text-white pr-20">
+                <p className="hidden md:inline align-bottom text-xs md:text-sm font-light text-white pr-20">
                   {slide.description}
                 </p>
               </div>

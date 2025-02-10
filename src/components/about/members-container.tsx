@@ -11,14 +11,18 @@ const MemberContainer: React.FC = async () => {
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2">
-      {response.data.map((member) => (
-        <MemberButton
-          key={member.id}
-          imgLink={member.avatar_url}
-          nameTag={member.login}
-          url={member.html_url}
-        />
-      ))}
+      {response.data.map((member) => {
+        const avatarUrl = new URL(member.avatar_url);
+
+        return (
+          <MemberButton
+            key={member.id}
+            imgLink={avatarUrl.origin + avatarUrl.pathname}
+            nameTag={member.login}
+            url={new URL(member.html_url).origin}
+          />
+        );
+      })}
     </div>
   );
 };

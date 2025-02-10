@@ -16,41 +16,45 @@ import {
 } from '~/components/ui/alert-dialog';
 import { Button } from '~/components/ui/button';
 import { useToast } from '~/hooks/use-toast';
-import { deleteShortenedLink } from '~/server/actions/link-shortener';
+import { deleteOAuth2Client } from '~/server/actions/oauth';
 
-interface DeleteButtonProps {
-  slug: string;
+interface ClientDeleteDialogTriggerProps {
+  name: string;
+  id: string;
 }
 
-const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
+const ClientDeleteDialogTrigger: React.FC<ClientDeleteDialogTriggerProps> = ({
+  id,
+  name,
+}) => {
   const router = useRouter();
   const { toast } = useToast();
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const deleteHandler = async (): Promise<void> => {
     setLoading(true);
 
-    const res = await deleteShortenedLink(slug);
+    const res = await deleteOAuth2Client(id);
 
     if (!res.success) {
       console.error(res.errors);
 
       toast({
-        title: 'Failed to delete link',
+        title: 'Failed to delete qr code',
         description: res.message ?? 'Something went wrong',
         variant: 'destructive',
       });
 
       setLoading(false);
-
       return;
     }
 
     setLoading(false);
     setOpen(false);
 
-    router.push('/tools/link-shortener');
+    router.refresh();
   };
 
   return (
@@ -62,10 +66,12 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>
+            Are you sure you want to delete &quot;{name}&quot; ?
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. Deleting this OAuth 2.0 Client will
+            permanently remove it from your account and all associated data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -83,4 +89,4 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
   );
 };
 
-export default DeleteButton;
+export default ClientDeleteDialogTrigger;

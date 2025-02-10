@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { env } from 'next-runtime-env';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -29,13 +28,15 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { env } from '~/env';
 import { useToast } from '~/hooks/use-toast';
 import { cn } from '~/lib/utils';
 import { updateShortenedLink } from '~/server/actions/link-shortener';
+import { checkAppRole } from '~/server/actions/role';
 import { type ShortenedLink } from '~/types/link-shortener';
 
 const SHORTENED_LINK_ORIGIN =
-  env('NEXT_PUBLIC_SHORTENED_LINK_ORIGIN') ?? 'https://intania.link';
+  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link';
 
 const formSchema = z.object({
   name: z.string().max(50, {
@@ -66,6 +67,7 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
 }) => {
   const router = useRouter();
   const { toast } = useToast();
+
   const [loading, setLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
@@ -81,33 +83,69 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setLoading(true);
 
-    const res = await updateShortenedLink({
+    const resCheck = await checkAppRole({ appId: 'esc', role: 'admin' });
+    if (!resCheck.success) {
+      setLoading(false);
+
+      toast({
+        title: 'Failed to check role',
+        description: resCheck.message ?? 'Something went wrong',
+        variant: 'destructive',
+      });
+
+      console.error(resCheck.errors);
+
+      return;
+    }
+
+    const { data: isAuthorized } = resCheck;
+
+    if (
+      !isAuthorized &&
+      (values.slug.includes('-esc-') ||
+        values.slug.includes('-esc') ||
+        values.slug.startsWith('esc'))
+    ) {
+      form.setError('slug', {
+        type: 'manual',
+        message: 'You do not have permission to have “esc” in the slug',
+      });
+
+      setLoading(false);
+      setAlertOpen(false);
+
+      return;
+    }
+
+    const resUpdate = await updateShortenedLink({
       id: shortenedLink.id,
       name: values.name,
       slug: values.slug,
       url: values.url,
     });
 
-    if (!res.success) {
-      console.error(res.errors);
+    if (!resUpdate.success) {
+      setLoading(false);
 
       toast({
         title: 'Failed to create shortened link',
-        description: res.message,
+        description: resUpdate.message ?? 'Something went wrong',
         variant: 'destructive',
       });
 
-      setLoading(false);
+      console.error(resUpdate.errors);
 
       return;
     }
 
-    if (res.data.slug !== shortenedLink.slug) {
-      router.push(`/tools/link-shortener/${res.data.slug}`);
+    if (resUpdate.data.slug !== shortenedLink.slug) {
+      router.push(`/tools/link-shortener/${resUpdate.data.slug}`);
     }
 
     setLoading(false);
     setAlertOpen(false);
+
+    router.refresh();
   }
 
   return (

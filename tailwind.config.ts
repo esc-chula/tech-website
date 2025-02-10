@@ -19,9 +19,14 @@ const config = {
         mono: ['var(--font-mono)', ...fontFamily.mono],
 
         // TECH MONTH
+        'ibm-plex-sans-thai': 'var(--font-ibm-plex-sans-thai)',
         'press-start-2p': 'var(--font-press-start-2p)',
         tiny5: 'var(--font-tiny5)',
-        'ibm-plex-sans-thai': 'var(--font-ibm-plex-sans-thai)',
+
+        // HACKATHON
+        ndot47: 'var(--font-ndot47)',
+        geistMono: 'var(--font-geist-mono)',
+        geistSans: 'var(--font-geist-sans)',
       },
       colors: {
         // SHADCN
@@ -99,6 +104,12 @@ const config = {
           yellow: '#FFEB0A',
           black: '#1C1C1C',
         },
+
+        // HACKATHON
+        hackathon: {
+          primary: '#FF0909',
+          background: '#171717',
+        },
       },
       borderRadius: {
         '2xl': 'calc(var(--radius) + 4px)',
@@ -121,11 +132,18 @@ const config = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      transitionDuration: {
+        '50': '50ms',
+      },
       backgroundImage: {
         'background-gradient':
           'linear-gradient(119.65deg, #FFFFFF 0%, #D2D2D2 108.38%)',
         'background-gradient-prop':
           'radial-gradient(50% 50% at 50% 50%, #982C32 0%, rgba(255, 255, 255, 0) 100%)',
+
+        // HACKATHON
+        'hackathon-radial-gradient':
+          'radial-gradient(50% 50% at 50% 50%, rgba(255, 9, 9, 0.15) 0%, rgba(255, 9, 9, 0.00) 100%)',
       },
     },
   },

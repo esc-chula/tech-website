@@ -1,17 +1,17 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { env } from 'next-runtime-env';
 
 import BackButton from '~/components/common/button/back-button';
-import CopyButton from '~/components/tools/link-shortener/copy-button';
-import DeleteButton from '~/components/tools/link-shortener/delete-button';
+import CopyButton from '~/components/common/button/copy-button';
+import LinkDeleteButton from '~/components/tools/link-shortener/link-delete-button';
 import LinkEditCard from '~/components/tools/link-shortener/link-edit-card';
+// import LinkQrCodeButton from '~/components/tools/link-shortener/link-qr-code-button';
 import LinkStatsCard from '~/components/tools/link-shortener/link-stats-card';
-import QrCodeButton from '~/components/tools/link-shortener/qr-code-button';
+import { env } from '~/env';
 import { api } from '~/trpc/server';
 
 const SHORTENED_LINK_ORIGIN =
-  env('NEXT_PUBLIC_SHORTENED_LINK_ORIGIN') ?? 'https://intania.link';
+  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link';
 
 interface PageProps {
   params: {
@@ -49,9 +49,9 @@ const Page: React.FC<PageProps> = async ({ params }) => {
             </h3>
           </Link>
           <div className="flex items-center">
-            <QrCodeButton />
+            {/* <LinkQrCodeButton /> */}
             <CopyButton value={`${SHORTENED_LINK_ORIGIN}/${slug}`} />
-            <DeleteButton slug={slug} />
+            <LinkDeleteButton slug={slug} />
           </div>
         </div>
       </div>

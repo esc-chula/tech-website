@@ -8,9 +8,9 @@ import MembersLoading from './members-loading';
 
 const MembersSection: React.FC = () => {
   return (
-    <Section className="gap-6">
+    <Section className="gap-6 pb-20">
       <Title className="text-4xl" color="primary" variant="sectionTitle">
-        Members
+        Our Members
       </Title>
       <p className="max-w-3xl text-center font-medium">
         ฝ่าย TECH กรรมการนิสิตคณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย

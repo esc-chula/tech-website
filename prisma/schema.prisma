@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider      = "prisma-client-js"
     binaryTargets = ["native", "linux-musl"]
@@ -16,8 +13,21 @@ model User {
     oidcId    String @unique
     studentId String @unique
 
+    UserAdminApp UserServiceRole[] @relation("UserToServiceRole")
+
     userShortenedLinks UserShortenedLink[] @relation("UserToShortenedLink")
     userQrCodes        UserQrCode[]        @relation("UserToQrCodeGen")
+}
+
+model UserServiceRole {
+    id     Int    @id @default(autoincrement())
+    userId Int
+    appId  String
+    role   String
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "UserToServiceRole")
+
+    @@unique([userId, appId])
 }
 
 model UserShortenedLink {
@@ -44,7 +54,7 @@ model UserShortenedLinkVisitedRecord {
     utmCampaignContent String?
 
     userShortenedLinkId Int
-    userShortenedLink   UserShortenedLink @relation(fields: [userShortenedLinkId], references: [id], name: "UserShortenedLinkVisitedRecords", onUpdate: Cascade, onDelete: Cascade)
+    userShortenedLink   UserShortenedLink @relation(fields: [userShortenedLinkId], references: [id], onUpdate: Cascade, onDelete: Cascade, name: "UserShortenedLinkVisitedRecords")
 
     editedAt DateTime @default(now())
 }

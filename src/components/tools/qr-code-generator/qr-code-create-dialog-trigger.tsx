@@ -26,11 +26,11 @@ const QRCodeCreateDialogTrigger: React.FC<DialogTriggerProps> = ({
       return (
         <DialogTrigger asChild>
           <button
-            className="hidden md:flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full max-w-[350px] place-self-center min-h-[420px] h-full"
+            className="flex h-36 md:h-[420px] justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full place-self-center"
             type="button"
           >
-            <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full w-5/12 aspect-square">
-              <Plus color="#262626" size={52} strokeWidth={4} />
+            <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full p-4 aspect-square">
+              <Plus color="#262626" size={52} strokeWidth={2.5} />
             </div>
           </button>
         </DialogTrigger>

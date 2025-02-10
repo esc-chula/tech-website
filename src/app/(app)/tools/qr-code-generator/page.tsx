@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import BackButton from '~/components/common/button/back-button';
@@ -5,6 +6,10 @@ import QRCodeCreateDialog from '~/components/tools/qr-code-generator/qr-code-cre
 import QRCodeCreateDialogTrigger from '~/components/tools/qr-code-generator/qr-code-create-dialog-trigger';
 import QRCodeLoading from '~/components/tools/qr-code-generator/qr-code-loading';
 import QRCodesContainer from '~/components/tools/qr-code-generator/qr-codes-container';
+
+export const metadata: Metadata = {
+  title: 'Intania Tech - QR Code Generator',
+};
 
 const Page: React.FC = () => {
   return (

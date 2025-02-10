@@ -1,13 +1,13 @@
 import { Eye } from 'lucide-react';
 import Link from 'next/link';
-import { env } from 'next-runtime-env';
 
 import { Card } from '~/components/ui/card';
+import { env } from '~/env';
 
-import CopyButton from './copy-button';
+import CopyButton from '../../common/button/copy-button';
 
 const SHORTENED_LINK_ORIGIN =
-  env('NEXT_PUBLIC_SHORTENED_LINK_ORIGIN') ?? 'https://intania.link';
+  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link';
 
 interface LinkCardProps {
   editedAt: Date;
