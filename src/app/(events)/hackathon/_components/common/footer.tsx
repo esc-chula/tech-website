@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
             </p>
             <br />
             <p className="text-white/50 font-semibold text-sm">
-              Technology Department,
+              Made in Intania,
               <br />
               Engineering Student Committee,
               <br />
