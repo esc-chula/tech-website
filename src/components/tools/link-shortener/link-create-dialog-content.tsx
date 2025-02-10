@@ -6,18 +6,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '~/components/ui/alert-dialog';
 import { Button } from '~/components/ui/button';
-import { Card } from '~/components/ui/card';
+import {
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '~/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -30,9 +25,9 @@ import {
 import { Input } from '~/components/ui/input';
 import { env } from '~/env';
 import { useToast } from '~/hooks/use-toast';
-import { cn } from '~/lib/utils';
-import { updateShortenedLink } from '~/server/actions/link-shortener';
-import { type ShortenedLink } from '~/types/link-shortener';
+import { createShortenedLink } from '~/server/actions/link-shortener';
+
+import { useLinkCreateDialog } from './link-create-dialog-context';
 
 const SHORTENED_LINK_ORIGIN =
   env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link';
@@ -55,35 +50,27 @@ const formSchema = z.object({
   }),
 });
 
-interface LinkEditCardProps {
-  className?: string;
-  shortenedLink: ShortenedLink;
-}
-
-const LinkEditCard: React.FC<LinkEditCardProps> = ({
-  className,
-  shortenedLink,
-}) => {
+const LinkCreateDialogContent: React.FC = () => {
   const router = useRouter();
   const { toast } = useToast();
 
+  const { setOpen } = useLinkCreateDialog();
+
   const [loading, setLoading] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: shortenedLink.name,
-      slug: shortenedLink.slug,
-      url: shortenedLink.url,
+      name: '',
+      slug: '',
+      url: '',
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setLoading(true);
 
-    const res = await updateShortenedLink({
-      id: shortenedLink.id,
+    const res = await createShortenedLink({
       name: values.name,
       slug: values.slug,
       url: values.url,
@@ -103,20 +90,21 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
       return;
     }
 
-    if (res.data.slug !== shortenedLink.slug) {
-      router.push(`/tools/link-shortener/${res.data.slug}`);
-    }
+    form.reset();
 
+    setOpen(false);
     setLoading(false);
-    setAlertOpen(false);
 
     router.refresh();
   }
 
   return (
-    <Card className={cn('h-min', className)}>
+    <DialogContent className="md:max-w-md">
       <Form {...form}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+          <DialogHeader>
+            <DialogTitle>Shorten a link</DialogTitle>
+          </DialogHeader>
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -163,40 +151,15 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
               )}
             />
           </div>
-          <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
-            <AlertDialogTrigger asChild>
-              <Button
-                disabled={loading || !form.formState.isDirty}
-                type="button"
-                variant={form.formState.isDirty ? 'primary' : 'default'}
-              >
-                Save
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <Button
-                  disabled={loading}
-                  variant="primary"
-                  onClick={form.handleSubmit(onSubmit)}
-                >
-                  Save
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <DialogFooter>
+            <Button disabled={loading} type="submit" variant="primary">
+              Save
+            </Button>
+          </DialogFooter>
         </form>
       </Form>
-    </Card>
+    </DialogContent>
   );
 };
 
-export default LinkEditCard;
+export default LinkCreateDialogContent;

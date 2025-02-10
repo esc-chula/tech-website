@@ -4,16 +4,16 @@ import { Plus } from 'lucide-react';
 
 import { Button } from '~/components/ui/button';
 
-import { useClientCreateDialog } from './client-create-dialog-context';
+import { useLinkCreateDialog } from './link-create-dialog-context';
 
-interface ClientCreateDialogTriggerProps {
+interface LinkCreateDialogTriggerProps {
   variant: 'button' | 'card';
 }
 
-const ClientCreateDialogTrigger: React.FC<ClientCreateDialogTriggerProps> = ({
+const LinkCreateDialogTrigger: React.FC<LinkCreateDialogTriggerProps> = ({
   variant,
 }) => {
-  const { setOpen } = useClientCreateDialog();
+  const { setOpen } = useLinkCreateDialog();
 
   switch (variant) {
     case 'button':
@@ -31,13 +31,13 @@ const ClientCreateDialogTrigger: React.FC<ClientCreateDialogTriggerProps> = ({
     case 'card':
       return (
         <button
-          className="hidden md:flex min-h-80 justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full place-self-center h-full"
+          className="hidden md:flex h-36 justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full place-self-center"
           type="button"
           onClick={() => {
             setOpen(true);
           }}
         >
-          <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full w-5/12 aspect-square">
+          <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full p-4 aspect-square">
             <Plus color="#262626" size={52} strokeWidth={2.5} />
           </div>
         </button>
@@ -47,4 +47,4 @@ const ClientCreateDialogTrigger: React.FC<ClientCreateDialogTriggerProps> = ({
   }
 };
 
-export default ClientCreateDialogTrigger;
+export default LinkCreateDialogTrigger;

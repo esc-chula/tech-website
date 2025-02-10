@@ -99,7 +99,8 @@ const ClientEditDialogContent: React.FC = () => {
       console.error(error);
       toast({
         title: 'Failed to create OAuth 2.0 client',
-        description: error instanceof Error ? error.message : 'Unknown error',
+        description:
+          error instanceof Error ? error.message : 'Something went wrong',
         variant: 'destructive',
       });
     }

@@ -1,7 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-
 import { api } from '~/trpc/server';
 import { type ShortenedLink } from '~/types/link-shortener';
 import { type Response } from '~/types/server';
@@ -28,8 +26,6 @@ export async function createShortenedLink({
       errors: res.errors,
     };
   }
-
-  revalidatePath('/tools/link-shortener');
 
   return {
     success: true,
@@ -64,8 +60,6 @@ export async function updateShortenedLink({
     };
   }
 
-  revalidatePath(`/tools/link-shortener/${res.data.slug}`);
-
   return {
     success: true,
     message: `Successfully updated /${slug} shortened link`,
@@ -87,8 +81,6 @@ export async function deleteShortenedLink(
       errors: res.errors,
     };
   }
-
-  revalidatePath('/tools/link-shortener');
 
   return {
     success: true,
