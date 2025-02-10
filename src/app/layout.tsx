@@ -1,9 +1,11 @@
 import '~/styles/globals.css';
 
+import { GoogleTagManager } from '@next/third-parties/google';
 import { type Metadata } from 'next';
 import { PublicEnvScript } from 'next-runtime-env';
 
 import { Toaster } from '~/components/ui/toaster';
+import { env } from '~/env';
 import {
   geistMono,
   geistSans,
@@ -36,6 +38,7 @@ const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
         geistSans.variable,
       )}
     >
+      <GoogleTagManager gtmId={env.NEXT_PUBLIC_GTM_ID ?? ''} />
       <head>
         <PublicEnvScript />
       </head>

@@ -30,6 +30,7 @@
     "@grpc/grpc-js": "^1.12.2",
     "@hookform/resolvers": "^3.9.0",
     "@icons-pack/react-simple-icons": "^10.1.0",
+    "@next/third-parties": "^15.1.6",
     "@ory/hydra-client": "^2.2.1",
     "@prisma/client": "^5.18.0",
     "@radix-ui/react-alert-dialog": "^1.1.2",
