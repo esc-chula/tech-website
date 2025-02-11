@@ -106,7 +106,7 @@ const TicketSection: React.FC = () => {
               key={content.title}
               className="flex flex-col gap-4 sm:gap-6"
             >
-              <h3 className="font-ndot47 text-2xl md:text-4xl lowercase text-white/50 select-none">
+              <h3 className="font-ndot47 text-2xl md:text-4xl uppercase text-white/50 select-none">
                 {content.title}
               </h3>
               {content.children}
