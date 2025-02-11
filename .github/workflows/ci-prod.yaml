@@ -92,15 +92,6 @@ jobs:
         with:
           commit_message: 'chore(release): prepare for ${{ github.event.inputs.target }}'
 
-      - name: Save Release Tag as Artifact
-        run: echo "${{ github.event.inputs.target }}" > release_tag.txt
-
-      - name: Upload Release Tag Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-tag
-          path: release_tag.txt
-
   release_github:
     name: Create GitHub Release
     runs-on: ubuntu-latest
