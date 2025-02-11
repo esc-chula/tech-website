@@ -8,7 +8,7 @@ import ProjectCard from './project-card';
 const ProjectsContainer: React.FC = async () => {
   const res = await getProjects();
   if (!res.success) {
-    console.error(res.errors);
+    console.error('ProjectsContainer, failed to load projects: ', res.errors);
     return (
       <span className="aspect-[4/2] grid place-content-center text-white/20 select-none">
         Failed to load projects. Please try again later.

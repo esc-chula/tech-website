@@ -6,7 +6,7 @@ const MemberContainer: React.FC = async () => {
   const res = await getMembers();
 
   if (!res.success) {
-    console.error(res.errors);
+    console.error('MemberContainer, failed to load members: ', res.errors);
     return (
       <span className="aspect-[4/2] grid place-content-center text-white/20 select-none">
         Failed to load members. Please try again later.

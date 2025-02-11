@@ -1,6 +1,6 @@
 import { Skeleton } from '~/components/ui/skeleton';
 
-const QRCodeLoading: React.FC = () => {
+const QrCodeLoading: React.FC = () => {
   return (
     <>
       <Skeleton className="rounded-3xl w-full max-w-[350px] md:min-h-[420px] h-full" />
@@ -10,4 +10,4 @@ const QRCodeLoading: React.FC = () => {
   );
 };
 
-export default QRCodeLoading;
+export default QrCodeLoading;

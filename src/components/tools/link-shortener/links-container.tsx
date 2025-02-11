@@ -7,7 +7,7 @@ const LinksContainer: React.FC = async () => {
   const res = await api.linkShortener.get();
 
   if (!res.success) {
-    console.error(res.errors);
+    console.error('LinksContainer, failed to fetch links: ', res.errors);
     return (
       <span className="text-white/20 select-none">
         Failed to fetch links. Please try again later.

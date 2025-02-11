@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SquarePen } from 'lucide-react';
 import Image from 'next/image';
-import { default as QRCode } from 'qrcode';
+import { default as QrCodeLib } from 'qrcode';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -29,8 +29,8 @@ import { Input } from '~/components/ui/input';
 import { logoOptions } from '~/constants/qr-code-generator';
 import { useToast } from '~/hooks/use-toast';
 import { isURL } from '~/lib/utils';
-import { updateQRCode } from '~/server/actions/qr-code';
-import { type QRcode } from '~/types/qr-code';
+import { updateQrCode } from '~/server/actions/qr-code';
+import { type QrCode } from '~/types/qr-code';
 
 import ColorSelector from './color-selector';
 import LogoSelector from './logo-selector';
@@ -50,11 +50,11 @@ const formSchema = z.object({
   }),
 });
 
-interface EditQRCodeProps {
-  data: QRcode;
+interface EditQrCodeProps {
+  data: QrCode;
 }
 
-const EditQRCode: React.FC<EditQRCodeProps> = ({ data }) => {
+const EditQrCode: React.FC<EditQrCodeProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState(data.url);
   const [qrCodeData, setQrCodeData] = useState(data.qrCode);
@@ -82,7 +82,7 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({ data }) => {
       }
 
       try {
-        const qrCodeGen = await QRCode.toDataURL(url, {
+        const qrCodeGen = await QrCodeLib.toDataURL(url, {
           errorCorrectionLevel: 'Q',
           margin: 1,
           color: {
@@ -93,12 +93,12 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({ data }) => {
         });
         setQrCodeData(qrCodeGen);
       } catch (error) {
-        console.error('QR Code generation error:', error);
+        console.error('EditQrCode, QR code generation error:', error);
       }
     };
 
     generate().catch((error: unknown) => {
-      console.error('QR Code generation error:', error);
+      console.error('EditQrCode, QR code generation error:', error);
     });
   }, [isUrlValid, selectedColor, url]);
 
@@ -114,7 +114,7 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({ data }) => {
     try {
       setLoading(true);
 
-      const res = await updateQRCode({
+      const res = await updateQrCode({
         id: data.id,
         name: values.name,
         url: values.url,
@@ -124,7 +124,7 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({ data }) => {
       });
 
       if (!res.success) {
-        console.error(res.errors);
+        console.error('Failed to update QR code:', res.errors);
         toast({
           title: 'Failed to update QR code',
           description: res.message,
@@ -144,7 +144,7 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({ data }) => {
       setOpen(false);
       setLoading(false);
     } catch (error) {
-      console.error('Failed to update QR');
+      console.error('EditQrCode, failed to update QR code:', error);
       toast({
         title: 'Failed to update QR code',
         description:
@@ -259,4 +259,4 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({ data }) => {
   );
 };
 
-export default EditQRCode;
+export default EditQrCode;

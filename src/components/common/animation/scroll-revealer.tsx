@@ -26,7 +26,14 @@ const ScrollRevealer: React.FC<ScrollRevealerProps> = ({
 
   useEffect(() => {
     if (isInview) {
-      controls.start('visible').catch((err: unknown) => console.error(err));
+      controls
+        .start('visible')
+        .catch((err: unknown) =>
+          console.error(
+            'ScrollRevealer, animation controls failed to start: ',
+            err,
+          ),
+        );
     }
   }, [isInview, controls]);
 

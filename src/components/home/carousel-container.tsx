@@ -6,7 +6,10 @@ import Carousel from './carousel';
 const CarouselContainer: React.FC = async () => {
   const res = await getCarousel();
   if (!res.success) {
-    console.error(res.errors);
+    console.error(
+      'CarouselContainer, failed to load carousel slides: ',
+      res.errors,
+    );
     return (
       <span className="col-span-5 aspect-video lg:aspect-[4/2] select-none grid place-content-center text-white/20">
         Failed to load carousel slides. Please try again later

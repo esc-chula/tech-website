@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { default as QRCode } from 'qrcode';
+import { default as QrCode } from 'qrcode';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -26,7 +26,7 @@ import { Input } from '~/components/ui/input';
 import { colorOptions } from '~/constants/qr-code-generator';
 import { useToast } from '~/hooks/use-toast';
 import { isURL } from '~/lib/utils';
-import { createQRCode } from '~/server/actions/qr-code';
+import { createQrCode } from '~/server/actions/qr-code';
 
 import ColorSelector from './color-selector';
 import LogoSelector from './logo-selector';
@@ -47,7 +47,7 @@ const formSchema = z.object({
   }),
 });
 
-const QRCodeCreateDialogContent: React.FC = () => {
+const QrCodeCreateDialogContent: React.FC = () => {
   const { setOpen } = useContext(OpenContext);
   const [url, setUrl] = useState('');
   const [qrCodeData, setQrCodeData] = useState('');
@@ -70,7 +70,7 @@ const QRCodeCreateDialogContent: React.FC = () => {
       }
 
       try {
-        const qrCodeGen = await QRCode.toDataURL(url, {
+        const qrCodeGen = await QrCode.toDataURL(url, {
           errorCorrectionLevel: 'Q',
           margin: 1,
           color: {
@@ -81,12 +81,18 @@ const QRCodeCreateDialogContent: React.FC = () => {
         });
         setQrCodeData(qrCodeGen);
       } catch (error) {
-        console.error('QR Code generation error:', error);
+        console.error(
+          'QrCodeCreateDialogContent, QR code generation error:',
+          error,
+        );
       }
     };
 
     generate().catch((error: unknown) => {
-      console.error('QR Code generation error:', error);
+      console.error(
+        'QrCodeCreateDialogContent, QR code generation error:',
+        error,
+      );
     });
   }, [isUrlValid, selectedColor, url]);
 
@@ -113,7 +119,7 @@ const QRCodeCreateDialogContent: React.FC = () => {
     try {
       setLoading(true);
 
-      const res = await createQRCode({
+      const res = await createQrCode({
         name: values.name,
         url: values.url,
         qrCode: qrCodeData,
@@ -122,7 +128,10 @@ const QRCodeCreateDialogContent: React.FC = () => {
       });
 
       if (!res.success) {
-        console.error(res.errors);
+        console.error(
+          'QrCodeCreateDialogContent, failed to create QR code: ',
+          res.errors,
+        );
         toast({
           title: 'Failed to create QR code',
           description: res.message,
@@ -142,7 +151,10 @@ const QRCodeCreateDialogContent: React.FC = () => {
       setOpen(false);
       setLoading(false);
     } catch (error) {
-      console.error('Failed to create QR');
+      console.error(
+        'QrCodeCreateDialogContent, failed to create QR code: ',
+        error,
+      );
       toast({
         title: 'Failed to create QR code',
         description:
@@ -244,4 +256,4 @@ const QRCodeCreateDialogContent: React.FC = () => {
   );
 };
 
-export default QRCodeCreateDialogContent;
+export default QrCodeCreateDialogContent;

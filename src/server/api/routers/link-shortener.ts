@@ -24,58 +24,42 @@ export const linkShortenerRouter = createTRPCRouter({
         };
       }
 
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          const shortenedLinkWithSameSlug =
-            await tx.userShortenedLink.findUnique({
-              where: {
-                slug: input.slug,
-              },
-            });
-          if (shortenedLinkWithSameSlug) {
-            return {
-              data: null,
-              message: `The Slug "${input.slug}" have already been used. Please choose a different slug.`,
-              error: `Duplicate slug: ${input.slug}`,
-            };
-          }
+      try {
+        const existingSlug = await ctx.db.userShortenedLink.findUnique({
+          where: { slug: input.slug },
+        });
 
-          const newShortenedLink = await tx.userShortenedLink.create({
-            data: {
-              userId,
-              name: input.name,
-              url: input.url,
-              slug: input.slug,
-            },
-          });
-
+        if (existingSlug) {
           return {
-            data: newShortenedLink,
-            message: `Shortened link with the slug "${input.slug}" have successfully been created.`,
-          };
-        } catch (error) {
-          return {
-            data: null,
-            message: `Failed to create shortened link with the slug "${input.slug}"`,
-            error:
-              error instanceof Error ? error.message : 'Something went wrong',
+            success: false,
+            message: `The Slug "${input.slug}" is already in use. Choose a different one.`,
+            errors: [`Duplicate slug: ${input.slug}`],
           };
         }
-      });
 
-      if (res.error ?? !res.data) {
+        const newShortenedLink = await ctx.db.userShortenedLink.create({
+          data: {
+            userId,
+            name: input.name,
+            url: input.url,
+            slug: input.slug,
+          },
+        });
+
+        return {
+          success: true,
+          message: `Shortened link with the slug "${input.slug}" created successfully.`,
+          data: newShortenedLink,
+        };
+      } catch (error) {
         return {
           success: false,
-          message: res.message,
-          errors: [res.error],
+          message: `Failed to create shortened link.`,
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
         };
       }
-
-      return {
-        success: true,
-        message: res.message,
-        data: res.data,
-      };
     }),
 
   get: trpc.query(async ({ ctx }): Promise<Response<ShortenedLink[]>> => {
@@ -88,46 +72,26 @@ export const linkShortenerRouter = createTRPCRouter({
       };
     }
 
-    const res = await ctx.db.$transaction(async (tx) => {
-      try {
-        const userShortenedLink = await tx.userShortenedLink.findMany({
-          where: {
-            userId,
-          },
-          orderBy: {
-            editedAt: 'desc',
-          },
-        });
+    try {
+      const userShortenedLinks = await ctx.db.userShortenedLink.findMany({
+        where: { userId },
+        orderBy: { editedAt: 'desc' },
+      });
 
-        return {
-          data: userShortenedLink,
-          message: `Successfully fetched shortened links`,
-        };
-      } catch (error) {
-        return {
-          data: null,
-          message: `Failed to fetch shortened links`,
-          error:
-            error instanceof Error
-              ? error.message
-              : 'Something went wrong fetching shortened links',
-        };
-      }
-    });
-
-    if (res.error ?? !res.data) {
+      return {
+        success: true,
+        message: 'Successfully fetched shortened links.',
+        data: userShortenedLinks,
+      };
+    } catch (error) {
       return {
         success: false,
-        message: res.message,
-        errors: [res.error],
+        message: 'Failed to fetch shortened links.',
+        errors: [
+          error instanceof Error ? error.message : 'Something went wrong',
+        ],
       };
     }
-
-    return {
-      success: true,
-      message: res.message,
-      data: res.data,
-    };
   }),
 
   getBySlug: trpc
@@ -142,52 +106,33 @@ export const linkShortenerRouter = createTRPCRouter({
         };
       }
 
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          const shortenedLink = await tx.userShortenedLink.findFirst({
-            where: {
-              slug: input.slug,
-              userId,
-            },
-          });
+      try {
+        const shortenedLink = await ctx.db.userShortenedLink.findFirst({
+          where: { slug: input.slug, userId },
+        });
 
-          if (!shortenedLink) {
-            return {
-              data: null,
-              message: `Shortened link with the slug "${input.slug}" not found`,
-              error: 'Shortened link not found',
-            };
-          }
-
+        if (!shortenedLink) {
           return {
-            data: shortenedLink,
-            message: `Successfully fetched shortened link with the slug "${input.slug}"`,
-          };
-        } catch (error) {
-          return {
-            data: null,
-            message: `Failed to fetch shortened link with the slug "${input.slug}"`,
-            error:
-              error instanceof Error
-                ? error.message
-                : 'Something went wrong fetching shortened link',
+            success: false,
+            message: `Shortened link with the slug "${input.slug}" not found.`,
+            errors: ['Shortened link not found'],
           };
         }
-      });
 
-      if (res.error ?? !res.data) {
+        return {
+          success: true,
+          message: 'Successfully fetched shortened link.',
+          data: shortenedLink,
+        };
+      } catch (error) {
         return {
           success: false,
-          message: res.message,
-          errors: [res.error],
+          message: 'Failed to fetch shortened link.',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
         };
       }
-
-      return {
-        success: true,
-        message: res.message,
-        data: res.data,
-      };
     }),
 
   getBySlugWithStats: trpc
@@ -206,55 +151,36 @@ export const linkShortenerRouter = createTRPCRouter({
           };
         }
 
-        const res = await ctx.db.$transaction(async (tx) => {
-          try {
-            const shortenedLink = await tx.userShortenedLink.findFirst({
-              where: {
-                slug: input.slug,
-                userId,
-              },
-              include: {
-                userShortenedLinkVisitedRecords: true,
-              },
-            });
+        try {
+          const shortenedLink = await ctx.db.userShortenedLink.findFirst({
+            where: { slug: input.slug, userId },
+            include: {
+              userShortenedLinkVisitedRecords: true,
+            },
+          });
 
-            if (!shortenedLink) {
-              return {
-                data: null,
-                message: `Shortened link with the slug "${input.slug}" not found`,
-                error: 'Shortened link not found',
-              };
-            }
-
+          if (!shortenedLink) {
             return {
-              data: shortenedLink,
-              message: `Successfully fetched shortened link with the slug "${input.slug}"`,
-            };
-          } catch (error) {
-            return {
-              data: null,
-              message: `Failed to fetch shortened link with the slug "${input.slug}"`,
-              error:
-                error instanceof Error
-                  ? error.message
-                  : 'Something went wrong fetching shortened link',
+              success: false,
+              message: `Shortened link with the slug "${input.slug}" not found.`,
+              errors: ['Shortened link not found'],
             };
           }
-        });
 
-        if (res.error ?? !res.data) {
+          return {
+            success: true,
+            message: 'Successfully fetched shortened link.',
+            data: shortenedLink,
+          };
+        } catch (error) {
           return {
             success: false,
-            message: res.message,
-            errors: [res.error],
+            message: 'Failed to fetch shortened link.',
+            errors: [
+              error instanceof Error ? error.message : 'Something went wrong',
+            ],
           };
         }
-
-        return {
-          success: true,
-          message: res.message,
-          data: res.data,
-        };
       },
     ),
 
@@ -270,83 +196,55 @@ export const linkShortenerRouter = createTRPCRouter({
         };
       }
 
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          const currentShortenedLink = await tx.userShortenedLink.findUnique({
-            where: {
-              id: input.id,
-            },
-          });
+      try {
+        const existingLink = await ctx.db.userShortenedLink.findUnique({
+          where: { id: input.id },
+        });
 
-          if (
-            currentShortenedLink === null ||
-            currentShortenedLink.userId !== userId
-          ) {
-            return {
-              data: null,
-              message: `The shortened link with slug "${input.slug}" might not exist or The user might not be associated with it.`,
-              error: `Invalid ID or User ID provided.`,
-            };
-          }
-
-          const existedShortenedLinkWithSameSlug =
-            await tx.userShortenedLink.findFirst({
-              where: {
-                slug: input.slug,
-                userId,
-                NOT: {
-                  id: input.id,
-                },
-              },
-            });
-
-          if (existedShortenedLinkWithSameSlug) {
-            return {
-              data: null,
-              message: `The Slug "${input.slug}" have already been used. Please choose a different slug.`,
-              error: `Duplicate slug: ${input.slug}`,
-            };
-          }
-
-          const updatedShortenedLink = await tx.userShortenedLink.update({
-            where: {
-              id: input.id,
-            },
-            data: {
-              name: input.name,
-              slug: input.slug,
-              url: input.url,
-              editedAt: new Date(),
-            },
-          });
-
+        if (!existingLink || existingLink.userId !== userId) {
           return {
-            data: updatedShortenedLink,
-            message: `Shortened link with the ID:${input.id} have successfully been updated.`,
-          };
-        } catch (error) {
-          return {
-            data: null,
-            message: `Failed to update shortened link with the slug "${input.slug}"`,
-            error:
-              error instanceof Error ? error.message : 'Something went wrong',
+            success: false,
+            message: `Shortened link with ID "${input.id}" not found or unauthorized.`,
+            errors: ['Invalid ID or unauthorized access'],
           };
         }
-      });
 
-      if (res.error ?? !res.data) {
+        const duplicateSlug = await ctx.db.userShortenedLink.findFirst({
+          where: { slug: input.slug, userId, NOT: { id: input.id } },
+        });
+
+        if (duplicateSlug) {
+          return {
+            success: false,
+            message: `The Slug "${input.slug}" is already in use.`,
+            errors: [`Duplicate slug: ${input.slug}`],
+          };
+        }
+
+        const updatedShortenedLink = await ctx.db.userShortenedLink.update({
+          where: { id: input.id },
+          data: {
+            name: input.name,
+            slug: input.slug,
+            url: input.url,
+            editedAt: new Date(),
+          },
+        });
+
+        return {
+          success: true,
+          message: `Shortened link updated successfully.`,
+          data: updatedShortenedLink,
+        };
+      } catch (error) {
         return {
           success: false,
-          message: res.message,
-          errors: [res.error],
+          message: 'Failed to update shortened link.',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
         };
       }
-
-      return {
-        success: true,
-        message: res.message,
-        data: res.data,
-      };
     }),
 
   deleteBySlug: trpc
@@ -361,55 +259,36 @@ export const linkShortenerRouter = createTRPCRouter({
         };
       }
 
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          const currentShortenedLink = await tx.userShortenedLink.findFirst({
-            where: {
-              slug: input.slug,
-              userId,
-            },
-          });
+      try {
+        const existingLink = await ctx.db.userShortenedLink.findFirst({
+          where: { slug: input.slug, userId },
+        });
 
-          if (!currentShortenedLink) {
-            return {
-              data: null,
-              message: `The shortened link with the slug "${input.slug}" might not exist or The user with ID:${userId} might not be associated with it.`,
-              error: `Invalid slug or User ID provided.`,
-            };
-          }
-
-          await tx.userShortenedLink.delete({
-            where: {
-              id: currentShortenedLink.id,
-            },
-          });
-
+        if (!existingLink) {
           return {
-            data: null,
-            message: `Shortened link with the slug "${input.slug}" have successfully been deleted.`,
-          };
-        } catch (error) {
-          return {
-            data: null,
-            message: `Failed to delete shortened link with the slug "${input.slug}"`,
-            error:
-              error instanceof Error ? error.message : 'Something went wrong',
+            success: false,
+            message: `Shortened link with the slug "${input.slug}" not found or unauthorized.`,
+            errors: ['Invalid slug or unauthorized access'],
           };
         }
-      });
 
-      if (res.error) {
+        await ctx.db.userShortenedLink.delete({
+          where: { id: existingLink.id },
+        });
+
+        return {
+          success: true,
+          message: `Shortened link deleted successfully.`,
+          data: null,
+        };
+      } catch (error) {
         return {
           success: false,
-          message: res.message,
-          errors: [res.error],
+          message: 'Failed to delete shortened link.',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
         };
       }
-
-      return {
-        success: true,
-        message: res.message,
-        data: null,
-      };
     }),
 });

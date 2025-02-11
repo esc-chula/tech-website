@@ -4,14 +4,14 @@ import { useState } from 'react';
 
 import { Dialog } from '~/components/ui/dialog';
 
-import QRCodeCreateDialogContent from './qr-code-create-dialog-content';
+import QrCodeCreateDialogContent from './qr-code-create-dialog-content';
 import { OpenContext } from './qr-code-open-context';
 
-interface QRCodeCreateDialogContentProps {
+interface QrCodeCreateDialogContentProps {
   children?: React.ReactNode;
 }
 
-const QRCodeCreateDialog: React.FC<QRCodeCreateDialogContentProps> = ({
+const QrCodeCreateDialog: React.FC<QrCodeCreateDialogContentProps> = ({
   children,
 }) => {
   const [open, setOpen] = useState(false);
@@ -19,11 +19,11 @@ const QRCodeCreateDialog: React.FC<QRCodeCreateDialogContentProps> = ({
   return (
     <OpenContext.Provider value={{ open, setOpen }}>
       <Dialog open={open} onOpenChange={setOpen}>
-        <QRCodeCreateDialogContent />
+        <QrCodeCreateDialogContent />
         {children}
       </Dialog>
     </OpenContext.Provider>
   );
 };
 
-export default QRCodeCreateDialog;
+export default QrCodeCreateDialog;

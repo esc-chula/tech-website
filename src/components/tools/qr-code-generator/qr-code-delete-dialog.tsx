@@ -15,14 +15,14 @@ import {
 } from '~/components/ui/alert-dialog';
 import { Button } from '~/components/ui/button';
 import { useToast } from '~/hooks/use-toast';
-import { deleteQRCode } from '~/server/actions/qr-code';
+import { deleteQrCode } from '~/server/actions/qr-code';
 
-interface DeleteQRCodeProps {
+interface DeleteQrCodeProps {
   name: string;
   id: string;
 }
 
-const DeleteQRCode: React.FC<DeleteQRCodeProps> = ({ id, name }) => {
+const DeleteQrCode: React.FC<DeleteQrCodeProps> = ({ id, name }) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -30,10 +30,10 @@ const DeleteQRCode: React.FC<DeleteQRCodeProps> = ({ id, name }) => {
   const deleteHandler = async (): Promise<void> => {
     setLoading(true);
 
-    const res = await deleteQRCode({ id });
+    const res = await deleteQrCode({ id });
 
     if (!res.success) {
-      console.error(res.errors);
+      console.error('DeleteQrCode, failed to delete QR code: ', res.errors);
 
       toast({
         title: 'Failed to delete qr code',
@@ -81,4 +81,4 @@ const DeleteQRCode: React.FC<DeleteQRCodeProps> = ({ id, name }) => {
   );
 };
 
-export default DeleteQRCode;
+export default DeleteQrCode;

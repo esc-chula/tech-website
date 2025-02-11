@@ -3,10 +3,10 @@
 import { revalidatePath } from 'next/cache';
 
 import { api } from '~/trpc/server';
-import { type QRcode } from '~/types/qr-code';
+import { type QrCode } from '~/types/qr-code';
 import { type Response } from '~/types/server';
 
-export async function createQRCode({
+export async function createQrCode({
   name,
   url,
   qrCode,
@@ -18,7 +18,7 @@ export async function createQRCode({
   qrCode: string;
   color: string;
   logo: string;
-}): Promise<Response<QRcode>> {
+}): Promise<Response<QrCode>> {
   const res = await api.qrCode.create({
     name,
     url,
@@ -39,12 +39,12 @@ export async function createQRCode({
 
   return {
     success: true,
-    message: `Successfully created QR code for ${name}`,
+    message: `Successfully created QR: code for ${name}`,
     data: res.data,
   };
 }
 
-export async function updateQRCode({
+export async function updateQrCode({
   id,
   name,
   url,
@@ -58,7 +58,7 @@ export async function updateQRCode({
   qrCode: string;
   color: string;
   logo: string;
-}): Promise<Response<QRcode>> {
+}): Promise<Response<QrCode>> {
   const res = await api.qrCode.update({
     id,
     name,
@@ -84,7 +84,7 @@ export async function updateQRCode({
   };
 }
 
-export async function deleteQRCode({
+export async function deleteQrCode({
   id,
 }: {
   id: string;
