@@ -12,7 +12,7 @@ export const heroLinks = [
     external: true,
   },
   {
-    label: 'Tools & Apps',
+    label: 'Tools & Services',
     href: 'tools-list',
     scroll: true,
     external: false,
