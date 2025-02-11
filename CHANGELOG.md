@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.3](https://github.com/esc-chula/intania-oidc-new/compare/v0.2.2..v0.2.3) - 2025-02-11
+
+### <!-- 0 -->⛰️  Features
+
+- Containers errors handling - ([fc98136](https://github.com/esc-chula/intania-oidc-new/commit/fc9813635c3c6195d63f86fee2de1f7acbf6a95e))
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Typo and casing - ([d9866bd](https://github.com/esc-chula/intania-oidc-new/commit/d9866bdb1f2e38e66405efd4ff4a5d5f71299a57))
+
+### Miscellaneous Tasks
+
+- Remove tools and services title - ([91c26df](https://github.com/esc-chula/intania-oidc-new/commit/91c26df8f94e7ceb95e4449944bd04200ad7c1ea))
+- Footer y borders - ([50a0fb8](https://github.com/esc-chula/intania-oidc-new/commit/50a0fb8e904c265e59106ff09fa40907486ff3b9))
+- Early bird timeline - ([cbd71f9](https://github.com/esc-chula/intania-oidc-new/commit/cbd71f96adc55b6d03f7e282018d79aff8dcbafa))
+
+### Refactor
+
+- GetMembers - ([5341b94](https://github.com/esc-chula/intania-oidc-new/commit/5341b94760fbab20e7d3907ce2da52a6b2ea13d4))
+- Apis - ([139c12e](https://github.com/esc-chula/intania-oidc-new/commit/139c12ea37e3ed9f93069d9bef143e1e73dab968))
+
+### Build
+
+- Fix workflow artifacts - ([631e7f4](https://github.com/esc-chula/intania-oidc-new/commit/631e7f484e4fde5ed110ed87fbec51fa032a89d5))
+
 ## [0.2.2](https://github.com/esc-chula/intania-oidc-new/compare/v0.2.1..v0.2.2) - 2025-02-11
 
 ### <!-- 1 -->🐛 Bug Fixes
