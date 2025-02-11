@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { Carousel } from 'react-responsive-carousel';
+import { Carousel as ReactResponsiveCarousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { cn } from '~/lib/utils';
 import { type Slide } from '~/types/hero';
 
@@ -13,9 +13,9 @@ interface CarouselProps {
   slides: Slide[];
 }
 
-const HeroCarousel: React.FC<CarouselProps> = ({ slides }) => {
+const Carousel: React.FC<CarouselProps> = ({ slides }) => {
   return (
-    <Carousel
+    <ReactResponsiveCarousel
       autoPlay
       infiniteLoop
       className="col-span-5"
@@ -87,8 +87,8 @@ const HeroCarousel: React.FC<CarouselProps> = ({ slides }) => {
             </div>
           ),
         )}
-    </Carousel>
+    </ReactResponsiveCarousel>
   );
 };
 
-export default HeroCarousel;
+export default Carousel;

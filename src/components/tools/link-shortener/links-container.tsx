@@ -7,7 +7,12 @@ const LinksContainer: React.FC = async () => {
   const res = await api.linkShortener.get();
 
   if (!res.success) {
-    return <p>Failed to load links.</p>;
+    console.error(res.errors);
+    return (
+      <span className="text-white/20 select-none">
+        Failed to fetch links. Please try again later.
+      </span>
+    );
   }
 
   if (!res.data.length) {
