@@ -42,7 +42,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
         variant: 'destructive',
       });
 
-      console.error(res.errors);
+      console.error('DeleteButton, failed to delete link: ', res.errors);
 
       return;
     }

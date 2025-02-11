@@ -93,7 +93,7 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
         variant: 'destructive',
       });
 
-      console.error(resCheck.errors);
+      console.error('LinkEditCard, failed to check role: ', resCheck.errors);
 
       return;
     }
@@ -133,7 +133,10 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
         variant: 'destructive',
       });
 
-      console.error(resUpdate.errors);
+      console.error(
+        'LinkEditCard, failed to update shortened link: ',
+        resUpdate.errors,
+      );
 
       return;
     }

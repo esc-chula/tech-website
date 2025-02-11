@@ -9,7 +9,7 @@ interface DialogTriggerProps {
   variant: 'button' | 'card';
 }
 
-const QRCodeCreateDialogTrigger: React.FC<DialogTriggerProps> = ({
+const QrCodeCreateDialogTrigger: React.FC<DialogTriggerProps> = ({
   variant,
 }) => {
   switch (variant) {
@@ -40,4 +40,4 @@ const QRCodeCreateDialogTrigger: React.FC<DialogTriggerProps> = ({
   }
 };
 
-export default QRCodeCreateDialogTrigger;
+export default QrCodeCreateDialogTrigger;

@@ -1,17 +1,22 @@
-import { api } from '~/trpc/server';
+import { getMembers } from '~/server/actions/about';
 
 import MemberButton from './member-button';
 
 const MemberContainer: React.FC = async () => {
-  const response = await api.about.getMembers();
+  const res = await getMembers();
 
-  if (!response.success) {
-    return null;
+  if (!res.success) {
+    console.error('MemberContainer, failed to load members: ', res.errors);
+    return (
+      <span className="aspect-[4/2] grid place-content-center text-white/20 select-none">
+        Failed to load members. Please try again later.
+      </span>
+    );
   }
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2">
-      {response.data.map((member) => {
+      {res.data.map((member) => {
         const avatarUrl = new URL(member.avatar_url);
 
         return (

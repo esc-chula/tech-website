@@ -39,10 +39,13 @@ const ClientDeleteDialogTrigger: React.FC<ClientDeleteDialogTriggerProps> = ({
     const res = await deleteOAuth2Client(id);
 
     if (!res.success) {
-      console.error(res.errors);
+      console.error(
+        'ClientDeleteDialogTrigger, failed to delete QR code: ',
+        res.errors,
+      );
 
       toast({
-        title: 'Failed to delete qr code',
+        title: 'Failed to delete QR code',
         description: res.message ?? 'Something went wrong',
         variant: 'destructive',
       });

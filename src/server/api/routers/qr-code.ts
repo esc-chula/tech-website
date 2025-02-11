@@ -2,13 +2,13 @@ import { z } from 'zod';
 
 import { CreateQrCodeDto, UpdateQrCodeDto } from '~/server/api/dto/qr-code';
 import { createTRPCRouter, trpc } from '~/server/api/trpc';
-import { type QRcode } from '~/types/qr-code';
+import { type QrCode } from '~/types/qr-code';
 import { type Response } from '~/types/server';
 
 export const qrCodeRouter = createTRPCRouter({
   create: trpc
     .input(CreateQrCodeDto)
-    .mutation(async ({ ctx, input }): Promise<Response<QRcode>> => {
+    .mutation(async ({ ctx, input }): Promise<Response<QrCode>> => {
       const userId = ctx.session.user?.id;
       if (!userId) {
         return {
@@ -34,7 +34,7 @@ export const qrCodeRouter = createTRPCRouter({
             };
           }
 
-          const newQrCode: QRcode = await tx.userQrCode.create({
+          const newQrCode: QrCode = await tx.userQrCode.create({
             data: {
               name: input.name,
               url: input.url,
@@ -85,7 +85,7 @@ export const qrCodeRouter = createTRPCRouter({
       };
     }),
 
-  get: trpc.query(async ({ ctx }): Promise<Response<QRcode[]>> => {
+  get: trpc.query(async ({ ctx }): Promise<Response<QrCode[]>> => {
     const userId = ctx.session.user?.id;
     if (!userId) {
       return {
@@ -137,7 +137,7 @@ export const qrCodeRouter = createTRPCRouter({
 
   update: trpc
     .input(UpdateQrCodeDto)
-    .mutation(async ({ ctx, input }): Promise<Response<QRcode>> => {
+    .mutation(async ({ ctx, input }): Promise<Response<QrCode>> => {
       const userId = ctx.session.user?.id;
       if (!userId) {
         return {
@@ -182,7 +182,7 @@ export const qrCodeRouter = createTRPCRouter({
             };
           }
 
-          const updateQRCode = await tx.userQrCode.update({
+          const updateQrCode = await tx.userQrCode.update({
             where: {
               id: Number(id),
               userId,
@@ -196,7 +196,7 @@ export const qrCodeRouter = createTRPCRouter({
 
           return {
             message: `The QR Code have successfully been updated.`,
-            data: updateQRCode,
+            data: updateQrCode,
           };
         } catch (error) {
           return {

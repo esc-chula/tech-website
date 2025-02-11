@@ -9,7 +9,12 @@ const ClientsContainer: React.FC = async () => {
   const res = await listOAuth2Clients();
 
   if (!res.success) {
-    return <p>Failed to fetch OAuth 2.0 clients</p>;
+    console.error('ClientsContainer, failed to fetch clients: ', res.errors);
+    return (
+      <span className="text-white/20 select-none">
+        Failed to fetch clients. Please try again later.
+      </span>
+    );
   }
 
   if (!res.data.length) {

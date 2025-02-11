@@ -5,14 +5,14 @@ import Image from 'next/image';
 
 import { Button } from '~/components/ui/button';
 import { logoOptions } from '~/constants/qr-code-generator';
-import { type QRcode } from '~/types/qr-code';
+import { type QrCode } from '~/types/qr-code';
 
-import DeleteQRCode from './qr-code-delete-dialog';
-import EditQRCode from './qr-code-edit-dialog';
+import DeleteQrCode from './qr-code-delete-dialog';
+import EditQrCode from './qr-code-edit-dialog';
 import QrCodeLogo from './qr-code-logo';
 
 interface QrCodeCardProps {
-  data: QRcode;
+  data: QrCode;
 }
 
 const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
@@ -48,7 +48,7 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
     const context = canvas.getContext('2d');
 
     if (!context) {
-      console.error('Failed to get canvas context.');
+      console.error('QrCodeCard, failed to get canvas context.');
       return;
     }
 
@@ -59,7 +59,7 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
         link.download = `${data.name}.png`;
         link.click();
       } catch (error) {
-        console.error('Failed to trigger download:', error);
+        console.error('QrCodeCard, failed to trigger download:', error);
       }
     };
 
@@ -130,7 +130,7 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
       const finalDataUrl = canvas.toDataURL('image/png');
       triggerDownload(finalDataUrl);
     } catch (error) {
-      console.error('Error processing images:', error);
+      console.error('QrCodeCard, error processing images:', error);
     }
   };
 
@@ -142,8 +142,8 @@ const QrCodeCard: React.FC<QrCodeCardProps> = ({ data }) => {
             {data.name}
           </h3>
           <div className="flex">
-            <EditQRCode data={data} />
-            <DeleteQRCode id={data.id.toString()} name={data.name} />
+            <EditQrCode data={data} />
+            <DeleteQrCode id={data.id.toString()} name={data.name} />
           </div>
         </div>
         <p className="text-xs text-neutral-500 line-clamp-1 w-full text-pretty truncate">

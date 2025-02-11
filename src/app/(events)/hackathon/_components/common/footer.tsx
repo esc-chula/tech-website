@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
     <>
       <footer
         ref={footerRef}
-        className="w-full border-t-2 h-72 sm:h-64 px-3 sm:px-8 border-white/10 bg-hackathon-background z-40 absolute bottom-0"
+        className="w-full border-y-2 h-72 sm:h-64 px-3 sm:px-8 border-white/10 bg-hackathon-background z-40 absolute bottom-0"
       >
         <div className="max-w-screen-xl mx-auto h-full flex flex-col text-center sm:text-left gap-5 sm:flex-row sm:items-center justify-center sm:justify-between">
           <HackathonTitle className="text-3xl sm:text-4xl md:text-5xl sm:pb-14" />

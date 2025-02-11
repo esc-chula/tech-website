@@ -8,8 +8,14 @@ import ProjectCard from './project-card';
 const ProjectsContainer: React.FC = async () => {
   const res = await getProjects();
   if (!res.success) {
-    return <div>Something went wrong ...</div>;
+    console.error('ProjectsContainer, failed to load projects: ', res.errors);
+    return (
+      <span className="aspect-[4/2] grid place-content-center text-white/20 select-none">
+        Failed to load projects. Please try again later.
+      </span>
+    );
   }
+
   const projects = res.data;
   const years = [...new Set(projects.map((project) => project.year))];
 

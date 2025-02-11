@@ -14,13 +14,13 @@ export async function getCarousel(): Promise<Response<Slide[]>> {
 
     return {
       success: true,
-      message: 'Successfully fetched slides',
+      message: 'Successfully fetched carousel slides',
       data: (projects as never as Slide[]).filter((slide) => slide.active),
     };
   } catch (error) {
     return {
       success: false,
-      message: 'Failed to fetch slides',
+      message: 'Failed to fetch carousel slides',
       errors: [error instanceof Error ? error.message : 'Unknown error'],
     };
   }

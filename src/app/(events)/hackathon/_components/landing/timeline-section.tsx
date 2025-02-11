@@ -59,7 +59,7 @@ const contents = [
         </p>
       </div>
     ),
-    date: '17 February 2025',
+    date: '17 February 2025—Super Early Bird',
   },
   {
     title: 'HACK Day',

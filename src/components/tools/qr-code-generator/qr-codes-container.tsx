@@ -1,16 +1,21 @@
 import { api } from '~/trpc/server';
-import { type QRcode } from '~/types/qr-code';
+import { type QrCode } from '~/types/qr-code';
 
 import QrCodeCard from './qr-code-card';
 
-const QRCodesContainer: React.FC = async () => {
+const QrCodesContainer: React.FC = async () => {
   const res = await api.qrCode.get();
 
   if (!res.success) {
-    return <p>Failed to load QR codes.</p>;
+    console.error('QrCodesContainer, failed to fetch QR codes: ', res.errors);
+    return (
+      <span className="text-white/20 select-none">
+        Failed to fetch QR codes. Please try again later.
+      </span>
+    );
   }
 
-  return res.data.map((qr: QRcode) => <QrCodeCard key={qr.id} data={qr} />);
+  return res.data.map((qr: QrCode) => <QrCodeCard key={qr.id} data={qr} />);
 };
 
-export default QRCodesContainer;
+export default QrCodesContainer;

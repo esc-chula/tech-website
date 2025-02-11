@@ -85,7 +85,7 @@ const ObjectivesSection: React.FC = () => {
         </>
       }
     >
-      <div className="flex flex-col pt-6 sm:pt-0 md:pt-5 px-0 md:px-5">
+      <div className="flex flex-col pt-6 sm:pt-0 md:pt-5 px-0 md:px-5 gap-6 md:gap-8">
         <span className="font-ndot47 text-2xl md:text-4xl text-white/50 select-none">
           what the HACK?!
         </span>
@@ -132,7 +132,7 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
         type="button"
         onClick={() => setIsCollapsed((prev) => !prev)}
       >
-        <h3 className="font-ndot47 text-4xl md:text-6xl lowercase select-none duration-75 group-hover:text-hackathon-primary">
+        <h3 className="font-ndot47 text-4xl md:text-6xl uppercase select-none duration-75 group-hover:text-hackathon-primary">
           {title}
         </h3>
         <span

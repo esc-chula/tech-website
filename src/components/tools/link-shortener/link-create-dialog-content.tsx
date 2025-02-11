@@ -81,7 +81,10 @@ const LinkCreateDialogContent: React.FC = () => {
         variant: 'destructive',
       });
 
-      console.error(resCheck.errors);
+      console.error(
+        'LinkCreateDialogContent, failed to check role: ',
+        resCheck.errors,
+      );
 
       return;
     }
@@ -117,7 +120,10 @@ const LinkCreateDialogContent: React.FC = () => {
         variant: 'destructive',
       });
 
-      console.error(resCreate.errors);
+      console.error(
+        'LinkCreateDialogContent, failed to create shortened link: ',
+        resCreate.errors,
+      );
 
       return;
     }

@@ -43,7 +43,7 @@ const LoginForm: React.FC = () => {
     const res = await login(values.studentId, values.password);
 
     if (!res.success) {
-      console.error(res.errors);
+      console.error('LoginForm, failed to login: ', res.errors);
 
       toast({
         title: 'Failed to login',

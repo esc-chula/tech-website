@@ -21,7 +21,7 @@ const CopyButton: React.FC<CopyButtonProps> = ({ value, className }) => {
       await navigator.clipboard.writeText(value);
       setSuccess(true);
     } catch (error) {
-      console.error('Failed to copy: ', error);
+      console.error('CopyButton, failed to copy: ', error);
     }
   };
 

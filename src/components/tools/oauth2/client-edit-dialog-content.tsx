@@ -96,7 +96,10 @@ const ClientEditDialogContent: React.FC = () => {
     } catch (error) {
       setLoading(false);
 
-      console.error(error);
+      console.error(
+        'ClientEditDialogContent, failed to edit OAuth 2.0 client: ',
+        error,
+      );
       toast({
         title: 'Failed to create OAuth 2.0 client',
         description:

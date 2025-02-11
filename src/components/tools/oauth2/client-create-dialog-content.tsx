@@ -121,7 +121,10 @@ const ClientCreateDialogContent: React.FC = () => {
     } catch (error) {
       setLoading(false);
 
-      console.error(error);
+      console.error(
+        'ClientCreateDialogContent, failed to create OAuth 2.0 client: ',
+        error,
+      );
       toast({
         title: 'Failed to create OAuth 2.0 client',
         description:
