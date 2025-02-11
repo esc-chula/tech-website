@@ -1,9 +1,9 @@
-import { api } from '~/trpc/server';
+import { getMembers } from '~/server/actions/about';
 
 import MemberButton from './member-button';
 
 const MemberContainer: React.FC = async () => {
-  const res = await api.about.getMembers();
+  const res = await getMembers();
 
   if (!res.success) {
     console.error(res.errors);
