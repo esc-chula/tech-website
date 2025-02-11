@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1](https://github.com/esc-chula/intania-oidc-new/compare/v0.2.0..v0.2.1) - 2025-02-11
+
+### Build
+
+- Fix release prod workflows - ([579edea](https://github.com/esc-chula/intania-oidc-new/commit/579edea0cf10024888010410fa2cd032c170f634))
+
 ## [0.2.0](https://github.com/esc-chula/intania-oidc-new/compare/v0.1.4..v0.2.0) - 2025-02-10
 
 ### <!-- 0 -->⛰️  Features
