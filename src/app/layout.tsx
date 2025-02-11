@@ -1,6 +1,6 @@
 import '~/styles/globals.css';
 
-import { GoogleTagManager } from '@next/third-parties/google';
+import Script from 'next/script';
 import { PublicEnvScript } from 'next-runtime-env';
 
 import { Toaster } from '~/components/ui/toaster';
@@ -31,8 +31,20 @@ const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
         geistSans.variable,
       )}
     >
-      <GoogleTagManager gtmId={env.NEXT_PUBLIC_GTM_ID ?? ''} />
       <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-LWVLYM7JCF"
+        />
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${env.NEXT_PUBLIC_GTM_ID ?? ''}');
+          `}
+        </Script>
         <PublicEnvScript />
       </head>
       <body>
