@@ -17,6 +17,7 @@ model User {
 
     userShortenedLinks UserShortenedLink[] @relation("UserToShortenedLink")
     userQrCodes        UserQrCode[]        @relation("UserToQrCodeGen")
+    userHackathonGroupTicket HackathonGroupTicket? @relation("UserToHackathonGroupTicket")
 }
 
 model UserServiceRole {
@@ -78,3 +79,68 @@ model TechMonthStamp {
     studentId String
     eventId   String
 }
+
+model HackathonTicket {
+    id            Int      @id @default(autoincrement())
+    code          String   @unique
+    ticketType    HackathonTicketType
+    isClaimed     Boolean  @default(false)
+    claimedAt     DateTime?
+    isRegistered  Boolean  @default(false)
+
+    groupTicketId Int?
+    groupTicket   HackathonGroupTicket? @relation(fields: [groupTicketId], references: [id])
+}
+
+enum HackathonTicketType {
+    DESIGNER
+    DEVELOPER
+    PRODUCT
+    GENERAL
+}
+
+model HackathonGroupTicket {
+    id            Int      @id @default(autoincrement())
+    
+    userId        Int @unique
+    user      User     @relation("UserToHackathonGroupTicket", fields: [userId], references: [id])
+    tickets       HackathonTicket[]
+    registration  HackathonRegistration?
+}
+
+model HackathonRegistration {
+    id                Int      @id @default(autoincrement())
+    groupTicketId     Int      @unique 
+    
+    groupTicket      HackathonGroupTicket @relation(fields: [groupTicketId], references: [id])
+    teamMembers      HackathonTeamMember[]
+}
+
+model HackathonTeamMember {
+    id               Int      @id @default(autoincrement())
+    registrationId   Int
+    registration     HackathonRegistration @relation(fields: [registrationId], references: [id])
+    
+    firstName        String
+    lastName         String
+    nickName         String
+    pronoun          String
+    phoneNumber      String
+    email           String
+    studentId       String
+    faculty         String
+    department      String
+    university      String
+    role            HackathonRole
+    
+    foodRestriction  String?  
+    medication       String?  
+    medicalCondition String?  
+}
+
+enum HackathonRole {
+    DEVELOPER
+    DESIGNER
+    PRODUCT
+}
+
