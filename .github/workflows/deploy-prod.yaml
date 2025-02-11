@@ -1,0 +1,64 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        required: true
+        description: New tag (e.g., v1.2.3)
+
+env:
+  GITOPS_REPO: esc-chula/tech-website-gitops
+  PROD_DEPLOYMENT_PATH: overlays/prod/kustomization.yaml
+  IMAGE_NAME: ghcr.io/${{ github.repository }}
+
+jobs:
+  deploy-production:
+    name: Deploy Production
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Pull Image To Check Existence
+        id: pull-image
+        run: |
+          IMAGE_TAG="${{ github.event.inputs.target }}"
+          IMAGE_NAME="${{ env.IMAGE_NAME }}"
+          docker pull "${IMAGE_NAME}:${IMAGE_TAG}" || exit 0
+
+      - name: Process Release Version
+        id: version
+        run: |
+          RAW_TAG="${{ github.event.inputs.target }}"
+          PROCESSED_TAG="${RAW_TAG#v}"
+          echo "VERSION=$PROCESSED_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout GitOps Repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          token: ${{ secrets.GITOPS_TOKEN }}
+          path: gitops
+
+      - name: Update Image Tag in GitOps Repository
+        env:
+          IMAGE_TAG: ${{ steps.version.outputs.VERSION }}
+        run: |
+          DEPLOYMENT_PATH="gitops/${{ env.PROD_DEPLOYMENT_PATH }}"
+
+          # Update the `newTag` field inside `images` list
+          yq -i '(.images[] | select(.name == "ghcr.io/esc-chula/tech-website")).newTag = "${{ env.IMAGE_TAG }}"' "$DEPLOYMENT_PATH"
+
+      - name: Commit and Push Changes to GitOps Repo
+        run: |
+          cd gitops
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "build(deploy): Update production deployment for ${{ steps.version.outputs.VERSION }}"
+          git push
