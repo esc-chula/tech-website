@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2](https://github.com/esc-chula/intania-oidc-new/compare/v0.2.1..v0.2.2) - 2025-02-11
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Gtag - ([35028df](https://github.com/esc-chula/intania-oidc-new/commit/35028df39280662c826e0839ec6452b90caea00f))
+
+### Build
+
+- Rename workflows - ([ab5d571](https://github.com/esc-chula/intania-oidc-new/commit/ab5d5718daff75c30980c44d08834402122ab5e3))
+
 ## [0.2.1](https://github.com/esc-chula/intania-oidc-new/compare/v0.2.0..v0.2.1) - 2025-02-11
 
 ### Build
