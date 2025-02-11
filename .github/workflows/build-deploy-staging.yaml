@@ -1,4 +1,4 @@
-name: Build Deploy Staging
+name: Build and Deploy Staging
 
 on:
   workflow_dispatch:
