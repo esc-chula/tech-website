@@ -1,80 +1,161 @@
 generator client {
-    provider      = "prisma-client-js"
-    binaryTargets = ["native", "linux-musl"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-    id        Int    @id @default(autoincrement())
-    oidcId    String @unique
-    studentId String @unique
+  id        Int    @id @default(autoincrement())
+  oidcId    String @unique
+  studentId String @unique
 
-    UserAdminApp UserServiceRole[] @relation("UserToServiceRole")
+  UserAdminApp UserServiceRole[] @relation("UserToServiceRole")
 
-    userShortenedLinks UserShortenedLink[] @relation("UserToShortenedLink")
-    userQrCodes        UserQrCode[]        @relation("UserToQrCodeGen")
+  userShortenedLinks        UserShortenedLink[]    @relation("UserToShortenedLink")
+  userQrCodes               UserQrCode[]           @relation("UserToQrCodeGen")
+  userHackathonTeamTicket   HackathonTeamTicket?   @relation("UserToHackathonTeamTicket")
+  userHackathonTicketClaims HackathonTicketClaim[] @relation("UserToHackathonTicketClaims")
 }
 
 model UserServiceRole {
-    id     Int    @id @default(autoincrement())
-    userId Int
-    appId  String
-    role   String
+  id     Int    @id @default(autoincrement())
+  userId Int
+  appId  String
+  role   String
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "UserToServiceRole")
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade, name: "UserToServiceRole")
 
-    @@unique([userId, appId])
+  @@unique([userId, appId])
 }
 
 model UserShortenedLink {
-    id    Int    @id @default(autoincrement())
-    name  String
-    url   String
-    slug  String @unique
-    count Int    @default(0)
+  id    Int    @id @default(autoincrement())
+  name  String
+  url   String
+  slug  String @unique
+  count Int    @default(0)
 
-    userId                          Int
-    user                            User                             @relation(fields: [userId], references: [id], name: "UserToShortenedLink")
-    userShortenedLinkVisitedRecords UserShortenedLinkVisitedRecord[] @relation("UserShortenedLinkVisitedRecords")
+  userId                          Int
+  user                            User                             @relation(fields: [userId], references: [id], name: "UserToShortenedLink")
+  userShortenedLinkVisitedRecords UserShortenedLinkVisitedRecord[] @relation("UserShortenedLinkVisitedRecords")
 
-    editedAt DateTime @default(now())
+  editedAt DateTime @default(now())
 }
 
 model UserShortenedLinkVisitedRecord {
-    id                 Int     @id @default(autoincrement())
-    utmCampaignId      String?
-    utmCampaignSource  String?
-    utmCampaignMedium  String?
-    utmCampaignName    String?
-    utmCampaignTerm    String?
-    utmCampaignContent String?
+  id                 Int     @id @default(autoincrement())
+  utmCampaignId      String?
+  utmCampaignSource  String?
+  utmCampaignMedium  String?
+  utmCampaignName    String?
+  utmCampaignTerm    String?
+  utmCampaignContent String?
 
-    userShortenedLinkId Int
-    userShortenedLink   UserShortenedLink @relation(fields: [userShortenedLinkId], references: [id], onUpdate: Cascade, onDelete: Cascade, name: "UserShortenedLinkVisitedRecords")
+  userShortenedLinkId Int
+  userShortenedLink   UserShortenedLink @relation(fields: [userShortenedLinkId], references: [id], onUpdate: Cascade, onDelete: Cascade, name: "UserShortenedLinkVisitedRecords")
 
-    editedAt DateTime @default(now())
+  editedAt DateTime @default(now())
 }
 
 model UserQrCode {
-    id     Int     @id @default(autoincrement())
-    name   String
-    url    String
-    qrCode String
-    color  String
-    logo   String?
+  id     Int     @id @default(autoincrement())
+  name   String
+  url    String
+  qrCode String
+  color  String
+  logo   String?
 
-    userId Int
-    user   User @relation(fields: [userId], references: [id], name: "UserToQrCodeGen")
+  userId Int
+  user   User @relation(fields: [userId], references: [id], name: "UserToQrCodeGen")
 
-    editedAt DateTime @default(now())
+  editedAt DateTime @default(now())
 }
 
 model TechMonthStamp {
-    id        Int    @id @default(autoincrement())
-    studentId String
-    eventId   String
+  id        Int    @id @default(autoincrement())
+  studentId String
+  eventId   String
+}
+
+model HackathonTicket {
+  id           Int                 @id @default(autoincrement())
+  code         String              @unique
+  ticketType   HackathonTicketType
+  isClaimed    Boolean             @default(false)
+  isRegistered Boolean             @default(false)
+
+  claims       HackathonTicketClaim[] @relation("HackathonTicketToTicketClaims")
+  teamTicketId Int?
+  teamTicket   HackathonTeamTicket?   @relation(fields: [teamTicketId], references: [id], name: "HackathonTeamTicketToTickets")
+}
+
+model HackathonTicketClaim {
+  id        Int       @id @default(autoincrement())
+  ticketId  Int
+  userId    Int
+  claimedAt DateTime  @default(now())
+  expiredAt DateTime?
+
+  ticket HackathonTicket @relation(fields: [ticketId], references: [id], name: "HackathonTicketToTicketClaims")
+  user   User            @relation(fields: [userId], references: [id], name: "UserToHackathonTicketClaims")
+
+  @@unique([ticketId, userId])
+}
+
+enum HackathonTicketType {
+  DESIGNER
+  DEVELOPER
+  PRODUCT
+  GENERAL
+}
+
+model HackathonTeamTicket {
+  id           Int                    @id @default(autoincrement())
+  publicId     String                 @unique
+  userId       Int                    @unique
+  user         User                   @relation("UserToHackathonTeamTicket", fields: [userId], references: [id])
+  tickets      HackathonTicket[]      @relation("HackathonTeamTicketToTickets")
+  registration HackathonRegistration? @relation("HackathonTeamTicketToRegistration")
+}
+
+model HackathonRegistration {
+  id           Int @id @default(autoincrement())
+  teamTicketId Int @unique
+
+  teamTicket  HackathonTeamTicket   @relation(fields: [teamTicketId], references: [id], name: "HackathonTeamTicketToRegistration")
+  teamName    String
+  teamMembers HackathonTeamMember[] @relation("HackathonRegistrationToTeamMembers")
+}
+
+model HackathonTeamMember {
+  id             Int                   @id @default(autoincrement())
+  publicId       String                @unique
+  registrationId Int
+  registration   HackathonRegistration @relation(fields: [registrationId], references: [id], name: "HackathonRegistrationToTeamMembers")
+
+  firstName   String
+  lastName    String
+  nickName    String
+  pronoun     String
+  phoneNumber String
+  email       String
+  studentId   String
+  faculty     String
+  department  String
+  university  String
+  role        HackathonRole
+
+  foodRestriction  String?
+  medication       String?
+  medicalCondition String?
+}
+
+enum HackathonRole {
+  DEVELOPER
+  DESIGNER
+  PRODUCT
 }
