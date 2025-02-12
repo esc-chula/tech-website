@@ -43,7 +43,6 @@ services:
 
   link:
     image: ghcr.io/esc-chula/intania-link:latest
-    platform: linux/amd64
     restart: unless-stopped
     ports:
       - '3002:3000'
@@ -91,7 +90,6 @@ services:
 
   auth:
     image: ghcr.io/esc-chula/intania-auth:b0801f1601d51129a974ba2cd52fcbc908f8104a
-    platform: linux/amd64
     restart: unless-stopped
     ports:
       - 3001:3000
@@ -133,7 +131,6 @@ services:
 
   auth-migrations:
     image: ghcr.io/esc-chula/migrators:2c391cfa190345c2476328a40b15aca5ce3deaac
-    platform: linux/amd64
     restart: on-failure:3
     depends_on:
       auth-db:
