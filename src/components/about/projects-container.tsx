@@ -29,7 +29,7 @@ const ProjectsContainer: React.FC = async () => {
               {yearLabels[year as keyof typeof yearLabels]}
             </span>
           </h3>
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 md:gap-10 grid-cols-2 lg:grid-cols-3">
             {projects
               .filter((project) => project.year === year)
               .map((project) => (

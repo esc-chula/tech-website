@@ -24,7 +24,7 @@ const MemberContainer: React.FC = async () => {
             key={member.id}
             imgLink={avatarUrl.origin + avatarUrl.pathname}
             nameTag={member.login}
-            url={new URL(member.html_url).origin}
+            url={member.html_url}
           />
         );
       })}
