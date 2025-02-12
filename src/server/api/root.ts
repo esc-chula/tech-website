@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
 
 import { authRouter } from './routers/auth';
+import { hackathonRouter } from './routers/hackathon';
 import { linkShortenerRouter } from './routers/link-shortener';
 import { qrCodeRouter } from './routers/qr-code';
 import { roleRouter } from './routers/role';
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   qrCode: qrCodeRouter,
   role: roleRouter,
   techmonth: techmonthRouter,
+  hackathon: hackathonRouter,
 });
 
 export type AppRouter = typeof appRouter;
