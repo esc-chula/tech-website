@@ -194,7 +194,7 @@ const HackathonTitleHover: React.FC<HackathonTitleHoverProps> = ({
                       className={cn(
                         '',
                         dot.char === 'O' && [
-                          'rounded-full transition-color duration-200',
+                          'rounded-full transition-color duration-50',
                           getCharacterColor(line, dot.char, dot.originalChar),
                           getPeerEffect(
                             lineIndex,
