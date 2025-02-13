@@ -1,12 +1,24 @@
 import { ChevronDown, Mouse } from 'lucide-react';
 
 import HackathonTitle from '../common/hackathon-title';
+import HackathonTitleHover from '../common/hackathon-title-hover';
 import Button from '../ui/button';
 
 const HeroSection: React.FC = () => {
   return (
     <>
-      <HackathonTitle className="text-5xl sm:text-6xl md:text-8xl pt-10 sm:pt-8 md:pt-4" />
+      <HackathonTitleHover
+        className="hidden md:flex pt-10"
+        dotSize={10.5}
+        lines={['INTANIA', 'HACKATHON']}
+        colorMap={{
+          HACKATHON: {
+            text: 'O',
+            color: 'bg-hackathon-primary',
+          },
+        }}
+      />
+      <HackathonTitle className="text-5xl sm:text-6xl md:hidden pt-10 sm:pt-8" />
       <Button className="cursor-default select-text">
         <span className="cursor-text">28 - 30 March 2025</span>
       </Button>
