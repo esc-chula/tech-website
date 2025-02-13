@@ -85,7 +85,6 @@ model HackathonTicket {
   id           Int                 @id @default(autoincrement())
   code         String              @unique
   ticketType   HackathonTicketType
-  isClaimed    Boolean             @default(false)
   isRegistered Boolean             @default(false)
 
   claims       HackathonTicketClaim[] @relation("HackathonTicketToTicketClaims")

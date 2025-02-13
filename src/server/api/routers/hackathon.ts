@@ -47,7 +47,6 @@ export const hackathonRouter = createTRPCRouter({
               id: true,
               code: true,
               ticketType: true,
-              isClaimed: true,
               isRegistered: true,
               teamTicketId: true,
             },
@@ -167,16 +166,19 @@ export const hackathonRouter = createTRPCRouter({
             },
           });
 
-          const updatedTicket = await tx.hackathonTicket.update({
+          const updatedTicket = await tx.hackathonTicket.findUnique({
             where: { code: input.ticketCode },
-            data: { isClaimed: true },
             select: {
               id: true,
               code: true,
               ticketType: true,
-              isClaimed: true,
               isRegistered: true,
               teamTicketId: true,
+              claims: {
+                where: {
+                  expiredAt: { gt: new Date() },
+                },
+              },
             },
           });
 
@@ -330,7 +332,6 @@ export const hackathonRouter = createTRPCRouter({
                   id: true,
                   code: true,
                   ticketType: true,
-                  isClaimed: true,
                   isRegistered: true,
                   teamTicketId: true,
                 },

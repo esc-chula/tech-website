@@ -10,21 +10,10 @@ import {
 } from '~/types/hackathon';
 import { type Response } from '~/types/server';
 
-import { checkAppRole } from './role';
-
 export async function createHackathonTicket(
   ticketType: HackathonTicketType,
   quantity: number,
 ): Promise<Response<HackathonTicket[]>> {
-  const resCheck = await checkAppRole({ appId: 'esc', role: 'admin' });
-  if (!resCheck.success) {
-    return {
-      success: false,
-      message: 'Unauthorized: Requires admin role',
-      errors: resCheck.errors,
-    };
-  }
-
   const res = await api.hackathon.createTicket({
     ticketType,
     quantity,
