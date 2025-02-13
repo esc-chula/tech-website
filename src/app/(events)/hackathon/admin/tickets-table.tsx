@@ -1,13 +1,17 @@
+import type { HackathonTicketType } from '@prisma/client';
 import type { Dispatch, SetStateAction } from 'react';
 
-// import TicketActions from './ticket-actions';
+import { Table } from '~/components/ui/table';
 
-// import { Table } from '@/components/ui/table';
+import TicketActions from './ticket-actions';
 
 interface Ticket {
+  id: number;
   isClaimed: boolean;
   isRegistered: boolean;
   teamTicketId: string;
+  code: string;
+  ticketType: HackathonTicketType;
 }
 
 interface TicketsTableProps {
@@ -17,36 +21,33 @@ interface TicketsTableProps {
 
 const TicketsTable = ({
   tickets,
-  // setTickets,
+  setTickets,
 }: TicketsTableProps): JSX.Element => {
   return (
-    <div>
-      <p>this is table {tickets[0]?.isClaimed}</p>
-    </div>
-    // <Table>
-    //   <thead>
-    //     <tr>
-    //       <th>Code</th>
-    //       <th>Type</th>
-    //       <th>Claimed</th>
-    //       <th>Registered</th>
-    //       <th>Actions</th>
-    //     </tr>
-    //   </thead>
-    //   <tbody>
-    //     {tickets.map((ticket) => (
-    //       <tr key={ticket.id || ''}>
-    //         <td>{ticket.code}</td>
-    //         <td>{ticket.ticketType}</td>
-    //         <td>{ticket.isClaimed ? 'Yes' : 'No'}</td>
-    //         <td>{ticket.isRegistered ? 'Yes' : 'No'}</td>
-    //         <td>
-    //           <TicketActions setTickets={setTickets} ticket={ticket} />
-    //         </td>
-    //       </tr>
-    //     ))}
-    //   </tbody>
-    // </Table>
+    <Table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Type</th>
+          <th>Claimed</th>
+          <th>Registered</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {tickets.map((ticket) => (
+          <tr key={ticket.id}>
+            <td>{ticket.code}</td>
+            <td>{ticket.ticketType}</td>
+            <td>{ticket.isClaimed ? 'Yes' : 'No'}</td>
+            <td>{ticket.isRegistered ? 'Yes' : 'No'}</td>
+            <td>
+              <TicketActions setTickets={setTickets} ticket={ticket} />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
   );
 };
 
