@@ -1,4 +1,4 @@
-import { genTicketCode, genTicketPublicId } from '~/lib/hackathon-ticket';
+import { genTicketPublicId } from '~/lib/hackathon-ticket';
 import { createTRPCRouter, trpc } from '~/server/api/trpc';
 import {
   type HackathonTeamTicket,
@@ -28,19 +28,14 @@ export const hackathonRouter = createTRPCRouter({
 
       const res = await ctx.db.$transaction(async (tx) => {
         try {
-          const ticketData = Array.from({ length: input.quantity }, () => ({
-            ticketType: input.ticketType,
-            code: genTicketCode(),
-          }));
-
           await tx.hackathonTicket.createMany({
-            data: ticketData,
+            data: input.tickets,
           });
 
           const tickets = await tx.hackathonTicket.findMany({
             where: {
               code: {
-                in: ticketData.map((t) => t.code),
+                in: input.tickets.map((t) => t.code),
               },
             },
             select: {

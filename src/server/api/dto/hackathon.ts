@@ -2,8 +2,12 @@ import { HackathonTicketType } from '@prisma/client';
 import { z } from 'zod';
 
 export const CreateHackathonTicketDto = z.object({
-  ticketType: z.nativeEnum(HackathonTicketType),
-  quantity: z.number().min(1).default(1),
+  tickets: z.array(
+    z.object({
+      code: z.string(),
+      ticketType: z.nativeEnum(HackathonTicketType),
+    }),
+  ),
 });
 
 export const ClaimHackathonTicketDto = z.object({

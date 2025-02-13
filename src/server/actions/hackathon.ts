@@ -11,12 +11,13 @@ import {
 import { type Response } from '~/types/server';
 
 export async function createHackathonTicket(
-  ticketType: HackathonTicketType,
-  quantity: number,
+  tickets: {
+    code: string;
+    ticketType: HackathonTicketType;
+  }[],
 ): Promise<Response<HackathonTicket[]>> {
   const res = await api.hackathon.createTicket({
-    ticketType,
-    quantity,
+    tickets,
   });
 
   return res;
