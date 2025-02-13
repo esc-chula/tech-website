@@ -23,7 +23,11 @@ const TicketActions = ({
   }
 
   return (
-    <button className="btn btn-danger" type="button" onClick={deleteTicket}>
+    <button
+      className="bg-red-400 text-black font-semibold hover:bg-red-600 rounded-md p-2"
+      type="button"
+      onClick={deleteTicket}
+    >
       Delete
     </button>
   );
