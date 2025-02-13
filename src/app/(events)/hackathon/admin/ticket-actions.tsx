@@ -1,6 +1,12 @@
+import type { HackathonTicketType } from '@prisma/client';
+
 interface Ticket {
   id: number;
-  // add other properties of Ticket if needed
+  isClaimed: boolean;
+  isRegistered: boolean;
+  teamTicketId: string;
+  code: string;
+  ticketType: HackathonTicketType;
 }
 
 interface TicketActionsProps {
@@ -8,7 +14,7 @@ interface TicketActionsProps {
   setTickets: React.Dispatch<React.SetStateAction<Ticket[]>>;
 }
 
-export const TicketActions = ({
+const TicketActions = ({
   setTickets,
   ticket,
 }: TicketActionsProps): JSX.Element => {
@@ -22,3 +28,5 @@ export const TicketActions = ({
     </button>
   );
 };
+
+export default TicketActions;
