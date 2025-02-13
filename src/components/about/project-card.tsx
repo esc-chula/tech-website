@@ -37,6 +37,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           fill
           alt={title}
           className="z-0 object-cover"
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           src={`${env.DIRECTUS_URL}/assets/${image}`}
         />
       </div>
@@ -49,7 +50,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             </Link>
           ) : null}
         </div>
-        <p className="text-sm text-neutral-500">{description}</p>
+        <p className="text-xs sm:text-sm text-neutral-500">{description}</p>
       </div>
     </Card>
   );

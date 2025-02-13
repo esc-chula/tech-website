@@ -34,7 +34,9 @@ const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
       <head>
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-LWVLYM7JCF"
+          src={`https://www.googletagmanager.com/gtag/js?id=${
+            env.NEXT_PUBLIC_GTAG_ID ?? ''
+          }`}
         />
         <Script id="google-analytics">
           {`
@@ -42,7 +44,7 @@ const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', '${env.NEXT_PUBLIC_GTM_ID ?? ''}');
+            gtag('config', '${env.NEXT_PUBLIC_GTAG_ID ?? ''}');
           `}
         </Script>
         <PublicEnvScript />

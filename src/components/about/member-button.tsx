@@ -14,14 +14,14 @@ const MemberButton: React.FC<MemberButtonProps> = ({
 }) => {
   return (
     <Link
-      className="flex h-14 text-xs sm:text-sm md:text-base items-center justify-start gap-2 sm:gap-4 rounded-lg bg-gradient-to-b from-neutral-700 to-neutral-800 px-3 sm:px-4"
+      className="flex h-12 md:h-14 text-xs sm:text-sm md:text-base items-center justify-start gap-2 sm:gap-4 rounded-lg bg-gradient-to-b from-neutral-700 to-neutral-800 px-3 sm:px-4"
       href={url}
       rel="noopener noreferrer"
       target="_blank"
     >
       <Image
         alt={`${nameTag}-profile`}
-        className="h-10 w-10 rounded-full bg-white"
+        className="w-8 sm:w-10 aspect-square rounded-full bg-white"
         height={300}
         src={imgLink}
         width={300}

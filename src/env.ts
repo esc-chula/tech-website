@@ -14,7 +14,7 @@ export const env = createEnv({
   },
 
   client: {
-    NEXT_PUBLIC_GTM_ID: z.string().optional(),
+    NEXT_PUBLIC_GTAG_ID: z.string().optional(),
     NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: z.string().optional(),
   },
 
@@ -24,7 +24,7 @@ export const env = createEnv({
     DIRECTUS_URL: process.env.DIRECTUS_URL,
     GRPC_ADDRESS: process.env.GRPC_ADDRESS,
     HYDRA_ADMIN_URL: process.env.HYDRA_ADMIN_URL,
-    NEXT_PUBLIC_GTM_ID: runtimeEnv('NEXT_PUBLIC_GTM_ID'),
+    NEXT_PUBLIC_GTAG_ID: runtimeEnv('NEXT_PUBLIC_GTAG_ID'),
     NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: runtimeEnv(
       'NEXT_PUBLIC_SHORTENED_LINK_ORIGIN',
     ),
