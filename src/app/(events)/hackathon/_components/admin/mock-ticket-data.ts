@@ -8,7 +8,7 @@ export const mockHackathonTickets = [
     isClaimed: false,
     isRegistered: false,
     claims: [],
-    teamTicketId: null,
+    teamTicketId: '',
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ export const mockHackathonTickets = [
         expiredAt: null,
       },
     ],
-    teamTicketId: 1,
+    teamTicketId: '1',
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ export const mockHackathonTickets = [
     isClaimed: false,
     isRegistered: true,
     claims: [],
-    teamTicketId: null,
+    teamTicketId: '',
   },
   {
     id: 4,
@@ -51,7 +51,7 @@ export const mockHackathonTickets = [
         expiredAt: null,
       },
     ],
-    teamTicketId: 2,
+    teamTicketId: '2',
   },
 ];
 
