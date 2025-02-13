@@ -15,7 +15,7 @@ interface Ticket {
   id: number;
   isClaimed: boolean;
   isRegistered: boolean;
-  teamTicketId: string;
+  teamTicketId: number | null;
   code: string;
   ticketType: HackathonTicketType;
 }

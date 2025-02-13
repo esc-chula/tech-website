@@ -1,7 +1,7 @@
 interface Ticket {
   isClaimed: boolean;
   isRegistered: boolean;
-  teamTicketId: string;
+  teamTicketId: number | null;
 }
 
 interface TicketStatsProps {
