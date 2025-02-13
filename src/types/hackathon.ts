@@ -8,3 +8,10 @@ export interface HackathonTicket {
   isRegistered: boolean;
   teamTicketId: number | null;
 }
+
+export interface HackathonTeamTicket {
+  id: number;
+  publicId: string;
+  userId: number;
+  tickets: HackathonTicket[];
+}

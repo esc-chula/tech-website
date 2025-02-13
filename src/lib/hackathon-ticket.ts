@@ -1,6 +1,7 @@
 import { randomBytes } from 'node:crypto';
 
 import { customAlphabet } from 'nanoid';
+import { v4 as uuidv4 } from 'uuid';
 
 export function genTicketCode(): string {
   // TODO: Use a more secure method for generating ticket code that people cannot brute force
@@ -14,4 +15,8 @@ export function genTicketCode(): string {
   const code = nanoid();
 
   return `${prefix}-${code}`;
+}
+
+export function genTicketPublicId(): string {
+  return uuidv4();
 }

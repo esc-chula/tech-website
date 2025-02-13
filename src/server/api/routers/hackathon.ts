@@ -1,9 +1,12 @@
-import { genTicketCode } from '~/lib/hackathon-ticket';
+import { genTicketCode, genTicketPublicId } from '~/lib/hackathon-ticket';
 import { createTRPCRouter, trpc } from '~/server/api/trpc';
-import { type HackathonTicket } from '~/types/hackathon';
+import {
+  type HackathonTeamTicket,
+  type HackathonTicket,
+} from '~/types/hackathon';
 import { type Response } from '~/types/server';
 
-import { CreateHackathonTicketDto } from '../dto/hackathon';
+import { ClaimHackathonTicketDto , CreateHackathonTeamTicketDto , CreateHackathonTicketDto } from '../dto/hackathon';
 
 export const hackathonRouter = createTRPCRouter({
   createTicket: trpc
@@ -18,7 +21,6 @@ export const hackathonRouter = createTRPCRouter({
         };
       }
 
-      // TODO: Add admin check
       const res = await ctx.db.$transaction(async (tx) => {
         try {
           const ticketData = Array.from({ length: input.quantity }, () => ({
@@ -74,4 +76,219 @@ export const hackathonRouter = createTRPCRouter({
         data: res.data,
       };
     }),
+
+  claimTicket: trpc
+    .input(ClaimHackathonTicketDto)
+    .mutation(async ({ ctx, input }): Promise<Response<HackathonTicket>> => {
+      const userId = ctx.session.user?.id;
+      if (!userId) {
+        return {
+          success: false,
+          message: 'Unauthorized',
+          errors: ['Session ID not found'],
+        };
+      }
+
+      const res = await ctx.db.$transaction(async (tx) => {
+        try {
+          const ticket = await tx.hackathonTicket.findUnique({
+            where: {
+              id: input.ticketId,
+              teamTicketId: null,
+            },
+            include: {
+              claims: {
+                where: {
+                  userId,
+                  OR: [{ expiredAt: null }, { expiredAt: { gt: new Date() } }],
+                },
+              },
+            },
+          });
+
+          if (!ticket) {
+            return {
+              success: false,
+              message: 'Ticket not found or already in a team',
+            };
+          }
+
+          const activeClaim = await tx.hackathonTicketClaim.findFirst({
+            where: {
+              ticketId: input.ticketId,
+              expiredAt: null,
+            },
+          });
+
+          if (activeClaim) {
+            return {
+              success: false,
+              message: 'Ticket is already claimed',
+            };
+          }
+
+          const userPreviousClaim = await tx.hackathonTicketClaim.findFirst({
+            where: {
+              ticketId: input.ticketId,
+              userId,
+            },
+          });
+
+          if (userPreviousClaim) {
+            return {
+              success: false,
+              message: 'You cannot claim a ticket you previously claimed',
+            };
+          }
+
+          const expiryDate = new Date();
+          expiryDate.setDate(expiryDate.getDate() + 2);
+
+          await tx.hackathonTicketClaim.create({
+            data: {
+              ticketId: input.ticketId,
+              userId,
+              expiredAt: expiryDate,
+            },
+          });
+
+          const updatedTicket = await tx.hackathonTicket.update({
+            where: { id: input.ticketId },
+            data: { isClaimed: true },
+            select: {
+              id: true,
+              code: true,
+              ticketType: true,
+              isClaimed: true,
+              isRegistered: true,
+              teamTicketId: true,
+            },
+          });
+
+          return {
+            success: true,
+            message: 'Ticket claimed successfully',
+            data: updatedTicket,
+          };
+        } catch (error) {
+          return {
+            success: false,
+            message: 'Failed to claim ticket',
+            error:
+              error instanceof Error ? error.message : 'Something went wrong',
+          };
+        }
+      });
+
+      if (res.error ?? !res.data) {
+        return {
+          success: false,
+          message: res.message,
+          errors: [res.error ?? 'Something went wrong'],
+        };
+      }
+
+      return {
+        success: true,
+        message: res.message,
+        data: res.data,
+      };
+    }),
+
+  createTeamTicket: trpc
+    .input(CreateHackathonTeamTicketDto)
+    .mutation(
+      async ({ ctx, input }): Promise<Response<HackathonTeamTicket>> => {
+        const userId = ctx.session.user?.id;
+        if (!userId) {
+          return {
+            success: false,
+            message: 'Unauthorized',
+            errors: ['Session ID not found'],
+          };
+        }
+
+        const res = await ctx.db.$transaction(async (tx) => {
+          try {
+            const tickets = await tx.hackathonTicket.findMany({
+              where: {
+                id: { in: input.ticketIds },
+                teamTicketId: null,
+                claims: {
+                  some: {
+                    userId,
+                    expiredAt: { gt: new Date() },
+                  },
+                },
+              },
+              include: {
+                claims: {
+                  where: {
+                    userId,
+                    expiredAt: { gt: new Date() },
+                  },
+                },
+              },
+            });
+
+            if (tickets.length !== 2) {
+              return {
+                success: false,
+                message: 'Both tickets must be claimed by you and not expired',
+              };
+            }
+
+            const teamTicket = await tx.hackathonTeamTicket.create({
+              data: {
+                publicId: genTicketPublicId(),
+                userId,
+                tickets: {
+                  connect: input.ticketIds.map((id) => ({ id })),
+                },
+              },
+              include: {
+                tickets: true,
+              },
+            });
+
+            await tx.hackathonTicketClaim.updateMany({
+              where: {
+                ticketId: { in: input.ticketIds },
+                userId,
+              },
+              data: {
+                expiredAt: new Date(),
+              },
+            });
+
+            return {
+              success: true,
+              message: 'Team ticket created successfully',
+              data: teamTicket,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: 'Failed to create team ticket',
+              error:
+                error instanceof Error ? error.message : 'Something went wrong',
+            };
+          }
+        });
+
+        if (res.error ?? !res.data) {
+          return {
+            success: false,
+            message: res.message,
+            errors: [res.error ?? 'Something went wrong'],
+          };
+        }
+
+        return {
+          success: true,
+          message: res.message,
+          data: res.data,
+        };
+      },
+    ),
 });
