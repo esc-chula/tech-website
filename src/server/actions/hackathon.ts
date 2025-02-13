@@ -41,3 +41,13 @@ export async function createHackathonTeamTicket(
 
   return res;
 }
+
+export async function claimHackathonTicket(
+  ticketId: number,
+): Promise<Response<HackathonTicket>> {
+  const res = await api.hackathon.claimTicket({
+    ticketId,
+  });
+
+  return res;
+}
