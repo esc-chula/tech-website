@@ -160,7 +160,10 @@ export const hackathonRouter = createTRPCRouter({
           }
 
           const expiryDate = new Date();
-          expiryDate.setDate(expiryDate.getDate() + 3);
+          expiryDate.setDate(
+            expiryDate.getDate() +
+              Number(process.env.HACKATHON_TICKET_EXPIRY_DAYS ?? 3),
+          );
 
           await tx.hackathonTicketClaim.create({
             data: {
