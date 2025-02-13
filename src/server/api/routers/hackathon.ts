@@ -95,33 +95,14 @@ export const hackathonRouter = createTRPCRouter({
 
       const res = await ctx.db.$transaction(async (tx) => {
         try {
-          const ticket = await tx.hackathonTicket.findUnique({
-            where: {
-              code: input.ticketCode,
-              teamTicketId: null,
-            },
+          const existingTeamTicket = await tx.hackathonTeamTicket.findUnique({
+            where: { userId },
           });
 
-          if (!ticket) {
+          if (existingTeamTicket) {
             return {
               success: false,
-              message: 'Ticket not found or already in a team',
-            };
-          }
-
-          const activeClaim = await tx.hackathonTicketClaim.findFirst({
-            where: {
-              ticket: {
-                code: input.ticketCode,
-              },
-              expiredAt: { gt: new Date() },
-            },
-          });
-
-          if (activeClaim) {
-            return {
-              success: false,
-              message: 'Ticket is already claimed',
+              message: 'You already have a team ticket',
             };
           }
 
@@ -139,19 +120,42 @@ export const hackathonRouter = createTRPCRouter({
             };
           }
 
-          const userPreviousClaim = await tx.hackathonTicketClaim.findFirst({
+          const ticket = await tx.hackathonTicket.findUnique({
             where: {
-              ticket: {
-                code: input.ticketCode,
+              code: input.ticketCode,
+              teamTicketId: null,
+            },
+            include: {
+              claims: {
+                where: {
+                  OR: [{ userId }, { expiredAt: { gt: new Date() } }],
+                },
               },
-              userId,
             },
           });
 
-          if (userPreviousClaim) {
+          if (!ticket) {
+            return {
+              success: false,
+              message: 'Ticket not found or already in a team',
+            };
+          }
+
+          if (ticket.claims.some((claim) => claim.userId === userId)) {
             return {
               success: false,
               message: 'You cannot claim a ticket you previously claimed',
+            };
+          }
+
+          if (
+            ticket.claims.some(
+              (claim) => claim.expiredAt && claim.expiredAt > new Date(),
+            )
+          ) {
+            return {
+              success: false,
+              message: 'Ticket is already claimed',
             };
           }
 
