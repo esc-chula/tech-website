@@ -7,13 +7,9 @@ export const CreateHackathonTicketDto = z.object({
 });
 
 export const ClaimHackathonTicketDto = z.object({
-  ticketId: z.number(),
+  ticketCode: z.string(),
 });
 
 export const CreateHackathonTeamTicketDto = z.object({
   ticketIds: z.array(z.number()).length(2),
-});
-
-export const GetTicketClaimedByStudentIdDto = z.object({
-  studentId: z.string(),
 });

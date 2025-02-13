@@ -44,10 +44,10 @@ export async function createHackathonTeamTicket(
 }
 
 export async function claimHackathonTicket(
-  ticketId: number,
+  ticketCode: string,
 ): Promise<Response<HackathonTicket>> {
   const res = await api.hackathon.claimTicket({
-    ticketId,
+    ticketCode,
   });
 
   return res;
@@ -61,7 +61,7 @@ export async function getMyTeamTicket(): Promise<
 }
 
 export async function getMyActiveClaim(): Promise<
-  Response<HackathonTicketClaim | null>
+  Response<HackathonTicketClaim[] | null>
 > {
   const res = await api.hackathon.getMyActiveClaim();
   return res;

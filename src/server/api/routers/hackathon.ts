@@ -98,16 +98,8 @@ export const hackathonRouter = createTRPCRouter({
         try {
           const ticket = await tx.hackathonTicket.findUnique({
             where: {
-              id: input.ticketId,
+              code: input.ticketCode,
               teamTicketId: null,
-            },
-            include: {
-              claims: {
-                where: {
-                  userId,
-                  OR: [{ expiredAt: null }, { expiredAt: { gt: new Date() } }],
-                },
-              },
             },
           });
 
@@ -120,8 +112,10 @@ export const hackathonRouter = createTRPCRouter({
 
           const activeClaim = await tx.hackathonTicketClaim.findFirst({
             where: {
-              ticketId: input.ticketId,
-              expiredAt: null,
+              ticket: {
+                code: input.ticketCode,
+              },
+              expiredAt: { gt: new Date() },
             },
           });
 
@@ -132,9 +126,25 @@ export const hackathonRouter = createTRPCRouter({
             };
           }
 
+          const activeClaimsCount = await tx.hackathonTicketClaim.count({
+            where: {
+              userId,
+              expiredAt: { gt: new Date() },
+            },
+          });
+
+          if (activeClaimsCount >= 2) {
+            return {
+              success: false,
+              message: 'You can only have 2 active claims at a time',
+            };
+          }
+
           const userPreviousClaim = await tx.hackathonTicketClaim.findFirst({
             where: {
-              ticketId: input.ticketId,
+              ticket: {
+                code: input.ticketCode,
+              },
               userId,
             },
           });
@@ -147,18 +157,18 @@ export const hackathonRouter = createTRPCRouter({
           }
 
           const expiryDate = new Date();
-          expiryDate.setDate(expiryDate.getDate() + 2);
+          expiryDate.setDate(expiryDate.getDate() + 3);
 
           await tx.hackathonTicketClaim.create({
             data: {
-              ticketId: input.ticketId,
+              ticketId: ticket.id,
               userId,
               expiredAt: expiryDate,
             },
           });
 
           const updatedTicket = await tx.hackathonTicket.update({
-            where: { id: input.ticketId },
+            where: { code: input.ticketCode },
             data: { isClaimed: true },
             select: {
               id: true,
@@ -360,7 +370,7 @@ export const hackathonRouter = createTRPCRouter({
   ),
 
   getMyActiveClaim: trpc.query(
-    async ({ ctx }): Promise<Response<HackathonTicketClaim | null>> => {
+    async ({ ctx }): Promise<Response<HackathonTicketClaim[] | null>> => {
       const userId = ctx.session.user?.id;
       if (!userId) {
         return {
@@ -372,7 +382,7 @@ export const hackathonRouter = createTRPCRouter({
 
       const res = await ctx.db.$transaction(async (tx) => {
         try {
-          const activeClaim = await tx.hackathonTicketClaim.findFirst({
+          const activeClaim = await tx.hackathonTicketClaim.findMany({
             where: {
               userId,
               expiredAt: { gt: new Date() },
@@ -381,9 +391,10 @@ export const hackathonRouter = createTRPCRouter({
 
           return {
             success: true,
-            message: activeClaim
-              ? 'Active claim found'
-              : 'No active claim found',
+            message:
+              activeClaim.length > 0
+                ? 'Active claim found'
+                : 'No active claim found',
             data: activeClaim,
           };
         } catch (error) {
@@ -400,7 +411,7 @@ export const hackathonRouter = createTRPCRouter({
         return {
           success: false,
           message: res.message,
-          errors: [res.error ?? 'Something went wrong'],
+          errors: [res.error],
         };
       }
 
