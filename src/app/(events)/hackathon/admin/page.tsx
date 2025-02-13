@@ -1,9 +1,10 @@
+'use client';
+
 import type { HackathonTicketType } from '@prisma/client';
 import { useState } from 'react';
 import { type FC } from 'react';
 
 import { mockHackathonTickets } from '../_components/admin/mock-ticket-data';
-import Footer from '../_components/common/footer';
 
 import TicketFilters from './ticket-filters';
 import TicketStats from './ticket-stats';
@@ -29,12 +30,13 @@ const AdminTicketsPage: FC = () => {
   });
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Admin Ticket Management</h1>
+    <div className="p-6 space-y-10">
+      <h1 className="text-2xl font-bold text-center">
+        Admin Ticket Management
+      </h1>
       <TicketStats tickets={tickets} />
       <TicketFilters setFilter={setFilter} />
       <TicketsTable setTickets={setTickets} tickets={filteredTickets} />
-      <Footer />
     </div>
   );
 };
