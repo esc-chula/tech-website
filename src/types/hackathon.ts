@@ -15,3 +15,11 @@ export interface HackathonTeamTicket {
   userId: number;
   tickets: HackathonTicket[];
 }
+
+export interface HackathonTicketClaim {
+  id: number;
+  ticketId: number;
+  userId: number;
+  claimedAt: Date;
+  expiredAt: Date | null;
+}

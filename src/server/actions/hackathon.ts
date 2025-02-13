@@ -6,6 +6,7 @@ import { api } from '~/trpc/server';
 import {
   type HackathonTeamTicket,
   type HackathonTicket,
+  type HackathonTicketClaim,
 } from '~/types/hackathon';
 import { type Response } from '~/types/server';
 
@@ -15,7 +16,7 @@ export async function createHackathonTicket(
   ticketType: HackathonTicketType,
   quantity: number,
 ): Promise<Response<HackathonTicket[]>> {
-  const resCheck = await checkAppRole({ appId: 'hackathon', role: 'admin' });
+  const resCheck = await checkAppRole({ appId: 'esc', role: 'admin' });
   if (!resCheck.success) {
     return {
       success: false,
@@ -49,5 +50,19 @@ export async function claimHackathonTicket(
     ticketId,
   });
 
+  return res;
+}
+
+export async function getMyTeamTicket(): Promise<
+  Response<HackathonTeamTicket | null>
+> {
+  const res = await api.hackathon.getMyTeamTicket();
+  return res;
+}
+
+export async function getMyActiveClaim(): Promise<
+  Response<HackathonTicketClaim | null>
+> {
+  const res = await api.hackathon.getMyActiveClaim();
   return res;
 }

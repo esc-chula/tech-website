@@ -3,10 +3,15 @@ import { createTRPCRouter, trpc } from '~/server/api/trpc';
 import {
   type HackathonTeamTicket,
   type HackathonTicket,
+  type HackathonTicketClaim,
 } from '~/types/hackathon';
 import { type Response } from '~/types/server';
 
-import { ClaimHackathonTicketDto , CreateHackathonTeamTicketDto , CreateHackathonTicketDto } from '../dto/hackathon';
+import {
+  ClaimHackathonTicketDto,
+  CreateHackathonTeamTicketDto,
+  CreateHackathonTicketDto,
+} from '../dto/hackathon';
 
 export const hackathonRouter = createTRPCRouter({
   createTicket: trpc
@@ -291,4 +296,119 @@ export const hackathonRouter = createTRPCRouter({
         };
       },
     ),
+
+  getMyTeamTicket: trpc.query(
+    async ({ ctx }): Promise<Response<HackathonTeamTicket | null>> => {
+      const userId = ctx.session.user?.id;
+      if (!userId) {
+        return {
+          success: false,
+          message: 'Unauthorized',
+          errors: ['Session ID not found'],
+        };
+      }
+
+      const res = await ctx.db.$transaction(async (tx) => {
+        try {
+          const teamTicket = await tx.hackathonTeamTicket.findUnique({
+            where: {
+              userId,
+            },
+            include: {
+              tickets: {
+                select: {
+                  id: true,
+                  code: true,
+                  ticketType: true,
+                  isClaimed: true,
+                  isRegistered: true,
+                  teamTicketId: true,
+                },
+              },
+            },
+          });
+
+          return {
+            success: true,
+            message: teamTicket ? 'Team ticket found' : 'No team ticket found',
+            data: teamTicket,
+          };
+        } catch (error) {
+          return {
+            success: false,
+            message: 'Failed to fetch team ticket',
+            error:
+              error instanceof Error ? error.message : 'Something went wrong',
+          };
+        }
+      });
+
+      if (res.error ?? !res.data) {
+        return {
+          success: false,
+          message: res.message,
+          errors: [res.error ?? 'Something went wrong'],
+        };
+      }
+
+      return {
+        success: true,
+        message: res.message,
+        data: res.data,
+      };
+    },
+  ),
+
+  getMyActiveClaim: trpc.query(
+    async ({ ctx }): Promise<Response<HackathonTicketClaim | null>> => {
+      const userId = ctx.session.user?.id;
+      if (!userId) {
+        return {
+          success: false,
+          message: 'Unauthorized',
+          errors: ['Session ID not found'],
+        };
+      }
+
+      const res = await ctx.db.$transaction(async (tx) => {
+        try {
+          const activeClaim = await tx.hackathonTicketClaim.findFirst({
+            where: {
+              userId,
+              expiredAt: { gt: new Date() },
+            },
+          });
+
+          return {
+            success: true,
+            message: activeClaim
+              ? 'Active claim found'
+              : 'No active claim found',
+            data: activeClaim,
+          };
+        } catch (error) {
+          return {
+            success: false,
+            message: 'Failed to fetch active claim',
+            error:
+              error instanceof Error ? error.message : 'Something went wrong',
+          };
+        }
+      });
+
+      if (res.error ?? !res.data) {
+        return {
+          success: false,
+          message: res.message,
+          errors: [res.error ?? 'Something went wrong'],
+        };
+      }
+
+      return {
+        success: true,
+        message: res.message,
+        data: res.data,
+      };
+    },
+  ),
 });
