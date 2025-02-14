@@ -138,8 +138,8 @@ model HackathonTeamMember {
 
   firstName   String
   lastName    String
-  nickName    String
-  pronoun     String
+  nickname    String
+  pronoun     HackathonPronoun
   phoneNumber String
   email       String
   studentId   String
@@ -151,6 +151,13 @@ model HackathonTeamMember {
   foodRestriction  String?
   medication       String?
   medicalCondition String?
+}
+
+enum HackathonPronoun {
+  HE     
+  SHE    
+  THEY   
+  OTHER
 }
 
 enum HackathonRole {

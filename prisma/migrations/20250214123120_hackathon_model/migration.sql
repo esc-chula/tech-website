@@ -2,6 +2,9 @@
 CREATE TYPE "HackathonTicketType" AS ENUM ('DESIGNER', 'DEVELOPER', 'PRODUCT', 'GENERAL');
 
 -- CreateEnum
+CREATE TYPE "HackathonPronoun" AS ENUM ('HE', 'SHE', 'THEY', 'OTHER');
+
+-- CreateEnum
 CREATE TYPE "HackathonRole" AS ENUM ('DEVELOPER', 'DESIGNER', 'PRODUCT');
 
 -- CreateTable
@@ -51,8 +54,8 @@ CREATE TABLE "HackathonTeamMember" (
     "registrationId" INTEGER NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
-    "nickName" TEXT NOT NULL,
-    "pronoun" TEXT NOT NULL,
+    "nickname" TEXT NOT NULL,
+    "pronoun" "HackathonPronoun" NOT NULL,
     "phoneNumber" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "studentId" TEXT NOT NULL,
