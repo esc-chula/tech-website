@@ -253,7 +253,7 @@ const RegistrationForm: React.FC = () => {
             <div className="grid sm:grid-cols-2 gap-2 md:gap-6">
               <FormField
                 control={form.control}
-                name={`teamMembers.${index}.nickname`}
+                name={`teamMembers.${index}.phoneNumber`}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
@@ -269,7 +269,7 @@ const RegistrationForm: React.FC = () => {
               />
               <FormField
                 control={form.control}
-                name={`teamMembers.${index}.pronoun`}
+                name={`teamMembers.${index}.studentId`}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Student ID</FormLabel>
@@ -396,6 +396,17 @@ const RegistrationForm: React.FC = () => {
             </div>
           </FormSection>
         ))}
+        <div className="fixed max-w-md w-full bottom-5 bg-black/20 backdrop-blur-md border-[3px] border-white/20 rounded-2xl flex justify-between items-center p-2">
+          <div />
+          <div>
+            <button
+              className="bg-hackathon-primary hover:bg-hackathon-primary/90 rounded-xl h-10 px-4"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
       </form>
     </Form>
   );
