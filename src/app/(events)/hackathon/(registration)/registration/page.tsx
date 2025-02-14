@@ -1,5 +1,4 @@
 import { type Metadata } from 'next';
-import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { me } from '~/server/actions/auth';
@@ -12,16 +11,7 @@ export const metadata: Metadata = {
 };
 
 const Page: React.FC = async () => {
-  const cookieStore = cookies();
-  const sid = cookieStore.get('sid')?.value;
-
-  if (!sid) {
-    return notFound();
-  }
-
-  const res = await me({
-    sessionId: sid,
-  });
+  const res = await me();
   if (!res.success) {
     return notFound();
   }

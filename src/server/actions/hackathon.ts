@@ -2,6 +2,7 @@
 
 import { type HackathonTicketType } from '@prisma/client';
 
+import { withRateLimit } from '~/lib/rate-limit';
 import { api } from '~/trpc/server';
 import {
   type HackathonTeamTicket,
@@ -33,7 +34,7 @@ export async function createHackathonTeamTicket(
   return res;
 }
 
-export async function claimHackathonTicket(
+async function claimHackathonTicket(
   ticketCode: string,
 ): Promise<Response<HackathonTicket>> {
   const res = await api.hackathon.claimTicket({
@@ -42,6 +43,15 @@ export async function claimHackathonTicket(
 
   return res;
 }
+
+export const claimHackahonTicketWithRateLimit = withRateLimit(
+  claimHackathonTicket,
+  {
+    maxAttempts: 5,
+    windowInSeconds: 300,
+  },
+  'claim-hackathon-ticket',
+);
 
 export async function getMyTeamTicket(): Promise<
   Response<HackathonTeamTicket | null>

@@ -30,6 +30,14 @@ services:
     networks:
       - default
 
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    networks:
+      - default
+
   link:
     image: ghcr.io/esc-chula/intania-link:latest
     restart: unless-stopped
