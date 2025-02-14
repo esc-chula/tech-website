@@ -34,9 +34,9 @@ export const CreateHackathonTeamMemberDto = z.object({
   department: z.string(),
   university: z.string(),
   role: z.nativeEnum(HackathonRole),
-  foodRestriction: z.string().optional(),
-  medication: z.string().optional(),
-  medicalCondition: z.string().optional(),
+  foodRestriction: z.string().nullish(),
+  medication: z.string().nullish(),
+  medicalCondition: z.string().nullish(),
 });
 
 export const CreateHackathonRegistrationDto = z.object({

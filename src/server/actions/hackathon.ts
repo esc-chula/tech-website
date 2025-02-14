@@ -5,6 +5,8 @@ import { type HackathonTicketType } from '@prisma/client';
 import { withRateLimit } from '~/lib/rate-limit';
 import { api } from '~/trpc/server';
 import {
+  type HackathonRegistration,
+  type HackathonTeamMemberInput,
   type HackathonTeamTicket,
   type HackathonTicket,
   type HackathonTicketClaim,
@@ -64,5 +66,13 @@ export async function getMyActiveClaim(): Promise<
   Response<HackathonTicketClaim[] | null>
 > {
   const res = await api.hackathon.getMyActiveClaim();
+  return res;
+}
+
+export async function registerHackathonTeam(
+  teamName: string,
+  teamMembers: HackathonTeamMemberInput[],
+): Promise<Response<HackathonRegistration>> {
+  const res = await api.hackathon.registerTeam({ teamName, teamMembers });
   return res;
 }

@@ -1,14 +1,16 @@
-import { genTicketPublicId } from '~/lib/hackathon-ticket';
+import { genPublicId } from '~/lib/hackathon-ticket';
 import { createTRPCRouter, trpc } from '~/server/api/trpc';
-import {
-  type HackathonTeamTicket,
-  type HackathonTicket,
-  type HackathonTicketClaim,
+import type {
+  HackathonRegistration,
+  HackathonTeamTicket,
+  HackathonTicket,
+  HackathonTicketClaim,
 } from '~/types/hackathon';
 import { type Response } from '~/types/server';
 
 import {
   ClaimHackathonTicketDto,
+  CreateHackathonRegistrationDto,
   CreateHackathonTeamTicketDto,
   CreateHackathonTicketDto,
 } from '../dto/hackathon';
@@ -259,7 +261,7 @@ export const hackathonRouter = createTRPCRouter({
 
             const teamTicket = await tx.hackathonTeamTicket.create({
               data: {
-                publicId: genTicketPublicId(),
+                publicId: genPublicId(),
                 userId,
                 tickets: {
                   connect: input.ticketIds.map((id) => ({ id })),
@@ -425,4 +427,78 @@ export const hackathonRouter = createTRPCRouter({
       };
     },
   ),
+
+  registerTeam: trpc
+    .input(CreateHackathonRegistrationDto)
+    .mutation(
+      async ({ ctx, input }): Promise<Response<HackathonRegistration>> => {
+        const userId = ctx.session.user?.id;
+        if (!userId) {
+          return {
+            success: false,
+            message: 'Unauthorized',
+            errors: ['Session ID not found'],
+          };
+        }
+
+        const res = await ctx.db.$transaction(async (tx) => {
+          try {
+            const teamTicket = await tx.hackathonTeamTicket.findUnique({
+              where: { userId },
+            });
+
+            if (!teamTicket) {
+              return {
+                success: false,
+                message: 'No team ticket found',
+              };
+            }
+
+            const registration = await tx.hackathonRegistration.create({
+              data: {
+                teamTicketId: teamTicket.id,
+                teamName: input.teamName,
+                teamMembers: {
+                  create: input.teamMembers.map((member) => ({
+                    ...member,
+                    publicId: genPublicId(),
+                  })),
+                },
+              },
+              include: {
+                teamTicket: true,
+                teamMembers: true,
+              },
+            });
+
+            return {
+              success: true,
+              message: 'Team registered successfully',
+              data: registration,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: 'Failed to register team',
+              error:
+                error instanceof Error ? error.message : 'Something went wrong',
+            };
+          }
+        });
+
+        if (res.error ?? !res.data) {
+          return {
+            success: false,
+            message: res.message,
+            errors: [res.error ?? 'Something went wrong'],
+          };
+        }
+
+        return {
+          success: true,
+          message: res.message,
+          data: res.data,
+        };
+      },
+    ),
 });
