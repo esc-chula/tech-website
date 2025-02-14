@@ -2,9 +2,10 @@ import { type StudentLoginResponse } from '~/generated/intania/auth/account/v1/a
 import { type Student } from '~/generated/intania/auth/student/v1/student';
 import { createTRPCRouter, trpc } from '~/server/api/trpc';
 import { grpc } from '~/server/auth/grpc';
+import { type Session } from '~/types/auth';
 import { type Response } from '~/types/server';
 
-import { LoginDto } from '../dto/auth';
+import { LoginDto, MeDto } from '../dto/auth';
 
 export const authRouter = createTRPCRouter({
   login: trpc
@@ -91,7 +92,49 @@ export const authRouter = createTRPCRouter({
       };
     }),
 
-  me: trpc.query(({ ctx }): Response<Student> => {
+  me: trpc
+    .input(MeDto)
+    .query(async ({ ctx, input }): Promise<Response<Student>> => {
+      if (!ctx.session.user) {
+        return {
+          success: false,
+          message: 'Unauthorized',
+          errors: ['Session ID not found'],
+        };
+      }
+
+      try {
+        const res = await grpc.account.me({
+          sessionId: input.sessionId,
+        });
+
+        if (!res.student) {
+          return {
+            success: false,
+            message: 'Failed to retrieve user data',
+            errors: ['Student data not found'],
+          };
+        }
+
+        return {
+          success: true,
+          message: 'Successfully retrieved user data',
+          data: res.student,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Failed to retrieve user data',
+          errors: [
+            error instanceof Error
+              ? error.message
+              : 'Something went wrong retrieving user data',
+          ],
+        };
+      }
+    }),
+
+  getSession: trpc.query(({ ctx }): Response<Session> => {
     if (!ctx.session.user) {
       return {
         success: false,

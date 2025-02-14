@@ -5,11 +5,11 @@ import type { OAuth2Client } from '@ory/hydra-client';
 import { hydra } from '~/lib/hydra';
 import { type Response } from '~/types/server';
 
-import { me } from './auth';
+import { getSession } from './auth';
 
 export async function listOAuth2Clients(): Promise<Response<OAuth2Client[]>> {
   try {
-    const res = await me();
+    const res = await getSession();
 
     if (!res.success) {
       return {

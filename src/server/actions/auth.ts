@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 
 import { type Student } from '~/generated/intania/auth/student/v1/student';
 import { api } from '~/trpc/server';
+import { type Session } from '~/types/auth';
 import { type Response } from '~/types/server';
 
 export async function login(
@@ -47,22 +48,16 @@ export async function login(
   };
 }
 
-export async function me(): Promise<Response<Student>> {
-  const res = await api.auth.me();
+export async function me({
+  sessionId,
+}: {
+  sessionId: string;
+}): Promise<Response<Student>> {
+  return await api.auth.me({ sessionId });
+}
 
-  if (!res.success) {
-    return {
-      success: false,
-      message: res.message,
-      errors: res.errors,
-    };
-  }
-
-  return {
-    success: true,
-    message: 'User data fetched',
-    data: res.data,
-  };
+export async function getSession(): Promise<Response<Session>> {
+  return await api.auth.getSession();
 }
 
 export async function logout(): Promise<Response<null>> {
