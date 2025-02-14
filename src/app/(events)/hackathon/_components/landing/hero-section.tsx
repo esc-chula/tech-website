@@ -24,7 +24,7 @@ const HeroSection: React.FC = () => {
       <HackathonTitle className="text-5xl sm:text-6xl md:hidden pt-7 sm:pt-5" />
       {IS_REGISTRATION_OPEN ? (
         <>
-          <Link className="rounded-full" href="/hackathon/register">
+          <Link className="rounded-full" href="/hackathon/ticket">
             <Button className="hover:scale-110 duration-300 ease-in-out">
               <span>Register</span>
               <span>{'->'}</span>
