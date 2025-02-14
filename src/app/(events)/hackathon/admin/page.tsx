@@ -5,10 +5,9 @@ import { useState } from 'react';
 import { type FC } from 'react';
 
 import { mockHackathonTickets } from '../_components/admin/mock-ticket-data';
-
-import TicketFilters from './ticket-filters';
-import TicketStats from './ticket-stats';
-import TicketsTable from './tickets-table';
+import TicketFilters from '../_components/admin/ticket-filters';
+import TicketStats from '../_components/admin/ticket-stats';
+import TicketsTable from '../_components/admin/tickets-table';
 
 interface Ticket {
   id: number;
