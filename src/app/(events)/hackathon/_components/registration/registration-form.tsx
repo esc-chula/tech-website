@@ -157,8 +157,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           faculty: 'Engineering',
           university: 'Chulalongkorn University',
         },
-        {},
-        {},
       ],
     },
   });
@@ -199,10 +197,68 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     );
   }, [currentUserData, form]);
 
-  function onSubmit(values: z.infer<typeof formSchema>): void {
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setLoading(true);
 
+    // simulate validation loading for 1.5 seconds
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1500);
+    });
+
+    // team members must be 4-5 members
+    if (values.teamMembers.length < 4) {
+      form.setError('teamMembers', {
+        type: 'manual',
+        message: 'Team must have at least 4 members',
+      });
+      setLoading(false);
+    }
+
+    // validate first 2 members student id
+    const studentIdRegex = /^6[4-7]3\d{5}21$/;
+    values.teamMembers.forEach((member, index) => {
+      if (index <= 1 && !studentIdRegex.test(member.studentId)) {
+        form.setError(`teamMembers.${index}.studentId`, {
+          type: 'manual',
+          message: 'Invalid Student ID',
+        });
+        setLoading(false);
+      }
+    });
+
+    // validate if any team member has the same student id or first and last name
+    const studentIds = new Set<string>();
+    const names = new Set<string>();
+    values.teamMembers.forEach((member, index) => {
+      const studentId = member.studentId;
+      const name = `${member.firstName} ${member.lastName}`;
+      if (studentIds.has(studentId)) {
+        form.setError(`teamMembers.${index}.studentId`, {
+          type: 'manual',
+          message: 'Duplicate Student ID',
+        });
+        setLoading(false);
+      }
+      if (names.has(name)) {
+        form.setError(`teamMembers.${index}.firstName`, {
+          type: 'manual',
+          message: 'Duplicate Name',
+        });
+        form.setError(`teamMembers.${index}.lastName`, {
+          type: 'manual',
+          message: 'Duplicate Name',
+        });
+        setLoading(false);
+      }
+      studentIds.add(studentId);
+      names.add(name);
+    });
+
+    // TODO: integrate with api, redirect to success page
+
     console.log(values);
+
+    setLoading(false);
   }
 
   if (!mounted) {
@@ -215,6 +271,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         className="flex flex-col items-center gap-5 w-full"
         onSubmit={form.handleSubmit(onSubmit)}
       >
+        {/* team name */}
         <FormSection title="Team">
           <FormField
             control={form.control}
@@ -227,14 +284,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 <FormControl>
                   <Input {...field} placeholder="Please Fill Your Team Name" />
                 </FormControl>
+                <FormDescription>Team name will be public.</FormDescription>
                 <FormMessage />
-                <FormDescription>
-                  Team name will be public, please be appropriate.
-                </FormDescription>
               </FormItem>
             )}
           />
         </FormSection>
+        {/* members */}
         <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 max-w-screen-sm w-full">
           {form.watch('teamMembers').map((_, index) => (
             <Scroll
@@ -244,12 +300,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               offset={-20}
               to={`Member #${index + 1}`}
             >
-              <div className="relative aspect-square w-[50%]">
+              <div className="relative aspect-square h-[50%]">
                 <Image
                   fill
                   alt="member"
                   className="object-contain select-none pointer-events-none"
-                  sizes="(max-width: 640px) 50vw, 25vw"
+                  sizes="(min-width: 640px) 100px, 80px"
                   src="/hackathon/assets/registration-member.png"
                 />
               </div>
@@ -276,6 +332,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             </button>
           )}
         </div>
+        {/* team members error */}
+        {form.formState.errors.teamMembers ? (
+          <p className="text-red-500 text-sm text-center">
+            {form.formState.errors.teamMembers.message}
+          </p>
+        ) : null}
+        {/* members form */}
         {form.watch('teamMembers').map((_, index) => (
           <FormSection
             key={index}
@@ -357,8 +420,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                             return;
                           }
                           form.setValue(
-                            `teamMembers.${index}.role`,
-                            value as 'DEVELOPER' | 'DESIGNER' | 'PRODUCT',
+                            `teamMembers.${index}.pronoun`,
+                            value as z.infer<
+                              typeof formSchema
+                            >['teamMembers'][0]['pronoun'],
                           );
                         }}
                       >
@@ -414,8 +479,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                         placeholder="Please Fill Your Phone Number"
                       />
                     </FormControl>
-                    <FormMessage />
                     <FormDescription>Format: 0XX-XXX-XXXX</FormDescription>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -434,12 +499,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                         readOnly={index === 0}
                       />
                     </FormControl>
-                    <FormMessage />
                     {index <= 1 ? (
                       <FormDescription>
                         Must be Chulalongkorn and Engineering Student ID.
                       </FormDescription>
                     ) : null}
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -513,7 +578,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                           }
                           form.setValue(
                             `teamMembers.${index}.role`,
-                            value as 'DEVELOPER' | 'DESIGNER' | 'PRODUCT',
+                            value as z.infer<
+                              typeof formSchema
+                            >['teamMembers'][0]['role'],
                           );
                         }}
                       >
@@ -586,9 +653,22 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             </div>
           </FormSection>
         ))}
+        {/* submit */}
         <div className="fixed max-w-md w-full bottom-2 sm:bottom-5 px-3">
           <div className="bg-black/20 backdrop-blur-md border-2 border-white/20 rounded-2xl flex justify-between items-center p-2">
-            <div />
+            <div className="pl-2">
+              <p className="text-xs text-white/50">
+                {loading ? (
+                  'Validating your team informations...'
+                ) : (
+                  <>
+                    Please review your team informations
+                    <br />
+                    before submitting.
+                  </>
+                )}
+              </p>
+            </div>
             <div>
               <button
                 className="bg-hackathon-primary hover:bg-hackathon-primary/90 rounded-xl h-10 px-4"
