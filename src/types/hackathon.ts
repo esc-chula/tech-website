@@ -1,4 +1,4 @@
-import { type HackathonTicketType } from '@prisma/client';
+import type { HackathonPronoun, HackathonTicketType } from '@prisma/client';
 
 export interface HackathonTicket {
   id: number;
@@ -21,4 +21,23 @@ export interface HackathonTicketClaim {
   userId: number;
   claimedAt: Date;
   expiredAt: Date | null;
+}
+
+export interface HackathonTeamMember {
+  id: number;
+  firstName: string;
+  lastName: string;
+  nickname: string;
+  pronoun: HackathonPronoun;
+  phoneNumber: string;
+  email: string;
+  studentId: string;
+  faculty: string;
+  department: string;
+}
+
+export interface HackathonRegistration {
+  id: number;
+  teamName: string;
+  teamMembers: HackathonTeamMember[];
 }

@@ -1,4 +1,8 @@
-import { HackathonTicketType } from '@prisma/client';
+import {
+  HackathonPronoun,
+  HackathonRole,
+  HackathonTicketType,
+} from '@prisma/client';
 import { z } from 'zod';
 
 export const CreateHackathonTicketDto = z.object({
@@ -16,4 +20,26 @@ export const ClaimHackathonTicketDto = z.object({
 
 export const CreateHackathonTeamTicketDto = z.object({
   ticketIds: z.array(z.number()).length(2),
+});
+
+export const CreateHackathonTeamMemberDto = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  nickname: z.string(),
+  pronoun: z.nativeEnum(HackathonPronoun),
+  phoneNumber: z.string(),
+  email: z.string().email(),
+  studentId: z.string(),
+  faculty: z.string(),
+  department: z.string(),
+  university: z.string(),
+  role: z.nativeEnum(HackathonRole),
+  foodRestriction: z.string().optional(),
+  medication: z.string().optional(),
+  medicalCondition: z.string().optional(),
+});
+
+export const CreateHackathonRegistrationDto = z.object({
+  teamName: z.string(),
+  teamMembers: z.array(CreateHackathonTeamMemberDto),
 });
