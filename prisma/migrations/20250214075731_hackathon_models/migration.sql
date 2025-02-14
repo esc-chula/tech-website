@@ -9,7 +9,6 @@ CREATE TABLE "HackathonTicket" (
     "id" SERIAL NOT NULL,
     "code" TEXT NOT NULL,
     "ticketType" "HackathonTicketType" NOT NULL,
-    "isClaimed" BOOLEAN NOT NULL DEFAULT false,
     "isRegistered" BOOLEAN NOT NULL DEFAULT false,
     "teamTicketId" INTEGER,
 
