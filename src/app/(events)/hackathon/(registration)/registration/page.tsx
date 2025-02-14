@@ -26,7 +26,7 @@ const Page: React.FC = async () => {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-dvh gap-6 pt-20 pb-28 px-3">
+    <div className="flex flex-col items-center min-h-dvh gap-6 pt-20 pb-28">
       <h1 className="text-4xl md:text-5xl font-semibold">Registration</h1>
       <RegistrationForm currentUserData={res.data} />
     </div>

@@ -586,20 +586,22 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             </div>
           </FormSection>
         ))}
-        <div className="fixed max-w-md w-full bottom-5 bg-black/20 backdrop-blur-md border-2 border-white/20 rounded-2xl flex justify-between items-center p-2">
-          <div />
-          <div>
-            <button
-              className="bg-hackathon-primary hover:bg-hackathon-primary/90 rounded-xl h-10 px-4"
-              disabled={loading}
-              type="submit"
-            >
-              {loading ? (
-                <LoaderCircle className="animate-spin opacity-50" />
-              ) : (
-                'Submit'
-              )}
-            </button>
+        <div className="fixed max-w-md w-full bottom-2 sm:bottom-5 px-3">
+          <div className="bg-black/20 backdrop-blur-md border-2 border-white/20 rounded-2xl flex justify-between items-center p-2">
+            <div />
+            <div>
+              <button
+                className="bg-hackathon-primary hover:bg-hackathon-primary/90 rounded-xl h-10 px-4"
+                disabled={loading}
+                type="submit"
+              >
+                {loading ? (
+                  <LoaderCircle className="animate-spin opacity-50" />
+                ) : (
+                  'Submit'
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </form>
