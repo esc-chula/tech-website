@@ -48,12 +48,19 @@ export async function login(
   };
 }
 
-export async function me({
-  sessionId,
-}: {
-  sessionId: string;
-}): Promise<Response<Student>> {
-  return await api.auth.me({ sessionId });
+export async function me(): Promise<Response<Student>> {
+  const cookieStore = cookies();
+  const sid = cookieStore.get('sid')?.value;
+
+  if (!sid) {
+    return {
+      success: false,
+      message: 'Unauthorized: No session ID found',
+      errors: ['No session ID found'],
+    };
+  }
+
+  return await api.auth.me({ sessionId: sid });
 }
 
 export async function getSession(): Promise<Response<Session>> {
