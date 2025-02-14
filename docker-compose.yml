@@ -124,8 +124,6 @@ services:
     image: redis:7.2-bookworm
     restart: unless-stopped
     hostname: auth-redis
-    ports:
-      - 6379:6379
     command: ['redis-server', '--requirepass', '123456']
 
   auth-migrations:
