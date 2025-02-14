@@ -8,7 +8,6 @@ const Layout: React.FC<Readonly<{ children: React.ReactNode }>> = async ({
   children,
 }) => {
   const resCheck = await checkAppRole({ appId: 'hackathon', role: 'admin' });
-  // console.log(resCheck);
 
   if (!resCheck.success) return notFound();
   return (
