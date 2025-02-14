@@ -130,6 +130,7 @@ const RegistrationForm: React.FC = () => {
                   fill
                   alt="member"
                   className="object-contain select-none pointer-events-none"
+                  sizes="(max-width: 640px) 50vw, 25vw"
                   src="/hackathon/assets/registration-member.png"
                 />
               </div>
