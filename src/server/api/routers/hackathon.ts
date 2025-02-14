@@ -13,6 +13,7 @@ import {
   CreateHackathonRegistrationDto,
   CreateHackathonTeamTicketDto,
   CreateHackathonTicketDto,
+  UpdateHackathonRegistrationDto,
 } from '../dto/hackathon';
 
 export const hackathonRouter = createTRPCRouter({
@@ -566,4 +567,88 @@ export const hackathonRouter = createTRPCRouter({
       };
     },
   ),
+
+  updateMyRegistration: trpc
+    .input(UpdateHackathonRegistrationDto)
+    .mutation(
+      async ({ ctx, input }): Promise<Response<HackathonRegistration>> => {
+        const userId = ctx.session.user?.id;
+        if (!userId) {
+          return {
+            success: false,
+            message: 'Unauthorized',
+            errors: ['Session ID not found'],
+          };
+        }
+
+        const res = await ctx.db.$transaction(async (tx) => {
+          try {
+            const teamTicket = await tx.hackathonTeamTicket.findUnique({
+              where: { userId },
+            });
+
+            if (!teamTicket) {
+              return {
+                success: false,
+                message: 'No team ticket found',
+              };
+            }
+
+            const registration = await tx.hackathonRegistration.findUnique({
+              where: { teamTicketId: teamTicket.id },
+            });
+
+            if (!registration) {
+              return {
+                success: false,
+                message: 'No registration found',
+              };
+            }
+
+            const updatedRegistration = await tx.hackathonRegistration.update({
+              where: { id: registration.id },
+              data: {
+                teamName: input.teamName,
+                teamMembers: {
+                  update: input.teamMembers.map((member) => ({
+                    where: { id: member.id },
+                    data: member,
+                  })),
+                },
+              },
+              include: {
+                teamMembers: true,
+              },
+            });
+
+            return {
+              success: true,
+              message: 'Registration updated successfully',
+              data: updatedRegistration,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: 'Failed to update hackathon registration',
+              error:
+                error instanceof Error ? error.message : 'Something went wrong',
+            };
+          }
+        });
+
+        if (res.error ?? !res.data) {
+          return {
+            success: false,
+            message: res.message,
+            errors: [res.error ?? 'Something went wrong'],
+          };
+        }
+
+        return {
+          success: true,
+          message: res.message,
+          data: res.data,
+        };
+      },
+    ),
 });

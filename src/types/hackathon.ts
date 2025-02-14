@@ -53,7 +53,11 @@ export interface HackathonRegistration {
   teamMembers: HackathonTeamMember[];
 }
 
-export type HackathonTeamMemberInput = Omit<
+export type CreateHackathonTeamMemberInput = Omit<
   HackathonTeamMember,
   'id' | 'publicId'
 >;
+
+export type UpdateHackathonTeamMemberInput = CreateHackathonTeamMemberInput & {
+  id: number;
+};
