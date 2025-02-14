@@ -254,7 +254,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       names.add(name);
     });
 
-    // TODO: integrate with api, redirect to success page
+    // TODO: integrate with api, redirect to success page, check if user has team ticket and not registered yet
 
     console.log(values);
 
@@ -297,7 +297,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               key={index}
               smooth
               className="bg-white/5 backdrop-blur-md border-2 border-white/10 hover:border-white/50 rounded-2xl w-full aspect-square flex flex-col items-center justify-center gap-2 cursor-pointer text-center"
-              offset={-20}
+              offset={-64}
               to={`Hacker #${index + 1}`}
             >
               <div className="relative aspect-square h-[50%]">
