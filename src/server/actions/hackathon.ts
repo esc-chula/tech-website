@@ -76,3 +76,10 @@ export async function registerHackathonTeam(
   const res = await api.hackathon.registerTeam({ teamName, teamMembers });
   return res;
 }
+
+export async function getMyRegistration(): Promise<
+  Response<HackathonRegistration | null>
+> {
+  const res = await api.hackathon.getMyRegistration();
+  return res;
+}

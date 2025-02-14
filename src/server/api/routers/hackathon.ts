@@ -501,4 +501,69 @@ export const hackathonRouter = createTRPCRouter({
         };
       },
     ),
+
+  getMyRegistration: trpc.query(
+    async ({ ctx }): Promise<Response<HackathonRegistration | null>> => {
+      const userId = ctx.session.user?.id;
+      if (!userId) {
+        return {
+          success: false,
+          message: 'Unauthorized',
+          errors: ['Session ID not found'],
+        };
+      }
+
+      const res = await ctx.db.$transaction(async (tx) => {
+        try {
+          const teamTicket = await tx.hackathonTeamTicket.findUnique({
+            where: { userId },
+          });
+
+          if (!teamTicket) {
+            return {
+              success: true,
+              message: 'No registration found',
+              data: null,
+            };
+          }
+
+          const registration = await tx.hackathonRegistration.findUnique({
+            where: { teamTicketId: teamTicket.id },
+            include: {
+              teamMembers: true,
+            },
+          });
+
+          return {
+            success: true,
+            message: registration
+              ? 'Registration found'
+              : 'No registration found',
+            data: registration,
+          };
+        } catch (error) {
+          return {
+            success: false,
+            message: 'Failed to fetch hackathon registration',
+            error:
+              error instanceof Error ? error.message : 'Something went wrong',
+          };
+        }
+      });
+
+      if (res.error ?? !res.data) {
+        return {
+          success: false,
+          message: res.message,
+          errors: [res.error ?? 'Something went wrong'],
+        };
+      }
+
+      return {
+        success: true,
+        message: res.message,
+        data: res.data,
+      };
+    },
+  ),
 });
