@@ -2,7 +2,9 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
+import { Link as Scroll } from 'react-scroll';
 import { z } from 'zod';
 
 import {
@@ -70,8 +72,13 @@ const RegistrationForm: React.FC = () => {
         {
           firstName: '',
           lastName: '',
+          nickname: '',
+          pronoun: '',
+          phoneNumber: '',
+          email: '',
           studentId: '',
           faculty: 'Engineering',
+          department: '',
           university: 'Chulalongkorn University',
         },
         {
@@ -109,6 +116,56 @@ const RegistrationForm: React.FC = () => {
             )}
           />
         </FormSection>
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 max-w-screen-sm w-full">
+          {form.watch('teamMembers').map((_, index) => (
+            <Scroll
+              key={index}
+              smooth
+              className="bg-white/5 backdrop-blur-md border-2 border-white/10 hover:border-white/50 rounded-2xl w-full aspect-square flex flex-col items-center justify-center gap-2 cursor-pointer text-center"
+              offset={-20}
+              to={`Member #${index + 1}`}
+            >
+              <div className="relative aspect-square w-[50%]">
+                <Image
+                  fill
+                  alt="member"
+                  className="object-contain select-none pointer-events-none"
+                  src="/hackathon/assets/registration-member.png"
+                />
+              </div>
+              <span className="text-xs sm:text-sm font-ndot47">
+                Member #{index + 1}
+              </span>
+            </Scroll>
+          ))}
+          {form.watch('teamMembers').length < 5 && (
+            <button
+              className="bg-white/5 backdrop-blur-md border-2 border-white/10 hover:border-white/50 rounded-2xl w-full aspect-square flex flex-col items-center justify-center gap-2 cursor-pointer"
+              type="button"
+              onClick={() => {
+                form.setValue('teamMembers', [
+                  ...form.getValues('teamMembers'),
+                  {
+                    firstName: '',
+                    lastName: '',
+                    nickname: '',
+                    pronoun: '',
+                    phoneNumber: '',
+                    email: '',
+                    studentId: '',
+                    faculty: 'Engineering',
+                    department: '',
+                    university: 'Chulalongkorn University',
+                    role: 'DEVELOPER',
+                  },
+                ]);
+              }}
+            >
+              <span className="font-ndot47 text-3xl">+</span>
+              <span className="text-xs text-white/60">Add Member #5</span>
+            </button>
+          )}
+        </div>
         {form.watch('teamMembers').map((_, index) => (
           <FormSection key={index} title={`Member #${index + 1}`}>
             <div className="grid sm:grid-cols-2 gap-2 md:gap-6">
