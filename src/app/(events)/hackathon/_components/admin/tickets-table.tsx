@@ -25,10 +25,7 @@ interface TicketsTableProps {
   setTickets: Dispatch<SetStateAction<Ticket[]>>;
 }
 
-const TicketsTable = ({
-  tickets,
-  setTickets,
-}: TicketsTableProps): JSX.Element => {
+const TicketsTable: React.FC<TicketsTableProps> = ({ tickets, setTickets }) => {
   return (
     <Table>
       <TableHeader>

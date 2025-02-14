@@ -27,10 +27,10 @@ interface TicketActionsProps {
   setTickets: React.Dispatch<React.SetStateAction<Ticket[]>>;
 }
 
-const TicketActions = ({
+const TicketActions: React.FC<TicketActionsProps> = ({
   setTickets,
   ticket,
-}: TicketActionsProps): JSX.Element => {
+}) => {
   function deleteTicket(): void {
     setTickets((prev) => prev.filter((t) => t.id !== ticket.id));
   }

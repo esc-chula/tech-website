@@ -2,7 +2,6 @@
 
 import type { HackathonTicketType } from '@prisma/client';
 import { useState } from 'react';
-import { type FC } from 'react';
 
 import { mockHackathonTickets } from '../_components/admin/mock-ticket-data';
 import TicketFilters from '../_components/admin/ticket-filters';
@@ -17,7 +16,7 @@ interface Ticket {
   code: string;
   ticketType: HackathonTicketType;
 }
-const AdminTicketsPage: FC = () => {
+const AdminTicketsPage: React.FC = () => {
   const [tickets, setTickets] = useState<Ticket[]>(mockHackathonTickets);
   const [filter, setFilter] = useState('ALL');
 

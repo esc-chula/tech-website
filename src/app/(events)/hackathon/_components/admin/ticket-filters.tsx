@@ -6,7 +6,7 @@ interface TicketFiltersProps {
   setFilter: Dispatch<SetStateAction<string>>;
 }
 
-const TicketFilters = ({ setFilter }: TicketFiltersProps): JSX.Element => {
+const TicketFilters: React.FC<TicketFiltersProps> = ({ setFilter }) => {
   return (
     <div className="flex space-x-4 items-center justify-center">
       <Button onClick={() => setFilter('ALL')}>All</Button>
