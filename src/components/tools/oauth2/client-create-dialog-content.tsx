@@ -26,7 +26,7 @@ import {
 import { Input } from '~/components/ui/input';
 import { scopes } from '~/constants/oauth';
 import { useToast } from '~/hooks/use-toast';
-import { me } from '~/server/actions/auth';
+import { getSession } from '~/server/actions/auth';
 import { createOAuth2Client } from '~/server/actions/oauth';
 
 import MultiInput from '../../ui/multi-input';
@@ -68,7 +68,7 @@ const ClientCreateDialogContent: React.FC = () => {
   async function createOAuthClient(
     values: z.infer<typeof formSchema>,
   ): Promise<void> {
-    const meRes = await me();
+    const meRes = await getSession();
 
     if (!meRes.success) {
       throw new Error('Failed to fetch user information');

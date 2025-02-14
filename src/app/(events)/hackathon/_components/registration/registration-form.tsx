@@ -2,7 +2,9 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { LoaderCircle } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as Scroll } from 'react-scroll';
 import { z } from 'zod';
@@ -10,14 +12,23 @@ import { z } from 'zod';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '~/components/ui/form';
+import { type Student } from '~/generated/intania/auth/student/v1/student';
 
 import FormSection from '../common/form-section';
 import Input from '../common/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../common/select';
 
 const formSchema = z.object({
   teamName: z.string().min(1, {
@@ -25,60 +36,121 @@ const formSchema = z.object({
   }),
   teamMembers: z.array(
     z.object({
-      firstName: z.string().min(1, {
-        message: 'First Name is required',
-      }),
-      lastName: z.string().min(1, {
-        message: 'Last Name is required',
-      }),
-      nickname: z.string().min(1, {
-        message: 'Nickname is required',
-      }),
-      pronoun: z.string().min(1, {
-        message: 'Pronoun is required',
-      }),
-      phoneNumber: z.string().min(1, {
-        message: 'Phone number is required',
-      }),
-      email: z.string().email().min(1, {
-        message: 'Email is required',
-      }),
+      firstName: z
+        .string()
+        .min(1, {
+          message: 'First Name is required',
+        })
+        .max(90, {
+          message: 'Invalid First Name',
+        }),
+      lastName: z
+        .string()
+        .min(1, {
+          message: 'Last Name is required',
+        })
+        .max(90, {
+          message: 'Invalid Last Name',
+        }),
+      nickname: z
+        .string()
+        .min(1, {
+          message: 'Nickname is required',
+        })
+        .max(50, {
+          message: 'Invalid Nickname',
+        }),
+      pronoun: z.enum([
+        'he/him/his',
+        'she/her/hers',
+        'they/them/theirs',
+        'other',
+      ]),
+      phoneNumber: z
+        .string()
+        .regex(/^\d{2,3}-\d{3,4}-\d{3,4}$/)
+        .min(1, {
+          message: 'Phone number is required',
+        })
+        .max(16, {
+          message: 'Invalid Phone number',
+        }),
+      email: z
+        .string()
+        .email()
+        .min(1, {
+          message: 'Email is required',
+        })
+        .max(60, {
+          message: 'Invalid Email',
+        }),
       studentId: z.string().min(1, {
         message: 'Student ID is required',
       }),
-      faculty: z.string().min(1, {
-        message: 'Faculty is required',
-      }),
-      department: z.string().min(1, {
-        message: 'Department is required',
-      }),
-      university: z.string().min(1, {
-        message: 'University is required',
-      }),
+      faculty: z
+        .string()
+        .min(1, {
+          message: 'Faculty is required',
+        })
+        .max(90, {
+          message: 'Invalid Faculty',
+        }),
+      department: z
+        .string()
+        .min(1, {
+          message: 'Department is required',
+        })
+        .max(90, {
+          message: 'Invalid Department',
+        }),
+      university: z
+        .string()
+        .min(1, {
+          message: 'University is required',
+        })
+        .max(90, {
+          message: 'Invalid University',
+        }),
       role: z.enum(['DEVELOPER', 'DESIGNER', 'PRODUCT']),
-      foodRestriction: z.string().optional(),
-      medication: z.string().optional(),
-      medicalCondition: z.string().optional(),
+      foodRestriction: z
+        .string()
+        .max(90, {
+          message: 'Invalid Food Restriction',
+        })
+        .optional(),
+      medication: z
+        .string()
+        .max(90, {
+          message: 'Invalid Medication',
+        })
+        .optional(),
+      medicalCondition: z
+        .string()
+        .max(90, {
+          message: 'Invalid Medical Condition',
+        })
+        .optional(),
     }),
   ),
 });
 
-const RegistrationForm: React.FC = () => {
+interface RegistrationFormProps {
+  currentUserData: Student;
+}
+
+const RegistrationForm: React.FC<RegistrationFormProps> = ({
+  currentUserData,
+}) => {
+  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       teamName: '',
       teamMembers: [
         {
-          firstName: '',
-          lastName: '',
-          nickname: '',
-          pronoun: '',
-          phoneNumber: '',
-          email: '',
-          studentId: '',
           faculty: 'Engineering',
-          department: '',
           university: 'Chulalongkorn University',
         },
         {
@@ -91,8 +163,50 @@ const RegistrationForm: React.FC = () => {
     },
   });
 
+  useEffect(() => {
+    setMounted(true);
+
+    form.setValue('teamMembers.0.firstName', currentUserData.firstNameEn ?? '');
+    form.setValue('teamMembers.0.lastName', currentUserData.familyNameEn ?? '');
+    form.setValue('teamMembers.0.nickname', currentUserData.nicknameEn ?? '');
+    form.setValue(
+      'teamMembers.0.pronoun',
+      currentUserData.preferredPronoun as z.infer<
+        typeof formSchema
+      >['teamMembers'][0]['pronoun'],
+    );
+    form.setValue(
+      'teamMembers.0.phoneNumber',
+      currentUserData.phoneNumber ?? '',
+    );
+    form.setValue('teamMembers.0.email', currentUserData.email ?? '');
+    form.setValue('teamMembers.0.studentId', currentUserData.studentId ?? '');
+    form.setValue(
+      'teamMembers.0.department',
+      currentUserData.department?.nameEn ?? '',
+    );
+    form.setValue(
+      'teamMembers.0.foodRestriction',
+      currentUserData.foodLimitations ?? '',
+    );
+    form.setValue(
+      'teamMembers.0.medication',
+      currentUserData.medications ?? '',
+    );
+    form.setValue(
+      'teamMembers.0.medicalCondition',
+      currentUserData.medicalConditions ?? '',
+    );
+  }, [currentUserData, form]);
+
   function onSubmit(values: z.infer<typeof formSchema>): void {
+    setLoading(true);
+
     console.log(values);
+  }
+
+  if (!mounted) {
+    return <LoaderCircle className="animate-spin opacity-50" size={32} />;
   }
 
   return (
@@ -107,11 +221,16 @@ const RegistrationForm: React.FC = () => {
             name="teamName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Team Name</FormLabel>
+                <FormLabel>
+                  Team Name<span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Please Fill Your Team Name" />
                 </FormControl>
                 <FormMessage />
+                <FormDescription>
+                  Team name will be public, please be appropriate.
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -146,36 +265,34 @@ const RegistrationForm: React.FC = () => {
               onClick={() => {
                 form.setValue('teamMembers', [
                   ...form.getValues('teamMembers'),
-                  {
-                    firstName: '',
-                    lastName: '',
-                    nickname: '',
-                    pronoun: '',
-                    phoneNumber: '',
-                    email: '',
-                    studentId: '',
-                    faculty: 'Engineering',
-                    department: '',
-                    university: 'Chulalongkorn University',
-                    role: 'DEVELOPER',
-                  },
+                  {} as z.infer<typeof formSchema>['teamMembers'][0],
                 ]);
               }}
             >
               <span className="font-ndot47 text-3xl">+</span>
-              <span className="text-xs text-white/60">Add Member #5</span>
+              <span className="text-xs text-white/60">
+                Add Member #{form.watch('teamMembers').length + 1}
+              </span>
             </button>
           )}
         </div>
         {form.watch('teamMembers').map((_, index) => (
-          <FormSection key={index} title={`Member #${index + 1}`}>
+          <FormSection
+            key={index}
+            title={`Member #${index + 1}`}
+            description={
+              index <= 1 ? 'Must be Chulalongkorn student.' : undefined
+            }
+          >
             <div className="grid sm:grid-cols-2 gap-2 md:gap-6">
               <FormField
                 control={form.control}
                 name={`teamMembers.${index}.firstName`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Name</FormLabel>
+                    <FormLabel>
+                      First Name<span className="text-red-500">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -191,7 +308,9 @@ const RegistrationForm: React.FC = () => {
                 name={`teamMembers.${index}.lastName`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last Name</FormLabel>
+                    <FormLabel>
+                      Last Name<span className="text-red-500">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -209,7 +328,9 @@ const RegistrationForm: React.FC = () => {
                 name={`teamMembers.${index}.nickname`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nickname</FormLabel>
+                    <FormLabel>
+                      Nickname<span className="text-red-500">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -225,12 +346,38 @@ const RegistrationForm: React.FC = () => {
                 name={`teamMembers.${index}.pronoun`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Pronoun</FormLabel>
+                    <FormLabel>
+                      Pronoun<span className="text-red-500">*</span>
+                    </FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Please Select Your Pronoun"
-                      />
+                      <Select
+                        value={field.value}
+                        onValueChange={(value) => {
+                          if (!value) {
+                            return;
+                          }
+                          form.setValue(
+                            `teamMembers.${index}.role`,
+                            value as 'DEVELOPER' | 'DESIGNER' | 'PRODUCT',
+                          );
+                        }}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Please Select Your Pronoun" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="he/him/his">He/Him/His</SelectItem>
+                          <SelectItem value="she/her/hers">
+                            She/Her/Hers
+                          </SelectItem>
+                          <SelectItem value="they/them/theirs">
+                            They/Them/Theirs
+                          </SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -242,7 +389,9 @@ const RegistrationForm: React.FC = () => {
               name={`teamMembers.${index}.email`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>
+                    Email<span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Please Fill Your Email" />
                   </FormControl>
@@ -256,7 +405,9 @@ const RegistrationForm: React.FC = () => {
                 name={`teamMembers.${index}.phoneNumber`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
+                    <FormLabel>
+                      Phone Number<span className="text-red-500">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -264,6 +415,7 @@ const RegistrationForm: React.FC = () => {
                       />
                     </FormControl>
                     <FormMessage />
+                    <FormDescription>Format: 0XX-XXX-XXXX</FormDescription>
                   </FormItem>
                 )}
               />
@@ -272,14 +424,22 @@ const RegistrationForm: React.FC = () => {
                 name={`teamMembers.${index}.studentId`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Student ID</FormLabel>
+                    <FormLabel>
+                      Student ID<span className="text-red-500">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         placeholder="Please Fill Your Student ID"
+                        readOnly={index === 0}
                       />
                     </FormControl>
                     <FormMessage />
+                    {index <= 1 ? (
+                      <FormDescription>
+                        Must be Chulalongkorn and Engineering Student ID.
+                      </FormDescription>
+                    ) : null}
                   </FormItem>
                 )}
               />
@@ -289,7 +449,9 @@ const RegistrationForm: React.FC = () => {
               name={`teamMembers.${index}.faculty`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Faculty</FormLabel>
+                  <FormLabel>
+                    Faculty<span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Please Fill Your Faculty" />
                   </FormControl>
@@ -302,7 +464,9 @@ const RegistrationForm: React.FC = () => {
               name={`teamMembers.${index}.department`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Department</FormLabel>
+                  <FormLabel>
+                    Department<span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -318,7 +482,9 @@ const RegistrationForm: React.FC = () => {
               name={`teamMembers.${index}.university`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>University</FormLabel>
+                  <FormLabel>
+                    University<span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -335,9 +501,33 @@ const RegistrationForm: React.FC = () => {
                 name={`teamMembers.${index}.role`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Role</FormLabel>
+                    <FormLabel>
+                      Role<span className="text-red-500">*</span>
+                    </FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Please Select Your Role" />
+                      <Select
+                        value={field.value}
+                        onValueChange={(value) => {
+                          if (!value) {
+                            return;
+                          }
+                          form.setValue(
+                            `teamMembers.${index}.role`,
+                            value as 'DEVELOPER' | 'DESIGNER' | 'PRODUCT',
+                          );
+                        }}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Please Select Your Role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="DEVELOPER">Developer</SelectItem>
+                          <SelectItem value="DESIGNER">Designer</SelectItem>
+                          <SelectItem value="PRODUCT">Product</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -396,14 +586,19 @@ const RegistrationForm: React.FC = () => {
             </div>
           </FormSection>
         ))}
-        <div className="fixed max-w-md w-full bottom-5 bg-black/20 backdrop-blur-md border-[3px] border-white/20 rounded-2xl flex justify-between items-center p-2">
+        <div className="fixed max-w-md w-full bottom-5 bg-black/20 backdrop-blur-md border-2 border-white/20 rounded-2xl flex justify-between items-center p-2">
           <div />
           <div>
             <button
               className="bg-hackathon-primary hover:bg-hackathon-primary/90 rounded-xl h-10 px-4"
+              disabled={loading}
               type="submit"
             >
-              Submit
+              {loading ? (
+                <LoaderCircle className="animate-spin opacity-50" />
+              ) : (
+                'Submit'
+              )}
             </button>
           </div>
         </div>

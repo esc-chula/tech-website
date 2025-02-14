@@ -21,7 +21,7 @@ const Page: React.FC<PageProps> = ({ searchParams }) => {
   const sid = cookieStore.get('sid')?.value;
 
   if (sid) {
-    redirect(redirectUrl ?? '/hackathon/register');
+    redirect(redirectUrl ?? '/hackathon');
   }
 
   return (
