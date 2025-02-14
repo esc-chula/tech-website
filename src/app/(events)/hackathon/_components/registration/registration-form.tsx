@@ -209,7 +209,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     if (values.teamMembers.length < 4) {
       form.setError('teamMembers', {
         type: 'manual',
-        message: 'Team must have at least 4 members',
+        message: 'Team must have at least 4 hackers',
       });
       setLoading(false);
     }
@@ -298,7 +298,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               smooth
               className="bg-white/5 backdrop-blur-md border-2 border-white/10 hover:border-white/50 rounded-2xl w-full aspect-square flex flex-col items-center justify-center gap-2 cursor-pointer text-center"
               offset={-20}
-              to={`Member #${index + 1}`}
+              to={`Hacker #${index + 1}`}
             >
               <div className="relative aspect-square h-[50%]">
                 <Image
@@ -310,7 +310,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 />
               </div>
               <span className="text-xs sm:text-sm font-ndot47">
-                Member #{index + 1}
+                Hacker #{index + 1}
               </span>
             </Scroll>
           ))}
@@ -342,7 +342,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         {form.watch('teamMembers').map((_, index) => (
           <FormSection
             key={index}
-            title={`Member #${index + 1}`}
+            title={`Hacker #${index + 1}`}
             description={
               index <= 1 ? 'Must be Chulalongkorn student.' : undefined
             }
