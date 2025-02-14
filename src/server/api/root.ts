@@ -9,11 +9,11 @@ import { techmonthRouter } from './routers/techmonth';
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
+  hackathon: hackathonRouter,
   linkShortener: linkShortenerRouter,
   qrCode: qrCodeRouter,
   role: roleRouter,
   techmonth: techmonthRouter,
-  hackathon: hackathonRouter,
 });
 
 export type AppRouter = typeof appRouter;
