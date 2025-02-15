@@ -27,7 +27,6 @@ export const env = createEnv({
     GRPC_ADDRESS: process.env.GRPC_ADDRESS,
     HYDRA_ADMIN_URL: process.env.HYDRA_ADMIN_URL,
     REDIS_URL: process.env.REDIS_URL,
-
     // client
     NEXT_PUBLIC_GTAG_ID: runtimeEnv('NEXT_PUBLIC_GTAG_ID'),
     NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: runtimeEnv(
