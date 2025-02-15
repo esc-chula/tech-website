@@ -171,10 +171,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     form.setValue('teamMembers.0.firstName', currentUserData.firstNameEn ?? '');
     form.setValue('teamMembers.0.lastName', currentUserData.familyNameEn ?? '');
     form.setValue('teamMembers.0.nickname', currentUserData.nicknameEn ?? '');
-    // 'he/him/his',
-    // 'she/her/hers',
-    // 'they/them/theirs',
-    // 'other',
     const currentPronoun = (): z.infer<
       typeof formSchema
     >['teamMembers'][0]['pronoun'] => {
@@ -273,6 +269,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       names.add(name);
     });
 
+    if (!form.formState.isValid) {
+      setLoading(false);
+
+      return;
+    }
+
     // TODO: integrate with api, redirect to success page, check if user has team ticket and not registered yet
     const resTeamTicket = await findMyTeamTicket();
     if (!resTeamTicket.success) {
@@ -355,7 +357,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             <Scroll
               key={index}
               smooth
-              className="bg-white/5 backdrop-blur-md border-2 border-white/10 hover:border-white/50 rounded-2xl w-full aspect-square flex flex-col items-center justify-center gap-2 cursor-pointer text-center"
+              className="bg-white/5 backdrop-blur-md border-2 border-white/10 hover:border-white/50 rounded-2xl w-full aspect-square flex flex-col items-center justify-center gap-2 cursor-pointer text-center select-none"
               offset={-64}
               to={`Hacker #${index + 1}`}
             >
