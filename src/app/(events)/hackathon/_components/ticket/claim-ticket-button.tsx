@@ -4,13 +4,17 @@ import { Button } from '~/components/ui/button';
 import { useToast } from '~/hooks/use-toast';
 import { claimHackahonTicketWithRateLimit } from '~/server/actions/hackathon';
 
-const ClaimTicketButton: React.FC = () => {
+interface ClaimTicketButtonProps {
+  code: string;
+}
+
+const ClaimTicketButton: React.FC<ClaimTicketButtonProps> = ({ code }) => {
   const { toast } = useToast();
 
   return (
     <Button
       onClick={() => {
-        claimHackahonTicketWithRateLimit('ticketCode')
+        claimHackahonTicketWithRateLimit(code)
           .then((res) => {
             console.log(res);
           })
@@ -24,7 +28,7 @@ const ClaimTicketButton: React.FC = () => {
           });
       }}
     >
-      Claim
+      Claim {code}
     </Button>
   );
 };

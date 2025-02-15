@@ -30,11 +30,17 @@ export async function createHackathonTicket(
 export async function createHackathonTeamTicket(
   ticketIds: number[],
 ): Promise<Response<HackathonTeamTicket>> {
-  const res = await api.hackathon.createTeamTicket({
+  if (ticketIds.length !== 2) {
+    return {
+      success: false,
+      message: 'Invalid ticketIds',
+      errors: ['ticketIds must have exactly 2 elements'],
+    };
+  }
+
+  return await api.hackathon.createTeamTicket({
     ticketIds,
   });
-
-  return res;
 }
 
 async function claimHackathonTicket(
@@ -56,11 +62,10 @@ export const claimHackahonTicketWithRateLimit = withRateLimit(
   'claim-hackathon-ticket',
 );
 
-export async function getMyTeamTicket(): Promise<
+export async function findMyTeamTicket(): Promise<
   Response<HackathonTeamTicket | null>
 > {
-  const res = await api.hackathon.getMyTeamTicket();
-  return res;
+  return await api.hackathon.findMyTeamTicket();
 }
 
 export async function getMyActiveClaim(): Promise<
@@ -71,18 +76,38 @@ export async function getMyActiveClaim(): Promise<
 }
 
 export async function registerHackathonTeam(
+  teamTicketId: number,
   teamName: string,
   teamMembers: CreateHackathonTeamMemberInput[],
 ): Promise<Response<HackathonRegistration>> {
-  const res = await api.hackathon.registerTeam({ teamName, teamMembers });
-  return res;
+  const resMyRegistration = await api.hackathon.findMyRegistration();
+  if (!resMyRegistration.success) {
+    return {
+      success: false,
+      message: 'Failed to get registration data',
+      errors: resMyRegistration.errors,
+    };
+  }
+
+  if (resMyRegistration.data) {
+    return {
+      success: false,
+      message: 'You have already registered',
+      errors: ['User already has HackathonRegistration in database'],
+    };
+  }
+
+  return await api.hackathon.registerTeam({
+    teamTicketId,
+    teamName,
+    teamMembers,
+  });
 }
 
-export async function getMyRegistration(): Promise<
+export async function findMyRegistration(): Promise<
   Response<HackathonRegistration | null>
 > {
-  const res = await api.hackathon.getMyRegistration();
-  return res;
+  return await api.hackathon.findMyRegistration();
 }
 
 export async function updateHackathonRegistration(

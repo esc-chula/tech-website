@@ -4,6 +4,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoaderCircle } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as Scroll } from 'react-scroll';
@@ -19,6 +20,11 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { type Student } from '~/generated/intania/auth/student/v1/student';
+import { useToast } from '~/hooks/use-toast';
+import {
+  findMyTeamTicket,
+  registerHackathonTeam,
+} from '~/server/actions/hackathon';
 
 import FormSection from '../common/form-section';
 import Input from '../common/input';
@@ -60,12 +66,7 @@ const formSchema = z.object({
         .max(50, {
           message: 'Invalid Nickname',
         }),
-      pronoun: z.enum([
-        'he/him/his',
-        'she/her/hers',
-        'they/them/theirs',
-        'other',
-      ]),
+      pronoun: z.enum(['HE', 'SHE', 'THEY', 'OTHER']),
       phoneNumber: z
         .string()
         .regex(/^\d{2,3}-\d{3,4}-\d{3,4}$/)
@@ -141,6 +142,9 @@ interface RegistrationFormProps {
 const RegistrationForm: React.FC<RegistrationFormProps> = ({
   currentUserData,
 }) => {
+  const router = useRouter();
+  const { toast } = useToast();
+
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -167,12 +171,27 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     form.setValue('teamMembers.0.firstName', currentUserData.firstNameEn ?? '');
     form.setValue('teamMembers.0.lastName', currentUserData.familyNameEn ?? '');
     form.setValue('teamMembers.0.nickname', currentUserData.nicknameEn ?? '');
-    form.setValue(
-      'teamMembers.0.pronoun',
-      currentUserData.preferredPronoun as z.infer<
-        typeof formSchema
-      >['teamMembers'][0]['pronoun'],
-    );
+    // 'he/him/his',
+    // 'she/her/hers',
+    // 'they/them/theirs',
+    // 'other',
+    const currentPronoun = (): z.infer<
+      typeof formSchema
+    >['teamMembers'][0]['pronoun'] => {
+      switch (currentUserData.preferredPronoun) {
+        case 'he/him/his':
+          return 'HE';
+        case 'she/her/hers':
+          return 'SHE';
+        case 'they/them/theirs':
+          return 'THEY';
+        case 'other':
+          return 'OTHER';
+        default:
+          return 'OTHER';
+      }
+    };
+    form.setValue('teamMembers.0.pronoun', currentPronoun());
     form.setValue(
       'teamMembers.0.phoneNumber',
       currentUserData.phoneNumber ?? '',
@@ -255,8 +274,48 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     });
 
     // TODO: integrate with api, redirect to success page, check if user has team ticket and not registered yet
+    const resTeamTicket = await findMyTeamTicket();
+    if (!resTeamTicket.success) {
+      toast({
+        title: 'Registration Failed',
+        description: resTeamTicket.message,
+        variant: 'destructive',
+      });
 
-    console.log(values);
+      setLoading(false);
+
+      return;
+    }
+    if (!resTeamTicket.data) {
+      toast({
+        title: 'Registration Failed',
+        description: 'You do not have a team ticket',
+        variant: 'destructive',
+      });
+
+      setLoading(false);
+
+      return;
+    }
+
+    const resRegister = await registerHackathonTeam(
+      resTeamTicket.data.id,
+      values.teamName,
+      values.teamMembers,
+    );
+    if (!resRegister.success) {
+      toast({
+        title: 'Registration Failed',
+        description: resRegister.message,
+        variant: 'destructive',
+      });
+
+      setLoading(false);
+
+      return;
+    }
+
+    router.push('/hackathon/registration/success');
 
     setLoading(false);
   }
@@ -433,14 +492,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="he/him/his">He/Him/His</SelectItem>
-                          <SelectItem value="she/her/hers">
-                            She/Her/Hers
-                          </SelectItem>
-                          <SelectItem value="they/them/theirs">
-                            They/Them/Theirs
-                          </SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="HE">He/Him/His</SelectItem>
+                          <SelectItem value="SHE">She/Her/Hers</SelectItem>
+                          <SelectItem value="THEY">They/Them/Theirs</SelectItem>
+                          <SelectItem value="OTHER">Other</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

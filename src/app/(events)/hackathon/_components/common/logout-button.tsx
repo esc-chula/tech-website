@@ -1,11 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { useToast } from '~/hooks/use-toast';
 import { logout } from '~/server/actions/auth';
 
 const LogoutButton: React.FC = () => {
+  const pathname = usePathname();
   const router = useRouter();
 
   const { toast } = useToast();
@@ -17,7 +18,7 @@ const LogoutButton: React.FC = () => {
       onClick={() => {
         logout()
           .then(() => {
-            router.refresh();
+            router.push(`/hackathon/login?redirectUrl=${pathname}`);
           })
           .catch(() => {
             console.error('LogoutButton: failed to logout');

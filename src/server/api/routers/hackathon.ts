@@ -317,7 +317,7 @@ export const hackathonRouter = createTRPCRouter({
       },
     ),
 
-  getMyTeamTicket: trpc.query(
+  findMyTeamTicket: trpc.query(
     async ({ ctx }): Promise<Response<HackathonTeamTicket | null>> => {
       const userId = ctx.session.user?.id;
       if (!userId) {
@@ -328,53 +328,37 @@ export const hackathonRouter = createTRPCRouter({
         };
       }
 
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          const teamTicket = await tx.hackathonTeamTicket.findUnique({
-            where: {
-              userId,
-            },
-            include: {
-              tickets: {
-                select: {
-                  id: true,
-                  code: true,
-                  ticketType: true,
-                  isRegistered: true,
-                  teamTicketId: true,
-                },
+      try {
+        const teamTicket = await ctx.db.hackathonTeamTicket.findUnique({
+          where: {
+            userId,
+          },
+          include: {
+            tickets: {
+              select: {
+                id: true,
+                code: true,
+                ticketType: true,
+                isRegistered: true,
+                teamTicketId: true,
               },
             },
-          });
-
-          return {
-            success: true,
-            message: teamTicket ? 'Team ticket found' : 'No team ticket found',
-            data: teamTicket,
-          };
-        } catch (error) {
-          return {
-            success: false,
-            message: 'Failed to fetch team ticket',
-            error:
-              error instanceof Error ? error.message : 'Something went wrong',
-          };
-        }
-      });
-
-      if (res.error ?? !res.data) {
+          },
+        });
+        return {
+          success: true,
+          message: teamTicket ? 'Team ticket found' : 'No team ticket found',
+          data: teamTicket,
+        };
+      } catch (error) {
         return {
           success: false,
-          message: res.message,
-          errors: [res.error ?? 'Something went wrong'],
+          message: 'Failed to fetch team ticket',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
         };
       }
-
-      return {
-        success: true,
-        message: res.message,
-        data: res.data,
-      };
     },
   ),
 
@@ -445,94 +429,88 @@ export const hackathonRouter = createTRPCRouter({
           };
         }
 
-        const res = await ctx.db.$transaction(async (tx) => {
-          try {
-            const teamTicket = await tx.hackathonTeamTicket.findUnique({
-              where: { userId },
-            });
-
-            if (!teamTicket) {
-              return {
-                success: false,
-                message: 'No team ticket found',
-              };
-            }
-
-            await tx.hackathonTicket.updateMany({
-              where: {
-                teamTicketId: teamTicket.id,
-              },
-              data: {
-                isRegistered: true,
-              },
-            });
-
-            const teamMemberCount = input.teamMembers.length;
-            if (teamMemberCount < 4 || teamMemberCount > 5) {
-              return {
-                success: false,
-                message: 'Team must have 4-5 members',
-              };
-            }
-
-            const MAX_TOTAL_TEAMS = HACKATHON_MAX_TEAMS;
-            const totalTeamCount = await tx.hackathonRegistration.count();
-            if (totalTeamCount >= MAX_TOTAL_TEAMS) {
-              return {
-                success: false,
-                message: `Maximum number of teams (${MAX_TOTAL_TEAMS}) has been reached`,
-              };
-            }
-
-            const registration = await tx.hackathonRegistration.create({
-              data: {
-                teamTicketId: teamTicket.id,
-                teamName: input.teamName,
-                teamMembers: {
-                  create: input.teamMembers.map((member) => ({
-                    ...member,
-                    publicId: genPublicId(),
-                  })),
-                },
-              },
-              include: {
-                teamTicket: true,
-                teamMembers: true,
-              },
-            });
-
-            return {
-              success: true,
-              message: 'Team registered successfully',
-              data: registration,
-            };
-          } catch (error) {
-            return {
-              success: false,
-              message: 'Failed to register team',
-              error:
-                error instanceof Error ? error.message : 'Something went wrong',
-            };
-          }
-        });
-
-        if (res.error ?? !res.data) {
+        const updatedTickets = await ctx.db.hackathonTicket
+          .updateMany({
+            where: {
+              teamTicketId: input.teamTicketId,
+            },
+            data: {
+              isRegistered: true,
+            },
+          })
+          .catch(() => null);
+        if (updatedTickets === null) {
           return {
             success: false,
-            message: res.message,
-            errors: [res.error ?? 'Something went wrong'],
+            message: 'Failed to update ticket registration status',
+            errors: ['Something went wrong while updating ticket registration'],
+          };
+        }
+
+        const teamMemberCount = input.teamMembers.length;
+        if (teamMemberCount < 4 || teamMemberCount > 5) {
+          return {
+            success: false,
+            message: 'Team must have 4-5 members',
+            errors: ['teamMembers input length must be between 4 and 5'],
+          };
+        }
+
+        const totalTeamCount = await ctx.db.hackathonRegistration
+          .count()
+          .catch(() => null);
+        if (totalTeamCount === null) {
+          return {
+            success: false,
+            message: 'Failed to count total team',
+            errors: ['Something went wrong while counting total team'],
+          };
+        }
+        if (totalTeamCount >= HACKATHON_MAX_TEAMS) {
+          return {
+            success: false,
+            message: `Application is closed. Maximum number of teams (${HACKATHON_MAX_TEAMS}) has been reached`,
+            errors: [
+              `Maximum number of teams (${HACKATHON_MAX_TEAMS}) has been reached`,
+            ],
+          };
+        }
+
+        const createdRegistration = await ctx.db.hackathonRegistration
+          .create({
+            data: {
+              teamTicketId: input.teamTicketId,
+              teamName: input.teamName,
+              teamMembers: {
+                create: input.teamMembers.map((member) => ({
+                  ...member,
+                  publicId: genPublicId(),
+                })),
+              },
+            },
+            include: {
+              teamTicket: true,
+              teamMembers: true,
+            },
+          })
+          .catch(() => null);
+        if (createdRegistration === null) {
+          return {
+            success: false,
+            message: 'Failed to create registration',
+            errors: ['Something went wrong while creating registration'],
           };
         }
 
         return {
           success: true,
-          message: res.message,
-          data: res.data,
+          message: 'Team registered successfully',
+          data: createdRegistration,
         };
       },
     ),
 
-  getMyRegistration: trpc.query(
+  findMyRegistration: trpc.query(
     async ({ ctx }): Promise<Response<HackathonRegistration | null>> => {
       const userId = ctx.session.user?.id;
       if (!userId) {
@@ -543,56 +521,28 @@ export const hackathonRouter = createTRPCRouter({
         };
       }
 
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          const teamTicket = await tx.hackathonTeamTicket.findUnique({
-            where: { userId },
-          });
-
-          if (!teamTicket) {
-            return {
-              success: true,
-              message: 'No registration found',
-              data: null,
-            };
-          }
-
-          const registration = await tx.hackathonRegistration.findUnique({
-            where: { teamTicketId: teamTicket.id },
-            include: {
-              teamMembers: true,
-            },
-          });
-
-          return {
-            success: true,
-            message: registration
-              ? 'Registration found'
-              : 'No registration found',
-            data: registration,
-          };
-        } catch (error) {
-          return {
-            success: false,
-            message: 'Failed to fetch hackathon registration',
-            error:
-              error instanceof Error ? error.message : 'Something went wrong',
-          };
-        }
+      const teamTicket = await ctx.db.hackathonTeamTicket.findUnique({
+        where: { userId },
       });
-
-      if (res.error ?? !res.data) {
+      if (!teamTicket) {
         return {
           success: false,
-          message: res.message,
-          errors: [res.error ?? 'Something went wrong'],
+          message: 'No team ticket found',
+          errors: ['Team ticket not found'],
         };
       }
 
+      const registration = await ctx.db.hackathonRegistration.findUnique({
+        where: { teamTicketId: teamTicket.id },
+        include: {
+          teamMembers: true,
+        },
+      });
+
       return {
         success: true,
-        message: res.message,
-        data: res.data,
+        message: registration ? 'Registration found' : 'No registration found',
+        data: registration,
       };
     },
   ),
