@@ -6,8 +6,13 @@ import { protectedRoutes } from './constants/routes';
 export function middleware(
   request: NextRequest,
 ): Promise<unknown> | NextResponse {
+  const pathname = request.nextUrl.pathname;
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', pathname);
+
   const isProtectedRoute = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route),
+    pathname.startsWith(route),
   );
 
   const hasSidCookie = request.cookies.has('sid');
@@ -15,12 +20,17 @@ export function middleware(
   if (isProtectedRoute && !hasSidCookie) {
     const redirectUrl = new URL('/login', request.url);
 
-    redirectUrl.searchParams.set('redirectUrl', request.nextUrl.pathname);
+    redirectUrl.searchParams.set('redirectUrl', pathname);
 
     return NextResponse.redirect(redirectUrl);
   }
 
-  return NextResponse.next();
+  return NextResponse.next({
+    request: {
+      ...request,
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {
