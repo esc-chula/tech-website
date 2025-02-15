@@ -1,4 +1,7 @@
-import { env } from '~/env';
+import {
+  HACKATHON_MAX_TEAMS,
+  HACKATHON_TICKET_EXPIRY_DAYS,
+} from '~/constants/hackathon';
 import { genPublicId } from '~/lib/hackathon-ticket';
 import { createTRPCRouter, trpc } from '~/server/api/trpc';
 import type {
@@ -160,8 +163,7 @@ export const hackathonRouter = createTRPCRouter({
 
           const expiryDate = new Date();
           expiryDate.setDate(
-            expiryDate.getDate() +
-              Number(process.env.HACKATHON_TICKET_EXPIRY_DAYS ?? 3),
+            expiryDate.getDate() + HACKATHON_TICKET_EXPIRY_DAYS,
           );
 
           await tx.hackathonTicketClaim.create({
@@ -473,7 +475,7 @@ export const hackathonRouter = createTRPCRouter({
               };
             }
 
-            const MAX_TOTAL_TEAMS = Number(env.HACKATHON_MAX_TEAMS);
+            const MAX_TOTAL_TEAMS = HACKATHON_MAX_TEAMS;
             const totalTeamCount = await tx.hackathonRegistration.count();
             if (totalTeamCount >= MAX_TOTAL_TEAMS) {
               return {

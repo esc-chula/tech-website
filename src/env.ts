@@ -11,8 +11,6 @@ export const env = createEnv({
     DIRECTUS_URL: z.string().url(),
     GRPC_ADDRESS: z.string(),
     HYDRA_ADMIN_URL: z.string().url(),
-    HACKATHON_TICKET_EXPIRY_DAYS: z.string(),
-    HACKATHON_MAX_TEAMS: z.string(),
     REDIS_URL: z.string().url(),
   },
 
@@ -28,8 +26,6 @@ export const env = createEnv({
     DIRECTUS_URL: process.env.DIRECTUS_URL,
     GRPC_ADDRESS: process.env.GRPC_ADDRESS,
     HYDRA_ADMIN_URL: process.env.HYDRA_ADMIN_URL,
-    HACKATHON_TICKET_EXPIRY_DAYS: process.env.HACKATHON_TICKET_EXPIRY_DAYS,
-    HACKATHON_MAX_TEAMS: process.env.HACKATHON_MAX_TEAMS,
     REDIS_URL: process.env.REDIS_URL,
     // client
     NEXT_PUBLIC_GTAG_ID: runtimeEnv('NEXT_PUBLIC_GTAG_ID'),
