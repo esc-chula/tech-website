@@ -13,7 +13,7 @@ const Building1Background: React.FC = () => {
           priority
           alt="background"
           className="object-cover"
-          src="/hackathon/assets/building-1.webp"
+          src="/hackathon/assets/building-1-background.webp"
         />
       </div>
     </>
