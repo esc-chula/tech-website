@@ -7,7 +7,7 @@ const Layout: React.FC<Readonly<{ children: React.ReactNode }>> = async ({
 }) => {
   const resCheck = await checkAppRole({ appId: 'hackathon', role: 'admin' });
 
-  if (!resCheck.success) {
+  if (!resCheck.success || !resCheck.data) {
     return notFound();
   }
 
