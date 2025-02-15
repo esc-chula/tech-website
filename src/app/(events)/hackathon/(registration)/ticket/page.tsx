@@ -13,11 +13,7 @@ import CreateTeamTicket from '../../_components/ticket/create-team-ticket';
 const Page: React.FC = async () => {
   const resMyTeamTicket = await findMyTeamTicket();
 
-  if (!resMyTeamTicket.success) {
-    return 'Something went wrong, please try again later...';
-  }
-
-  if (resMyTeamTicket.data) {
+  if (resMyTeamTicket.success && resMyTeamTicket.data) {
     const resMyRegistration = await findMyRegistration();
 
     if (!resMyRegistration.success) {
