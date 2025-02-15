@@ -31,7 +31,6 @@ export const env = createEnv({
     HACKATHON_TICKET_EXPIRY_DAYS: process.env.HACKATHON_TICKET_EXPIRY_DAYS,
     HACKATHON_MAX_TEAMS: process.env.HACKATHON_MAX_TEAMS,
     REDIS_URL: process.env.REDIS_URL,
-
     // client
     NEXT_PUBLIC_GTAG_ID: runtimeEnv('NEXT_PUBLIC_GTAG_ID'),
     NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: runtimeEnv(
