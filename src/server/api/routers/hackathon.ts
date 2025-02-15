@@ -1,3 +1,4 @@
+import { env } from '~/env';
 import { genPublicId } from '~/lib/hackathon-ticket';
 import { createTRPCRouter, trpc } from '~/server/api/trpc';
 import type {
@@ -455,6 +456,32 @@ export const hackathonRouter = createTRPCRouter({
               };
             }
 
+            await tx.hackathonTicket.updateMany({
+              where: {
+                teamTicketId: teamTicket.id,
+              },
+              data: {
+                isRegistered: true,
+              },
+            });
+
+            const teamMemberCount = input.teamMembers.length;
+            if (teamMemberCount < 4 || teamMemberCount > 5) {
+              return {
+                success: false,
+                message: 'Team must have 4-5 members',
+              };
+            }
+
+            const MAX_TOTAL_TEAMS = Number(env.HACKATHON_MAX_TEAMS);
+            const totalTeamCount = await tx.hackathonRegistration.count();
+            if (totalTeamCount >= MAX_TOTAL_TEAMS) {
+              return {
+                success: false,
+                message: `Maximum number of teams (${MAX_TOTAL_TEAMS}) has been reached`,
+              };
+            }
+
             const registration = await tx.hackathonRegistration.create({
               data: {
                 teamTicketId: teamTicket.id,
@@ -591,6 +618,14 @@ export const hackathonRouter = createTRPCRouter({
               return {
                 success: false,
                 message: 'No team ticket found',
+              };
+            }
+
+            const teamMemberCount = input.teamMembers.length;
+            if (teamMemberCount < 4 || teamMemberCount > 5) {
+              return {
+                success: false,
+                message: 'Team must have 4-5 members',
               };
             }
 
