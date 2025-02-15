@@ -54,6 +54,21 @@ services:
     networks:
       - default
 
+  tick-track-toe:
+    image: ghcr.io/esc-chula/tick-track-toe:latest
+    restart: unless-stopped
+    environment:
+      PHX_HOST: 'localhost'
+      PORT: '4000'
+      DATABASE_URL: postgresql://postgres:password@db:5432/tech-website
+      SECRET_KEY_BASE: anythinglonglongfuckitsnotlongenoughmaybethisisitpleaseokitsstillnotenoughisthisyet
+    ports:
+      - 4000:4000
+    depends_on:
+      - db
+    networks:
+      - default
+
   hydra:
     image: oryd/hydra:v2.2.0
     restart: unless-stopped
