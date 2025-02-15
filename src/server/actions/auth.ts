@@ -8,6 +8,8 @@ import { api } from '~/trpc/server';
 import { type Session } from '~/types/auth';
 import { type Response } from '~/types/server';
 
+import { getCachedMapping } from '../auth/mapper';
+
 export async function login(
   username: string,
   password: string,
@@ -60,7 +62,27 @@ export async function me(): Promise<Response<Student>> {
     };
   }
 
-  return await api.auth.me({ sessionId: sid });
+  const resMe = await api.auth.me({ sessionId: sid });
+  if (!resMe.success) {
+    return {
+      success: false,
+      message: resMe.message,
+      errors: resMe.errors,
+    };
+  }
+
+  const miscData = await getCachedMapping(['departments']);
+
+  const student = resMe.data;
+  student.department = miscData.departments.find(
+    (department) => department.id === student.department?.id,
+  );
+
+  return {
+    success: true,
+    message: 'Successfully retrieved user data',
+    data: student,
+  };
 }
 
 export async function getSession(): Promise<Response<Session>> {

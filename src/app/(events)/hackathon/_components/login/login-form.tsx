@@ -62,7 +62,7 @@ const LoginForm: React.FC = () => {
 
     const redirectUrl = searchParams.get('redirectUrl');
 
-    router.push(redirectUrl ?? '/hackathon/register');
+    router.push(redirectUrl ?? '/hackathon');
   }
 
   return (

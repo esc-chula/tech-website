@@ -41,9 +41,9 @@ export interface HackathonTeamMember {
   department: string;
   university: string;
   role: HackathonRole;
-  foodRestriction: string | null | undefined;
-  medication: string | null | undefined;
-  medicalCondition: string | null | undefined;
+  foodRestriction?: string | null | undefined;
+  medication?: string | null | undefined;
+  medicalCondition?: string | null | undefined;
 }
 
 export interface HackathonRegistration {

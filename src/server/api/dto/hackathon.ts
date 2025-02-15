@@ -40,6 +40,7 @@ export const CreateHackathonTeamMemberDto = z.object({
 });
 
 export const CreateHackathonRegistrationDto = z.object({
+  teamTicketId: z.number(),
   teamName: z.string(),
   teamMembers: z.array(CreateHackathonTeamMemberDto),
 });
