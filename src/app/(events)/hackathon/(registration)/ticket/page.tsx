@@ -19,10 +19,12 @@ const Page: React.FC = async () => {
   let ticket2
 
   if (resMyActiveClaim.success && resMyActiveClaim.data) {
-    ticket1 = {
-      id: resMyActiveClaim.data[0]?.ticketId ?? 0,
-      ticketType: resMyActiveClaim.data[0]?.ticket.ticketType ?? 'GENERAL',
-      expiredAt: resMyActiveClaim.data[0]?.expiredAt ?? null,
+    if (resMyActiveClaim.data.length > 0) {
+      ticket1 = {
+        id: resMyActiveClaim.data[0]?.ticketId ?? 0,
+        ticketType: resMyActiveClaim.data[0]?.ticket.ticketType ?? 'GENERAL',
+        expiredAt: resMyActiveClaim.data[0]?.expiredAt ?? null,
+      }
     }
 
     if (resMyActiveClaim.data.length > 1) {
