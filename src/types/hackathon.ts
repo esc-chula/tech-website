@@ -16,7 +16,6 @@ export interface HackathonTeamTicket {
   id: number;
   publicId: string;
   userId: number;
-  tickets: HackathonTicket[];
 }
 
 export interface HackathonTicketClaim {
@@ -50,7 +49,6 @@ export interface HackathonRegistration {
   id: number;
   teamName: string;
   teamTicketId: number;
-  teamMembers: HackathonTeamMember[];
 }
 
 export type CreateHackathonTeamMemberInput = Omit<

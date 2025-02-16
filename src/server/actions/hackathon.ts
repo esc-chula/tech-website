@@ -7,6 +7,7 @@ import { api } from '~/trpc/server';
 import {
   type CreateHackathonTeamMemberInput,
   type HackathonRegistration,
+  type HackathonTeamMember,
   type HackathonTeamTicket,
   type HackathonTicket,
   type HackathonTicketClaim,
@@ -78,7 +79,14 @@ export async function registerHackathonTeam(
   teamTicketId: number,
   teamName: string,
   teamMembers: CreateHackathonTeamMemberInput[],
-): Promise<Response<HackathonRegistration>> {
+): Promise<
+  Response<
+    HackathonRegistration & {
+      teamTicket: HackathonTeamTicket;
+      teamMembers: HackathonTeamMember[];
+    }
+  >
+> {
   const resMyRegistration = await api.hackathon.findMyRegistration();
   if (!resMyRegistration.success) {
     return {
@@ -104,7 +112,12 @@ export async function registerHackathonTeam(
 }
 
 export async function findMyRegistration(): Promise<
-  Response<HackathonRegistration | null>
+  Response<
+    | (HackathonRegistration & {
+        teamMembers: HackathonTeamMember[];
+      })
+    | null
+  >
 > {
   return await api.hackathon.findMyRegistration();
 }
@@ -112,7 +125,9 @@ export async function findMyRegistration(): Promise<
 export async function updateHackathonRegistration(
   teamName: string,
   teamMembers: UpdateHackathonTeamMemberInput[],
-): Promise<Response<HackathonRegistration>> {
+): Promise<
+  Response<HackathonRegistration & { teamMembers: HackathonTeamMember[] }>
+> {
   const res = await api.hackathon.updateMyRegistration({
     teamName,
     teamMembers,
