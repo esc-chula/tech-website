@@ -46,6 +46,21 @@ const Page: React.FC = async () => {
     if (!resMyRegistration.data) {
       return redirect('/hackathon/registration')
     }
+
+    return (
+      <>
+        <div className='flex min-h-dvh flex-col items-center gap-10 pb-24 pt-8'>
+          <UserBox />
+          <div className='mt-4 flex flex-col items-center gap-4'>
+            <h1 className='text-center text-6xl font-semibold capitalize tracking-tighter text-white'>
+              Your Team Ticket
+            </h1>
+          </div>
+          hehe
+        </div>
+        <Building1Background />
+      </>
+    )
   }
 
   return (

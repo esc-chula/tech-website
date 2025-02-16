@@ -1,5 +1,5 @@
 import { type Metadata } from 'next'
-import { notFound, redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
 import { HACKATHON_MAX_TEAMS } from '~/constants/hackathon'
 import { me } from '~/server/actions/auth'
@@ -19,12 +19,12 @@ export const metadata: Metadata = {
 const Page: React.FC = async () => {
   const resMe = await me()
   if (!resMe.success) {
-    return notFound()
+    return redirect('/hackathon/login?redirectUrl=/hackathon/registration')
   }
 
   const resMyRegistration = await findMyRegistration()
   if (!resMyRegistration.success) {
-    return notFound()
+    return redirect('/hackathon/ticket')
   }
   if (resMyRegistration.data) {
     return redirect('/hackathon/registration/success')
