@@ -1,19 +1,19 @@
-'use client';
+'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
-import { default as QrCode } from 'qrcode';
-import { useContext, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod'
+import Image from 'next/image'
+import { default as QrCode } from 'qrcode'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-import { Button } from '~/components/ui/button';
+import { Button } from '~/components/ui/button'
 import {
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '~/components/ui/dialog';
+} from '~/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -21,17 +21,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
-import { colorOptions } from '~/constants/qr-code-generator';
-import { useToast } from '~/hooks/use-toast';
-import { isURL } from '~/lib/utils';
-import { createQrCode } from '~/server/actions/qr-code';
+} from '~/components/ui/form'
+import { Input } from '~/components/ui/input'
+import { colorOptions } from '~/constants/qr-code-generator'
+import { useToast } from '~/hooks/use-toast'
+import { isURL } from '~/lib/utils'
+import { createQrCode } from '~/server/actions/qr-code'
 
-import ColorSelector from './color-selector';
-import LogoSelector from './logo-selector';
-import QrCodeLogo from './qr-code-logo';
-import { OpenContext } from './qr-code-open-context';
+import ColorSelector from './color-selector'
+import LogoSelector from './logo-selector'
+import QrCodeLogo from './qr-code-logo'
+import { OpenContext } from './qr-code-open-context'
 
 const formSchema = z.object({
   name: z
@@ -45,28 +45,28 @@ const formSchema = z.object({
   url: z.string().url({
     message: 'Please enter a valid URL',
   }),
-});
+})
 
 const QrCodeCreateDialogContent: React.FC = () => {
-  const { setOpen } = useContext(OpenContext);
-  const [url, setUrl] = useState('');
-  const [qrCodeData, setQrCodeData] = useState('');
+  const { setOpen } = useContext(OpenContext)
+  const [url, setUrl] = useState('')
+  const [qrCodeData, setQrCodeData] = useState('')
   const [selectedColor, setSelectedColor] = useState<string>(
-    colorOptions[0] ?? '',
-  );
+    colorOptions[0] ?? ''
+  )
   const [selectedLogo, setSelectedLogo] = useState<{
-    name: string;
-    data: string;
-  } | null>(null);
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+    name: string
+    data: string
+  } | null>(null)
+  const { toast } = useToast()
+  const [loading, setLoading] = useState(false)
 
-  const isUrlValid = useMemo(() => isURL(url), [url]);
+  const isUrlValid = useMemo(() => isURL(url), [url])
 
   useEffect(() => {
     const generate = async (): Promise<void> => {
       if (!isUrlValid) {
-        return;
+        return
       }
 
       try {
@@ -78,23 +78,23 @@ const QrCodeCreateDialogContent: React.FC = () => {
             light: '#fafafa',
           },
           width: 256,
-        });
-        setQrCodeData(qrCodeGen);
+        })
+        setQrCodeData(qrCodeGen)
       } catch (error) {
         console.error(
           'QrCodeCreateDialogContent, QR code generation error:',
-          error,
-        );
+          error
+        )
       }
-    };
+    }
 
     generate().catch((error: unknown) => {
       console.error(
         'QrCodeCreateDialogContent, QR code generation error:',
-        error,
-      );
-    });
-  }, [isUrlValid, selectedColor, url]);
+        error
+      )
+    })
+  }, [isUrlValid, selectedColor, url])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,22 +102,22 @@ const QrCodeCreateDialogContent: React.FC = () => {
       name: '',
       url: '',
     },
-  });
+  })
 
   const resetForm = (): void => {
     form.reset({
       name: '',
       url: '',
-    });
-    setUrl('');
-    setQrCodeData('');
-    setSelectedColor(colorOptions[0] ?? '');
-    setSelectedLogo(null);
-  };
+    })
+    setUrl('')
+    setQrCodeData('')
+    setSelectedColor(colorOptions[0] ?? '')
+    setSelectedLogo(null)
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     try {
-      setLoading(true);
+      setLoading(true)
 
       const res = await createQrCode({
         name: values.name,
@@ -125,64 +125,64 @@ const QrCodeCreateDialogContent: React.FC = () => {
         qrCode: qrCodeData,
         color: selectedColor,
         logo: selectedLogo ? selectedLogo.name : '',
-      });
+      })
 
       if (!res.success) {
         console.error(
           'QrCodeCreateDialogContent, failed to create QR code: ',
-          res.errors,
-        );
+          res.errors
+        )
         toast({
           title: 'Failed to create QR code',
           description: res.message,
           variant: 'destructive',
-        });
+        })
 
         if (res.errors[0] === 'The QR Code name already exists') {
           form.setError('name', {
             message: 'The QR Code name already exists',
-          });
+          })
         }
-        setLoading(false);
-        return;
+        setLoading(false)
+        return
       }
 
-      resetForm();
-      setOpen(false);
-      setLoading(false);
+      resetForm()
+      setOpen(false)
+      setLoading(false)
     } catch (error) {
       console.error(
         'QrCodeCreateDialogContent, failed to create QR code: ',
-        error,
-      );
+        error
+      )
       toast({
         title: 'Failed to create QR code',
         description:
           error instanceof Error ? error.message : 'Something went wrong',
         variant: 'destructive',
-      });
+      })
     }
   }
 
   return (
-    <DialogContent className="md:max-w-md">
+    <DialogContent className='md:max-w-md'>
       <Form {...form}>
-        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
           {/* header */}
           <DialogHeader>
             <DialogTitle>Create QR Code</DialogTitle>
           </DialogHeader>
 
           {/* form */}
-          <div className="space-y-2">
+          <div className='space-y-2'>
             <FormField
               control={form.control}
-              name="name"
+              name='name'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="My QR Code" {...field} />
+                    <Input placeholder='My QR Code' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -190,18 +190,18 @@ const QrCodeCreateDialogContent: React.FC = () => {
             />
             <FormField
               control={form.control}
-              name="url"
+              name='url'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>URL</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="https://example.com"
+                      placeholder='https://example.com'
                       {...field}
                       value={url}
                       onChange={(e) => {
-                        setUrl(e.target.value);
-                        form.setValue('url', e.target.value);
+                        setUrl(e.target.value)
+                        form.setValue('url', e.target.value)
                       }}
                     />
                   </FormControl>
@@ -212,48 +212,48 @@ const QrCodeCreateDialogContent: React.FC = () => {
           </div>
 
           {/* preview */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="relative w-full aspect-square grid place-content-center bg-white select-none">
+          <div className='grid grid-cols-2 gap-4'>
+            <div className='relative grid aspect-square w-full select-none place-content-center bg-white'>
               {isUrlValid ? (
                 <>
                   <Image
                     fill
-                    alt="preview"
-                    className="object-contain"
+                    alt='preview'
+                    className='object-contain'
                     src={qrCodeData}
                   />
                   <QrCodeLogo logoName={selectedLogo?.name ?? null} />
                 </>
               ) : (
-                <p className="text-center text-neutral-400">
+                <p className='text-center text-neutral-400'>
                   Enter a valid URL to preview QR code
                 </p>
               )}
             </div>
-            <div className="flex flex-col gap-5">
+            <div className='flex flex-col gap-5'>
               <ColorSelector
                 color={selectedColor}
                 setColor={(color) => setSelectedColor(color)}
-                title="Select Foreground Color"
+                title='Select Foreground Color'
               />
               <LogoSelector
                 logo={selectedLogo}
                 setLogo={(logo) => setSelectedLogo(logo)}
-                title="Select Logo"
+                title='Select Logo'
               />
             </div>
           </div>
 
           {/* footer */}
           <DialogFooter>
-            <Button disabled={loading} type="submit" variant="primary">
+            <Button disabled={loading} type='submit' variant='primary'>
               Save
             </Button>
           </DialogFooter>
         </form>
       </Form>
     </DialogContent>
-  );
-};
+  )
+}
 
-export default QrCodeCreateDialogContent;
+export default QrCodeCreateDialogContent

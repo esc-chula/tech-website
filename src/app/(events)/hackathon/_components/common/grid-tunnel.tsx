@@ -1,8 +1,8 @@
 /* eslint-disable react/no-array-index-key -- Array index is used as key for grid cells */
 
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 const walls = [
   // left
@@ -41,14 +41,14 @@ const walls = [
     left: '0px',
     bottom: '0px',
   },
-];
+]
 
 interface GridTunnelProps {
-  children?: React.ReactNode;
-  squares?: number;
-  perspective?: number;
-  offset?: number;
-  gradientSteps?: 1 | 2;
+  children?: React.ReactNode
+  squares?: number
+  perspective?: number
+  offset?: number
+  gradientSteps?: 1 | 2
 }
 
 const GridTunnel: React.FC<GridTunnelProps> = ({
@@ -58,21 +58,21 @@ const GridTunnel: React.FC<GridTunnelProps> = ({
   offset = 0,
   gradientSteps = 1,
 }) => {
-  const [gridSquares, setGridSquares] = useState<number[]>([]);
+  const [gridSquares, setGridSquares] = useState<number[]>([])
 
   useEffect(() => {
-    setGridSquares(Array(squares).fill(0));
-  }, [squares]);
+    setGridSquares(Array(squares).fill(0))
+  }, [squares])
 
   return (
     <div
-      className="absolute inset-0 -z-10"
+      className='absolute inset-0 -z-10'
       style={{
         perspective: `${perspective}px`,
       }}
     >
       <div
-        className="absolute top-0 left-0 w-full h-full"
+        className='absolute left-0 top-0 h-full w-full'
         style={{
           transformStyle: 'preserve-3d',
           transform: `translateZ(${offset}px)`,
@@ -82,7 +82,7 @@ const GridTunnel: React.FC<GridTunnelProps> = ({
         {walls.map((wall, idx) => (
           <div
             key={`wall-${idx}`}
-            className="absolute px-0.5 grid gap-x-1 gap-y-0.5 grid-cols-10 grid-rows-10"
+            className='absolute grid grid-cols-10 grid-rows-10 gap-x-1 gap-y-0.5 px-0.5'
             style={{
               background:
                 gradientSteps === 1
@@ -100,14 +100,14 @@ const GridTunnel: React.FC<GridTunnelProps> = ({
             {gridSquares.map((_, idx) => (
               <div
                 key={`cell-${idx}`}
-                className="bg-hackathon-background hover:bg-opacity-50 delay-50 duration-200 h-16"
+                className='delay-50 h-16 bg-hackathon-background duration-200 hover:bg-opacity-50'
               />
             ))}
           </div>
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default GridTunnel;
+export default GridTunnel

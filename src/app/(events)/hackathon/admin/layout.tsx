@@ -1,17 +1,17 @@
-import { notFound } from 'next/navigation';
+import { notFound } from 'next/navigation'
 
-import { checkAppRole } from '~/server/actions/role';
+import { checkAppRole } from '~/server/actions/role'
 
 const Layout: React.FC<Readonly<{ children: React.ReactNode }>> = async ({
   children,
 }) => {
-  const resCheck = await checkAppRole({ appId: 'hackathon', role: 'admin' });
+  const resCheck = await checkAppRole({ appId: 'hackathon', role: 'admin' })
 
   if (!resCheck.success || !resCheck.data) {
-    return notFound();
+    return notFound()
   }
 
-  return <>{children}</>;
-};
+  return <>{children}</>
+}
 
-export default Layout;
+export default Layout

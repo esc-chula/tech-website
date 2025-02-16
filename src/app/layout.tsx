@@ -1,10 +1,10 @@
-import '~/styles/globals.css';
+import '~/styles/globals.css'
 
-import Script from 'next/script';
-import { PublicEnvScript } from 'next-runtime-env';
+import Script from 'next/script'
+import { PublicEnvScript } from 'next-runtime-env'
 
-import { Toaster } from '~/components/ui/toaster';
-import { env } from '~/env';
+import { Toaster } from '~/components/ui/toaster'
+import { env } from '~/env'
 import {
   geistMono,
   geistSans,
@@ -12,23 +12,23 @@ import {
   ndot47,
   pressStart2P,
   tiny5,
-} from '~/lib/fonts';
-import { cn } from '~/lib/utils';
-import { TRPCReactProvider } from '~/trpc/react';
+} from '~/lib/fonts'
+import { cn } from '~/lib/utils'
+import { TRPCReactProvider } from '~/trpc/react'
 
 const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
   children,
 }) => {
   return (
     <html
-      lang="en"
+      lang='en'
       className={cn(
         ibmPlexSansThai.variable,
         pressStart2P.variable,
         tiny5.variable,
         ndot47.variable,
         geistMono.variable,
-        geistSans.variable,
+        geistSans.variable
       )}
     >
       <head>
@@ -38,7 +38,7 @@ const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
             env.NEXT_PUBLIC_GTAG_ID ?? ''
           }`}
         />
-        <Script id="google-analytics">
+        <Script id='google-analytics'>
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -54,7 +54,7 @@ const RootLayout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
         <Toaster />
       </body>
     </html>
-  );
-};
+  )
+}
 
-export default RootLayout;
+export default RootLayout

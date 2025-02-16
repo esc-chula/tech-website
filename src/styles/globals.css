@@ -63,7 +63,8 @@
 }
 
 .bg-pattern {
-  background-image: url('/main/logo/sigmaLogo.svg'),
+  background-image:
+    url('/main/logo/sigmaLogo.svg'),
     radial-gradient(
       circle at 50% 50%,
       rgba(38, 38, 38, 0.8) 0%,

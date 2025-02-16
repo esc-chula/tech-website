@@ -1,4 +1,4 @@
-import { HackathonTicketType } from '@prisma/client';
+import { HackathonTicketType } from '@prisma/client'
 
 export const mockHackathonTickets = [
   {
@@ -53,7 +53,7 @@ export const mockHackathonTickets = [
     ],
     teamTicketId: 2,
   },
-];
+]
 
 export const mockHackathonTicketClaims = [
   {
@@ -70,7 +70,7 @@ export const mockHackathonTicketClaims = [
     claimedAt: new Date(),
     expiredAt: null,
   },
-];
+]
 
 export const mockHackathonTeamTickets = [
   {
@@ -87,4 +87,4 @@ export const mockHackathonTeamTickets = [
     tickets: [mockHackathonTickets[3]],
     registration: null,
   },
-];
+]

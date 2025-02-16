@@ -1,16 +1,16 @@
-'use client';
+'use client'
 
-import { Eye } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { Eye } from 'lucide-react'
+import { useMemo, useState } from 'react'
 
-import { Card } from '~/components/ui/card';
-import { utmTags } from '~/constants/link-shortener';
-import { groupUtmData } from '~/lib/link-shortener';
-import { cn } from '~/lib/utils';
+import { Card } from '~/components/ui/card'
+import { utmTags } from '~/constants/link-shortener'
+import { groupUtmData } from '~/lib/link-shortener'
+import { cn } from '~/lib/utils'
 import type {
   ShortenedLinkWithVisitedRecords,
   UtmTag,
-} from '~/types/link-shortener';
+} from '~/types/link-shortener'
 
 import {
   Select,
@@ -18,44 +18,44 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../ui/select';
+} from '../../ui/select'
 
-import LinkStats from './link-stats';
+import LinkStats from './link-stats'
 
 interface LinkStatsCardProps {
-  className?: string;
-  shortenedLink: ShortenedLinkWithVisitedRecords;
+  className?: string
+  shortenedLink: ShortenedLinkWithVisitedRecords
 }
 
 const LinkStatsCard: React.FC<LinkStatsCardProps> = ({
   className,
   shortenedLink,
 }) => {
-  const [groupBy, setGroupBy] = useState<UtmTag[1] | ''>('');
-  const links = shortenedLink.userShortenedLinkVisitedRecords;
+  const [groupBy, setGroupBy] = useState<UtmTag[1] | ''>('')
+  const links = shortenedLink.userShortenedLinkVisitedRecords
 
   const groupedData = useMemo(() => {
-    if (!groupBy) return null;
-    return groupUtmData(links, groupBy);
-  }, [groupBy, links]);
+    if (!groupBy) return null
+    return groupUtmData(links, groupBy)
+  }, [groupBy, links])
 
   return (
-    <Card className={cn('flex flex-col h-min gap-2', className)}>
-      <div className="flex items-center justify-between">
-        <h4 className="text-lg font-semibold">Stats</h4>
-        <div className="flex items-center gap-1 text-neutral-400">
+    <Card className={cn('flex h-min flex-col gap-2', className)}>
+      <div className='flex items-center justify-between'>
+        <h4 className='text-lg font-semibold'>Stats</h4>
+        <div className='flex items-center gap-1 text-neutral-400'>
           <Eye size={16} />
-          <p className="text-xs sm:text-sm">{shortenedLink.count}</p>
+          <p className='text-xs sm:text-sm'>{shortenedLink.count}</p>
         </div>
       </div>
-      <div className="flex gap-4 items-center">
+      <div className='flex items-center gap-4'>
         <p>Group By:</p>
         <Select
           value={groupBy}
           onValueChange={(value) => setGroupBy(value as UtmTag[1])}
         >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select UTM tag" />
+          <SelectTrigger className='w-[180px]'>
+            <SelectValue placeholder='Select UTM tag' />
           </SelectTrigger>
           <SelectContent>
             {utmTags.map(([label, value]: UtmTag) => (
@@ -66,20 +66,20 @@ const LinkStatsCard: React.FC<LinkStatsCardProps> = ({
           </SelectContent>
         </Select>
       </div>
-      <div className="">
+      <div className=''>
         {groupBy && groupedData ? (
           <LinkStats groupBy={groupBy} groupedData={groupedData} />
         ) : (
-          <div className="py-2 flex flex-col">
-            <hr className="border-neutral-700" />
-            <p className="text-sm text-neutral-400 text-center pt-12 pb-8">
+          <div className='flex flex-col py-2'>
+            <hr className='border-neutral-700' />
+            <p className='pb-8 pt-12 text-center text-sm text-neutral-400'>
               Select a UTM tag to view stats
             </p>
           </div>
         )}
       </div>
     </Card>
-  );
-};
+  )
+}
 
-export default LinkStatsCard;
+export default LinkStatsCard

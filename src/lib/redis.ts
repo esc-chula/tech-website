@@ -1,7 +1,7 @@
-import Redis from 'ioredis';
+import Redis from 'ioredis'
 
-import { env } from '~/env';
+import { env } from '~/env'
 
-const redis = new Redis(env.REDIS_URL);
+const redis = new Redis(env.REDIS_URL)
 
-export default redis;
+export default redis

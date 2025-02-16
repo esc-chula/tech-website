@@ -1,6 +1,6 @@
-import { type VariantProps, cva } from 'class-variance-authority';
+import { type VariantProps, cva } from 'class-variance-authority'
 
-import { cn } from '~/lib/utils';
+import { cn } from '~/lib/utils'
 
 const titleVariants = cva('text-center', {
   variants: {
@@ -17,10 +17,10 @@ const titleVariants = cva('text-center', {
     color: 'white',
     variant: 'pageTitle',
   },
-});
+})
 
 export type TitleProps = VariantProps<typeof titleVariants> &
-  React.HTMLProps<HTMLHeadingElement>;
+  React.HTMLProps<HTMLHeadingElement>
 
 const Title: React.FC<TitleProps> = ({
   className,
@@ -29,7 +29,7 @@ const Title: React.FC<TitleProps> = ({
   children,
   ...props
 }) => {
-  const Comp = variant === 'pageTitle' ? 'h1' : 'h2';
+  const Comp = variant === 'pageTitle' ? 'h1' : 'h2'
   return (
     <Comp
       className={cn(titleVariants({ color, variant, className }))}
@@ -37,8 +37,8 @@ const Title: React.FC<TitleProps> = ({
     >
       {children}
     </Comp>
-  );
-};
-Title.displayName = 'Title';
+  )
+}
+Title.displayName = 'Title'
 
-export { Title, titleVariants };
+export { Title, titleVariants }

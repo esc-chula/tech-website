@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
-import { Trash2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Trash2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 import {
   AlertDialog,
@@ -13,57 +13,57 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '~/components/ui/alert-dialog';
-import { Button } from '~/components/ui/button';
-import { useToast } from '~/hooks/use-toast';
-import { deleteOAuth2Client } from '~/server/actions/oauth';
+} from '~/components/ui/alert-dialog'
+import { Button } from '~/components/ui/button'
+import { useToast } from '~/hooks/use-toast'
+import { deleteOAuth2Client } from '~/server/actions/oauth'
 
 interface ClientDeleteDialogTriggerProps {
-  name: string;
-  id: string;
+  name: string
+  id: string
 }
 
 const ClientDeleteDialogTrigger: React.FC<ClientDeleteDialogTriggerProps> = ({
   id,
   name,
 }) => {
-  const router = useRouter();
-  const { toast } = useToast();
+  const router = useRouter()
+  const { toast } = useToast()
 
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const deleteHandler = async (): Promise<void> => {
-    setLoading(true);
+    setLoading(true)
 
-    const res = await deleteOAuth2Client(id);
+    const res = await deleteOAuth2Client(id)
 
     if (!res.success) {
       console.error(
         'ClientDeleteDialogTrigger, failed to delete QR code: ',
-        res.errors,
-      );
+        res.errors
+      )
 
       toast({
         title: 'Failed to delete QR code',
         description: res.message ?? 'Something went wrong',
         variant: 'destructive',
-      });
+      })
 
-      setLoading(false);
-      return;
+      setLoading(false)
+      return
     }
 
-    setLoading(false);
-    setOpen(false);
+    setLoading(false)
+    setOpen(false)
 
-    router.refresh();
-  };
+    router.refresh()
+  }
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="transparent">
+        <Button variant='transparent'>
           <Trash2 size={16} />
         </Button>
       </AlertDialogTrigger>
@@ -81,7 +81,7 @@ const ClientDeleteDialogTrigger: React.FC<ClientDeleteDialogTriggerProps> = ({
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button
             disabled={loading}
-            variant="destructive"
+            variant='destructive'
             onClick={deleteHandler}
           >
             Delete
@@ -89,7 +89,7 @@ const ClientDeleteDialogTrigger: React.FC<ClientDeleteDialogTriggerProps> = ({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
-};
+  )
+}
 
-export default ClientDeleteDialogTrigger;
+export default ClientDeleteDialogTrigger

@@ -1,11 +1,11 @@
-import { Label } from '~/components/ui/label';
-import { colorOptions } from '~/constants/qr-code-generator';
-import { cn } from '~/lib/utils';
+import { Label } from '~/components/ui/label'
+import { colorOptions } from '~/constants/qr-code-generator'
+import { cn } from '~/lib/utils'
 
 interface ColorSelectorProps {
-  title: string;
-  color: string;
-  setColor: (color: string) => void;
+  title: string
+  color: string
+  setColor: (color: string) => void
 }
 
 const ColorSelector: React.FC<ColorSelectorProps> = ({
@@ -14,27 +14,27 @@ const ColorSelector: React.FC<ColorSelectorProps> = ({
   setColor,
 }) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className='flex flex-col gap-3'>
       <Label>{title}</Label>
-      <div className="flex flex-wrap gap-2">
+      <div className='flex flex-wrap gap-2'>
         {colorOptions.map((colorOption) => (
           <button
             key={colorOption}
             aria-label={`Select color ${colorOption}`}
             style={{ backgroundColor: colorOption }}
-            type="button"
+            type='button'
             className={cn(
-              'w-6 aspect-square rounded-full',
-              colorOption === color && 'border-[3px] border-neutral-400',
+              'aspect-square w-6 rounded-full',
+              colorOption === color && 'border-[3px] border-neutral-400'
             )}
             onClick={() => setColor(colorOption)}
           >
-            <span className="sr-only">{`Select color ${colorOption}`}</span>
+            <span className='sr-only'>{`Select color ${colorOption}`}</span>
           </button>
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ColorSelector;
+export default ColorSelector

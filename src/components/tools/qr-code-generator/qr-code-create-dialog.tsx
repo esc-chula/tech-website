@@ -1,20 +1,20 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
+import { useState } from 'react'
 
-import { Dialog } from '~/components/ui/dialog';
+import { Dialog } from '~/components/ui/dialog'
 
-import QrCodeCreateDialogContent from './qr-code-create-dialog-content';
-import { OpenContext } from './qr-code-open-context';
+import QrCodeCreateDialogContent from './qr-code-create-dialog-content'
+import { OpenContext } from './qr-code-open-context'
 
 interface QrCodeCreateDialogContentProps {
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 const QrCodeCreateDialog: React.FC<QrCodeCreateDialogContentProps> = ({
   children,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   return (
     <OpenContext.Provider value={{ open, setOpen }}>
@@ -23,7 +23,7 @@ const QrCodeCreateDialog: React.FC<QrCodeCreateDialogContentProps> = ({
         {children}
       </Dialog>
     </OpenContext.Provider>
-  );
-};
+  )
+}
 
-export default QrCodeCreateDialog;
+export default QrCodeCreateDialog

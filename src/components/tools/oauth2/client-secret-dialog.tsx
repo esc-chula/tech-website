@@ -1,21 +1,21 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
+import { useState } from 'react'
 
-import { AlertDialog } from '~/components/ui/alert-dialog';
+import { AlertDialog } from '~/components/ui/alert-dialog'
 
-import ClientSecretDialogContent from './client-secret-dialog-content';
-import ClientSecretDialogContext from './client-secret-dialog-context';
+import ClientSecretDialogContent from './client-secret-dialog-content'
+import ClientSecretDialogContext from './client-secret-dialog-context'
 
 interface ClientSecretDialogProps {
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 const ClientSecretDialog: React.FC<ClientSecretDialogProps> = ({
   children,
 }) => {
-  const [open, setOpen] = useState(false);
-  const [secret, setSecret] = useState('');
+  const [open, setOpen] = useState(false)
+  const [secret, setSecret] = useState('')
 
   return (
     <ClientSecretDialogContext.Provider
@@ -26,7 +26,7 @@ const ClientSecretDialog: React.FC<ClientSecretDialogProps> = ({
         {children}
       </AlertDialog>
     </ClientSecretDialogContext.Provider>
-  );
-};
+  )
+}
 
-export default ClientSecretDialog;
+export default ClientSecretDialog

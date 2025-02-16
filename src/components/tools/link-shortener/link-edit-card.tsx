@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import {
   AlertDialog,
@@ -15,9 +15,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '~/components/ui/alert-dialog';
-import { Button } from '~/components/ui/button';
-import { Card } from '~/components/ui/card';
+} from '~/components/ui/alert-dialog'
+import { Button } from '~/components/ui/button'
+import { Card } from '~/components/ui/card'
 import {
   Form,
   FormControl,
@@ -26,17 +26,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
-import { env } from '~/env';
-import { useToast } from '~/hooks/use-toast';
-import { cn } from '~/lib/utils';
-import { updateShortenedLink } from '~/server/actions/link-shortener';
-import { checkAppRole } from '~/server/actions/role';
-import { type ShortenedLink } from '~/types/link-shortener';
+} from '~/components/ui/form'
+import { Input } from '~/components/ui/input'
+import { env } from '~/env'
+import { useToast } from '~/hooks/use-toast'
+import { cn } from '~/lib/utils'
+import { updateShortenedLink } from '~/server/actions/link-shortener'
+import { checkAppRole } from '~/server/actions/role'
+import { type ShortenedLink } from '~/types/link-shortener'
 
 const SHORTENED_LINK_ORIGIN =
-  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link';
+  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link'
 
 const formSchema = z.object({
   name: z.string().max(50, {
@@ -54,22 +54,22 @@ const formSchema = z.object({
   url: z.string().url({
     message: 'Please enter a valid URL',
   }),
-});
+})
 
 interface LinkEditCardProps {
-  className?: string;
-  shortenedLink: ShortenedLink;
+  className?: string
+  shortenedLink: ShortenedLink
 }
 
 const LinkEditCard: React.FC<LinkEditCardProps> = ({
   className,
   shortenedLink,
 }) => {
-  const router = useRouter();
-  const { toast } = useToast();
+  const router = useRouter()
+  const { toast } = useToast()
 
-  const [loading, setLoading] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [alertOpen, setAlertOpen] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -78,27 +78,27 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
       slug: shortenedLink.slug,
       url: shortenedLink.url,
     },
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
-    setLoading(true);
+    setLoading(true)
 
-    const resCheck = await checkAppRole({ appId: 'esc', role: 'admin' });
+    const resCheck = await checkAppRole({ appId: 'esc', role: 'admin' })
     if (!resCheck.success) {
-      setLoading(false);
+      setLoading(false)
 
       toast({
         title: 'Failed to check role',
         description: resCheck.message ?? 'Something went wrong',
         variant: 'destructive',
-      });
+      })
 
-      console.error('LinkEditCard, failed to check role: ', resCheck.errors);
+      console.error('LinkEditCard, failed to check role: ', resCheck.errors)
 
-      return;
+      return
     }
 
-    const { data: isAuthorized } = resCheck;
+    const { data: isAuthorized } = resCheck
 
     if (
       !isAuthorized &&
@@ -109,12 +109,12 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
       form.setError('slug', {
         type: 'manual',
         message: 'You do not have permission to have “esc” in the slug',
-      });
+      })
 
-      setLoading(false);
-      setAlertOpen(false);
+      setLoading(false)
+      setAlertOpen(false)
 
-      return;
+      return
     }
 
     const resUpdate = await updateShortenedLink({
@@ -122,48 +122,48 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
       name: values.name,
       slug: values.slug,
       url: values.url,
-    });
+    })
 
     if (!resUpdate.success) {
-      setLoading(false);
+      setLoading(false)
 
       toast({
         title: 'Failed to create shortened link',
         description: resUpdate.message ?? 'Something went wrong',
         variant: 'destructive',
-      });
+      })
 
       console.error(
         'LinkEditCard, failed to update shortened link: ',
-        resUpdate.errors,
-      );
+        resUpdate.errors
+      )
 
-      return;
+      return
     }
 
     if (resUpdate.data.slug !== shortenedLink.slug) {
-      router.push(`/tools/link-shortener/${resUpdate.data.slug}`);
+      router.push(`/tools/link-shortener/${resUpdate.data.slug}`)
     }
 
-    setLoading(false);
-    setAlertOpen(false);
+    setLoading(false)
+    setAlertOpen(false)
 
-    router.refresh();
+    router.refresh()
   }
 
   return (
     <Card className={cn('h-min', className)}>
       <Form {...form}>
-        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="space-y-4">
+        <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
+          <div className='space-y-4'>
             <FormField
               control={form.control}
-              name="name"
+              name='name'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="My website" {...field} />
+                    <Input placeholder='My website' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -171,12 +171,12 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
             />
             <FormField
               control={form.control}
-              name="slug"
+              name='slug'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input placeholder="my-website" {...field} />
+                    <Input placeholder='my-website' {...field} />
                   </FormControl>
                   <FormDescription>
                     This will be shortened in{' '}
@@ -189,12 +189,12 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
             />
             <FormField
               control={form.control}
-              name="url"
+              name='url'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>URL</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://example.com" {...field} />
+                    <Input placeholder='https://example.com' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -205,7 +205,7 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
             <AlertDialogTrigger asChild>
               <Button
                 disabled={loading || !form.formState.isDirty}
-                type="button"
+                type='button'
                 variant={form.formState.isDirty ? 'primary' : 'default'}
               >
                 Save
@@ -223,7 +223,7 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <Button
                   disabled={loading}
-                  variant="primary"
+                  variant='primary'
                   onClick={form.handleSubmit(onSubmit)}
                 >
                   Save
@@ -234,7 +234,7 @@ const LinkEditCard: React.FC<LinkEditCardProps> = ({
         </form>
       </Form>
     </Card>
-  );
-};
+  )
+}
 
-export default LinkEditCard;
+export default LinkEditCard

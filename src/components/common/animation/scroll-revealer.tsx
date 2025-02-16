@@ -1,17 +1,17 @@
-'use client';
+'use client'
 
 import {
   type HTMLMotionProps,
   motion,
   useAnimation,
   useInView,
-} from 'framer-motion';
-import { useEffect, useRef } from 'react';
+} from 'framer-motion'
+import { useEffect, useRef } from 'react'
 
 interface ScrollRevealerProps extends HTMLMotionProps<'div'> {
-  children: React.ReactNode;
-  delay?: number;
-  initialTranslateY?: string;
+  children: React.ReactNode
+  delay?: number
+  initialTranslateY?: string
 }
 
 const ScrollRevealer: React.FC<ScrollRevealerProps> = ({
@@ -20,9 +20,9 @@ const ScrollRevealer: React.FC<ScrollRevealerProps> = ({
   initialTranslateY = '20%',
   ...props
 }) => {
-  const ref = useRef(null);
-  const isInview = useInView(ref, { once: true });
-  const controls = useAnimation();
+  const ref = useRef(null)
+  const isInview = useInView(ref, { once: true })
+  const controls = useAnimation()
 
   useEffect(() => {
     if (isInview) {
@@ -31,18 +31,18 @@ const ScrollRevealer: React.FC<ScrollRevealerProps> = ({
         .catch((err: unknown) =>
           console.error(
             'ScrollRevealer, animation controls failed to start: ',
-            err,
-          ),
-        );
+            err
+          )
+        )
     }
-  }, [isInview, controls]);
+  }, [isInview, controls])
 
   return (
     <motion.div
       {...props}
       ref={ref}
       animate={controls}
-      initial="hidden"
+      initial='hidden'
       transition={{
         type: 'tween',
         duration: 0.5,
@@ -56,7 +56,7 @@ const ScrollRevealer: React.FC<ScrollRevealerProps> = ({
     >
       {children}
     </motion.div>
-  );
-};
+  )
+}
 
-export default ScrollRevealer;
+export default ScrollRevealer

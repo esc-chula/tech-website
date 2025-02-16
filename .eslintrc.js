@@ -1,8 +1,8 @@
-const { resolve } = require('node:path');
+const { resolve } = require('node:path')
 
-const { JAVASCRIPT_FILES } = require('@vercel/style-guide/eslint/constants');
+const { JAVASCRIPT_FILES } = require('@vercel/style-guide/eslint/constants')
 
-const project = resolve(__dirname, 'tsconfig.json');
+const project = resolve(__dirname, 'tsconfig.json')
 
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
@@ -107,4 +107,4 @@ module.exports = {
       rules: { 'import/no-default-export': 'off' },
     },
   ],
-};
+}
