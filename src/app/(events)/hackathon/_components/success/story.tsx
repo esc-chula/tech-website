@@ -58,7 +58,7 @@ const Story: React.FC<StoryProps> = ({
               TEAM NO.
             </p>
             <p
-              className='text-white'
+              className='pl-[4%] text-white'
               style={{
                 fontSize: `${fontFactor * 12}px`,
               }}
@@ -148,14 +148,53 @@ const Story: React.FC<StoryProps> = ({
         ) : null}
       </div>
       <div className='absolute inset-0 z-10'>
-        <Image fill alt='overlay' src='/hackathon/assets/story-overlay.png' />
+        <Image
+          fill
+          alt='overlay'
+          quality={100}
+          src='/hackathon/assets/story-overlay.png'
+        />
       </div>
-      <div className='absolute inset-0 z-0'>
+      <div
+        className='absolute inset-0'
+        style={{
+          display: background === 1 ? 'block' : 'none',
+        }}
+      >
         <Image
           fill
           priority
           alt='overlay'
-          src={`/hackathon/assets/story-background-${background}.png`}
+          quality={100}
+          src='/hackathon/assets/story-background-1.png'
+        />
+      </div>
+      <div
+        className='absolute inset-0'
+        style={{
+          display: background === 2 ? 'block' : 'none',
+        }}
+      >
+        <Image
+          fill
+          priority
+          alt='overlay'
+          quality={100}
+          src='/hackathon/assets/story-background-2.png'
+        />
+      </div>
+      <div
+        className='absolute inset-0'
+        style={{
+          display: background === 3 ? 'block' : 'none',
+        }}
+      >
+        <Image
+          fill
+          priority
+          alt='overlay'
+          quality={100}
+          src='/hackathon/assets/story-background-3.png'
         />
       </div>
     </div>

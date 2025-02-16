@@ -122,6 +122,14 @@ export async function findMyRegistration(): Promise<
   return await api.hackathon.findMyRegistration()
 }
 
+export async function getMyRegistrationIndex(): Promise<Response<number>> {
+  return await api.hackathon.getMyRegistrationIndex()
+}
+
+export async function countHackathonRegistrations(): Promise<Response<number>> {
+  return await api.hackathon.countRegistrations()
+}
+
 export async function updateHackathonRegistration(
   teamName: string,
   teamMembers: UpdateHackathonTeamMemberInput[]

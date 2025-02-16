@@ -119,10 +119,10 @@ const ShareStory: React.FC<ShareStoryProps> = ({ teamNo }) => {
 
   return (
     <>
-      <div className='flex w-full max-w-screen-sm flex-col items-center'>
+      <div className='pointer-events-none flex w-full max-w-screen-sm flex-col items-center'>
         <Story
           background={background}
-          className='w-[70%] md:h-[55vh] md:w-auto'
+          className='w-[80%] md:h-[55vh] md:w-auto'
           emoji={emoji}
           layoutType={layoutType}
           phrase={phrase}
