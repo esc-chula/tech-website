@@ -32,9 +32,9 @@ const Page: React.FC = async () => {
             Registration Complete
           </h1>
           <p className='text-sm text-white/60'>
-            Share your team to Instagram!
+            Share your team to Instagram,
             <br />
-            {`Don't forget to tag your teams and tag us @intania.tech`}
+            {`Don't forget to tag @intania.tech and your team!`}
           </p>
         </div>
         <ShareStory teamNo={resMyRegistrationIndex.data + 1} />
