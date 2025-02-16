@@ -4,31 +4,25 @@ import { CodeXml, Figma, Lightbulb, Settings } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { cn } from '~/lib/utils'
-import { type HackathonTicket } from '~/types/hackathon'
+import {
+  type HackathonTicket,
+  type HackathonTicketClaim,
+} from '~/types/hackathon'
 
 
 interface ClaimedTicketProps {
   ticketType: HackathonTicket['ticketType']
-  expiredAt: Date
+  expiredAt: HackathonTicketClaim['expiredAt']
 }
 
 const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
   ticketType,
   expiredAt,
 }: ClaimedTicketProps) => {
-  const [timeLeft, setTimeLeft] = useState<{
-    days: number
-    hours: number
-    minutes: number
-    seconds: number
-  }>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  })
+  const [timeLeft, setTimeLeft] = useState<string>('0 minutes 0 seconds')
 
   useEffect(() => {
+    if (!expiredAt) return
     const calculateTimeLeft = (): void => {
       const now = new Date().getTime()
       const distance = expiredAt.getTime() - now
@@ -40,7 +34,15 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
       const seconds = Math.floor((distance % (1000 * 60)) / 1000)
 
-      setTimeLeft({ days, hours, minutes, seconds })
+      if (days > 0) {
+        setTimeLeft(`${days} days ${hours} hours`)
+      } else if (hours > 0) {
+        setTimeLeft(`${hours} hours ${minutes} minutes`)
+      } else if (minutes > 0) {
+        setTimeLeft(`${minutes} minutes ${seconds} seconds`)
+      } else {
+        setTimeLeft(`${seconds} seconds`)
+      }
     }
 
     const interval = setInterval(calculateTimeLeft, 1000)
@@ -48,34 +50,16 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
     return () => clearInterval(interval)
   }, [expiredAt])
 
-  const renderTimeLeft = (): string => {
-    const { days, hours, minutes, seconds } = timeLeft
-
-    if (days > 0) {
-      return `${days} days ${hours} hours`
-    }
-
-    if (hours > 0) {
-      return `${hours} hours ${minutes} minutes`
-    }
-
-    if (minutes > 0) {
-      return `${minutes} minutes ${seconds} seconds`
-    }
-
-    return `${seconds} seconds`
-  }
-
   const renderIcon = useMemo(() => {
     switch (ticketType) {
       case 'GENERAL':
-        return <Settings />
+        return <Settings className='size-36' />
       case 'DEVELOPER':
-        return <Figma />
+        return <CodeXml className='size-36' />
       case 'DESIGNER':
-        return <CodeXml />
+        return <Figma className='size-36' />
       case 'PRODUCT':
-        return <Lightbulb />
+        return <Lightbulb className='size-36' />
       default:
         return null
     }
@@ -84,7 +68,7 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
   return (
     <div
       className={cn(
-        'flex bg-gradient-to-b py-12',
+        'flex aspect-[4/3] w-full flex-col items-center justify-center gap-7 rounded-3xl border-2 border-white bg-gradient-to-b px-4 py-12 text-center',
         ticketType === 'GENERAL' && 'from-red-700 to-red-950',
         ticketType === 'DEVELOPER' && 'from-indigo-900 to-black',
         ticketType === 'DESIGNER' && 'from-violet-500 to-green-500',
@@ -92,8 +76,9 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
       )}
     >
       {renderIcon}
-      {ticketType}
-      <p>Expiring in {renderTimeLeft()}</p>
+      <p className='text-nowrap text-xl font-medium tracking-tight text-white'>
+        Expiring in {timeLeft}
+      </p>
     </div>
   )
 }

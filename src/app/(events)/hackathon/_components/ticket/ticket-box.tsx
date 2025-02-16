@@ -25,7 +25,7 @@ const TicketBox = ({ name, form, onSubmit }: TicketFormProps): JSX.Element => {
   return (
     <Form {...form}>
       <form
-        className='flex flex-col items-center gap-6 rounded-3xl border-2 border-white/40 bg-white/10 p-10 backdrop-blur-sm'
+        className='flex w-full flex-col items-center gap-6 rounded-3xl border-2 border-white/40 bg-white/10 p-10 backdrop-blur-sm'
         onSubmit={form.handleSubmit(onSubmit, (errors) => {
           toast({
             title: errors.code?.message,

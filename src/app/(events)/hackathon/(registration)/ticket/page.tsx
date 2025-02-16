@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import {
   findMyRegistration,
   findMyTeamTicket,
-  // getMyActiveClaim,
+  getMyActiveClaim,
 } from '~/server/actions/hackathon'
 
 import Building1Background from '../../_components/common/bulding-1-background'
@@ -13,7 +13,28 @@ import TicketForm from '../../_components/ticket/ticket-form'
 
 const Page: React.FC = async () => {
   const resMyTeamTicket = await findMyTeamTicket()
-  // const resMyActiveClaim = await getMyActiveClaim();
+  const resMyActiveClaim = await getMyActiveClaim()
+
+  let ticket1
+  let ticket2
+
+  if (resMyActiveClaim.success && resMyActiveClaim.data) {
+    if (resMyActiveClaim.data.length > 0) {
+      ticket1 = {
+        id: resMyActiveClaim.data[0]?.ticketId ?? 0,
+        ticketType: resMyActiveClaim.data[0]?.ticket.ticketType ?? 'GENERAL',
+        expiredAt: resMyActiveClaim.data[0]?.expiredAt ?? null,
+      }
+    }
+
+    if (resMyActiveClaim.data.length > 1) {
+      ticket2 = {
+        id: resMyActiveClaim.data[1]?.ticketId ?? 0,
+        ticketType: resMyActiveClaim.data[1]?.ticket.ticketType ?? 'GENERAL',
+        expiredAt: resMyActiveClaim.data[1]?.expiredAt ?? null,
+      }
+    }
+  }
 
   if (resMyTeamTicket.success && resMyTeamTicket.data) {
     const resMyRegistration = await findMyRegistration()
@@ -46,7 +67,7 @@ const Page: React.FC = async () => {
           </button>
         </div>
         <div className='flex h-1/2 w-full grow-[0.5] items-center justify-center'>
-          <TicketForm />
+          <TicketForm ticket1={ticket1} ticket2={ticket2} />
         </div>
       </div>
       <Building1Background />
