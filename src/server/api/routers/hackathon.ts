@@ -576,6 +576,74 @@ export const hackathonRouter = createTRPCRouter({
     }
   ),
 
+  getMyRegistrationIndex: trpc.query(
+    async ({ ctx }): Promise<Response<number>> => {
+      try {
+        const userId = ctx.session.user?.id
+        if (!userId) {
+          return {
+            success: false,
+            message: 'Unauthorized',
+            errors: ['Session ID not found'],
+          }
+        }
+
+        const teamTicket = await ctx.db.hackathonTeamTicket.findUnique({
+          where: { userId },
+        })
+
+        if (!teamTicket) {
+          return {
+            success: false,
+            message: 'No team ticket found',
+            errors: ['No team ticket found'],
+          }
+        }
+
+        const registrations = await ctx.db.hackathonRegistration.findMany({
+          select: { id: true, teamTicketId: true },
+        })
+
+        const registrationIndex = registrations.findIndex(
+          (reg) => reg.teamTicketId === teamTicket.id
+        )
+
+        return {
+          success: true,
+          message: 'Registration index found',
+          data: registrationIndex,
+        }
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Failed to fetch registration index',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
+        }
+      }
+    }
+  ),
+
+  countRegistrations: trpc.query(async ({ ctx }): Promise<Response<number>> => {
+    try {
+      const count = await ctx.db.hackathonRegistration.count()
+      return {
+        success: true,
+        message: 'Number of registrations found',
+        data: count,
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Failed to fetch number of registrations',
+        errors: [
+          error instanceof Error ? error.message : 'Something went wrong',
+        ],
+      }
+    }
+  }),
+
   updateMyRegistration: trpc
     .input(UpdateHackathonRegistrationDto)
     .mutation(

@@ -43,11 +43,9 @@ const Page: React.FC = async () => {
       return 'Something went wrong, please try again later...'
     }
 
-    if (resMyRegistration.data) {
-      return redirect('/hackathon/registration/success')
+    if (!resMyRegistration.data) {
+      return redirect('/hackathon/registration')
     }
-
-    return redirect('/hackathon/registration')
   }
 
   return (
