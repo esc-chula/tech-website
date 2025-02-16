@@ -318,7 +318,11 @@ export const hackathonRouter = createTRPCRouter({
     ),
 
   findMyTeamTicket: trpc.query(
-    async ({ ctx }): Promise<Response<HackathonTeamTicket | null>> => {
+    async ({
+      ctx,
+    }): Promise<
+      Response<(HackathonTeamTicket & { tickets: HackathonTicket[] }) | null>
+    > => {
       const userId = ctx.session.user?.id;
       if (!userId) {
         return {
@@ -363,7 +367,11 @@ export const hackathonRouter = createTRPCRouter({
   ),
 
   getMyActiveClaim: trpc.query(
-    async ({ ctx }): Promise<Response<HackathonTicketClaim[] | null>> => {
+    async ({
+      ctx,
+    }): Promise<
+      Response<(HackathonTicketClaim & { ticket: HackathonTicket })[] | null>
+    > => {
       const userId = ctx.session.user?.id;
       if (!userId) {
         return {
@@ -379,6 +387,9 @@ export const hackathonRouter = createTRPCRouter({
             where: {
               userId,
               expiredAt: { gt: new Date() },
+            },
+            include: {
+              ticket: true,
             },
           });
 

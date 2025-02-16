@@ -63,16 +63,15 @@ export const claimHackahonTicketWithRateLimit = withRateLimit(
 );
 
 export async function findMyTeamTicket(): Promise<
-  Response<HackathonTeamTicket | null>
+  Response<(HackathonTeamTicket & { tickets: HackathonTicket[] }) | null>
 > {
   return await api.hackathon.findMyTeamTicket();
 }
 
 export async function getMyActiveClaim(): Promise<
-  Response<HackathonTicketClaim[] | null>
+  Response<(HackathonTicketClaim & { ticket: HackathonTicket })[] | null>
 > {
-  const res = await api.hackathon.getMyActiveClaim();
-  return res;
+  return await api.hackathon.getMyActiveClaim();
 }
 
 export async function registerHackathonTeam(
