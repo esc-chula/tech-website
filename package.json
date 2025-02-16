@@ -23,7 +23,6 @@
       "eslint --max-warnings 0 --fix"
     ]
   },
-  "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
     "@bufbuild/protobuf": "^2.2.2",
     "@directus/sdk": "^17.0.0",
