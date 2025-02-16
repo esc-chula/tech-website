@@ -9,6 +9,7 @@ import {
 
 import Building1Background from '../../_components/common/bulding-1-background'
 import UserBox from '../../_components/common/user-box'
+import TeamTicket from '../../_components/ticket/team-ticket'
 import TicketForm from '../../_components/ticket/ticket-form'
 
 const Page: React.FC = async () => {
@@ -49,14 +50,17 @@ const Page: React.FC = async () => {
 
     return (
       <>
-        <div className='flex min-h-dvh flex-col items-center gap-10 pb-24 pt-8'>
+        <div className='flex min-h-dvh flex-col items-center gap-8 pb-24 pt-8'>
           <UserBox />
           <div className='mt-4 flex flex-col items-center gap-4'>
-            <h1 className='text-center text-6xl font-semibold capitalize tracking-tighter text-white'>
+            <h1 className='text-center text-4xl font-semibold capitalize tracking-tighter text-white sm:text-5xl md:text-6xl'>
               Your Team Ticket
             </h1>
           </div>
-          hehe
+          <TeamTicket
+            registration={resMyRegistration.data}
+            teamTicket={resMyTeamTicket.data}
+          />
         </div>
         <Building1Background />
       </>
