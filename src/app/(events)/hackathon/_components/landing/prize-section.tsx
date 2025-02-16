@@ -4,14 +4,14 @@ const PrizeSection: React.FC = () => {
       {/* <p className="text-5xl sm:text-6xl md:text-8xl font-ndot47">
         1,<span className="text-hackathon-primary">111</span>,111
       </p> */}
-      <p className="text-5xl sm:text-6xl md:text-8xl font-ndot47 select-none">
-        ?<span className="text-hackathon-primary">?</span>???
+      <p className='select-none font-ndot47 text-5xl sm:text-6xl md:text-8xl'>
+        ?<span className='text-hackathon-primary'>?</span>???
       </p>
-      <p className="text-lg sm:text-xl md:text-2xl font-semibold">Prize Pool</p>
-      <p className="text-xs -mt-3 sm:-mt-4 md:-mt-6 text-white/50">(baht)</p>
-      <div className="-z-10 rounded-full absolute w-[400px] sm:w-[600px] md:w-[800px] aspect-square bg-hackathon-radial-gradient" />
+      <p className='text-lg font-semibold sm:text-xl md:text-2xl'>Prize Pool</p>
+      <p className='-mt-3 text-xs text-white/50 sm:-mt-4 md:-mt-6'>(baht)</p>
+      <div className='absolute -z-10 aspect-square w-[400px] rounded-full bg-hackathon-radial-gradient sm:w-[600px] md:w-[800px]' />
     </>
-  );
-};
+  )
+}
 
-export default PrizeSection;
+export default PrizeSection

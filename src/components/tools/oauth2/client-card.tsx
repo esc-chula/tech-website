@@ -1,14 +1,14 @@
-import { type OAuth2Client } from '@ory/hydra-client';
+import { type OAuth2Client } from '@ory/hydra-client'
 
-import { Card } from '~/components/ui/card';
-import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
+import { Card } from '~/components/ui/card'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
 
-import ClientDeleteDialogTrigger from './client-delete-dialog-trigger';
-import ClientEditDialogTrigger from './client-edit-dialog-trigger';
+import ClientDeleteDialogTrigger from './client-delete-dialog-trigger'
+import ClientEditDialogTrigger from './client-edit-dialog-trigger'
 
 interface OAuth2ClientCardProps {
-  client: OAuth2Client;
+  client: OAuth2Client
 }
 
 const OAuth2ClientCard: React.FC<OAuth2ClientCardProps> = ({
@@ -20,16 +20,16 @@ const OAuth2ClientCard: React.FC<OAuth2ClientCardProps> = ({
     !client.created_at ||
     !client.redirect_uris
   ) {
-    return null;
+    return null
   }
 
   return (
     <Card>
-      <div className="flex justify-between">
-        <h3 className="font-semibold text-xl text-primary">
+      <div className='flex justify-between'>
+        <h3 className='text-xl font-semibold text-primary'>
           {client.client_name}
         </h3>
-        <div className="flex">
+        <div className='flex'>
           <ClientEditDialogTrigger data={client} />
           <ClientDeleteDialogTrigger
             id={client.client_id}
@@ -37,25 +37,25 @@ const OAuth2ClientCard: React.FC<OAuth2ClientCardProps> = ({
           />
         </div>
       </div>
-      <p className="text-xs md:text-sm text-neutral-500">
+      <p className='text-xs text-neutral-500 md:text-sm'>
         {new Date(client.created_at).toLocaleString()}
       </p>
-      <div className="flex flex-col pt-4 gap-4 pb-2">
+      <div className='flex flex-col gap-4 pb-2 pt-4'>
         <div>
           <Label>Client ID</Label>
-          <Input className="mt-2" value={client.client_id} />
+          <Input className='mt-2' value={client.client_id} />
         </div>
         <div>
           <Label>Scope</Label>
-          <Input className="mt-2" value={client.scope} />
+          <Input className='mt-2' value={client.scope} />
         </div>
         <div>
           <Label>Redirect URIs</Label>
-          <Input className="mt-2" value={client.redirect_uris.join(', ')} />
+          <Input className='mt-2' value={client.redirect_uris.join(', ')} />
         </div>
       </div>
     </Card>
-  );
-};
+  )
+}
 
-export default OAuth2ClientCard;
+export default OAuth2ClientCard

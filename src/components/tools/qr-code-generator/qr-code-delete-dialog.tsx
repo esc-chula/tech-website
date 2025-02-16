@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import { Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { Trash2 } from 'lucide-react'
+import { useState } from 'react'
 
 import {
   AlertDialog,
@@ -12,47 +12,47 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '~/components/ui/alert-dialog';
-import { Button } from '~/components/ui/button';
-import { useToast } from '~/hooks/use-toast';
-import { deleteQrCode } from '~/server/actions/qr-code';
+} from '~/components/ui/alert-dialog'
+import { Button } from '~/components/ui/button'
+import { useToast } from '~/hooks/use-toast'
+import { deleteQrCode } from '~/server/actions/qr-code'
 
 interface DeleteQrCodeProps {
-  name: string;
-  id: string;
+  name: string
+  id: string
 }
 
 const DeleteQrCode: React.FC<DeleteQrCodeProps> = ({ id, name }) => {
-  const { toast } = useToast();
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { toast } = useToast()
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const deleteHandler = async (): Promise<void> => {
-    setLoading(true);
+    setLoading(true)
 
-    const res = await deleteQrCode({ id });
+    const res = await deleteQrCode({ id })
 
     if (!res.success) {
-      console.error('DeleteQrCode, failed to delete QR code: ', res.errors);
+      console.error('DeleteQrCode, failed to delete QR code: ', res.errors)
 
       toast({
         title: 'Failed to delete qr code',
         description: res.message ?? 'Something went wrong',
         variant: 'destructive',
-      });
+      })
 
-      setLoading(false);
-      return;
+      setLoading(false)
+      return
     }
 
-    setLoading(false);
-    setOpen(false);
-  };
+    setLoading(false)
+    setOpen(false)
+  }
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="transparent">
+        <Button variant='transparent'>
           <Trash2 size={16} />
         </Button>
       </AlertDialogTrigger>
@@ -70,7 +70,7 @@ const DeleteQrCode: React.FC<DeleteQrCodeProps> = ({ id, name }) => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button
             disabled={loading}
-            variant="destructive"
+            variant='destructive'
             onClick={deleteHandler}
           >
             Delete
@@ -78,7 +78,7 @@ const DeleteQrCode: React.FC<DeleteQrCodeProps> = ({ id, name }) => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
-};
+  )
+}
 
-export default DeleteQrCode;
+export default DeleteQrCode

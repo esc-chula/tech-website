@@ -23,4 +23,4 @@ export const tools = [
   //   href: '/tools/bug-report',
   //   image: '/assets/tools/bug-report.png',
   // },
-];
+]

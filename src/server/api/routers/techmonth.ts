@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
-import { createTRPCRouter, trpc } from '~/server/api/trpc';
+import { createTRPCRouter, trpc } from '~/server/api/trpc'
 
 export const techmonthRouter = createTRPCRouter({
   createStamp: trpc
@@ -11,9 +11,9 @@ export const techmonthRouter = createTRPCRouter({
           studentId: input.studentId,
           eventId: input.eventId,
         },
-      });
+      })
 
-      return stamp;
+      return stamp
     }),
 
   getStampsByStudentId: trpc
@@ -23,8 +23,8 @@ export const techmonthRouter = createTRPCRouter({
         where: {
           studentId: input.studentId,
         },
-      });
+      })
 
-      return stamps;
+      return stamps
     }),
-});
+})

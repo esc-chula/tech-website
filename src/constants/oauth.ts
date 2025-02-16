@@ -8,4 +8,4 @@ export const scopes = [
   'medical',
   'national_id',
   'department',
-];
+]

@@ -1,18 +1,18 @@
-import { RoleCheckDto } from '~/server/api/dto/role';
-import { createTRPCRouter, trpc } from '~/server/api/trpc';
-import { type Response } from '~/types/server';
+import { RoleCheckDto } from '~/server/api/dto/role'
+import { createTRPCRouter, trpc } from '~/server/api/trpc'
+import { type Response } from '~/types/server'
 
 export const roleRouter = createTRPCRouter({
   check: trpc
     .input(RoleCheckDto)
     .mutation(async ({ ctx, input }): Promise<Response<boolean>> => {
-      const userId = ctx.session.user?.id;
+      const userId = ctx.session.user?.id
       if (!userId) {
         return {
           success: false,
           message: 'Unauthorized',
           errors: ['Session ID not found'],
-        };
+        }
       }
 
       try {
@@ -22,13 +22,13 @@ export const roleRouter = createTRPCRouter({
             appId: input.appId,
             role: input.role,
           },
-        });
+        })
 
         return {
           success: true,
           message: `Successfully checked role for user ${userId}`,
           data: Boolean(isAuthorized),
-        };
+        }
       } catch (error) {
         return {
           success: false,
@@ -36,7 +36,7 @@ export const roleRouter = createTRPCRouter({
           errors: [
             error instanceof Error ? error.message : 'Something went wrong',
           ],
-        };
+        }
       }
     }),
-});
+})

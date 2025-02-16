@@ -1,11 +1,11 @@
-import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
+import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc'
 
-import { authRouter } from './routers/auth';
-import { hackathonRouter } from './routers/hackathon';
-import { linkShortenerRouter } from './routers/link-shortener';
-import { qrCodeRouter } from './routers/qr-code';
-import { roleRouter } from './routers/role';
-import { techmonthRouter } from './routers/techmonth';
+import { authRouter } from './routers/auth'
+import { hackathonRouter } from './routers/hackathon'
+import { linkShortenerRouter } from './routers/link-shortener'
+import { qrCodeRouter } from './routers/qr-code'
+import { roleRouter } from './routers/role'
+import { techmonthRouter } from './routers/techmonth'
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
@@ -14,9 +14,9 @@ export const appRouter = createTRPCRouter({
   qrCode: qrCodeRouter,
   role: roleRouter,
   techmonth: techmonthRouter,
-});
+})
 
-export type AppRouter = typeof appRouter;
+export type AppRouter = typeof appRouter
 
 /**
  * Create a server-side caller for the tRPC API.
@@ -25,4 +25,4 @@ export type AppRouter = typeof appRouter;
  * const res = await trpc.post.all();
  *       ^? Post[]
  */
-export const createCaller = createCallerFactory(appRouter);
+export const createCaller = createCallerFactory(appRouter)

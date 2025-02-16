@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import type { HackathonTicketType } from '@prisma/client';
+import type { HackathonTicketType } from '@prisma/client'
 
 import {
   AlertDialog,
@@ -11,20 +11,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '~/components/ui/alert-dialog';
+} from '~/components/ui/alert-dialog'
 
 interface Ticket {
-  id: number;
-  isClaimed: boolean;
-  isRegistered: boolean;
-  teamTicketId: number | null;
-  code: string;
-  ticketType: HackathonTicketType;
+  id: number
+  isClaimed: boolean
+  isRegistered: boolean
+  teamTicketId: number | null
+  code: string
+  ticketType: HackathonTicketType
 }
 
 interface TicketActionsProps {
-  ticket: Ticket;
-  setTickets: React.Dispatch<React.SetStateAction<Ticket[]>>;
+  ticket: Ticket
+  setTickets: React.Dispatch<React.SetStateAction<Ticket[]>>
 }
 
 const TicketActions: React.FC<TicketActionsProps> = ({
@@ -32,19 +32,19 @@ const TicketActions: React.FC<TicketActionsProps> = ({
   ticket,
 }) => {
   function deleteTicket(): void {
-    setTickets((prev) => prev.filter((t) => t.id !== ticket.id));
+    setTickets((prev) => prev.filter((t) => t.id !== ticket.id))
   }
 
   return (
     <>
       <button
-        className="bg-yellow-400 text-black font-semibold hover:bg-yellow-600 rounded-md p-2"
-        type="button"
+        className='rounded-md bg-yellow-400 p-2 font-semibold text-black hover:bg-yellow-600'
+        type='button'
       >
         Edit
       </button>
       <AlertDialog>
-        <AlertDialogTrigger className="bg-red-400 text-black font-semibold hover:bg-red-600 rounded-md p-2">
+        <AlertDialogTrigger className='rounded-md bg-red-400 p-2 font-semibold text-black hover:bg-red-600'>
           Delete
         </AlertDialogTrigger>
         <AlertDialogContent>
@@ -54,7 +54,7 @@ const TicketActions: React.FC<TicketActionsProps> = ({
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-400 hover:bg-red-600"
+              className='bg-red-400 hover:bg-red-600'
               onClick={deleteTicket}
             >
               Continue
@@ -63,7 +63,7 @@ const TicketActions: React.FC<TicketActionsProps> = ({
         </AlertDialogContent>
       </AlertDialog>
     </>
-  );
-};
+  )
+}
 
-export default TicketActions;
+export default TicketActions

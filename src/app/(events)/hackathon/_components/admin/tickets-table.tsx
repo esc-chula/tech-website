@@ -1,5 +1,5 @@
-import type { HackathonTicketType } from '@prisma/client';
-import type { Dispatch, SetStateAction } from 'react';
+import type { HackathonTicketType } from '@prisma/client'
+import type { Dispatch, SetStateAction } from 'react'
 
 import {
   Table,
@@ -7,22 +7,22 @@ import {
   TableCell,
   TableHeader,
   TableRow,
-} from '~/components/ui/table';
+} from '~/components/ui/table'
 
-import TicketActions from './ticket-actions';
+import TicketActions from './ticket-actions'
 
 interface Ticket {
-  id: number;
-  isClaimed: boolean;
-  isRegistered: boolean;
-  teamTicketId: number | null;
-  code: string;
-  ticketType: HackathonTicketType;
+  id: number
+  isClaimed: boolean
+  isRegistered: boolean
+  teamTicketId: number | null
+  code: string
+  ticketType: HackathonTicketType
 }
 
 interface TicketsTableProps {
-  tickets: Ticket[];
-  setTickets: Dispatch<SetStateAction<Ticket[]>>;
+  tickets: Ticket[]
+  setTickets: Dispatch<SetStateAction<Ticket[]>>
 }
 
 const TicketsTable: React.FC<TicketsTableProps> = ({ tickets, setTickets }) => {
@@ -51,7 +51,7 @@ const TicketsTable: React.FC<TicketsTableProps> = ({ tickets, setTickets }) => {
         ))}
       </TableBody>
     </Table>
-  );
-};
+  )
+}
 
-export default TicketsTable;
+export default TicketsTable

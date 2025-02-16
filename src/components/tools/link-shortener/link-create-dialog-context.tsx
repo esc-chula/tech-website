@@ -1,20 +1,20 @@
-'use client';
+'use client'
 
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react'
 
 interface LinkCreateDialogContextProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const LinkCreateDialogContext = createContext<LinkCreateDialogContextProps>({
   open: false,
   setOpen: () => null,
-});
+})
 
-export default LinkCreateDialogContext;
+export default LinkCreateDialogContext
 
 export function useLinkCreateDialog(): LinkCreateDialogContextProps {
-  const context = useContext(LinkCreateDialogContext);
-  return context;
+  const context = useContext(LinkCreateDialogContext)
+  return context
 }

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const CreateQrCodeDto = z.object({
   name: z.string(),
@@ -6,7 +6,7 @@ export const CreateQrCodeDto = z.object({
   qrCode: z.string(),
   color: z.string(),
   logo: z.string(),
-});
+})
 
 export const UpdateQrCodeDto = z.object({
   id: z.number(),
@@ -15,8 +15,8 @@ export const UpdateQrCodeDto = z.object({
   qrCode: z.string(),
   color: z.string(),
   logo: z.string(),
-});
+})
 
 export const DeleteQrCodeDto = z.object({
   id: z.number(),
-});
+})

@@ -1,12 +1,12 @@
-'use client';
+'use client'
 
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react'
 
 interface ClientSecretDialogContextProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  secret: string;
-  setSecret: React.Dispatch<React.SetStateAction<string>>;
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  secret: string
+  setSecret: React.Dispatch<React.SetStateAction<string>>
 }
 
 const ClientSecretDialogContext = createContext<ClientSecretDialogContextProps>(
@@ -15,12 +15,12 @@ const ClientSecretDialogContext = createContext<ClientSecretDialogContextProps>(
     setOpen: () => null,
     secret: '',
     setSecret: () => null,
-  },
-);
+  }
+)
 
-export default ClientSecretDialogContext;
+export default ClientSecretDialogContext
 
 export function useClientSecretDialog(): ClientSecretDialogContextProps {
-  const context = useContext(ClientSecretDialogContext);
-  return context;
+  const context = useContext(ClientSecretDialogContext)
+  return context
 }

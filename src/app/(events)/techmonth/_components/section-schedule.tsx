@@ -1,4 +1,4 @@
-import { getEvents } from '~/server/actions/techmonth';
+import { getEvents } from '~/server/actions/techmonth'
 
 const clubNames = {
   thinc: 'Thinc.',
@@ -8,43 +8,43 @@ const clubNames = {
   cubs: 'CUBS',
   eic: 'EIC',
   robo_racer: 'RoboRacer',
-};
+}
 
 const ScheduleSection: React.FC = async () => {
-  const res = await getEvents();
+  const res = await getEvents()
 
   if (!res.success) {
-    return <div>Something went wrong...</div>;
+    return <div>Something went wrong...</div>
   }
 
-  const events = res.data;
+  const events = res.data
 
   return (
     <div
-      className="min-h-screen w-full max-w-screen-xl space-y-8 px-8 py-28 font-tiny5 md:px-16 xl:px-4"
-      id="schedule"
+      className='min-h-screen w-full max-w-screen-xl space-y-8 px-8 py-28 font-tiny5 md:px-16 xl:px-4'
+      id='schedule'
     >
-      <h2 className="text-center text-5xl uppercase lg:text-left lg:text-8xl">
+      <h2 className='text-center text-5xl uppercase lg:text-left lg:text-8xl'>
         Sche
-        <span className="text-techmonth-magenta">dule</span>
+        <span className='text-techmonth-magenta'>dule</span>
       </h2>
-      <div className="flex w-full flex-col gap-4">
+      <div className='flex w-full flex-col gap-4'>
         {events.map((event) => (
           <div
             key={event.id}
-            className="flex w-full flex-col justify-between gap-10 border-4 border-techmonth-white bg-techmonth-white/10 p-5 xl:flex-row xl:items-center xl:gap-0"
+            className='flex w-full flex-col justify-between gap-10 border-4 border-techmonth-white bg-techmonth-white/10 p-5 xl:flex-row xl:items-center xl:gap-0'
           >
             <div>
-              <h3 className="text-3xl xl:text-5xl">{event.name}</h3>
-              <p className="font-ibm-plex-sans-thai">
+              <h3 className='text-3xl xl:text-5xl'>{event.name}</h3>
+              <p className='font-ibm-plex-sans-thai'>
                 Powered by{' '}
                 {event.club
                   ? clubNames[event.club as keyof typeof clubNames]
                   : 'TECH ESC'}
               </p>
             </div>
-            <div className="text-right">
-              <p className="hidden font-press-start-2p md:inline xl:text-lg">
+            <div className='text-right'>
+              <p className='hidden font-press-start-2p md:inline xl:text-lg'>
                 {/* Monday, 1st November 2021 */}
                 {new Date(event.date).toLocaleDateString('en-US', {
                   weekday: 'long',
@@ -53,7 +53,7 @@ const ScheduleSection: React.FC = async () => {
                   day: 'numeric',
                 })}
               </p>
-              <p className="font-press-start-2p text-sm md:hidden">
+              <p className='font-press-start-2p text-sm md:hidden'>
                 {/* Monday, 1st November */}
                 {new Date(event.date).toLocaleDateString('en-US', {
                   weekday: 'long',
@@ -61,7 +61,7 @@ const ScheduleSection: React.FC = async () => {
                   day: 'numeric',
                 })}
               </p>
-              <p className="font-press-start-2p text-xs sm:text-sm xl:text-base">
+              <p className='font-press-start-2p text-xs sm:text-sm xl:text-base'>
                 {/* 10:00 - 12:00 */}
                 {new Date(event.date).toLocaleTimeString('en-US', {
                   hour: 'numeric',
@@ -73,7 +73,7 @@ const ScheduleSection: React.FC = async () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ScheduleSection;
+export default ScheduleSection

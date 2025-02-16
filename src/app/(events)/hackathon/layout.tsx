@@ -1,4 +1,4 @@
-import { type Metadata } from 'next';
+import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Intania Hackathon - The real 48-hour innovation challenge!',
@@ -44,23 +44,23 @@ export const metadata: Metadata = {
     },
   },
   icons: [{ rel: 'icon', url: '/hackathon/favicon.ico' }],
-};
+}
 
 const Layout: React.FC<Readonly<{ children: React.ReactNode }>> = ({
   children,
 }) => {
   return (
-    <body className="bg-neutral-900 text-white overflow-x-hidden font-geistSans">
-      <h1 className="hidden">
+    <body className='overflow-x-hidden bg-neutral-900 font-geistSans text-white'>
+      <h1 className='hidden'>
         Intania Hackathon - The real 48-hour Innovation Challenge
       </h1>
-      <h2 className="hidden">
+      <h2 className='hidden'>
         Build, Innovate, and Compete in a Real Hackathon
       </h2>
-      <h2 className="hidden">48 Hours of Non-Stop Hacking & Innovation</h2>
+      <h2 className='hidden'>48 Hours of Non-Stop Hacking & Innovation</h2>
       {children}
     </body>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

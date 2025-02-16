@@ -1,21 +1,21 @@
-'use client';
+'use client'
 
-import { useGridTunnelContext } from '../../_contexts/grid-tunnel-context';
-import GridTunnel from '../common/grid-tunnel';
+import { useGridTunnelContext } from '../../_contexts/grid-tunnel-context'
+import GridTunnel from '../common/grid-tunnel'
 
 interface AnimatedGridTunnelProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const AnimatedGridTunnel: React.FC<AnimatedGridTunnelProps> = ({
   children,
 }) => {
-  const { offset, perspective } = useGridTunnelContext();
+  const { offset, perspective } = useGridTunnelContext()
 
   return (
     <>
       <div
-        className="top-0 left-0 sticky w-screen overflow-hidden h-dvh bg-hackathon-background"
+        className='sticky left-0 top-0 h-dvh w-screen overflow-hidden bg-hackathon-background'
         style={{
           zIndex: offset > 2100 ? -10 : 0,
         }}
@@ -29,9 +29,9 @@ const AnimatedGridTunnel: React.FC<AnimatedGridTunnelProps> = ({
           {children}
         </GridTunnel>
       </div>
-      <div className="h-[1570px]" />
+      <div className='h-[1570px]' />
     </>
-  );
-};
+  )
+}
 
-export default AnimatedGridTunnel;
+export default AnimatedGridTunnel

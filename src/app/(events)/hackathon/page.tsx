@@ -1,39 +1,39 @@
-import Footer from './_components/common/footer';
-import Socials from './_components/common/socials';
-import AnimatedGridTunnel from './_components/landing/animated-grid-tunnel';
-import ContainerLines from './_components/landing/container-lines';
-import HeroSection from './_components/landing/hero-section';
-import ObjectivesSection from './_components/landing/objectives-section';
-import OffsetRevealer from './_components/landing/offset-revealer';
-import PrizeSection from './_components/landing/prize-section';
+import Footer from './_components/common/footer'
+import Socials from './_components/common/socials'
+import AnimatedGridTunnel from './_components/landing/animated-grid-tunnel'
+import ContainerLines from './_components/landing/container-lines'
+import HeroSection from './_components/landing/hero-section'
+import ObjectivesSection from './_components/landing/objectives-section'
+import OffsetRevealer from './_components/landing/offset-revealer'
+import PrizeSection from './_components/landing/prize-section'
 // import PrizesSection from './_components/landing/prizes-section';
-import SponsorsSection from './_components/landing/sponsors-section';
-import TicketSection from './_components/landing/ticket-section';
-import TimelineSection from './_components/landing/timeline-section';
-import GridTunnelContextProvider from './_contexts/grid-tunnel-context';
+import SponsorsSection from './_components/landing/sponsors-section'
+import TicketSection from './_components/landing/ticket-section'
+import TimelineSection from './_components/landing/timeline-section'
+import GridTunnelContextProvider from './_contexts/grid-tunnel-context'
 
 const Page: React.FC = () => {
   return (
     <GridTunnelContextProvider>
-      <div className="relative">
+      <div className='relative'>
         {/* fixed components */}
         <Socials />
         <ContainerLines />
 
         {/* hero grid tunnel */}
         <AnimatedGridTunnel>
-          <OffsetRevealer className="gap-5">
+          <OffsetRevealer className='gap-5'>
             <HeroSection />
           </OffsetRevealer>
           <OffsetRevealer
-            className="gap-2 sm:gap-4 md:gap-6"
+            className='gap-2 sm:gap-4 md:gap-6'
             offsetThreshold={500}
             zPosition={-750}
           >
             <PrizeSection />
           </OffsetRevealer>
           <OffsetRevealer
-            className="gap-8 sm:gap-10 md:gap-12"
+            className='gap-8 sm:gap-10 md:gap-12'
             offsetThreshold={1100}
             zPosition={-1600}
           >
@@ -51,7 +51,7 @@ const Page: React.FC = () => {
         <Footer />
       </div>
     </GridTunnelContextProvider>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

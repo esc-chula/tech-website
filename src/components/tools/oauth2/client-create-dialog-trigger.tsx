@@ -1,50 +1,50 @@
-'use client';
+'use client'
 
-import { Plus } from 'lucide-react';
+import { Plus } from 'lucide-react'
 
-import { Button } from '~/components/ui/button';
+import { Button } from '~/components/ui/button'
 
-import { useClientCreateDialog } from './client-create-dialog-context';
+import { useClientCreateDialog } from './client-create-dialog-context'
 
 interface ClientCreateDialogTriggerProps {
-  variant: 'button' | 'card';
+  variant: 'button' | 'card'
 }
 
 const ClientCreateDialogTrigger: React.FC<ClientCreateDialogTriggerProps> = ({
   variant,
 }) => {
-  const { setOpen } = useClientCreateDialog();
+  const { setOpen } = useClientCreateDialog()
 
   switch (variant) {
     case 'button':
       return (
         <Button
-          variant="default"
+          variant='default'
           onClick={() => {
-            setOpen(true);
+            setOpen(true)
           }}
         >
           <Plus size={16} />
           New
         </Button>
-      );
+      )
     case 'card':
       return (
         <button
-          className="flex min-h-36 md:min-h-80 justify-center items-center border-4 border-neutral-800 border-dashed rounded-3xl w-full place-self-center h-full"
-          type="button"
+          className='flex h-full min-h-36 w-full items-center justify-center place-self-center rounded-3xl border-4 border-dashed border-neutral-800 md:min-h-80'
+          type='button'
           onClick={() => {
-            setOpen(true);
+            setOpen(true)
           }}
         >
-          <div className="flex justify-center items-center border-4 border-neutral-800 border-dashed rounded-full w-5/12 aspect-square">
-            <Plus color="#262626" size={52} strokeWidth={2.5} />
+          <div className='flex aspect-square w-5/12 items-center justify-center rounded-full border-4 border-dashed border-neutral-800'>
+            <Plus color='#262626' size={52} strokeWidth={2.5} />
           </div>
         </button>
-      );
+      )
     default:
-      return null;
+      return null
   }
-};
+}
 
-export default ClientCreateDialogTrigger;
+export default ClientCreateDialogTrigger

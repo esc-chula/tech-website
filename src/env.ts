@@ -1,6 +1,6 @@
-import { createEnv } from '@t3-oss/env-nextjs';
-import { env as runtimeEnv } from 'next-runtime-env';
-import { z } from 'zod';
+import { createEnv } from '@t3-oss/env-nextjs'
+import { env as runtimeEnv } from 'next-runtime-env'
+import { z } from 'zod'
 
 export const env = createEnv({
   server: {
@@ -30,11 +30,11 @@ export const env = createEnv({
     // client
     NEXT_PUBLIC_GTAG_ID: runtimeEnv('NEXT_PUBLIC_GTAG_ID'),
     NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: runtimeEnv(
-      'NEXT_PUBLIC_SHORTENED_LINK_ORIGIN',
+      'NEXT_PUBLIC_SHORTENED_LINK_ORIGIN'
     ),
   },
 
   skipValidation: Boolean(process.env.SKIP_ENV_VALIDATION),
 
   emptyStringAsUndefined: true,
-});
+})
