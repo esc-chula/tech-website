@@ -4,6 +4,7 @@ import { spinHackathonTicketSlot } from '~/server/actions/hackathon'
 import { type HackathonSpinResult } from '~/types/hackathon'
 
 import BirdsBackground from '../../_components/common/birds-background'
+import UserBox from '../../_components/common/user-box'
 import SlotMachine from '../../_components/jackpot/slot-machine'
 
 const HackathonJackpotPage: React.FC = () => {
@@ -20,6 +21,7 @@ const HackathonJackpotPage: React.FC = () => {
 
   return (
     <div className='flex h-screen flex-col items-center justify-center'>
+      <UserBox />
       <SlotMachine handleSpin={handleSpin} />
       <BirdsBackground />
     </div>

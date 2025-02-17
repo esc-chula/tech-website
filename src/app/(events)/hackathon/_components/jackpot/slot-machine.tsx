@@ -31,7 +31,7 @@ const SlotMachine = ({ handleSpin }: SlotMachineProps): JSX.Element => {
           HACKATHON_SYMBOLS[
             Math.floor(Math.random() * HACKATHON_SYMBOLS.length)
           ] ?? HACKATHON_SYMBOLS[0]
-      )
+      ) as string[]
   }
 
   useEffect(() => {
@@ -143,13 +143,19 @@ const SlotMachine = ({ handleSpin }: SlotMachineProps): JSX.Element => {
           <div className='pixel-border shadow-neon rounded-lg border-4 border-white bg-black p-3 md:p-6'>
             <div className='pixel-border-inner rounded bg-carmine-900 p-2 md:p-4'>
               <div className='pixel-border-inset flex space-x-2 bg-black p-2 md:space-x-4 md:p-5'>
-                {reels.map((reelSymbols, index) => (
-                  <Reel
-                    key={reelSymbols.join('-')}
-                    reelSymbols={reelSymbols}
-                    spinning={spinning[index] ?? false}
-                  />
-                ))}
+                {reels.map((reelSymbols, index) => {
+                  const reelPosition = ['left', 'middle', 'right'][index]
+                  return (
+                    <Reel
+                      key={`slot-reel-${String(reelPosition)}`}
+                      spinning={spinning[index] ?? false}
+                      reelSymbols={reelSymbols.map((symbol, id) => ({
+                        id,
+                        value: symbol,
+                      }))}
+                    />
+                  )
+                })}
               </div>
             </div>
           </div>
