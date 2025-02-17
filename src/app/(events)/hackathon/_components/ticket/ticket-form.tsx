@@ -2,12 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { createHackathonTeamTicket } from '~/server/actions/hackathon'
 import {
   type HackathonTicket,
   type HackathonTicketClaim,
@@ -18,9 +16,14 @@ import CreateTeamBox from './create-team-box'
 import TicketBox from './ticket-box'
 
 export const codeSchema = z.object({
-  code: z.string().regex(/^(?<type>DEV|DES|PRO|GEN)_[A-Z0-9]{10}$/, {
-    message: 'Invalid ticket code',
-  }),
+  code: z
+    .string()
+    .min(1, {
+      message: 'Please fill in the code',
+    })
+    .regex(/^(?<type>DEV|DES|PRO|GEN)_[A-Z0-9]{10}$/, {
+      message: 'Must be in the format of (DEV|DES|PRO|GEN)-XXXXXXXXXX',
+    }),
 })
 
 export type CodeSchema = z.infer<typeof codeSchema>
@@ -39,7 +42,6 @@ interface TicketFormProps {
 }
 
 const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
-  const router = useRouter()
   const [showCreateTeamBox, setShowCreateTeamBox] = useState(false)
 
   useEffect(() => {
@@ -62,24 +64,13 @@ const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
     },
   })
 
-  const onCreateTeam = async (): Promise<void> => {
-    if (!ticket1 || !ticket2) return
-    try {
-      await createHackathonTeamTicket([ticket1.id, ticket2.id])
-
-      router.refresh()
-    } catch (err) {
-      console.error(err instanceof Error ? err.message : err)
-    }
-  }
-
   return (
     <AnimatePresence initial={false} mode='wait'>
       {!showCreateTeamBox ? (
         <motion.div
           key='ticketContainer'
           layout
-          className='flex flex-col gap-24 sm:flex-row'
+          className='flex flex-col gap-10 md:flex-row lg:gap-24'
         >
           <AnimatePresence propagate initial={false} mode='wait'>
             {ticket1 ? (
@@ -107,7 +98,11 @@ const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
           </AnimatePresence>
         </motion.div>
       ) : (
-        <CreateTeamBox key='createTeamBox' onSubmit={onCreateTeam} />
+        <CreateTeamBox
+          key='createTeamBox'
+          ticket1={ticket1}
+          ticket2={ticket2}
+        />
       )}
     </AnimatePresence>
   )

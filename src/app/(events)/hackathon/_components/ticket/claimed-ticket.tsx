@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { CodeXml, Figma, Lightbulb, Settings } from 'lucide-react'
+import { CodeXml, Figma, Lightbulb, LoaderCircle, Settings } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 
@@ -22,11 +22,12 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
   expiredAt,
   moveDirection,
 }: ClaimedTicketProps) => {
-  const [timeLeft, setTimeLeft] = useState<string>('0 minutes 0 seconds')
+  const [timeLeft, setTimeLeft] = useState<string | null>(null)
   const isMobile = useMediaQuery({ maxWidth: 640 })
 
   useEffect(() => {
     if (!expiredAt) return
+
     const calculateTimeLeft = (): void => {
       const now = new Date().getTime()
       const distance = expiredAt.getTime() - now
@@ -87,18 +88,19 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
   return (
     <motion.div
       className={cn(
-        'flex aspect-[4/3] w-full flex-col items-center justify-center gap-7 rounded-3xl border-2 border-white bg-gradient-to-b px-4 py-7 text-center sm:py-12',
+        'flex aspect-[4/3] w-[320px] flex-col items-center justify-center gap-7 rounded-3xl border-2 border-white bg-gradient-to-b px-4 py-7 text-center sm:py-12 lg:w-[440px]',
         ticketType === 'GENERAL' && 'from-red-700 to-red-950',
         ticketType === 'DEVELOPER' && 'from-indigo-900 to-black',
         ticketType === 'DESIGNER' && 'from-violet-500 to-green-500',
         ticketType === 'PRODUCT' && 'from-yellow-700 to-black'
       )}
       exit={{
-        translateX: isMobile ? 0 : `${moveDirection === 'left' ? 70 : -70}%`,
-        translateY: isMobile ? `${moveDirection === 'left' ? 70 : -70}%` : 0,
+        translateX: isMobile ? 0 : `${moveDirection === 'left' ? 60 : -60}%`,
+        translateY: isMobile ? `${moveDirection === 'left' ? 60 : -60}%` : 0,
         boxShadow: `0 0 240px 200px ${shadowColor}`,
         scale: 1.25,
-        transition: { duration: 0.75, ease: 'easeIn' },
+        opacity: 0.3,
+        transition: { duration: 1.5, ease: 'easeIn' },
       }}
       whileInView={{
         boxShadow: [
@@ -110,9 +112,13 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
       }}
     >
       {renderIcon}
-      <p className='text-nowrap text-xs font-medium tracking-tight text-white sm:text-xl'>
-        Expiring in {timeLeft}
-      </p>
+      {timeLeft === null ? (
+        <LoaderCircle className='animate-spin' />
+      ) : (
+        <p className='text-nowrap text-xs font-medium tracking-tight text-white sm:text-xl'>
+          Expiring in {timeLeft}
+        </p>
+      )}
     </motion.div>
   )
 }

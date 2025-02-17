@@ -1,7 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { type SubmitHandler, type UseFormReturn } from 'react-hook-form'
 
 import {
@@ -26,8 +28,12 @@ const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
 
   const { toast } = useToast()
 
+  const [loading, setLoading] = useState(false)
+
   const onSubmit: SubmitHandler<CodeSchema> = async (values) => {
     try {
+      setLoading(true)
+
       const res = await claimHackahonTicketWithRateLimit(values.code)
 
       if (!res.success) {
@@ -48,8 +54,12 @@ const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
         return
       }
 
+      setLoading(false)
+
       router.refresh()
     } catch (err) {
+      setLoading(false)
+
       toast({
         title: 'Error',
         description: err instanceof Error ? err.message : String(err),
@@ -59,30 +69,13 @@ const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
   }
 
   return (
-    <motion.div
-      className='flex w-full items-center gap-6 rounded-3xl border-2 border-white/40 p-6 backdrop-blur-sm sm:p-10'
-      animate={{
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      }}
-      exit={{
-        backgroundColor: 'rgba(255, 255, 255, 1)',
-        boxShadow: '0 0 50px 50px rgba(255, 255, 255, 1)',
-        transition: { duration: 1, ease: 'easeInOut' },
-      }}
-    >
+    <motion.div className='flex aspect-[4/3] w-[320px] items-center gap-6 rounded-3xl border-2 border-white/40 p-6 backdrop-blur-sm sm:p-10 lg:w-[440px]'>
       <Form {...form}>
         <form
-          className='flex aspect-[4/3] w-full flex-col items-center justify-center gap-3.5 sm:gap-6'
-          onSubmit={form.handleSubmit(onSubmit, (errors) => {
-            toast({
-              title: errors.code?.message,
-              description:
-                'Must be in the format of (DEV|DES|PRO|GEN)-XXXXXXXXXX',
-              variant: 'destructive',
-            })
-          })}
+          className='flex h-full w-full flex-col items-center justify-center gap-3.5 sm:gap-6'
+          onSubmit={form.handleSubmit(onSubmit)}
         >
-          <h2 className='font-ndot47 text-4xl tracking-tighter text-white sm:text-6xl'>
+          <h2 className='select-none text-center font-ndot47 text-4xl tracking-tighter text-white sm:text-5xl lg:text-6xl'>
             {name}
           </h2>
           <FormField
@@ -93,19 +86,24 @@ const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
                 <FormControl>
                   <input
                     {...field}
-                    className='w-full rounded-2xl border border-white bg-white/20 px-4 py-2 font-geistSans text-base font-medium tracking-tighter text-white opacity-50 outline-none backdrop-blur-sm placeholder:text-white/50 focus-visible:border-white focus-visible:bg-white/20 sm:px-8 sm:py-3.5 sm:text-xl'
+                    className='w-full rounded-2xl border-2 border-white/10 bg-white/10 px-4 py-2 font-geistSans text-base font-medium tracking-tighter text-white outline-none backdrop-blur-sm placeholder:text-white/50 focus-visible:border-white/50 focus-visible:bg-white/20 md:px-6 md:py-3.5 md:text-xl'
                     placeholder='Fill Your Ticket Code Here'
                   />
                 </FormControl>
-                <FormMessage className='absolute' />
+                <FormMessage className='text-xs lg:text-sm' />
               </FormItem>
             )}
           />
           <button
-            className='rounded-full border-2 border-white/40 bg-white/20 px-4 py-1.5 tracking-tight opacity-50 backdrop-blur-sm hover:bg-white/25 sm:px-8 sm:py-2.5'
+            className='rounded-full border-2 border-white/20 bg-white/20 px-4 py-1.5 tracking-tight backdrop-blur-sm hover:bg-white/30 sm:px-8 sm:py-2.5'
+            disabled={loading}
             type='submit'
           >
-            Claim Ticket
+            {loading ? (
+              <LoaderCircle className='animate-spin' />
+            ) : (
+              'Claim Ticket'
+            )}
           </button>
         </form>
       </Form>
