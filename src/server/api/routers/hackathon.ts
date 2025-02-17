@@ -96,128 +96,124 @@ export const hackathonRouter = createTRPCRouter({
         }
       }
 
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          const existingTeamTicket = await tx.hackathonTeamTicket.findUnique({
-            where: { userId },
-          })
+      try {
+        const existingTeamTicket = await ctx.db.hackathonTeamTicket.findUnique({
+          where: { userId },
+        })
 
-          if (existingTeamTicket) {
-            return {
-              success: false,
-              message: 'You already have a team ticket',
-            }
-          }
-
-          const activeClaimsCount = await tx.hackathonTicketClaim.count({
-            where: {
-              userId,
-              expiredAt: { gt: new Date() },
-            },
-          })
-
-          if (activeClaimsCount >= 2) {
-            return {
-              success: false,
-              message: 'You can only have 2 active claims at a time',
-            }
-          }
-
-          const ticket = await tx.hackathonTicket.findUnique({
-            where: {
-              code: input.ticketCode,
-              teamTicketId: null,
-            },
-            include: {
-              claims: {
-                where: {
-                  OR: [{ userId }, { expiredAt: { gt: new Date() } }],
-                },
-              },
-            },
-          })
-
-          if (!ticket) {
-            return {
-              success: false,
-              message: 'Ticket not found or already in a team',
-            }
-          }
-
-          if (ticket.claims.some((claim) => claim.userId === userId)) {
-            return {
-              success: false,
-              message: 'You cannot claim a ticket you previously claimed',
-            }
-          }
-
-          if (
-            ticket.claims.some(
-              (claim) => claim.expiredAt && claim.expiredAt > new Date()
-            )
-          ) {
-            return {
-              success: false,
-              message: 'Ticket is already claimed',
-            }
-          }
-
-          const expiryDate = new Date()
-          expiryDate.setDate(
-            expiryDate.getDate() + HACKATHON_TICKET_EXPIRY_DAYS
-          )
-
-          await tx.hackathonTicketClaim.create({
-            data: {
-              ticketId: ticket.id,
-              userId,
-              expiredAt: expiryDate,
-            },
-          })
-
-          const updatedTicket = await tx.hackathonTicket.findUnique({
-            where: { code: input.ticketCode },
-            select: {
-              id: true,
-              code: true,
-              ticketType: true,
-              isRegistered: true,
-              teamTicketId: true,
-              claims: {
-                where: {
-                  expiredAt: { gt: new Date() },
-                },
-              },
-            },
-          })
-
+        if (existingTeamTicket) {
           return {
-            success: true,
-            message: 'Ticket claimed successfully',
-            data: updatedTicket,
+            success: false,
+            message: 'You already have a team ticket',
+            errors: ['Team ticket already exists'],
           }
-        } catch (error) {
+        }
+
+        const activeClaimsCount = await ctx.db.hackathonTicketClaim.count({
+          where: {
+            userId,
+            expiredAt: { gt: new Date() },
+          },
+        })
+
+        if (activeClaimsCount >= 2) {
+          return {
+            success: false,
+            message: 'You can only have 2 active claims at a time',
+            errors: ['Maximum active claims reached'],
+          }
+        }
+
+        const ticket = await ctx.db.hackathonTicket.findUnique({
+          where: {
+            code: input.ticketCode,
+            teamTicketId: null,
+          },
+          include: {
+            claims: {
+              where: {
+                OR: [{ userId }, { expiredAt: { gt: new Date() } }],
+              },
+            },
+          },
+        })
+
+        if (!ticket) {
+          return {
+            success: false,
+            message: 'Ticket not found or already registered',
+            errors: ['Ticket not found or already registered'],
+          }
+        }
+
+        if (ticket.claims.some((claim) => claim.userId === userId)) {
+          return {
+            success: false,
+            message: 'You cannot claim a ticket you previously claimed',
+            errors: ['Ticket already claimed by you'],
+          }
+        }
+
+        if (
+          ticket.claims.some(
+            (claim) => claim.expiredAt && claim.expiredAt > new Date()
+          )
+        ) {
+          return {
+            success: false,
+            message: 'Ticket is already claimed',
+            errors: ['Ticket already claimed'],
+          }
+        }
+
+        const expiryDate = new Date()
+        expiryDate.setDate(expiryDate.getDate() + HACKATHON_TICKET_EXPIRY_DAYS)
+
+        await ctx.db.hackathonTicketClaim.create({
+          data: {
+            ticketId: ticket.id,
+            userId,
+            expiredAt: expiryDate,
+          },
+        })
+
+        const updatedTicket = await ctx.db.hackathonTicket.findUnique({
+          where: { code: input.ticketCode },
+          select: {
+            id: true,
+            code: true,
+            ticketType: true,
+            isRegistered: true,
+            teamTicketId: true,
+            claims: {
+              where: {
+                expiredAt: { gt: new Date() },
+              },
+            },
+          },
+        })
+
+        if (!updatedTicket) {
           return {
             success: false,
             message: 'Failed to claim ticket',
-            error:
-              error instanceof Error ? error.message : 'Something went wrong',
+            errors: ['Failed to find updated ticket'],
           }
         }
-      })
 
-      if (res.error ?? !res.data) {
+        return {
+          success: true,
+          message: 'Ticket claimed successfully',
+          data: updatedTicket,
+        }
+      } catch (error) {
         return {
           success: false,
-          message: res.message,
-          errors: [res.error ?? 'Something went wrong'],
+          message: 'Failed to claim ticket',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
         }
-      }
-
-      return {
-        success: true,
-        message: res.message,
-        data: res.data,
       }
     }),
 

@@ -2,30 +2,28 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { useToast } from '~/hooks/use-toast'
-import {
-  claimHackahonTicketWithRateLimit,
-  createHackathonTeamTicket,
-} from '~/server/actions/hackathon'
 import {
   type HackathonTicket,
   type HackathonTicketClaim,
 } from '~/types/hackathon'
-import { type Response } from '~/types/server'
 
 import ClaimedTicket from './claimed-ticket'
 import CreateTeamBox from './create-team-box'
 import TicketBox from './ticket-box'
 
 export const codeSchema = z.object({
-  code: z.string().regex(/^(?<type>DEV|DES|PRO|GEN)_[A-Z0-9]{10}$/, {
-    message: 'Invalid ticket code',
-  }),
+  code: z
+    .string()
+    .min(1, {
+      message: 'Please fill in the code',
+    })
+    .regex(/^(?<type>DEV|DES|PRO|GEN)_[A-Z0-9]{10}$/, {
+      message: 'Must be in the format of (DEV|DES|PRO|GEN)-XXXXXXXXXX',
+    }),
 })
 
 export type CodeSchema = z.infer<typeof codeSchema>
@@ -44,8 +42,6 @@ interface TicketFormProps {
 }
 
 const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
-  const { toast } = useToast()
-  const router = useRouter()
   const [showCreateTeamBox, setShowCreateTeamBox] = useState(false)
 
   useEffect(() => {
@@ -68,47 +64,13 @@ const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
     },
   })
 
-  const onSubmit: SubmitHandler<CodeSchema> = async (values) => {
-    try {
-      const res = (await claimHackahonTicketWithRateLimit(
-        values.code
-      )) as Response<HackathonTicket>
-
-      if (!res.success) {
-        toast({
-          title: 'Something went wrong',
-          description: res.message,
-          variant: 'destructive',
-        })
-        return
-      }
-
-      router.refresh()
-    } catch (err) {
-      toast({
-        title: 'Error',
-        description: err instanceof Error ? err.message : String(err),
-        variant: 'destructive',
-      })
-    }
-  }
-
-  const onCreateTeam = async (): Promise<void> => {
-    if (!ticket1 || !ticket2) return
-    try {
-      await createHackathonTeamTicket([ticket1.id, ticket2.id])
-    } catch (err) {
-      console.error(err instanceof Error ? err.message : err)
-    }
-  }
-
   return (
     <AnimatePresence initial={false} mode='wait'>
       {!showCreateTeamBox ? (
         <motion.div
           key='ticketContainer'
           layout
-          className='flex flex-col gap-24 sm:flex-row'
+          className='flex flex-col gap-10 md:flex-row lg:gap-24'
         >
           <AnimatePresence propagate initial={false} mode='wait'>
             {ticket1 ? (
@@ -119,12 +81,7 @@ const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
                 ticketType={ticket1.ticketType}
               />
             ) : (
-              <TicketBox
-                key='ticketBox1'
-                form={code1Form}
-                name='Ticket 1'
-                onSubmit={onSubmit}
-              />
+              <TicketBox key='ticketBox1' form={code1Form} name='Ticket 1' />
             )}
           </AnimatePresence>
           <AnimatePresence propagate initial={false} mode='wait'>
@@ -136,17 +93,16 @@ const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
                 ticketType={ticket2.ticketType}
               />
             ) : (
-              <TicketBox
-                key='ticketBox2'
-                form={code2Form}
-                name='Ticket 2'
-                onSubmit={onSubmit}
-              />
+              <TicketBox key='ticketBox2' form={code2Form} name='Ticket 2' />
             )}
           </AnimatePresence>
         </motion.div>
       ) : (
-        <CreateTeamBox key='createTeamBox' onSubmit={onCreateTeam} />
+        <CreateTeamBox
+          key='createTeamBox'
+          ticket1={ticket1}
+          ticket2={ticket2}
+        />
       )}
     </AnimatePresence>
   )

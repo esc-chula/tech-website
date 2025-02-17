@@ -56,7 +56,8 @@ export const claimHackahonTicketWithRateLimit = withRateLimit(
   claimHackathonTicket,
   {
     maxAttempts: 5,
-    windowInSeconds: 300,
+    // windowInSeconds: 300,
+    windowInSeconds: 10,
   },
   'claim-hackathon-ticket'
 )
