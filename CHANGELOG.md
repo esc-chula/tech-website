@@ -2,6 +2,65 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0](https://github.com/esc-chula/intania-oidc-new/compare/v0.2.3..v0.3.0) - 2025-02-17
+
+### <!-- 0 -->⛰️  Features
+
+- Init schema - ([1e898b6](https://github.com/esc-chula/intania-oidc-new/commit/1e898b629826f75b41d1d654a222c4f7f082fe82))
+- Add migrate - ([2e4f60b](https://github.com/esc-chula/intania-oidc-new/commit/2e4f60b0d92b161195f610de62cce3a585b07d6a))
+- Ticket dto - ([eb355bc](https://github.com/esc-chula/intania-oidc-new/commit/eb355bcec0fd97ff8514de15bb349374d11a7aab))
+- Ticket gen - ([09c84db](https://github.com/esc-chula/intania-oidc-new/commit/09c84db8fa359dd69e7cc9c976960188619ee235))
+- Team ticket - ([9101ea5](https://github.com/esc-chula/intania-oidc-new/commit/9101ea5c363625588acb34495d9e995fd88fbca1))
+- Claim - ([9ce3210](https://github.com/esc-chula/intania-oidc-new/commit/9ce32102285bd0733795c680d85db6cf6a74019f))
+- Get ticket - ([0462052](https://github.com/esc-chula/intania-oidc-new/commit/046205297e3b512181d003c196abef6f8df8b5ec))
+- Init schema - ([8b58793](https://github.com/esc-chula/intania-oidc-new/commit/8b58793cc98bce889b4ba3d419a37d63c3f9f205))
+- Add migrate - ([96ba5fa](https://github.com/esc-chula/intania-oidc-new/commit/96ba5fa35d15bd3b6ebf3b004fdc785c4b429099))
+- Login page - ([f9d0243](https://github.com/esc-chula/intania-oidc-new/commit/f9d0243e542d14bd86bd8b501651e0c74795ab9d))
+- Title hover ripple effect - ([8762ea8](https://github.com/esc-chula/intania-oidc-new/commit/8762ea8c6e0ccab5790fed89bbcba90c4b0201e6))
+- Hero register button - ([79903f3](https://github.com/esc-chula/intania-oidc-new/commit/79903f3b00e54c41235f57f75cf4c732f35ee285))
+- Config ticket duration - ([cd11c27](https://github.com/esc-chula/intania-oidc-new/commit/cd11c273b5f3ad5fbf51f26b482cc169d0267619))
+- Rate limit actions with redis ([#50](https://github.com/esc-chula/intania-oidc-new/issues/50)) - ([ef2b2a4](https://github.com/esc-chula/intania-oidc-new/commit/ef2b2a4708fdce611e7648481fca027547e74270))
+- Ticket claiming page ([#54](https://github.com/esc-chula/intania-oidc-new/issues/54)) - ([3dd4ab8](https://github.com/esc-chula/intania-oidc-new/commit/3dd4ab8ad85d93d492de7425d959655146bb19e4))
+- Share story ([#56](https://github.com/esc-chula/intania-oidc-new/issues/56)) - ([9b20477](https://github.com/esc-chula/intania-oidc-new/commit/9b20477f9cf7e17ca82281c7ff947ab36a39b80a))
+- Trigger - ([9a9edb7](https://github.com/esc-chula/intania-oidc-new/commit/9a9edb7222f3d06d6a79d6f04f1b6b5ce202c633))
+- Registration seo - ([20e7635](https://github.com/esc-chula/intania-oidc-new/commit/20e76351ec7dfe720cece0e9d39b19666420215a))
+- Back button - ([7092acf](https://github.com/esc-chula/intania-oidc-new/commit/7092acfa0103932f822bc317e1cf2ecb7cf12373))
+- Remove hacker 5 - ([da12f7c](https://github.com/esc-chula/intania-oidc-new/commit/da12f7cb6c565974b34025c00fbe77a176fe84d5))
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Format, naming, publicId, ticket claims - ([e3b9da9](https://github.com/esc-chula/intania-oidc-new/commit/e3b9da93cf25c99d76356e5ccce0594ff7dc27de))
+- Oops - ([9e4c8a5](https://github.com/esc-chula/intania-oidc-new/commit/9e4c8a54026c4459707fa5b65636e4574f891ba9))
+- Input type - ([c0bc088](https://github.com/esc-chula/intania-oidc-new/commit/c0bc08812df31fad8b34f0dec7c78e235efa880e))
+- Remove `isClaimed` from schema - ([10e3ce3](https://github.com/esc-chula/intania-oidc-new/commit/10e3ce3dfea319818946f745f423b32eb3d59843))
+- Update gtag env - ([a171dfe](https://github.com/esc-chula/intania-oidc-new/commit/a171dfe86f86c145d183535bc581deef85859009))
+- Format, naming, publicId, ticket claims - ([85d3f70](https://github.com/esc-chula/intania-oidc-new/commit/85d3f7027d3442835409f76ba1cedcf743a8d828))
+- Oops - ([793d67f](https://github.com/esc-chula/intania-oidc-new/commit/793d67f606409d1f09e9be71d55c8eaee4c513d3))
+- Ticket create input - ([c89aefe](https://github.com/esc-chula/intania-oidc-new/commit/c89aefe0f417e52f712d3a5e31c12e8570e65758))
+- `nickname` and `pronoun` enum - ([68e8e53](https://github.com/esc-chula/intania-oidc-new/commit/68e8e53b1bcc25a3a388404e60ffa026373b7521))
+- Ticket protected route - ([8cacc09](https://github.com/esc-chula/intania-oidc-new/commit/8cacc091e4729bd856d9458ff69a4f83eb5c2b58))
+- Types intersection - ([6d4d94e](https://github.com/esc-chula/intania-oidc-new/commit/6d4d94e2db577a74a3a1fcd9478b9a2fa9cedde4))
+- Prettier - ([8340ae2](https://github.com/esc-chula/intania-oidc-new/commit/8340ae250da8362ffd447e165b09c024c4d03220))
+- Prettier remove auto sort imports - ([f7ca354](https://github.com/esc-chula/intania-oidc-new/commit/f7ca3542145bf82ef7f348bb9fd71f2f40767a43))
+- Rate limit error handling - ([1d9b49b](https://github.com/esc-chula/intania-oidc-new/commit/1d9b49b393e944bb3d08d9e7e9bf82596a563add))
+- Rate limit window - ([c9f7296](https://github.com/esc-chula/intania-oidc-new/commit/c9f7296d7f5e26c61c6361fa32d8fb7cbcf2c909))
+- Claim same type ticket prevention - ([4d38a8d](https://github.com/esc-chula/intania-oidc-new/commit/4d38a8dedf5664de4a17a1490936eded40488d2f))
+
+### Miscellaneous Tasks
+
+- Run migrate - ([bf2c029](https://github.com/esc-chula/intania-oidc-new/commit/bf2c029ec8c679dfdf026b8da237b7e8c2aa36f0))
+- Fix about page responsiveness - ([5adf41b](https://github.com/esc-chula/intania-oidc-new/commit/5adf41bf900c7c96b80598064ecfeb771357e8e8))
+- Run migrate - ([d433df9](https://github.com/esc-chula/intania-oidc-new/commit/d433df986bc038e5a7426c233160806b23503378))
+- Format and cleanup migration - ([1e639d3](https://github.com/esc-chula/intania-oidc-new/commit/1e639d3769f7f552b3dd5e0fd1dd7b1b9deffd83))
+- Update docker-compose auth-redis - ([fc95841](https://github.com/esc-chula/intania-oidc-new/commit/fc95841207db86a8d0c0f8bc1490129af5463c1b))
+- Update docker-compose - ([ac1f865](https://github.com/esc-chula/intania-oidc-new/commit/ac1f865fcdb71a7193f80c55e52b63d3373b7d0c))
+- Tick-track-toe docker compose - ([526ed22](https://github.com/esc-chula/intania-oidc-new/commit/526ed22c2700c6be28130bf7128f090a04e7092f))
+- Add ticket to get claim - ([79b866b](https://github.com/esc-chula/intania-oidc-new/commit/79b866b7bba3475789ff96259c4d9fc5589a8af0))
+
+### Refactor
+
+- Claim ticket logic - ([be3eedf](https://github.com/esc-chula/intania-oidc-new/commit/be3eedfb809c66db300faff2ecaa6f5362be0487))
+
 ## [0.2.3](https://github.com/esc-chula/intania-oidc-new/compare/v0.2.2..v0.2.3) - 2025-02-11
 
 ### <!-- 0 -->⛰️  Features
@@ -127,7 +186,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.1.0](https://github.com/esc-chula/intania-oidc-new/compare/v0.0.7..v0.1.0) - 2025-02-02
 
-### <!-- 0 -->⛰️ Features
+### <!-- 0 -->⛰️  Features
 
 - About session & title - ([f383ae3](https://github.com/esc-chula/intania-oidc-new/commit/f383ae33f60046c6e20bdee9ef014e3292b4c035))
 - Mocking about page layout - ([3deed06](https://github.com/esc-chula/intania-oidc-new/commit/3deed06447e297db9194335ffc426b9267357540))
@@ -234,9 +293,9 @@ All notable changes to this project will be documented in this file.
 
 - Divide each components - ([ec279ec](https://github.com/esc-chula/intania-oidc-new/commit/ec279ec5a0c1730fcb3668c2d0cc6075999ac0f9))
 - Del unimportant import - ([44ba514](https://github.com/esc-chula/intania-oidc-new/commit/44ba514e253f6dfff951f50edf8ba7425cc48ba1))
-- Remove use client and css from files not need, move src/app/\_components and \_components of about-page to src/components, remove h2 in css - ([f7db529](https://github.com/esc-chula/intania-oidc-new/commit/f7db529df9c6a093311d7dee1c175230dd205be6))
+- Remove use client and css from files not need, move src/app/_components and _components of about-page to src/components, remove h2 in css - ([f7db529](https://github.com/esc-chula/intania-oidc-new/commit/f7db529df9c6a093311d7dee1c175230dd205be6))
 - Remove multiple css import - ([487bf2c](https://github.com/esc-chula/intania-oidc-new/commit/487bf2c2d9bd35d8de0361e499c7a7bfd8d43dca))
-- Remove use client and css from files not need, move src/app/\_components and \_components of about-page to src/components, remove h2 in css - ([cf0c340](https://github.com/esc-chula/intania-oidc-new/commit/cf0c3403869629c09d41880848a0461feb0a0ebc))
+- Remove use client and css from files not need, move src/app/_components and _components of about-page to src/components, remove h2 in css - ([cf0c340](https://github.com/esc-chula/intania-oidc-new/commit/cf0c3403869629c09d41880848a0461feb0a0ebc))
 - Rename components file - ([c3b5fca](https://github.com/esc-chula/intania-oidc-new/commit/c3b5fcaf91ac5c65e6c1da8d7b5079dc3e37873a))
 - Rename file & change a to Link - ([0d238e4](https://github.com/esc-chula/intania-oidc-new/commit/0d238e445239e353b281467856ff50079ac8e465))
 - Rename components file - ([037d81e](https://github.com/esc-chula/intania-oidc-new/commit/037d81ed42edea98bdb5f415df9976563ce1b35f))
@@ -329,7 +388,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.6](https://github.com/esc-chula/intania-oidc-new/compare/v0.0.5..v0.0.6) - 2025-02-02
 
-### <!-- 0 -->⛰️ Features
+### <!-- 0 -->⛰️  Features
 
 - Add release workflow for version tagging and changelog generation - ([6154426](https://github.com/esc-chula/intania-oidc-new/commit/615442613b0291100ddd527bcec974570fffb7c6))
 
@@ -359,7 +418,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.1](https://github.com/esc-chula/intania-oidc-new/compare/..v0.0.1) - 2025-01-30
 
-### <!-- 0 -->⛰️ Features
+### <!-- 0 -->⛰️  Features
 
 - Init - ([c4a13fc](https://github.com/esc-chula/intania-oidc-new/commit/c4a13fcd15c5c3a8fa84e6980ec8d966674a27c4))
 - Set up directus - ([2806906](https://github.com/esc-chula/intania-oidc-new/commit/280690685bfcb851d0b619356c507d2ebd19a6ff))
