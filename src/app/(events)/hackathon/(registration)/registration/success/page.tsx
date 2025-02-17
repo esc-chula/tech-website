@@ -1,3 +1,4 @@
+import { type Metadata } from 'next'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
@@ -9,6 +10,10 @@ import {
 import Building1Background from '../../../_components/common/bulding-1-background'
 import UserBox from '../../../_components/common/user-box'
 import ShareStory from '../../../_components/success/share-story'
+
+export const metadata: Metadata = {
+  title: 'Intania Hackathon - Registration Complete',
+}
 
 const Page: React.FC = async () => {
   const resMyRegistration = await findMyRegistration()

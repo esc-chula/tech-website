@@ -1,4 +1,5 @@
 import { MessageCircleQuestion } from 'lucide-react'
+import { type Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { Dialog, DialogContent, DialogTrigger } from '~/components/ui/dialog'
@@ -12,6 +13,10 @@ import Building1Background from '../../_components/common/bulding-1-background'
 import UserBox from '../../_components/common/user-box'
 import TeamTicket from '../../_components/ticket/team-ticket'
 import TicketForm from '../../_components/ticket/ticket-form'
+
+export const metadata: Metadata = {
+  title: 'Intania Hackathon - Ticket',
+}
 
 const Page: React.FC = async () => {
   const resMyTeamTicket = await findMyTeamTicket()
