@@ -1,11 +1,15 @@
 import {
+  HACKATHON_JACKPOT_RATE,
   HACKATHON_MAX_TEAMS,
+  HACKATHON_SYMBOLS,
+  HACKATHON_TICKET_CODES,
   HACKATHON_TICKET_EXPIRY_DAYS,
 } from '~/constants/hackathon'
 import { genPublicId } from '~/lib/hackathon-ticket'
 import { createTRPCRouter, trpc } from '~/server/api/trpc'
 import type {
   HackathonRegistration,
+  HackathonSpinResult,
   HackathonTeamMember,
   HackathonTeamTicket,
   HackathonTicket,
@@ -687,4 +691,54 @@ export const hackathonRouter = createTRPCRouter({
         }
       }
     ),
+  spinHackathonTicketSlot: trpc.mutation(
+    ({ ctx }): Response<HackathonSpinResult> => {
+      const userId = ctx.session.user?.id
+      if (!userId) {
+        return {
+          success: false,
+          message: 'Unauthorized',
+          errors: ['Session ID not found'],
+        }
+      }
+
+      const isJackpot = Math.random() < HACKATHON_JACKPOT_RATE
+      const symbols = Array(3)
+        .fill(null)
+        .map(() =>
+          isJackpot
+            ? HACKATHON_SYMBOLS[0]
+            : (HACKATHON_SYMBOLS[
+                Math.floor(Math.random() * HACKATHON_SYMBOLS.length)
+              ] ?? HACKATHON_SYMBOLS[0])
+        ) as string[]
+
+      if (!isJackpot) {
+        return {
+          success: true,
+          message: 'Spin result generated successfully',
+          data: { symbols },
+        }
+      }
+
+      const randomIdx = Math.floor(
+        Math.random() * HACKATHON_TICKET_CODES.length
+      )
+      const ticketCode =
+        HACKATHON_TICKET_CODES[randomIdx] ?? HACKATHON_TICKET_CODES[0]
+      const position = Math.floor(Math.random() * ticketCode.length)
+
+      return {
+        success: true,
+        message: 'Spin result successful',
+        data: {
+          symbols,
+          ticketFragment: {
+            ticketNumber: `${randomIdx + 1}`,
+            letter: ticketCode.charAt(position),
+          },
+        },
+      }
+    }
+  ),
 })
