@@ -5,6 +5,7 @@ import { api } from '~/trpc/server'
 import {
   type CreateHackathonTeamMemberInput,
   type HackathonRegistration,
+  type HackathonSpinResult,
   type HackathonTeamMember,
   type HackathonTeamTicket,
   type HackathonTicket,
@@ -125,4 +126,10 @@ export async function updateHackathonRegistration(
     teamMembers,
   })
   return res
+}
+
+export async function spinHackathonTicketSlot(): Promise<
+  Response<HackathonSpinResult>
+> {
+  return await api.hackathon.spinHackathonTicketSlot()
 }

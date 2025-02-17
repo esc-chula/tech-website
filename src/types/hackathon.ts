@@ -58,3 +58,11 @@ export type CreateHackathonTeamMemberInput = Omit<
 export type UpdateHackathonTeamMemberInput = CreateHackathonTeamMemberInput & {
   id: number
 }
+
+export interface HackathonSpinResult {
+  symbols: string[]
+  ticketFragment?: {
+    ticketNumber: string
+    letter: string
+  }
+}
