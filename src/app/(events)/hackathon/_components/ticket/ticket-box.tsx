@@ -1,11 +1,12 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { LoaderCircle } from 'lucide-react'
+import { Info, LoaderCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { type SubmitHandler, type UseFormReturn } from 'react-hook-form'
 
+import { Dialog, DialogContent, DialogTrigger } from '~/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -42,6 +43,10 @@ const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
           description: res.message,
           variant: 'destructive',
         })
+
+        if (res.message?.includes('Unauthorized')) {
+          router.push('/hackathon/login?redirectUrl=/hackathon/ticket')
+        }
 
         setLoading(false)
 
@@ -95,7 +100,36 @@ const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
                     placeholder='Fill Your Ticket Code Here'
                   />
                 </FormControl>
-                <FormMessage className='text-xs lg:text-sm' />
+                <div className='flex items-center gap-2'>
+                  {form.formState.errors.code?.message ===
+                  'Ticket already claimed by someone else' ? (
+                    <Dialog modal>
+                      <DialogTrigger asChild>
+                        <button className='animate-bounce' type='button'>
+                          <Info size={20} />
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className='w-4/5 rounded-2xl border-2 border-white/40 bg-white/10 px-10 py-8 backdrop-blur-md sm:w-full'>
+                        <h2 className='select-none text-center font-ndot47 text-xl tracking-tighter sm:text-4xl'>
+                          Claiming System
+                        </h2>
+                        <p>
+                          When you claim a ticket, each ticket will have around
+                          48 hours before it expires.
+                        </p>
+                        <p>
+                          While the ticket is yours, no one else can claim it.
+                        </p>
+                        <p>
+                          {`If it's expired, you cannot reclaim it and the ticket
+                          will be available for others to claim if they have the
+                          same code.`}
+                        </p>
+                      </DialogContent>
+                    </Dialog>
+                  ) : null}
+                  <FormMessage className='text-xs lg:text-sm' />
+                </div>
               </FormItem>
             )}
           />

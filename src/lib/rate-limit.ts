@@ -46,11 +46,11 @@ export function withRateLimit<T, A extends unknown[]>(
       const currentAttempts = attempts ? parseInt(attempts, 10) : 0
 
       if (currentAttempts >= config.maxAttempts) {
-        const ttl = await redis.ttl(key)
+        // const ttl = await redis.ttl(key)
         return {
           success: false,
-          message: 'Rate limit exceeded',
-          errors: [`Try again in ${ttl} seconds`],
+          message: 'Rate limit exceeded, please try again later',
+          errors: ['Number of attempts exceeded the limit'],
         }
       }
 

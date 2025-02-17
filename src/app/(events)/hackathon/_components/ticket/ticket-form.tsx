@@ -22,7 +22,7 @@ export const codeSchema = z.object({
       message: 'Please fill in the code',
     })
     .regex(/^(?<type>DEV|DES|PRO|GEN)_[A-Z0-9]{10}$/, {
-      message: 'Must be in the format of (DEV|DES|PRO|GEN)-XXXXXXXXXX',
+      message: 'Must be in the format of (DEV|DES|PRO|GEN)_XXXXXXXXXX',
     }),
 })
 

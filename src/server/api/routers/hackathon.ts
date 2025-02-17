@@ -154,7 +154,7 @@ export const hackathonRouter = createTRPCRouter({
         if (ticket.claims.some((claim) => claim.userId === userId)) {
           return {
             success: false,
-            message: 'You cannot re-claim expired ticket',
+            message: 'You cannot re-claim ticket',
             errors: ['Ticket already claimed by you'],
           }
         }
@@ -180,7 +180,7 @@ export const hackathonRouter = createTRPCRouter({
         ) {
           return {
             success: false,
-            message: 'Ticket is already claimed',
+            message: 'Ticket already claimed by someone else',
             errors: ['Ticket already claimed'],
           }
         }
