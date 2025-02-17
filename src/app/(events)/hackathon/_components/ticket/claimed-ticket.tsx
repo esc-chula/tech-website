@@ -103,7 +103,7 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
       whileInView={{
         boxShadow: [
           `0 0 60px 40px ${shadowColor}`,
-          `0 0 80px 60px ${shadowColor}`,
+          `0 0 100px 80px ${shadowColor}`,
           `0 0 60px 40px ${shadowColor}`,
         ],
         transition: { duration: 2, repeat: Infinity, repeatType: 'reverse' },
