@@ -14,7 +14,7 @@ const BackButton: React.FC<BackButtonProps> = ({ href }) => {
   if (!href) {
     return (
       <button
-        className='absolute bottom-6 left-3 aspect-square rounded-full border-2 border-white/10 bg-white/10 p-2 backdrop-blur-sm md:bottom-auto md:left-6 md:top-6'
+        className='fixed bottom-6 left-3 z-50 aspect-square rounded-full border-2 border-white/10 bg-white/10 p-2 backdrop-blur-sm md:bottom-auto md:left-6 md:top-6'
         type='button'
         onClick={() => router.back()}
       >
@@ -25,7 +25,7 @@ const BackButton: React.FC<BackButtonProps> = ({ href }) => {
 
   return (
     <Link
-      className='absolute bottom-6 left-3 aspect-square rounded-full border-2 border-white/10 bg-white/10 p-2 backdrop-blur-sm md:bottom-auto md:left-6 md:top-6'
+      className='fixed bottom-6 left-3 z-50 aspect-square rounded-full border-2 border-white/10 bg-white/10 p-2 backdrop-blur-sm md:bottom-auto md:left-6 md:top-6'
       href={href}
     >
       <ChevronLeft size={24} />
