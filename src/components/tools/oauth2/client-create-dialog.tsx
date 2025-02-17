@@ -1,20 +1,20 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
+import { useState } from 'react'
 
-import { Dialog } from '~/components/ui/dialog';
+import { Dialog } from '~/components/ui/dialog'
 
-import ClientCreateDialogContent from './client-create-dialog-content';
-import ClientCreateDialogContext from './client-create-dialog-context';
+import ClientCreateDialogContent from './client-create-dialog-content'
+import ClientCreateDialogContext from './client-create-dialog-context'
 
 interface ClientCreateDialogProps {
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 const ClientCreateDialog: React.FC<ClientCreateDialogProps> = ({
   children,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   return (
     <ClientCreateDialogContext.Provider value={{ open, setOpen }}>
@@ -23,7 +23,7 @@ const ClientCreateDialog: React.FC<ClientCreateDialogProps> = ({
         {children}
       </Dialog>
     </ClientCreateDialogContext.Provider>
-  );
-};
+  )
+}
 
-export default ClientCreateDialog;
+export default ClientCreateDialog

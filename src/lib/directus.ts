@@ -1,12 +1,12 @@
-import { createDirectus, rest } from '@directus/sdk';
-import { env } from 'next-runtime-env';
+import { createDirectus, rest } from '@directus/sdk'
+import { env } from 'next-runtime-env'
 
-import type { Event } from '~/types/techmonth';
+import type { Event } from '~/types/techmonth'
 
-const DIRECTUS_URL = env('DIRECTUS_URL') ?? 'http://localhost:8055';
+const DIRECTUS_URL = env('DIRECTUS_URL') ?? 'http://localhost:8055'
 
 interface Schema {
-  Tech_web_techmonth_event: Event;
+  Tech_web_techmonth_event: Event
 }
 
 const directus = createDirectus<Schema>(DIRECTUS_URL).with(
@@ -18,7 +18,7 @@ const directus = createDirectus<Schema>(DIRECTUS_URL).with(
         'cache-control': 'no-store',
       },
     }),
-  }),
-);
+  })
+)
 
-export default directus;
+export default directus

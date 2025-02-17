@@ -1,10 +1,10 @@
 /* eslint-disable prefer-named-capture-group -- regex pattern uses named capture groups */
 
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]): string {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
 export function isURL(url: string): boolean {
@@ -15,7 +15,7 @@ export function isURL(url: string): boolean {
       '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
       '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
       '(\\#[-a-z\\d_]*)?$', // fragment locator
-    'i',
-  );
-  return pattern.test(url);
+    'i'
+  )
+  return pattern.test(url)
 }

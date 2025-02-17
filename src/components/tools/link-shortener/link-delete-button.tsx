@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
-import { Trash2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Trash2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 import {
   AlertDialog,
@@ -13,51 +13,51 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '~/components/ui/alert-dialog';
-import { Button } from '~/components/ui/button';
-import { useToast } from '~/hooks/use-toast';
-import { deleteShortenedLink } from '~/server/actions/link-shortener';
+} from '~/components/ui/alert-dialog'
+import { Button } from '~/components/ui/button'
+import { useToast } from '~/hooks/use-toast'
+import { deleteShortenedLink } from '~/server/actions/link-shortener'
 
 interface DeleteButtonProps {
-  slug: string;
+  slug: string
 }
 
 const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
-  const router = useRouter();
-  const { toast } = useToast();
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+  const { toast } = useToast()
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const deleteHandler = async (): Promise<void> => {
-    setLoading(true);
+    setLoading(true)
 
-    const res = await deleteShortenedLink(slug);
+    const res = await deleteShortenedLink(slug)
 
     if (!res.success) {
-      setLoading(false);
+      setLoading(false)
 
       toast({
         title: 'Failed to delete link',
         description: res.message ?? 'Something went wrong',
         variant: 'destructive',
-      });
+      })
 
-      console.error('DeleteButton, failed to delete link: ', res.errors);
+      console.error('DeleteButton, failed to delete link: ', res.errors)
 
-      return;
+      return
     }
 
-    setLoading(false);
-    setOpen(false);
+    setLoading(false)
+    setOpen(false)
 
-    router.push('/tools/link-shortener');
-    router.refresh();
-  };
+    router.push('/tools/link-shortener')
+    router.refresh()
+  }
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="transparent">
+        <Button variant='transparent'>
           <Trash2 size={16} />
         </Button>
       </AlertDialogTrigger>
@@ -73,7 +73,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button
             disabled={loading}
-            variant="destructive"
+            variant='destructive'
             onClick={deleteHandler}
           >
             Delete
@@ -81,7 +81,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ slug }) => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
-};
+  )
+}
 
-export default DeleteButton;
+export default DeleteButton

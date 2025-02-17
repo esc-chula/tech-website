@@ -17,4 +17,4 @@ export const heroLinks = [
     scroll: true,
     external: false,
   },
-];
+]

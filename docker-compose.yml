@@ -1,21 +1,5 @@
 name: tech-website
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '3000:3000'
-    environment:
-      DATABASE_URL: 'postgresql://postgres:password@db:5432/tech-website'
-      DIRECTUS_URL: 'https://cms.intania.org'
-      GRPC_ADDRESS: 'auth:3000'
-      NEXT_PUBLIC_SHORTENED_LINK_ORIGIN: 'http://localhost:3002'
-    depends_on:
-      - db
-    networks:
-      - default
-
   db:
     image: postgres:latest
     restart: unless-stopped
@@ -30,6 +14,14 @@ services:
     networks:
       - default
 
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    networks:
+      - default
+
   link:
     image: ghcr.io/esc-chula/intania-link:latest
     restart: unless-stopped
@@ -37,7 +29,22 @@ services:
       - '3002:3000'
     environment:
       DATABASE_URL: 'postgresql://postgres:password@db:5432/tech-website'
-      NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: 'G-XXXXXXXXXX'
+      NEXT_PUBLIC_GTAG_ID: 'G-XXXXXXXXXX'
+    depends_on:
+      - db
+    networks:
+      - default
+
+  tick-track-toe:
+    image: ghcr.io/esc-chula/tick-track-toe:latest
+    restart: unless-stopped
+    environment:
+      PHX_HOST: 'localhost'
+      PORT: '4000'
+      DATABASE_URL: postgresql://postgres:password@db:5432/tech-website
+      SECRET_KEY_BASE: anythinglonglongfuckitsnotlongenoughmaybethisisitpleaseokitsstillnotenoughisthisyet
+    ports:
+      - 4000:4000
     depends_on:
       - db
     networks:
@@ -116,8 +123,6 @@ services:
     image: redis:7.2-bookworm
     restart: unless-stopped
     hostname: auth-redis
-    ports:
-      - 6379:6379
     command: ['redis-server', '--requirepass', '123456']
 
   auth-migrations:

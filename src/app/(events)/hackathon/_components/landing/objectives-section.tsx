@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react'
 
-import ScrollRevealer from '~/components/common/animation/scroll-revealer';
-import { cn } from '~/lib/utils';
+import ScrollRevealer from '~/components/common/animation/scroll-revealer'
+import { cn } from '~/lib/utils'
 
-import Section from './section';
+import Section from './section'
 
 const objectives = [
   {
@@ -17,9 +17,9 @@ const objectives = [
           engineering students from Chulalongkorn University’s Faculty of
           Engineering (Intania).
         </p>
-        <p className="text-lg md:text-xl font-semibold">
+        <p className='text-lg font-semibold md:text-xl'>
           “Made in{' '}
-          <span className="text-hackathon-primary font-bold">Intania</span>”
+          <span className='font-bold text-hackathon-primary'>Intania</span>”
         </p>
         <p>
           A statement that represents real innovation with a global impact. This
@@ -33,14 +33,14 @@ const objectives = [
     title: 'Innovate',
     children: (
       <>
-        <p className="text-lg md:text-xl font-semibold">
+        <p className='text-lg font-semibold md:text-xl'>
           Discovery → Ideation →{' '}
-          <span className="text-white font-bold underline">POC Creation</span> →{' '}
-          <span className="text-hackathon-primary font-bold">Execution</span>
+          <span className='font-bold text-white underline'>POC Creation</span> →{' '}
+          <span className='font-bold text-hackathon-primary'>Execution</span>
         </p>
         <p>
           Unlike typical competitions, Intania Hackathon is a{' '}
-          <span className="font-bold">REAL</span> hackathon. Our goal is not
+          <span className='font-bold'>REAL</span> hackathon. Our goal is not
           just ideas but tangible innovation. This event pushes teams to go
           beyond ideation and develop a real Proof of Concept (POC).
         </p>
@@ -63,9 +63,9 @@ const objectives = [
         </p>
         <p>
           We aim to make Intania Hackathon the most{' '}
-          <span className="text-white font-semibold">
+          <span className='font-semibold text-white'>
             thrilling,{' '}
-            <span className="text-hackathon-primary font-bold">fun</span>, and
+            <span className='font-bold text-hackathon-primary'>fun</span>, and
             memorable
           </span>{' '}
           tech event ever. This isn’t just about winning—it’s about the
@@ -74,25 +74,25 @@ const objectives = [
       </>
     ),
   },
-];
+]
 
 const ObjectivesSection: React.FC = () => {
   return (
     <Section
       title={
         <>
-          WT<span className="text-hackathon-primary">H</span>
+          WT<span className='text-hackathon-primary'>H</span>
         </>
       }
     >
-      <div className="flex flex-col pt-6 sm:pt-0 md:pt-5 px-0 md:px-5 gap-6 md:gap-8">
-        <span className="font-ndot47 text-2xl md:text-4xl text-white/50 select-none">
+      <div className='flex flex-col gap-6 px-0 pt-6 sm:pt-0 md:gap-8 md:px-5 md:pt-5'>
+        <span className='select-none font-ndot47 text-2xl text-white/50 md:text-4xl'>
           what the HACK?!
         </span>
         {objectives.map((objective, index) => (
           <ScrollRevealer key={objective.title}>
             <ObjectiveCard index={index} title={objective.title}>
-              <div className="flex flex-col gap-5 text-white/90 text-sm md:text-base">
+              <div className='flex flex-col gap-5 text-sm text-white/90 md:text-base'>
                 {objective.children}
               </div>
             </ObjectiveCard>
@@ -100,15 +100,15 @@ const ObjectivesSection: React.FC = () => {
         ))}
       </div>
     </Section>
-  );
-};
+  )
+}
 
-export default ObjectivesSection;
+export default ObjectivesSection
 
 interface ObjectiveCardProps {
-  children: React.ReactNode;
-  index: number;
-  title: string;
+  children: React.ReactNode
+  index: number
+  title: string
 }
 
 const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
@@ -116,29 +116,29 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
   index,
   title,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(index !== 0);
+  const [isCollapsed, setIsCollapsed] = useState(index !== 0)
 
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [contentHeight, setContentHeight] = useState(0)
 
   useEffect(() => {
-    setContentHeight(contentRef.current?.clientHeight ?? 0);
-  }, [contentRef]);
+    setContentHeight(contentRef.current?.clientHeight ?? 0)
+  }, [contentRef])
 
   return (
-    <div className="flex flex-col">
+    <div className='flex flex-col'>
       <button
-        className="w-full flex justify-between items-end group"
-        type="button"
+        className='group flex w-full items-end justify-between'
+        type='button'
         onClick={() => setIsCollapsed((prev) => !prev)}
       >
-        <h3 className="font-ndot47 text-4xl md:text-6xl uppercase select-none duration-75 group-hover:text-hackathon-primary">
+        <h3 className='select-none font-ndot47 text-4xl uppercase duration-75 group-hover:text-hackathon-primary md:text-6xl'>
           {title}
         </h3>
         <span
           className={cn(
-            'font-ndot47 text-2xl md:text-5xl select-none text-white/60 group-hover:text-white',
-            isCollapsed ? '' : '-mt-[1.4%] mb-[1.4%]',
+            'select-none font-ndot47 text-2xl text-white/60 group-hover:text-white md:text-5xl',
+            isCollapsed ? '' : '-mt-[1.4%] mb-[1.4%]'
           )}
         >
           {isCollapsed ? '+' : '_'}
@@ -146,8 +146,8 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
       </button>
       <div
         className={cn(
-          'overflow-hidden transform-gpu transition-all',
-          isCollapsed ? 'h-0' : 'h-40',
+          'transform-gpu overflow-hidden transition-all',
+          isCollapsed ? 'h-0' : 'h-40'
         )}
         style={{
           height: isCollapsed ? 0 : `${contentHeight + 40}px`,
@@ -155,12 +155,12 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
       >
         <div
           ref={contentRef}
-          className="flex flex-col gap-4 md:gap-6 pt-4 md:px-2"
+          className='flex flex-col gap-4 pt-4 md:gap-6 md:px-2'
         >
-          <hr className="border-b md:border-b-2 border-white/25" />
+          <hr className='border-b border-white/25 md:border-b-2' />
           {children}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import CopyButton from '~/components/common/button/copy-button';
+import CopyButton from '~/components/common/button/copy-button'
 import {
   AlertDialogCancel,
   AlertDialogContent,
@@ -8,17 +8,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '~/components/ui/alert-dialog';
-import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
+} from '~/components/ui/alert-dialog'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
 
-import { useClientSecretDialog } from './client-secret-dialog-context';
+import { useClientSecretDialog } from './client-secret-dialog-context'
 
 const ClientSecretDialogContent: React.FC = () => {
-  const { secret } = useClientSecretDialog();
+  const { secret } = useClientSecretDialog()
 
   return (
-    <AlertDialogContent className="md:max-w-md">
+    <AlertDialogContent className='md:max-w-md'>
       <AlertDialogHeader>
         <AlertDialogTitle>Please Save Your Secret</AlertDialogTitle>
         <AlertDialogDescription>
@@ -27,10 +27,10 @@ const ClientSecretDialogContent: React.FC = () => {
       </AlertDialogHeader>
       <div>
         <Label>Secret</Label>
-        <div className="flex gap-4">
-          <Input className="w-full" value={secret} />
+        <div className='flex gap-4'>
+          <Input className='w-full' value={secret} />
           <CopyButton
-            className="h-auto p-0 hover:bg-transparent"
+            className='h-auto p-0 hover:bg-transparent'
             value={secret}
           />
         </div>
@@ -39,7 +39,7 @@ const ClientSecretDialogContent: React.FC = () => {
         <AlertDialogCancel>I have saved my secret</AlertDialogCancel>
       </AlertDialogFooter>
     </AlertDialogContent>
-  );
-};
+  )
+}
 
-export default ClientSecretDialogContent;
+export default ClientSecretDialogContent

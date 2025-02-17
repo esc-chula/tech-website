@@ -1,18 +1,18 @@
-'use client';
+'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-import { Button } from '~/components/ui/button';
+import { Button } from '~/components/ui/button'
 import {
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '~/components/ui/dialog';
+} from '~/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -21,17 +21,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
-import { env } from '~/env';
-import { useToast } from '~/hooks/use-toast';
-import { createShortenedLink } from '~/server/actions/link-shortener';
-import { checkAppRole } from '~/server/actions/role';
+} from '~/components/ui/form'
+import { Input } from '~/components/ui/input'
+import { env } from '~/env'
+import { useToast } from '~/hooks/use-toast'
+import { createShortenedLink } from '~/server/actions/link-shortener'
+import { checkAppRole } from '~/server/actions/role'
 
-import { useLinkCreateDialog } from './link-create-dialog-context';
+import { useLinkCreateDialog } from './link-create-dialog-context'
 
 const SHORTENED_LINK_ORIGIN =
-  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link';
+  env.NEXT_PUBLIC_SHORTENED_LINK_ORIGIN ?? 'https://intania.link'
 
 const formSchema = z.object({
   name: z.string().max(50, {
@@ -49,15 +49,15 @@ const formSchema = z.object({
   url: z.string().url({
     message: 'Please enter a valid URL',
   }),
-});
+})
 
 const LinkCreateDialogContent: React.FC = () => {
-  const router = useRouter();
-  const { toast } = useToast();
+  const router = useRouter()
+  const { toast } = useToast()
 
-  const { setOpen } = useLinkCreateDialog();
+  const { setOpen } = useLinkCreateDialog()
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,30 +66,30 @@ const LinkCreateDialogContent: React.FC = () => {
       slug: '',
       url: '',
     },
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
-    setLoading(true);
+    setLoading(true)
 
-    const resCheck = await checkAppRole({ appId: 'esc', role: 'admin' });
+    const resCheck = await checkAppRole({ appId: 'esc', role: 'admin' })
     if (!resCheck.success) {
-      setLoading(false);
+      setLoading(false)
 
       toast({
         title: 'Failed to check role',
         description: resCheck.message ?? 'Something went wrong',
         variant: 'destructive',
-      });
+      })
 
       console.error(
         'LinkCreateDialogContent, failed to check role: ',
-        resCheck.errors,
-      );
+        resCheck.errors
+      )
 
-      return;
+      return
     }
 
-    const { data: isAuthorized } = resCheck;
+    const { data: isAuthorized } = resCheck
 
     if (
       !isAuthorized &&
@@ -100,58 +100,58 @@ const LinkCreateDialogContent: React.FC = () => {
       form.setError('slug', {
         type: 'manual',
         message: 'You do not have permission to have “esc” in the slug',
-      });
+      })
 
-      setLoading(false);
-      return;
+      setLoading(false)
+      return
     }
 
     const resCreate = await createShortenedLink({
       name: values.name,
       slug: values.slug,
       url: values.url,
-    });
+    })
     if (!resCreate.success) {
-      setLoading(false);
+      setLoading(false)
 
       toast({
         title: 'Failed to create shortened link',
         description: resCreate.message ?? 'Something went wrong',
         variant: 'destructive',
-      });
+      })
 
       console.error(
         'LinkCreateDialogContent, failed to create shortened link: ',
-        resCreate.errors,
-      );
+        resCreate.errors
+      )
 
-      return;
+      return
     }
 
-    form.reset();
+    form.reset()
 
-    setOpen(false);
-    setLoading(false);
+    setOpen(false)
+    setLoading(false)
 
-    router.refresh();
+    router.refresh()
   }
 
   return (
-    <DialogContent className="md:max-w-md">
+    <DialogContent className='md:max-w-md'>
       <Form {...form}>
-        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
           <DialogHeader>
             <DialogTitle>Shorten a link</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className='space-y-4'>
             <FormField
               control={form.control}
-              name="name"
+              name='name'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="My website" {...field} />
+                    <Input placeholder='My website' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,20 +159,20 @@ const LinkCreateDialogContent: React.FC = () => {
             />
             <FormField
               control={form.control}
-              name="slug"
+              name='slug'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="my-website"
+                      placeholder='my-website'
                       {...field}
                       onChange={(e) => {
                         const sanitizedValue = e.target.value
                           .toLowerCase()
-                          .replace(/[^a-z0-9-]+/g, '-');
+                          .replace(/[^a-z0-9-]+/g, '-')
 
-                        field.onChange(sanitizedValue);
+                        field.onChange(sanitizedValue)
                       }}
                     />
                   </FormControl>
@@ -187,12 +187,12 @@ const LinkCreateDialogContent: React.FC = () => {
             />
             <FormField
               control={form.control}
-              name="url"
+              name='url'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>URL</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://example.com" {...field} />
+                    <Input placeholder='https://example.com' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -200,14 +200,14 @@ const LinkCreateDialogContent: React.FC = () => {
             />
           </div>
           <DialogFooter>
-            <Button disabled={loading} type="submit" variant="primary">
+            <Button disabled={loading} type='submit' variant='primary'>
               Save
             </Button>
           </DialogFooter>
         </form>
       </Form>
     </DialogContent>
-  );
-};
+  )
+}
 
-export default LinkCreateDialogContent;
+export default LinkCreateDialogContent

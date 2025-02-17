@@ -1,0 +1,2 @@
+export const HACKATHON_TICKET_EXPIRY_DAYS = 2
+export const HACKATHON_MAX_TEAMS = 5
