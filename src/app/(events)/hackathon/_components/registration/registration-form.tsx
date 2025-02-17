@@ -2,7 +2,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircle } from 'lucide-react'
+import { LoaderCircle, Minus } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -351,26 +351,42 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         {/* members */}
         <div className='grid w-full max-w-screen-sm grid-cols-3 gap-3 sm:grid-cols-5'>
           {form.watch('teamMembers').map((_, index) => (
-            <Scroll
-              key={index}
-              smooth
-              className='flex aspect-square w-full cursor-pointer select-none flex-col items-center justify-center gap-2 rounded-2xl border-2 border-white/10 bg-white/5 text-center backdrop-blur-md hover:border-white/50'
-              offset={-64}
-              to={`Hacker #${index + 1}`}
-            >
-              <div className='relative aspect-square h-[50%]'>
-                <Image
-                  fill
-                  alt='member'
-                  className='pointer-events-none select-none object-contain'
-                  sizes='(min-width: 640px) 100px, 80px'
-                  src='/hackathon/assets/registration-member.png'
-                />
-              </div>
-              <span className='font-ndot47 text-xs sm:text-sm'>
-                Hacker #{index + 1}
-              </span>
-            </Scroll>
+            <div key={index} className='relative'>
+              <Scroll
+                smooth
+                className='flex aspect-square w-full cursor-pointer select-none flex-col items-center justify-center gap-2 rounded-2xl border-2 border-white/10 bg-white/5 text-center backdrop-blur-md hover:border-white/50'
+                offset={-64}
+                to={`Hacker #${index + 1}`}
+              >
+                <div className='relative aspect-square h-[50%]'>
+                  <Image
+                    fill
+                    alt='member'
+                    className='pointer-events-none select-none object-contain'
+                    sizes='(min-width: 640px) 100px, 80px'
+                    src='/hackathon/assets/registration-member.png'
+                  />
+                </div>
+                <span className='font-ndot47 text-xs sm:text-sm'>
+                  Hacker #{index + 1}
+                </span>
+              </Scroll>
+
+              {index === 4 ? (
+                <button
+                  className='absolute -right-1.5 -top-1.5 aspect-square rounded-full bg-hackathon-primary p-1 text-white'
+                  type='button'
+                  onClick={() => {
+                    form.setValue(
+                      'teamMembers',
+                      form.getValues('teamMembers').slice(0, 4)
+                    )
+                  }}
+                >
+                  <Minus size={12} />
+                </button>
+              ) : null}
+            </div>
           ))}
           {form.watch('teamMembers').length < 5 && (
             <button

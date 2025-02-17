@@ -11,6 +11,7 @@ import {
   type HackathonTicketClaim,
 } from '~/types/hackathon'
 
+
 interface CreateTeamBoxProps {
   ticket1?: {
     id: HackathonTicket['id']

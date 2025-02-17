@@ -17,10 +17,13 @@ export const metadata: Metadata = {
 
 const Page: React.FC = async () => {
   const resMyRegistration = await findMyRegistration()
-  if (!resMyRegistration.success || !resMyRegistration.data) {
+  if (!resMyRegistration.success) {
     return redirect(
       `/hackathon/login?redirectUrl=/hackathon/registration/success`
     )
+  }
+  if (!resMyRegistration.data) {
+    return notFound()
   }
 
   const resMyRegistrationIndex = await getMyRegistrationIndex()
