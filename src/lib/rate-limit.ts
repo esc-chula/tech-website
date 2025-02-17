@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types -- Function type is required for the rate limit function */
 import { cookies } from 'next/headers'
 
 import redis from './redis'
@@ -8,62 +7,68 @@ interface RateLimitConfig {
   windowInSeconds: number
 }
 
-interface RateLimitError extends Error {
-  remainingTime?: number
-}
+export type Response<T> =
+  | {
+      success: true
+      message?: string
+      data: T
+    }
+  | {
+      success: false
+      message?: string
+      errors: string[]
+    }
 
-const getRateLimitIdentifier = (): string => {
+const getRateLimitIdentifier = (): string | null => {
   const cookieStore = cookies()
-  const sid = cookieStore.get('sid')?.value
-
-  if (!sid) {
-    throw new Error('Unauthorized: No session ID found')
-  }
-
-  return sid
+  return cookieStore.get('sid')?.value ?? null
 }
 
-export function withRateLimit(
-  action: Function,
+export function withRateLimit<T, A extends unknown[]>(
+  action: (...args: A) => Promise<T>,
   config: RateLimitConfig,
   actionIdentifier: string
-) {
-  return async (...args: unknown[]) => {
+): (...args: A) => Promise<Response<T>> {
+  return async (...args: unknown[]): Promise<Response<T>> => {
     const id = getRateLimitIdentifier()
+    if (!id) {
+      return {
+        success: false,
+        message: 'Unauthorized: No session ID found',
+        errors: ['Unauthorized'],
+      }
+    }
+
     const key = `rate-limit:${actionIdentifier}:${id}`
 
     try {
-      // Get current attempts from Redis
       const attempts = await redis.get(key)
-      const currentAttempts = attempts ? parseInt(attempts) : 0
+      const currentAttempts = attempts ? parseInt(attempts, 10) : 0
 
-      // Check if rate limit is exceeded
       if (currentAttempts >= config.maxAttempts) {
-        // Get remaining time until reset
         const ttl = await redis.ttl(key)
-        const error = new Error('Rate limit exceeded') as RateLimitError
-        error.remainingTime = ttl
-        throw error
+        return {
+          success: false,
+          message: 'Rate limit exceeded',
+          errors: [`Try again in ${ttl} seconds`],
+        }
       }
 
-      // Increment
       if (currentAttempts === 0) {
         await redis.setex(key, config.windowInSeconds, '1')
       } else {
         await redis.incr(key)
       }
 
-      return (await action(...args)) as Promise<unknown>
-    } catch (error: unknown) {
-      if ((error as RateLimitError).remainingTime) {
-        throw error
-      }
-      if (error instanceof Error && error.message.includes('Unauthorized')) {
-        throw error
-      }
-
+      const result = await action(...(args as A))
+      return { success: true, data: result }
+    } catch (error) {
       console.error('Rate limit error:', error)
-      return (await action(...args)) as Promise<unknown>
+      return {
+        success: false,
+        message: 'Internal server error',
+        errors: ['Unexpected error occurred'],
+      }
     }
   }
 }

@@ -47,11 +47,9 @@ export async function createHackathonTeamTicket(
 async function claimHackathonTicket(
   ticketCode: string
 ): Promise<Response<HackathonTicket>> {
-  const res = await api.hackathon.claimTicket({
+  return await api.hackathon.claimTicket({
     ticketCode,
   })
-
-  return res
 }
 
 export const claimHackahonTicketWithRateLimit = withRateLimit(

@@ -21,7 +21,7 @@ import CreateTeamBox from './create-team-box'
 import TicketBox from './ticket-box'
 
 export const codeSchema = z.object({
-  code: z.string().regex(/^(?<type>DEV|DES|PRO|GEN)-[A-Z0-9]{10}$/, {
+  code: z.string().regex(/^(?<type>DEV|DES|PRO|GEN)_[A-Z0-9]{10}$/, {
     message: 'Invalid ticket code',
   }),
 })
