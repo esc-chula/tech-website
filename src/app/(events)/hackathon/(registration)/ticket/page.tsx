@@ -9,6 +9,7 @@ import {
   getMyActiveClaim,
 } from '~/server/actions/hackathon'
 
+import BackButton from '../../_components/common/back-button'
 import Building1Background from '../../_components/common/bulding-1-background'
 import UserBox from '../../_components/common/user-box'
 import TeamTicket from '../../_components/ticket/team-ticket'
@@ -56,6 +57,7 @@ const Page: React.FC = async () => {
 
     return (
       <>
+        <BackButton href='/hackathon' />
         <div className='flex min-h-dvh flex-col items-center gap-8 pb-24 pt-8'>
           <UserBox />
           <div className='mt-4 flex flex-col items-center gap-4'>
@@ -75,6 +77,7 @@ const Page: React.FC = async () => {
 
   return (
     <>
+      <BackButton href='/hackathon' />
       <div className='flex min-h-dvh flex-col items-center gap-10 pb-24 pt-8'>
         <UserBox />
         <div className='mt-4 flex flex-col items-center gap-4'>

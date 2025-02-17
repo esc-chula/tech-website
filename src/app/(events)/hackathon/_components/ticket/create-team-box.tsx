@@ -38,7 +38,7 @@ const CreateTeamBox: React.FC<CreateTeamBoxProps> = ({ ticket1, ticket2 }) => {
 
       setLoading(false)
 
-      router.refresh()
+      router.push('/hackathon/registration')
     } catch (err) {
       console.error(err instanceof Error ? err.message : err)
     }
