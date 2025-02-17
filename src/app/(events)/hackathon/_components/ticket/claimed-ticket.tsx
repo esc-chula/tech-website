@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { CodeXml, Figma, Lightbulb, LoaderCircle, Settings } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 
@@ -22,6 +23,8 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
   expiredAt,
   moveDirection,
 }: ClaimedTicketProps) => {
+  const router = useRouter()
+
   const [timeLeft, setTimeLeft] = useState<string | null>(null)
   const isMobile = useMediaQuery({ maxWidth: 640 })
 
@@ -48,12 +51,18 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
       } else {
         setTimeLeft(`${seconds} seconds`)
       }
+
+      if (distance < 0) {
+        clearInterval(interval)
+        setTimeLeft(null)
+        router.refresh()
+      }
     }
 
     const interval = setInterval(calculateTimeLeft, 1000)
 
     return () => clearInterval(interval)
-  }, [expiredAt])
+  }, [expiredAt, router])
 
   const renderIcon = useMemo(() => {
     switch (ticketType) {
