@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 - Ticket log - ([b5ea9b7](https://github.com/esc-chula/intania-oidc-new/commit/b5ea9b709a222b21c1f62dd95ce6e603f33c2c0d))
 
+### Miscellaneous Tasks
+
+- Update team limit - ([09a4c71](https://github.com/esc-chula/intania-oidc-new/commit/09a4c717014338e5f5c892b349efdb6d44e21b60))
+
 ## [0.3.2](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.1..v0.3.2) - 2025-02-17
 
 ### <!-- 1 -->🐛 Bug Fixes
