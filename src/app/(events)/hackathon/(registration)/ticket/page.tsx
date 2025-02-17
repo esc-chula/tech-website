@@ -1,6 +1,7 @@
 import { MessageCircleQuestion } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
+import { Dialog, DialogContent, DialogTrigger } from '~/components/ui/dialog'
 import {
   findMyRegistration,
   findMyTeamTicket,
@@ -72,16 +73,43 @@ const Page: React.FC = async () => {
       <div className='flex min-h-dvh flex-col items-center gap-10 pb-24 pt-8'>
         <UserBox />
         <div className='mt-4 flex flex-col items-center gap-4'>
-          <h1 className='text-center text-6xl font-semibold capitalize tracking-tighter text-white'>
+          <h1 className='text-center text-4xl font-semibold capitalize tracking-tighter text-white sm:text-6xl'>
             Claim Your Ticket
           </h1>
-          <button
-            className='flex rounded-full bg-white/10 px-4 py-2 font-medium tracking-tighter text-white/70 backdrop-blur-md hover:bg-white/15'
-            type='button'
-          >
-            <MessageCircleQuestion className='mr-1.5 h-6 w-6' />
-            How to Get Tickets?
-          </button>
+          <Dialog modal>
+            <DialogTrigger asChild>
+              <button
+                className='flex rounded-full bg-white/10 px-4 py-2 text-xs font-medium tracking-tighter text-white/70 backdrop-blur-md hover:bg-white/15 sm:text-base'
+                type='button'
+              >
+                <MessageCircleQuestion className='mr-0.5 size-3.5 sm:mr-1.5 sm:size-6' />
+                How to Get Tickets?
+              </button>
+            </DialogTrigger>
+            <DialogContent className='w-4/5 rounded-2xl border-2 border-white/40 bg-white/10 px-10 py-8 backdrop-blur-md sm:w-full'>
+              <h2 className='text-center font-ndot47 text-xl tracking-tighter sm:text-4xl'>
+                How to Get Tickets
+              </h2>
+              <ol className='flex list-decimal flex-col text-xs sm:text-base'>
+                <li>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </li>
+              </ol>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className='flex h-1/2 w-full grow-[0.5] items-center justify-center'>
           <TicketForm ticket1={ticket1} ticket2={ticket2} />

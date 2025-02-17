@@ -1,7 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -44,6 +46,13 @@ interface TicketFormProps {
 const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
   const { toast } = useToast()
   const router = useRouter()
+  const [showCreateTeamBox, setShowCreateTeamBox] = useState(false)
+
+  useEffect(() => {
+    if (!ticket1 || !ticket2) return
+
+    setTimeout(() => setShowCreateTeamBox(true), 1500)
+  }, [ticket1, ticket2])
 
   const code1Form = useForm<CodeSchema>({
     resolver: zodResolver(codeSchema),
@@ -94,25 +103,52 @@ const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
   }
 
   return (
-    <div className='flex flex-col gap-24 sm:flex-row'>
-      {ticket1 ? (
-        <ClaimedTicket
-          expiredAt={ticket1.expiredAt}
-          ticketType={ticket1.ticketType}
-        />
+    <AnimatePresence initial={false} mode='wait'>
+      {!showCreateTeamBox ? (
+        <motion.div
+          key='ticketContainer'
+          layout
+          className='flex flex-col gap-24 sm:flex-row'
+        >
+          <AnimatePresence propagate initial={false} mode='wait'>
+            {ticket1 ? (
+              <ClaimedTicket
+                key='claimedTicket1'
+                expiredAt={ticket1.expiredAt}
+                moveDirection='left'
+                ticketType={ticket1.ticketType}
+              />
+            ) : (
+              <TicketBox
+                key='ticketBox1'
+                form={code1Form}
+                name='Ticket 1'
+                onSubmit={onSubmit}
+              />
+            )}
+          </AnimatePresence>
+          <AnimatePresence propagate initial={false} mode='wait'>
+            {ticket2 ? (
+              <ClaimedTicket
+                key='claimedTicket2'
+                expiredAt={ticket2.expiredAt}
+                moveDirection='right'
+                ticketType={ticket2.ticketType}
+              />
+            ) : (
+              <TicketBox
+                key='ticketBox2'
+                form={code2Form}
+                name='Ticket 2'
+                onSubmit={onSubmit}
+              />
+            )}
+          </AnimatePresence>
+        </motion.div>
       ) : (
-        <TicketBox form={code1Form} name='Ticket 1' onSubmit={onSubmit} />
+        <CreateTeamBox key='createTeamBox' onSubmit={onCreateTeam} />
       )}
-      {ticket2 ? (
-        <ClaimedTicket
-          expiredAt={ticket2.expiredAt}
-          ticketType={ticket2.ticketType}
-        />
-      ) : (
-        <TicketBox form={code2Form} name='Ticket 2' onSubmit={onSubmit} />
-      )}
-      {ticket1 && ticket2 ? <CreateTeamBox onSubmit={onCreateTeam} /> : null}
-    </div>
+    </AnimatePresence>
   )
 }
 
