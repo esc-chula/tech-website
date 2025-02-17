@@ -109,12 +109,17 @@ export const hackathonRouter = createTRPCRouter({
           }
         }
 
-        const activeClaimsCount = await ctx.db.hackathonTicketClaim.count({
+        const activeClaims = await ctx.db.hackathonTicketClaim.findMany({
           where: {
             userId,
             expiredAt: { gt: new Date() },
           },
+          include: {
+            ticket: true,
+          },
         })
+
+        const activeClaimsCount = activeClaims.length
 
         if (activeClaimsCount >= 2) {
           return {
@@ -149,8 +154,22 @@ export const hackathonRouter = createTRPCRouter({
         if (ticket.claims.some((claim) => claim.userId === userId)) {
           return {
             success: false,
-            message: 'You cannot claim a ticket you previously claimed',
+            message: 'You cannot re-claim expired ticket',
             errors: ['Ticket already claimed by you'],
+          }
+        }
+
+        // if input ticket type is same as active claim ticket type
+        if (
+          activeClaimsCount > 0 &&
+          activeClaims.some(
+            (claim) => claim.ticket.ticketType === ticket.ticketType
+          )
+        ) {
+          return {
+            success: false,
+            message: 'You cannot claim the same ticket type',
+            errors: ['Ticket type already claimed'],
           }
         }
 

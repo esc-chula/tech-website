@@ -53,10 +53,11 @@ const contents = [
             <div className='absolute left-2 top-1/2 -z-10 aspect-square w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-hackathon-radial-gradient opacity-70 md:left-1/2 md:-translate-y-[60%]' />
           </span>
           <div>
-            <h4 className='font-semibold'>Find Your Tickets</h4>
+            <h4 className='font-semibold'>Form Your Team</h4>
             <p className='text-sm text-white/70 md:text-base'>
-              Follow the hints and Easter eggs on our social media & LINE
-              OpenChat to locate your two Ticket Codes.
+              Team up with <span className='font-bold underline'>4-5</span>{' '}
+              undergrad Hackers and at least 2 students from Faculty of
+              Engineering, Chulalongkorn University.
             </p>
           </div>
         </div>
@@ -67,7 +68,9 @@ const contents = [
           <div>
             <h4 className='font-semibold'>Register Your Ticket</h4>
             <p className='text-sm text-white/70 md:text-base'>
-              Each Ticket Code must be claimed at Register page.
+              Follow the hints and Easter eggs on our social media & LINE
+              OpenChat to locate your two Ticket Codes. Each Ticket Code must be
+              claimed at Register page.
             </p>
           </div>
         </div>

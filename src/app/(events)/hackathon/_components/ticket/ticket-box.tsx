@@ -38,10 +38,13 @@ const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
 
       if (!res.success) {
         toast({
-          title: 'Rate Limit',
+          title: 'Error',
           description: res.message,
           variant: 'destructive',
         })
+
+        setLoading(false)
+
         return
       }
 
@@ -50,6 +53,8 @@ const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
           type: 'manual',
           message: res.data.message ?? 'Invalid ticket code',
         })
+
+        setLoading(false)
 
         return
       }

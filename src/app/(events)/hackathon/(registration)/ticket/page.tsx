@@ -87,25 +87,41 @@ const Page: React.FC = async () => {
               </button>
             </DialogTrigger>
             <DialogContent className='w-4/5 rounded-2xl border-2 border-white/40 bg-white/10 px-10 py-8 backdrop-blur-md sm:w-full'>
-              <h2 className='text-center font-ndot47 text-xl tracking-tighter sm:text-4xl'>
-                How to Get Tickets
+              <h2 className='select-none text-center font-ndot47 text-xl tracking-tighter sm:text-4xl'>
+                Ticket Rules & Guides
               </h2>
-              <ol className='flex list-decimal flex-col text-xs sm:text-base'>
+              <ol className='flex list-decimal flex-col gap-2 text-xs leading-relaxed text-white/80 sm:text-base'>
                 <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  <span className='font-bold'>Form Your Team:</span> Team up
+                  with 4-5 undergrad Hackers and at least 2 students from
+                  Faculty of Engineering, Chulalongkorn University.
                 </li>
                 <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  <span className='font-bold'>Find Your Tickets:</span> Follow
+                  the hints and Easter eggs on our social media & LINE OpenChat
+                  to locate your two Ticket Codes.
                 </li>
                 <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  <span className='font-bold'>Register Your Ticket:</span> Each
+                  Ticket Code must be claimed at Register page.
+                  <br />
+                  <br />
+                  <span className='font-medium'>Note:</span> There are 4 types
+                  of ticket, which are General, Developer, Designer, and
+                  Product. Both of your claimed tickets must be a different type
+                  to be able to merge them into a Team Ticket.
+                  <br />
+                  <br />
+                  <span className='font-medium'>Note:</span> When you claim a
+                  ticket, you have around 48 hours to find another ticket before
+                  the ticket expires, allowing others that have the same code to
+                  claim your ticket too
                 </li>
                 <li>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  <span className='font-bold'>Combine Your Tickets:</span> Once
+                  your team has collected 2 Ticket Codes, you can merge them
+                  into a Team Ticket to complete your registration in the
+                  website.
                 </li>
               </ol>
             </DialogContent>
