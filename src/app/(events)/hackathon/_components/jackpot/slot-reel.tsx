@@ -1,8 +1,13 @@
 import { motion } from 'framer-motion'
 import React from 'react'
 
+interface ReelSymbol {
+  id: number
+  value: string
+}
+
 interface ReelProps {
-  reelSymbols: string[]
+  reelSymbols: ReelSymbol[]
   spinning: boolean
 }
 
@@ -22,10 +27,10 @@ const Reel: React.FC<ReelProps> = ({ reelSymbols, spinning }): JSX.Element => {
       >
         {reelSymbols.map((symbol) => (
           <div
-            key={symbol}
+            key={symbol.id}
             className='flex h-10 w-10 items-center justify-center bg-gradient-to-b from-yellow-400/10 to-transparent font-press-start-2p text-base text-yellow-400 md:h-16 md:w-16 md:text-2xl'
           >
-            {symbol}
+            {symbol.value}
           </div>
         ))}
       </motion.div>
