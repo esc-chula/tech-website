@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 import { type SubmitHandler, type UseFormReturn } from 'react-hook-form'
 
 import {
@@ -11,17 +12,51 @@ import {
   FormMessage,
 } from '~/components/ui/form'
 import { useToast } from '~/hooks/use-toast'
+import { claimHackahonTicketWithRateLimit } from '~/server/actions/hackathon'
 
 import { type CodeSchema } from './ticket-form'
 
 interface TicketFormProps {
   name: string
   form: UseFormReturn<CodeSchema>
-  onSubmit: SubmitHandler<CodeSchema>
 }
 
-const TicketBox = ({ name, form, onSubmit }: TicketFormProps): JSX.Element => {
+const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
+  const router = useRouter()
+
   const { toast } = useToast()
+
+  const onSubmit: SubmitHandler<CodeSchema> = async (values) => {
+    try {
+      const res = await claimHackahonTicketWithRateLimit(values.code)
+
+      if (!res.success) {
+        toast({
+          title: 'Rate Limit',
+          description: res.message,
+          variant: 'destructive',
+        })
+        return
+      }
+
+      if (!res.data.success) {
+        form.setError('code', {
+          type: 'manual',
+          message: res.data.message ?? 'Invalid ticket code',
+        })
+
+        return
+      }
+
+      router.refresh()
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: err instanceof Error ? err.message : String(err),
+        variant: 'destructive',
+      })
+    }
+  }
 
   return (
     <motion.div
