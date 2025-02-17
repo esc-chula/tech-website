@@ -1,5 +1,6 @@
 import Footer from './_components/common/footer'
 import Socials from './_components/common/socials'
+import TicketConsoleLog from './_components/common/ticket-console-log'
 import AnimatedGridTunnel from './_components/landing/animated-grid-tunnel'
 import ContainerLines from './_components/landing/container-lines'
 import HeroSection from './_components/landing/hero-section'
@@ -14,43 +15,46 @@ import GridTunnelContextProvider from './_contexts/grid-tunnel-context'
 
 const Page: React.FC = () => {
   return (
-    <GridTunnelContextProvider>
-      <div className='relative'>
-        {/* fixed components */}
-        <Socials />
-        <ContainerLines />
+    <>
+      <TicketConsoleLog />
+      <GridTunnelContextProvider>
+        <div className='relative'>
+          {/* fixed components */}
+          <Socials />
+          <ContainerLines />
 
-        {/* hero grid tunnel */}
-        <AnimatedGridTunnel>
-          <OffsetRevealer className='gap-5'>
-            <HeroSection />
-          </OffsetRevealer>
-          <OffsetRevealer
-            className='gap-2 sm:gap-4 md:gap-6'
-            offsetThreshold={500}
-            zPosition={-750}
-          >
-            <PrizeSection />
-          </OffsetRevealer>
-          <OffsetRevealer
-            className='gap-8 sm:gap-10 md:gap-12'
-            offsetThreshold={1100}
-            zPosition={-1600}
-          >
-            <SponsorsSection />
-          </OffsetRevealer>
-        </AnimatedGridTunnel>
+          {/* hero grid tunnel */}
+          <AnimatedGridTunnel>
+            <OffsetRevealer className='gap-5'>
+              <HeroSection />
+            </OffsetRevealer>
+            <OffsetRevealer
+              className='gap-2 sm:gap-4 md:gap-6'
+              offsetThreshold={500}
+              zPosition={-750}
+            >
+              <PrizeSection />
+            </OffsetRevealer>
+            <OffsetRevealer
+              className='gap-8 sm:gap-10 md:gap-12'
+              offsetThreshold={1100}
+              zPosition={-1600}
+            >
+              <SponsorsSection />
+            </OffsetRevealer>
+          </AnimatedGridTunnel>
 
-        {/* info sections */}
-        <TimelineSection />
-        <TicketSection />
-        {/* <PrizesSection /> */}
-        <ObjectivesSection />
-        {/* TODO: judges, swags */}
+          {/* info sections */}
+          <TimelineSection />
+          <TicketSection />
+          {/* <PrizesSection /> */}
+          <ObjectivesSection />
+          {/* TODO: judges, swags */}
 
-        <Footer />
-      </div>
-    </GridTunnelContextProvider>
+          <Footer />
+        </div>
+      </GridTunnelContextProvider>
+    </>
   )
 }
 
