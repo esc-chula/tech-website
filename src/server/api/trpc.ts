@@ -12,7 +12,7 @@ interface TRPCContext {
   session: {
     user: {
       id: number
-      oidcId: string
+      oidcId: string | null
       studentId: string
     } | null
   }

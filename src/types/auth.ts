@@ -1,5 +1,5 @@
 export interface Session {
   id: number
-  oidcId: string
+  oidcId: string | null
   studentId: string
 }
