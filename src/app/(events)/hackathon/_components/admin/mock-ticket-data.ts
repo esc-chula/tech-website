@@ -6,7 +6,6 @@ export const mockHackathonTickets = [
     code: 'TICKET123',
     ticketType: HackathonTicketType.DEVELOPER,
     isClaimed: false,
-    isRegistered: false,
     claims: [],
     teamTicketId: null,
   },
@@ -15,7 +14,6 @@ export const mockHackathonTickets = [
     code: 'TICKET456',
     ticketType: HackathonTicketType.DESIGNER,
     isClaimed: true,
-    isRegistered: true,
     claims: [
       {
         id: 1,
@@ -32,7 +30,6 @@ export const mockHackathonTickets = [
     code: 'TICKET789',
     ticketType: HackathonTicketType.PRODUCT,
     isClaimed: false,
-    isRegistered: true,
     claims: [],
     teamTicketId: null,
   },
@@ -41,7 +38,6 @@ export const mockHackathonTickets = [
     code: 'TICKET101',
     ticketType: HackathonTicketType.GENERAL,
     isClaimed: true,
-    isRegistered: false,
     claims: [
       {
         id: 2,

@@ -14,7 +14,6 @@ import TicketActions from './ticket-actions'
 interface Ticket {
   id: number
   isClaimed: boolean
-  isRegistered: boolean
   teamTicketId: number | null
   code: string
   ticketType: HackathonTicketType
@@ -43,7 +42,6 @@ const TicketsTable: React.FC<TicketsTableProps> = ({ tickets, setTickets }) => {
             <TableCell>{ticket.code}</TableCell>
             <TableCell>{ticket.ticketType}</TableCell>
             <TableCell>{ticket.isClaimed ? 'Yes' : 'No'}</TableCell>
-            <TableCell>{ticket.isRegistered ? 'Yes' : 'No'}</TableCell>
             <TableCell>
               <TicketActions setTickets={setTickets} ticket={ticket} />
             </TableCell>

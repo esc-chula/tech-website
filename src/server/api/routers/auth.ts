@@ -31,64 +31,69 @@ export const authRouter = createTRPCRouter({
         }
       }
 
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          if (!response.account || !response.student?.studentId) {
-            return {
-              data: null,
-              message: 'Only students are allowed to login',
-              errors: [
-                'response.account or response.student.studentId is missing',
-              ],
-            }
-          }
-
-          const user = await tx.user.findUnique({
-            where: {
-              oidcId: response.account.publicId,
-            },
-          })
-
-          if (user) {
-            return {
-              data: null,
-              message: 'Successfully logged in',
-            }
-          }
-
-          await tx.user.create({
-            data: {
-              oidcId: response.account.publicId,
-              studentId: response.student.studentId,
-            },
-          })
-
-          return {
-            data: null,
-            message: `Successfully created user for ${response.account.publicId}`,
-          }
-        } catch (error) {
-          return {
-            data: null,
-            message: `Failed to login, please try again`,
-            error:
-              error instanceof Error ? error.message : 'Something went wrong',
-          }
-        }
-      })
-
-      if (res.error) {
+      if (!response.account || !response.student?.studentId) {
         return {
           success: false,
-          message: res.message,
-          errors: [res.error],
+          message: 'Only students are allowed to login',
+          errors: ['response.account or response.student.studentId is missing'],
         }
       }
 
-      return {
-        success: true,
-        message: 'Successfully logged in',
-        data: response,
+      try {
+        const user = await ctx.db.user.findFirst({
+          where: {
+            OR: [
+              {
+                studentId: response.student.studentId,
+              },
+              {
+                oidcId: response.account.publicId,
+              },
+            ],
+          },
+        })
+
+        if (user) {
+          if (!user.oidcId) {
+            await ctx.db.user.update({
+              where: {
+                id: user.id,
+              },
+              data: {
+                oidcId: response.account.publicId,
+              },
+            })
+          }
+
+          return {
+            success: true,
+            message: 'Successfully logged in',
+            data: response,
+          }
+        }
+
+        await ctx.db.user.create({
+          data: {
+            oidcId: response.account.publicId,
+            studentId: response.student.studentId,
+          },
+        })
+
+        return {
+          success: true,
+          message: `Successfully created user for ${response.account.publicId}`,
+          data: response,
+        }
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Failed to login with user creation',
+          errors: [
+            error instanceof Error
+              ? error.message
+              : 'Something went wrong creating user',
+          ],
+        }
       }
     }),
 
