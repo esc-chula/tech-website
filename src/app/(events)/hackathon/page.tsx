@@ -1,6 +1,5 @@
 import Footer from './_components/common/footer'
 import Socials from './_components/common/socials'
-import TicketConsoleLog from './_components/common/ticket-console-log'
 import AnimatedGridTunnel from './_components/landing/animated-grid-tunnel'
 import ContainerLines from './_components/landing/container-lines'
 import HeroSection from './_components/landing/hero-section'
@@ -11,6 +10,10 @@ import PrizeSection from './_components/landing/prize-section'
 import SponsorsSection from './_components/landing/sponsors-section'
 import TicketSection from './_components/landing/ticket-section'
 import TimelineSection from './_components/landing/timeline-section'
+import {
+  TicketConsoleLog,
+  TransparentHeroText,
+} from './_components/ticket-releasing'
 import GridTunnelContextProvider from './_contexts/grid-tunnel-context'
 
 const Page: React.FC = () => {
@@ -27,6 +30,7 @@ const Page: React.FC = () => {
           <AnimatedGridTunnel>
             <OffsetRevealer className='gap-5'>
               <HeroSection />
+              <TransparentHeroText />
             </OffsetRevealer>
             <OffsetRevealer
               className='gap-2 sm:gap-4 md:gap-6'
