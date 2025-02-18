@@ -1,23 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import { HACKATHON_SYMBOLS } from '~/constants/hackathon'
+import { HACKATHON_GAME_JACKPOT_SYMBOLS } from '~/constants/hackathon'
 import { toast } from '~/hooks/use-toast'
-import { type HackathonSpinResult } from '~/types/hackathon'
+import { spinHackathonTicketSlot } from '~/server/actions/hackathon'
 
 import Lever from './slot-lever'
 import Reel from './slot-reel'
 
-interface SlotMachineProps {
-  handleSpin: () => Promise<{
-    success: boolean
-    message?: string
-    data?: HackathonSpinResult
-    errors?: string[]
-  }>
-}
-
-const SlotMachine = ({ handleSpin }: SlotMachineProps): JSX.Element => {
+const SlotMachine = (): JSX.Element => {
   const reelLength = 100
 
   const [reels, setReels] = useState<string[][]>([[], [], []])
@@ -28,9 +19,9 @@ const SlotMachine = ({ handleSpin }: SlotMachineProps): JSX.Element => {
       .fill(null)
       .map(
         () =>
-          HACKATHON_SYMBOLS[
-            Math.floor(Math.random() * HACKATHON_SYMBOLS.length)
-          ] ?? HACKATHON_SYMBOLS[0]
+          HACKATHON_GAME_JACKPOT_SYMBOLS[
+            Math.floor(Math.random() * HACKATHON_GAME_JACKPOT_SYMBOLS.length)
+          ] ?? HACKATHON_GAME_JACKPOT_SYMBOLS[0]
       ) as string[]
   }
 
@@ -42,7 +33,7 @@ const SlotMachine = ({ handleSpin }: SlotMachineProps): JSX.Element => {
     ])
   }, [])
 
-  const spin = async (): Promise<void> => {
+  const spin = (): void => {
     if (spinning.some((spin) => spin)) return
 
     setReels([
@@ -52,8 +43,8 @@ const SlotMachine = ({ handleSpin }: SlotMachineProps): JSX.Element => {
     ])
     setSpinning([true, true, true])
 
-    const result = await handleSpin()
-    if (result.success && result.data) {
+    const result = spinHackathonTicketSlot()
+    if (result.success) {
       stopReelsOnResult(result.data.symbols, result.data.ticketFragment)
     } else {
       toast({

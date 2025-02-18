@@ -1,5 +1,12 @@
 'use server'
 
+import { type HackathonTicketType } from '@prisma/client'
+
+import {
+  HACKATHON_GAME_JACKPOT_RATE,
+  HACKATHON_GAME_JACKPOT_SYMBOLS,
+  HACKATHON_GAME_JACKPOT_TICKET_CODES,
+} from '~/constants/hackathon'
 import { withRateLimit } from '~/lib/rate-limit'
 import { api } from '~/trpc/server'
 import {
@@ -128,8 +135,42 @@ export async function updateHackathonRegistration(
   return res
 }
 
-export async function spinHackathonTicketSlot(): Promise<
-  Response<HackathonSpinResult>
-> {
-  return await api.hackathon.spinHackathonTicketSlot()
+export function spinHackathonTicketSlot(): Response<HackathonSpinResult> {
+  const isJackpot = Math.random() < HACKATHON_GAME_JACKPOT_RATE
+  const symbols = Array(3)
+    .fill(null)
+    .map(() =>
+      isJackpot
+        ? HACKATHON_GAME_JACKPOT_SYMBOLS[0]
+        : (HACKATHON_GAME_JACKPOT_SYMBOLS[
+            Math.floor(Math.random() * HACKATHON_GAME_JACKPOT_SYMBOLS.length)
+          ] ?? HACKATHON_GAME_JACKPOT_SYMBOLS[0])
+    ) as string[]
+
+  if (!isJackpot) {
+    return {
+      success: true,
+      message: 'Spin result generated successfully',
+      data: { symbols },
+    }
+  }
+
+  const randomIdx = Math.floor(
+    Math.random() * HACKATHON_GAME_JACKPOT_TICKET_CODES.length
+  )
+  const ticketCode =
+    HACKATHON_GAME_JACKPOT_TICKET_CODES[randomIdx] ?? 'INVALID CODE'
+  const position = Math.floor(Math.random() * ticketCode.length)
+
+  return {
+    success: true,
+    message: 'Spin result successful',
+    data: {
+      symbols,
+      ticketFragment: {
+        ticketNumber: `${randomIdx + 1}`,
+        letter: ticketCode.charAt(position),
+      },
+    },
+  }
 }
