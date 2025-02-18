@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.6](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.5..v0.3.6) - 2025-02-18
+
+### <!-- 0 -->⛰️  Features
+
+- Update schema and migrations - ([f9a0a0d](https://github.com/esc-chula/intania-oidc-new/commit/f9a0a0d2017f4aed1294a9c9895cbe89c3309ac3))
+- Migrations add ticket code id - ([e68aa3b](https://github.com/esc-chula/intania-oidc-new/commit/e68aa3b84693a7d4341ed31a01c18a9541b48e25))
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- User oidc type - ([df3a7b6](https://github.com/esc-chula/intania-oidc-new/commit/df3a7b6434a739fe4a23e580a87b14527592d7a2))
+- Remove create ticket api - ([e03e140](https://github.com/esc-chula/intania-oidc-new/commit/e03e140faa4c42cefcf488c0a05e532131ab6362))
+
+### Refactor
+
+- Team pass - ([87873c9](https://github.com/esc-chula/intania-oidc-new/commit/87873c9777df1e047155ff43dcfba5abc772444a))
+
 ## [0.3.5](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.4..v0.3.5) - 2025-02-18
 
 ### <!-- 0 -->⛰️  Features
