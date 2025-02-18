@@ -41,6 +41,10 @@ services:
     environment:
       PHX_HOST: 'localhost'
       PORT: '4000'
+      DATABASE_USER: 'postgres'
+      DATABASE_PASSWORD: 'password'
+      DATABASE_HOSTNAME: 'db'
+      DATABASE_NAME: 'tech-website'
       DATABASE_URL: postgresql://postgres:password@db:5432/tech-website
       SECRET_KEY_BASE: anythinglonglongfuckitsnotlongenoughmaybethisisitpleaseokitsstillnotenoughisthisyet
     ports:

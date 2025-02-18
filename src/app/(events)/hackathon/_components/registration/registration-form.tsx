@@ -272,7 +272,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       return
     }
 
-    // TODO: integrate with api, redirect to success page, check if user has team ticket and not registered yet
     const resTeamTicket = await findMyTeamTicket()
     if (!resTeamTicket.success) {
       toast({
@@ -288,7 +287,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     if (!resTeamTicket.data) {
       toast({
         title: 'Registration Failed',
-        description: 'You do not have a team ticket',
+        description: 'You do not have a Team Pass',
         variant: 'destructive',
       })
 

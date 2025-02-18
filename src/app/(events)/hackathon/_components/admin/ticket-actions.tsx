@@ -16,7 +16,6 @@ import {
 interface Ticket {
   id: number
   isClaimed: boolean
-  isRegistered: boolean
   teamTicketId: number | null
   code: string
   ticketType: HackathonTicketType

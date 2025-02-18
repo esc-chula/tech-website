@@ -9,9 +9,9 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  oidcId    String @unique
-  studentId String @unique
+  id        Int     @id @default(autoincrement())
+  oidcId    String? @unique
+  studentId String  @unique
 
   UserAdminApp UserServiceRole[] @relation("UserToServiceRole")
 
@@ -82,10 +82,10 @@ model TechMonthStamp {
 }
 
 model HackathonTicket {
-  id           Int                 @id @default(autoincrement())
-  code         String              @unique
-  ticketType   HackathonTicketType
-  isRegistered Boolean             @default(false)
+  id         Int                 @id @default(autoincrement())
+  code       String              @unique
+  codeId     String              @unique
+  ticketType HackathonTicketType
 
   claims       HackathonTicketClaim[] @relation("HackathonTicketToTicketClaims")
   teamTicketId Int?
@@ -154,9 +154,9 @@ model HackathonTeamMember {
 }
 
 enum HackathonPronoun {
-  HE     
-  SHE    
-  THEY   
+  HE
+  SHE
+  THEY
   OTHER
 }
 

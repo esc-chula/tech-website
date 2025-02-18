@@ -11,7 +11,6 @@ import TicketsTable from '../_components/admin/tickets-table'
 interface Ticket {
   id: number
   isClaimed: boolean
-  isRegistered: boolean
   teamTicketId: number | null
   code: string
   ticketType: HackathonTicketType
@@ -23,7 +22,6 @@ const AdminTicketsPage: React.FC = () => {
   const filteredTickets = tickets.filter((ticket) => {
     if (filter === 'CLAIMED') return ticket.isClaimed
     if (filter === 'UNCLAIMED') return !ticket.isClaimed
-    if (filter === 'REGISTERED') return ticket.isRegistered
     return true
   })
 

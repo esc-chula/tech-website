@@ -17,73 +17,10 @@ import {
   ClaimHackathonTicketDto,
   CreateHackathonRegistrationDto,
   CreateHackathonTeamTicketDto,
-  CreateHackathonTicketDto,
   UpdateHackathonRegistrationDto,
 } from '../dto/hackathon'
 
 export const hackathonRouter = createTRPCRouter({
-  createTicket: trpc
-    .input(CreateHackathonTicketDto)
-    .mutation(async ({ ctx, input }): Promise<Response<HackathonTicket[]>> => {
-      const userId = ctx.session.user?.id
-      if (!userId) {
-        return {
-          success: false,
-          message: 'Unauthorized',
-          errors: ['Session ID not found'],
-        }
-      }
-
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          await tx.hackathonTicket.createMany({
-            data: input.tickets,
-          })
-
-          const tickets = await tx.hackathonTicket.findMany({
-            where: {
-              code: {
-                in: input.tickets.map((t) => t.code),
-              },
-            },
-            select: {
-              id: true,
-              code: true,
-              ticketType: true,
-              isRegistered: true,
-              teamTicketId: true,
-            },
-          })
-
-          return {
-            message: 'Tickets created successfully',
-            data: tickets,
-          }
-        } catch (error) {
-          return {
-            data: null,
-            message: 'Failed to create tickets',
-            error:
-              error instanceof Error ? error.message : 'Something went wrong',
-          }
-        }
-      })
-
-      if (res.error ?? !res.data) {
-        return {
-          success: false,
-          message: res.message,
-          errors: [res.error],
-        }
-      }
-
-      return {
-        success: true,
-        message: res.message,
-        data: res.data,
-      }
-    }),
-
   claimTicket: trpc
     .input(ClaimHackathonTicketDto)
     .mutation(async ({ ctx, input }): Promise<Response<HackathonTicket>> => {
@@ -104,8 +41,8 @@ export const hackathonRouter = createTRPCRouter({
         if (existingTeamTicket) {
           return {
             success: false,
-            message: 'You already have a team ticket',
-            errors: ['Team ticket already exists'],
+            message: 'You already have a Team Pass',
+            errors: ['Team Pass already exists'],
           }
         }
 
@@ -202,7 +139,6 @@ export const hackathonRouter = createTRPCRouter({
             id: true,
             code: true,
             ticketType: true,
-            isRegistered: true,
             teamTicketId: true,
             claims: {
               where: {
@@ -304,13 +240,13 @@ export const hackathonRouter = createTRPCRouter({
 
             return {
               success: true,
-              message: 'Team ticket created successfully',
+              message: 'Team Pass created successfully',
               data: teamTicket,
             }
           } catch (error) {
             return {
               success: false,
-              message: 'Failed to create team ticket',
+              message: 'Failed to create Team Pass',
               error:
                 error instanceof Error ? error.message : 'Something went wrong',
             }
@@ -359,7 +295,6 @@ export const hackathonRouter = createTRPCRouter({
                 id: true,
                 code: true,
                 ticketType: true,
-                isRegistered: true,
                 teamTicketId: true,
               },
             },
@@ -367,13 +302,13 @@ export const hackathonRouter = createTRPCRouter({
         })
         return {
           success: true,
-          message: teamTicket ? 'Team ticket found' : 'No team ticket found',
+          message: teamTicket ? 'Team Pass found' : 'No Team Pass found',
           data: teamTicket,
         }
       } catch (error) {
         return {
           success: false,
-          message: 'Failed to fetch team ticket',
+          message: 'Failed to fetch Team Pass',
           errors: [
             error instanceof Error ? error.message : 'Something went wrong',
           ],
@@ -461,24 +396,6 @@ export const hackathonRouter = createTRPCRouter({
           success: false,
           message: 'Unauthorized',
           errors: ['Session ID not found'],
-        }
-      }
-
-      const updatedTickets = await ctx.db.hackathonTicket
-        .updateMany({
-          where: {
-            teamTicketId: input.teamTicketId,
-          },
-          data: {
-            isRegistered: true,
-          },
-        })
-        .catch(() => null)
-      if (updatedTickets === null) {
-        return {
-          success: false,
-          message: 'Failed to update ticket registration status',
-          errors: ['Something went wrong while updating ticket registration'],
         }
       }
 
@@ -571,8 +488,8 @@ export const hackathonRouter = createTRPCRouter({
       if (!teamTicket) {
         return {
           success: false,
-          message: 'No team ticket found',
-          errors: ['Team ticket not found'],
+          message: 'No Team Pass found',
+          errors: ['Team Pass not found'],
         }
       }
 
@@ -610,8 +527,8 @@ export const hackathonRouter = createTRPCRouter({
         if (!teamTicket) {
           return {
             success: false,
-            message: 'No team ticket found',
-            errors: ['No team ticket found'],
+            message: 'No Team Pass found',
+            errors: ['No Team Pass found'],
           }
         }
 
@@ -686,7 +603,7 @@ export const hackathonRouter = createTRPCRouter({
             if (!teamTicket) {
               return {
                 success: false,
-                message: 'No team ticket found',
+                message: 'No Team Pass found',
               }
             }
 

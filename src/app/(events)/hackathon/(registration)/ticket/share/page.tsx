@@ -12,7 +12,6 @@ import Building1Background from '../../../_components/common/bulding-1-backgroun
 import UserBox from '../../../_components/common/user-box'
 import ShareStory from '../../../_components/success/share-story'
 
-
 export const metadata: Metadata = {
   title: 'Intania Hackathon - Share',
 }
@@ -41,7 +40,7 @@ const Page: React.FC = async () => {
         </div>
         <ShareStory teamNo={resMyRegistrationIndex.data + 1} />
         <Link className='underline' href='/hackathon/ticket'>
-          View your team ticket.
+          View your Team Pass.
         </Link>
       </div>
       <Building1Background hideHackathonTitle />
