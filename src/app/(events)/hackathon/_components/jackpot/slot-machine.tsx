@@ -33,7 +33,7 @@ const SlotMachine = (): JSX.Element => {
     ])
   }, [])
 
-  const spin = (): void => {
+  const spin = async (): Promise<void> => {
     if (spinning.some((spin) => spin)) return
 
     setReels([
@@ -43,7 +43,7 @@ const SlotMachine = (): JSX.Element => {
     ])
     setSpinning([true, true, true])
 
-    const result = spinHackathonTicketSlot()
+    const result = await spinHackathonTicketSlot()
     if (result.success) {
       stopReelsOnResult(result.data.symbols, result.data.ticketFragment)
     } else {
