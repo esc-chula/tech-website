@@ -47,7 +47,7 @@ const Page: React.FC = async () => {
         </div>
         <ShareStory teamNo={resMyRegistrationIndex.data + 1} />
         <Link className='underline' href='/hackathon/ticket'>
-          View your team ticket.
+          View your Team Pass.
         </Link>
       </div>
       <Building1Background hideHackathonTitle />

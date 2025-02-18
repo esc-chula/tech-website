@@ -3,8 +3,10 @@
 import { useInView } from 'react-intersection-observer'
 
 import ScrollRevealer from '~/components/common/animation/scroll-revealer'
+import { HACKATHON_IG_URL, HACKATHON_OPENCHAT_URL } from '~/constants/hackathon'
 
 import GridTunnel from '../common/grid-tunnel'
+import HowToGetTicketDialog from '../common/how-to-get-ticket-dialog'
 import TicketBand from '../three/ticket-band'
 
 import Section from './section'
@@ -32,12 +34,15 @@ const contents = [
     title: 'How To',
     children: (
       <>
+        <div>
+          <HowToGetTicketDialog />
+        </div>
         <p className='text-sm text-white/90 sm:text-base'>
           🚀 When the tickets are released, it’s game on! Each team must find{' '}
           <span className='font-bold underline'>2 Ticket Codes</span> before
           they can combine them into a{' '}
-          <span className='font-bold underline'>Team Ticket</span> to secure
-          their spot in the hackathon.
+          <span className='font-bold underline'>Team Pass</span> to secure their
+          spot in the hackathon.
         </p>
         <p>🤫 Hint: You can find one of the code in this section too.</p>
       </>
@@ -68,9 +73,27 @@ const contents = [
           <div>
             <h4 className='font-semibold'>Register Your Ticket</h4>
             <p className='text-sm text-white/70 md:text-base'>
-              Follow the hints and Easter eggs on our social media & LINE
-              OpenChat to locate your two Ticket Codes. Each Ticket Code must be
-              claimed at Register page.
+              Follow the <span className='underline'>hints</span> and{' '}
+              <span className='underline'>easter eggs</span> on our{' '}
+              <a
+                className='font-bold underline'
+                href={HACKATHON_IG_URL}
+                rel='noopener noreferrer'
+                target='_blank'
+              >
+                Instagram
+              </a>{' '}
+              &{' '}
+              <a
+                className='font-bold underline'
+                href={HACKATHON_OPENCHAT_URL}
+                rel='noopener noreferrer'
+                target='_blank'
+              >
+                LINE OpenChat
+              </a>{' '}
+              to locate your two Ticket Codes. Each Ticket Code must be claimed
+              at Register page.
             </p>
           </div>
         </div>
@@ -82,7 +105,7 @@ const contents = [
             <h4 className='font-semibold'>Combine Your Tickets</h4>
             <p className='text-sm text-white/70 md:text-base'>
               Once your team has collected 2 Ticket Codes, you can merge them
-              into a Team Ticket to complete your registration in the website.
+              into a Team Pass to complete your registration in the website.
             </p>
           </div>
         </div>
