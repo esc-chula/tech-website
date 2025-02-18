@@ -50,7 +50,6 @@ export const hackathonRouter = createTRPCRouter({
               id: true,
               code: true,
               ticketType: true,
-              isRegistered: true,
               teamTicketId: true,
             },
           })
@@ -202,7 +201,6 @@ export const hackathonRouter = createTRPCRouter({
             id: true,
             code: true,
             ticketType: true,
-            isRegistered: true,
             teamTicketId: true,
             claims: {
               where: {
@@ -359,7 +357,6 @@ export const hackathonRouter = createTRPCRouter({
                 id: true,
                 code: true,
                 ticketType: true,
-                isRegistered: true,
                 teamTicketId: true,
               },
             },
@@ -461,24 +458,6 @@ export const hackathonRouter = createTRPCRouter({
           success: false,
           message: 'Unauthorized',
           errors: ['Session ID not found'],
-        }
-      }
-
-      const updatedTickets = await ctx.db.hackathonTicket
-        .updateMany({
-          where: {
-            teamTicketId: input.teamTicketId,
-          },
-          data: {
-            isRegistered: true,
-          },
-        })
-        .catch(() => null)
-      if (updatedTickets === null) {
-        return {
-          success: false,
-          message: 'Failed to update ticket registration status',
-          errors: ['Something went wrong while updating ticket registration'],
         }
       }
 

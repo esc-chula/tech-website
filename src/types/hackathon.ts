@@ -8,7 +8,6 @@ export interface HackathonTicket {
   id: number
   code: string
   ticketType: HackathonTicketType
-  isRegistered: boolean
   teamTicketId: number | null
 }
 
