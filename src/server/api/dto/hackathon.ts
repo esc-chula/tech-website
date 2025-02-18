@@ -1,18 +1,5 @@
-import {
-  HackathonPronoun,
-  HackathonRole,
-  HackathonTicketType,
-} from '@prisma/client'
+import { HackathonPronoun, HackathonRole } from '@prisma/client'
 import { z } from 'zod'
-
-export const CreateHackathonTicketDto = z.object({
-  tickets: z.array(
-    z.object({
-      code: z.string(),
-      ticketType: z.nativeEnum(HackathonTicketType),
-    })
-  ),
-})
 
 export const ClaimHackathonTicketDto = z.object({
   ticketCode: z.string(),

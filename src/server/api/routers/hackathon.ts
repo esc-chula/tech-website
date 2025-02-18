@@ -17,72 +17,10 @@ import {
   ClaimHackathonTicketDto,
   CreateHackathonRegistrationDto,
   CreateHackathonTeamTicketDto,
-  CreateHackathonTicketDto,
   UpdateHackathonRegistrationDto,
 } from '../dto/hackathon'
 
 export const hackathonRouter = createTRPCRouter({
-  createTicket: trpc
-    .input(CreateHackathonTicketDto)
-    .mutation(async ({ ctx, input }): Promise<Response<HackathonTicket[]>> => {
-      const userId = ctx.session.user?.id
-      if (!userId) {
-        return {
-          success: false,
-          message: 'Unauthorized',
-          errors: ['Session ID not found'],
-        }
-      }
-
-      const res = await ctx.db.$transaction(async (tx) => {
-        try {
-          await tx.hackathonTicket.createMany({
-            data: input.tickets,
-          })
-
-          const tickets = await tx.hackathonTicket.findMany({
-            where: {
-              code: {
-                in: input.tickets.map((t) => t.code),
-              },
-            },
-            select: {
-              id: true,
-              code: true,
-              ticketType: true,
-              teamTicketId: true,
-            },
-          })
-
-          return {
-            message: 'Tickets created successfully',
-            data: tickets,
-          }
-        } catch (error) {
-          return {
-            data: null,
-            message: 'Failed to create tickets',
-            error:
-              error instanceof Error ? error.message : 'Something went wrong',
-          }
-        }
-      })
-
-      if (res.error ?? !res.data) {
-        return {
-          success: false,
-          message: res.message,
-          errors: [res.error],
-        }
-      }
-
-      return {
-        success: true,
-        message: res.message,
-        data: res.data,
-      }
-    }),
-
   claimTicket: trpc
     .input(ClaimHackathonTicketDto)
     .mutation(async ({ ctx, input }): Promise<Response<HackathonTicket>> => {

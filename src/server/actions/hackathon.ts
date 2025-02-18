@@ -1,7 +1,5 @@
 'use server'
 
-import { type HackathonTicketType } from '@prisma/client'
-
 import { withRateLimit } from '~/lib/rate-limit'
 import { api } from '~/trpc/server'
 import {
@@ -14,19 +12,6 @@ import {
   type UpdateHackathonTeamMemberInput,
 } from '~/types/hackathon'
 import { type Response } from '~/types/server'
-
-export async function createHackathonTicket(
-  tickets: {
-    code: string
-    ticketType: HackathonTicketType
-  }[]
-): Promise<Response<HackathonTicket[]>> {
-  const res = await api.hackathon.createTicket({
-    tickets,
-  })
-
-  return res
-}
 
 export async function createHackathonTeamTicket(
   ticketIds: number[]
