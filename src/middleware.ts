@@ -25,12 +25,16 @@ export function middleware(
     return NextResponse.redirect(redirectUrl)
   }
 
-  return NextResponse.next({
+  const next = NextResponse.next({
     request: {
       ...request,
       headers: requestHeaders,
     },
   })
+
+  next.cookies.set('aungpao', 'DEV_WZM7J2NRVE')
+
+  return next
 }
 
 export const config = {
