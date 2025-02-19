@@ -1,49 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { usePrize } from '../../_hooks/prize'
 
 const PrizeSection: React.FC = () => {
-  function getNumberByDate({
-    startDate,
-    endDate,
-    max,
-  }: {
-    startDate: Date
-    endDate: Date
-    max: number
-  }): number {
-    const currentDate = new Date()
-    if (currentDate < startDate) {
-      return 0
-    }
-    if (currentDate > endDate) {
-      return max
-    }
-    const percentage =
-      (currentDate.getTime() - startDate.getTime()) /
-      (endDate.getTime() - startDate.getTime())
-
-    return Math.floor(max * Math.pow(percentage, 4))
-  }
-
-  const [runningPrize, setRunningPrize] = useState<number | null>(null)
-
-  useEffect(() => {
-    const config = {
-      startDate: new Date('2025-02-19'),
-      endDate: new Date('2025-03-17'),
-      max: 1111111,
-    }
-
-    const initialPrize = getNumberByDate(config)
-
-    setRunningPrize(initialPrize)
-
-    const interval = setInterval(() => {
-      setRunningPrize(getNumberByDate(config))
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [])
+  const { prize, prizeString } = usePrize()
 
   return (
     <>
@@ -54,12 +14,12 @@ const PrizeSection: React.FC = () => {
         ?<span className='text-hackathon-primary'>?</span>???
       </p> */}
       <p className='select-none pl-[0.7%] font-ndot47 text-5xl sm:text-6xl md:text-8xl'>
-        {runningPrize === null ? (
+        {prize === null ? (
           <>
             ?<span className='text-hackathon-primary'>?</span>???
           </>
         ) : (
-          runningPrize.toLocaleString()
+          prizeString
         )}
       </p>
       <p className='text-lg font-semibold sm:text-xl md:text-2xl'>Prize Pool</p>
