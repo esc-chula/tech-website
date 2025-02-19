@@ -23,7 +23,7 @@ export type Response<T> =
 
 const getIp = (): string | null => {
   const forwardedFor = headers().get('x-forwarded-for')
-  return forwardedFor
+  return forwardedFor?.split(',')[0] ?? null
 }
 
 const getSessionId = (): string | null => {
@@ -49,7 +49,6 @@ export function withRateLimit<T, P extends any[]>(
 ): (...args: P) => Promise<Response<T>> {
   return async (...args: P): Promise<Response<T>> => {
     const id = getRateLimitIdentifier(config.identifierMethod)
-    console.log('id:', id)
     if (!id) {
       return {
         success: false,
