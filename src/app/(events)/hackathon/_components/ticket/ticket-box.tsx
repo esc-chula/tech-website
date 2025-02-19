@@ -38,25 +38,22 @@ const TicketBox = ({ name, form }: TicketFormProps): JSX.Element => {
       const res = await claimHackahonTicketWithRateLimit(values.code)
 
       if (!res.success) {
-        toast({
-          title: 'Error',
-          description: res.message,
-          variant: 'destructive',
-        })
+        if (res.message?.includes('Rate limit')) {
+          toast({
+            title: 'Error',
+            description: res.message,
+            variant: 'destructive',
+          })
+        }
 
         if (res.message?.includes('Unauthorized')) {
           router.push('/hackathon/login?redirectUrl=/hackathon/ticket')
+          return
         }
 
-        setLoading(false)
-
-        return
-      }
-
-      if (!res.data.success) {
         form.setError('code', {
           type: 'manual',
-          message: res.data.message ?? 'Invalid ticket code',
+          message: res.message ?? 'Invalid ticket code',
         })
 
         setLoading(false)
