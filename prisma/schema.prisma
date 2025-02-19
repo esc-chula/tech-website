@@ -84,7 +84,7 @@ model TechMonthStamp {
 model HackathonTicket {
   id         Int                 @id @default(autoincrement())
   code       String              @unique
-  codeId     String              @unique
+  codeId     String?
   ticketType HackathonTicketType
 
   claims       HackathonTicketClaim[] @relation("HackathonTicketToTicketClaims")
