@@ -66,6 +66,21 @@ export const hackathonRouter = createTRPCRouter({
           }
         }
 
+        const isTicketHasTeam = await ctx.db.hackathonTicket.findFirst({
+          where: {
+            code: input.ticketCode,
+            teamTicketId: { not: null },
+          },
+        })
+
+        if (isTicketHasTeam) {
+          return {
+            success: false,
+            message: 'This ticket has already merged',
+            errors: ['This ticket has already merged'],
+          }
+        }
+
         const ticket = await ctx.db.hackathonTicket.findUnique({
           where: {
             code: input.ticketCode,
@@ -83,8 +98,8 @@ export const hackathonRouter = createTRPCRouter({
         if (!ticket) {
           return {
             success: false,
-            message: 'Ticket not found or already registered',
-            errors: ['Ticket not found or already registered'],
+            message: 'Ticket not found',
+            errors: ['Ticket not found'],
           }
         }
 
