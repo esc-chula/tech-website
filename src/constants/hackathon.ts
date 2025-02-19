@@ -6,12 +6,10 @@ export const HACKATHON_IG_URL =
 export const HACKATHON_OPENCHAT_URL =
   'https://intania.link/hack-openchat?utm_source=web&utm_medium=corner+button'
 
-export const HACKATHON_GAME_JACKPOT_RATE = 0.2
-
 export const HACKATHON_GAME_MODE: 'FULL_TICKET' | 'PER_CHARACTER' =
-  'FULL_TICKET'
-export const HACKATHON_GAME_JACKPOT_FULL_TICKET_MODE_RATE = 0.3
-export const HACKATHON_GAME_JACKPOT_PER_CHARACTER_MODE_RATE = 0.9
+  'PER_CHARACTER'
+export const HACKATHON_GAME_JACKPOT_FULL_TICKET_MODE_RATE = 0.1
+export const HACKATHON_GAME_JACKPOT_PER_CHARACTER_MODE_RATE = 0.3
 
 export const HACKATHON_GAME_JACKPOT_SYMBOLS = [
   '[7]',
@@ -22,10 +20,10 @@ export const HACKATHON_GAME_JACKPOT_SYMBOLS = [
   '[X]',
 ]
 export const HACKATHON_GAME_JACKPOT_TICKET_CODES = [
-  'ABCDEF',
-  'GHIJKL',
-  'MNOPQR',
-  'STUVWX',
+  'ABCDEF7H35',
+  'GHIJKL7H35',
+  'MNOPQR7H35',
+  'STUVWX7H35',
 ]
 
 export const HACKATHON_GAME_PROGRESS_STORAGE_SECRET_KEY = 'hackathon2025'
