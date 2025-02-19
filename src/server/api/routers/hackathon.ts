@@ -76,8 +76,8 @@ export const hackathonRouter = createTRPCRouter({
         if (isTicketHasTeam) {
           return {
             success: false,
-            message: 'This ticket has already merged.',
-            errors: ['This ticket has already merged.'],
+            message: 'This ticket has already merged',
+            errors: ['This ticket has already merged'],
           }
         }
 
