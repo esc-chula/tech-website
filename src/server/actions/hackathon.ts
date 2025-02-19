@@ -2,7 +2,8 @@
 
 import { type HackathonTicketType } from '@prisma/client'
 
-import { HACKATHON_GAME_JACKPOT_RATE ,
+import {
+  HACKATHON_GAME_JACKPOT_RATE,
   HACKATHON_GAME_JACKPOT_SYMBOLS,
   HACKATHON_GAME_JACKPOT_TICKET_CODES,
 } from '~/constants/hackathon'
@@ -133,9 +134,10 @@ export async function updateHackathonRegistration(
   return res
 }
 
-export async function spinHackathonTicketSlot(): Promise<
-  Response<HackathonSpinResult>
-> {
+export async function spinHackathonTicketSlot(
+  ticketNumber: string,
+  foundPositions: number[] = []
+): Promise<Response<HackathonSpinResult>> {
   const isJackpot = Math.random() < HACKATHON_GAME_JACKPOT_RATE
   const symbols: string[] = Array(3)
     .fill(null)
@@ -155,12 +157,17 @@ export async function spinHackathonTicketSlot(): Promise<
     })
   }
 
-  const randomIdx = Math.floor(
-    Math.random() * HACKATHON_GAME_JACKPOT_TICKET_CODES.length
-  )
-  const ticketCode =
-    HACKATHON_GAME_JACKPOT_TICKET_CODES[randomIdx] ?? 'INVALID CODE'
-  const position = Math.floor(Math.random() * ticketCode.length)
+  const idx = parseInt(ticketNumber) - 1
+  const ticketCode = HACKATHON_GAME_JACKPOT_TICKET_CODES[idx] ?? 'INVALID CODE'
+
+  const remainingPositions = Array.from(
+    { length: ticketCode.length },
+    (_, i) => i
+  ).filter((pos) => !foundPositions.includes(pos))
+
+  const position =
+    remainingPositions[Math.floor(Math.random() * remainingPositions.length)] ??
+    0
 
   return Promise.resolve({
     success: true,
@@ -168,8 +175,9 @@ export async function spinHackathonTicketSlot(): Promise<
     data: {
       symbols,
       ticketFragment: {
-        ticketNumber: `${randomIdx + 1}`,
+        ticketNumber,
         letter: ticketCode.charAt(position),
+        position,
       },
     },
   })
