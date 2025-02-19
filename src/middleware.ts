@@ -11,6 +11,9 @@ export function middleware(
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set('x-pathname', pathname)
 
+  const ip = request.ip ?? '127.0.0.1'
+  requestHeaders.set('x-forwarded-for', ip)
+
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   )

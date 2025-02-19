@@ -8,7 +8,7 @@ import {
 } from '~/constants/hackathon'
 import { toast } from '~/hooks/use-toast'
 import { ticketGameProgressStorage } from '~/lib/hackathon-ticket'
-import { spinHackathonTicketSlot } from '~/server/actions/hackathon'
+import { spinHackathonTicketSlotWithRateLimit } from '~/server/actions/hackathon'
 import { type TicketProgress } from '~/types/hackathon'
 
 import Lever from './slot-lever'
@@ -68,7 +68,7 @@ const SlotMachine = (): JSX.Element => {
     ])
     setSpinning([true, true, true])
 
-    const result = await spinHackathonTicketSlot(
+    const result = await spinHackathonTicketSlotWithRateLimit(
       ticketProgress.ticketNumber,
       ticketProgress.foundPositions
     )
@@ -76,6 +76,7 @@ const SlotMachine = (): JSX.Element => {
     if (result.success) {
       stopReelsOnResult(result.data.symbols, result.data.ticketFragment)
     } else {
+      console.error(result.errors)
       toast({
         title: 'Error',
         description: 'Failed to spin. Please try again.',

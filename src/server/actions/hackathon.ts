@@ -1,7 +1,5 @@
 'use server'
 
-import { type HackathonTicketType } from '@prisma/client'
-
 import {
   HACKATHON_GAME_JACKPOT_FULL_TICKET_MODE_RATE,
   HACKATHON_GAME_JACKPOT_PER_CHARACTER_MODE_RATE,
@@ -51,7 +49,8 @@ export const claimHackahonTicketWithRateLimit = withRateLimit(
   claimHackathonTicket,
   {
     maxAttempts: 5,
-    windowInSeconds: 30,
+    windowInSeconds: 20,
+    identifierMethod: 'sid',
   },
   'claim-hackathon-ticket'
 )
@@ -205,3 +204,13 @@ export async function spinHackathonTicketSlot(
     },
   })
 }
+
+export const spinHackathonTicketSlotWithRateLimit = withRateLimit(
+  spinHackathonTicketSlot,
+  {
+    maxAttempts: 1,
+    windowInSeconds: 3,
+    identifierMethod: 'ip',
+  },
+  'spin-hackathon-ticket'
+)
