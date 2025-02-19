@@ -64,5 +64,11 @@ export interface HackathonSpinResult {
   ticketFragment?: {
     ticketNumber: string
     letter: string
+    position: number
   }
+}
+
+export interface TicketProgress {
+  ticketNumber: string
+  foundPositions: number[]
 }

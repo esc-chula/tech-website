@@ -1,9 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import { HACKATHON_GAME_JACKPOT_SYMBOLS } from '~/constants/hackathon'
+import {
+  HACKATHON_GAME_JACKPOT_SYMBOLS,
+  HACKATHON_GAME_JACKPOT_TICKET_CODES,
+} from '~/constants/hackathon'
 import { toast } from '~/hooks/use-toast'
+import { ticketGameProgressStorage } from '~/lib/hackathon-ticket'
 import { spinHackathonTicketSlot } from '~/server/actions/hackathon'
+import { type TicketProgress } from '~/types/hackathon'
 
 import Lever from './slot-lever'
 import Reel from './slot-reel'
@@ -13,6 +18,9 @@ const SlotMachine = (): JSX.Element => {
 
   const [reels, setReels] = useState<string[][]>([[], [], []])
   const [spinning, setSpinning] = useState<boolean[]>([false, false, false])
+  const [ticketProgress, setTicketProgress] = useState<TicketProgress | null>(
+    null
+  )
 
   const generateReelSymbols = (): string[] => {
     return Array(reelLength)
@@ -31,10 +39,26 @@ const SlotMachine = (): JSX.Element => {
       generateReelSymbols(),
       generateReelSymbols(),
     ])
+
+    // SAVE PROGRESS
+    const savedProgress = ticketGameProgressStorage.getItem('ticketProgress')
+    if (savedProgress) {
+      setTicketProgress(savedProgress)
+    } else {
+      const randomIdx = Math.floor(
+        Math.random() * HACKATHON_GAME_JACKPOT_TICKET_CODES.length
+      )
+      const newProgress = {
+        ticketNumber: `${randomIdx + 1}`,
+        foundPositions: [],
+      }
+      ticketGameProgressStorage.setItem('ticketGameProgress', newProgress)
+      setTicketProgress(newProgress)
+    }
   }, [])
 
   const spin = async (): Promise<void> => {
-    if (spinning.some((spin) => spin)) return
+    if (spinning.some((spin) => spin) || !ticketProgress) return
 
     setReels([
       generateReelSymbols(),
@@ -43,7 +67,11 @@ const SlotMachine = (): JSX.Element => {
     ])
     setSpinning([true, true, true])
 
-    const result = await spinHackathonTicketSlot()
+    const result = await spinHackathonTicketSlot(
+      ticketProgress.ticketNumber,
+      ticketProgress.foundPositions
+    )
+
     if (result.success) {
       stopReelsOnResult(result.data.symbols, result.data.ticketFragment)
     } else {
@@ -58,30 +86,49 @@ const SlotMachine = (): JSX.Element => {
 
   const stopReelsOnResult = (
     resultSymbols: string[],
-    ticketFragment?: { ticketNumber: string; letter: string }
+    ticketFragment?: { ticketNumber: string; letter: string; position: number }
   ): void => {
     if (!resultSymbols[0] || !resultSymbols[1] || !resultSymbols[2]) return
 
-    stopSpin(0, 1000, resultSymbols[0])
-    stopSpin(1, 2000, resultSymbols[1])
-    stopSpin(2, 3000, resultSymbols[2], () => {
-      if (ticketFragment) {
-        toast({
-          title: '🎉 JACKPOT WIN! 🎉',
-          description: `You found letter "${ticketFragment.letter}" for Hackathon Ticket Number #${ticketFragment.ticketNumber}! Keep spinning to collect them all!`,
-          style: {
-            fontFamily: 'var(--font-ndot47)',
-          },
-        })
-      } else {
-        toast({
-          title: 'NOT THIS TIME!',
-          description: `Keep spinning - your next pull could be lucky!`,
-          style: {
-            fontFamily: 'var(--font-ndot47)',
-          },
-        })
-      }
+    const symbols = resultSymbols.map((symbol) => symbol) as [
+      string,
+      string,
+      string,
+    ]
+
+    stopSpin(0, 1000, symbols[0])
+    stopSpin(1, 2000, symbols[1])
+    stopSpin(2, 3000, symbols[2], () => {
+      setTimeout(() => {
+        if (ticketFragment && ticketProgress) {
+          const updatedProgress = {
+            ...ticketProgress,
+            foundPositions: [
+              ...ticketProgress.foundPositions,
+              ticketFragment.position,
+            ],
+          }
+          ticketGameProgressStorage.setItem(
+            'ticketGameProgress',
+            updatedProgress
+          )
+          setTicketProgress(updatedProgress)
+        }
+
+        if (ticketFragment) {
+          toast({
+            title: '🎉 JACKPOT WIN! 🎉',
+            description: `You found letter "${ticketFragment.letter}" for Hackathon Ticket Number #${ticketFragment.ticketNumber}! Keep spinning to collect them all!`,
+            style: { fontFamily: 'var(--font-ndot47)' },
+          })
+        } else {
+          toast({
+            title: 'NOT THIS TIME!',
+            description: 'Keep spinning - your next pull could be lucky!',
+            style: { fontFamily: 'var(--font-ndot47)' },
+          })
+        }
+      }, 500)
     })
   }
 
@@ -112,6 +159,29 @@ const SlotMachine = (): JSX.Element => {
 
   return (
     <div className='flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center space-y-6 p-4 md:space-y-8'>
+      {ticketProgress ? <div className='pixel-border mx-auto w-full max-w-md rounded-lg border-2 border-white bg-black/50 p-2 md:p-4'>
+          <p className='text-center font-press-start-2p text-xs text-gray-300'>
+            TICKET #{ticketProgress.ticketNumber}:{' '}
+            {Array(HACKATHON_GAME_JACKPOT_TICKET_CODES[0]?.length ?? 0)
+              .fill('?')
+              .map((_, idx) => (
+                <span
+                  key={`ticket-${ticketProgress.ticketNumber}-position-${Math.random().toString(36).substring(7)}`}
+                  className={
+                    ticketProgress.foundPositions.includes(idx)
+                      ? 'text-yellow-400'
+                      : 'text-gray-600'
+                  }
+                >
+                  {ticketProgress.foundPositions.includes(idx)
+                    ? (HACKATHON_GAME_JACKPOT_TICKET_CODES[
+                        parseInt(ticketProgress.ticketNumber) - 1
+                      ]?.[idx] ?? '?')
+                    : '?'}
+                </span>
+              ))}
+          </p>
+        </div> : null}
       <div className='flex w-full max-w-md flex-col items-center space-y-3 md:space-y-4'>
         <h1 className='pixel-shadow animate-pulse text-center font-press-start-2p text-xl font-semibold text-white md:text-4xl'>
           TICKET SLOT
