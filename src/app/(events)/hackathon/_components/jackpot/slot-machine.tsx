@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import {
   HACKATHON_GAME_JACKPOT_SYMBOLS,
   HACKATHON_GAME_JACKPOT_TICKET_CODES,
+  HACKATHON_GAME_MODE,
 } from '~/constants/hackathon'
 import { toast } from '~/hooks/use-toast'
 import { ticketGameProgressStorage } from '~/lib/hackathon-ticket'
@@ -86,7 +87,12 @@ const SlotMachine = (): JSX.Element => {
 
   const stopReelsOnResult = (
     resultSymbols: string[],
-    ticketFragment?: { ticketNumber: string; letter: string; position: number }
+    ticketFragment?: {
+      ticketNumber: string
+      letter?: string
+      fullCode?: string
+      position: number
+    }
   ): void => {
     if (!resultSymbols[0] || !resultSymbols[1] || !resultSymbols[2]) return
 
@@ -101,26 +107,48 @@ const SlotMachine = (): JSX.Element => {
     stopSpin(2, 3000, symbols[2], () => {
       setTimeout(() => {
         if (ticketFragment && ticketProgress) {
-          const updatedProgress = {
-            ...ticketProgress,
-            foundPositions: [
-              ...ticketProgress.foundPositions,
-              ticketFragment.position,
-            ],
-          }
-          ticketGameProgressStorage.setItem(
-            'ticketGameProgress',
-            updatedProgress
-          )
-          setTicketProgress(updatedProgress)
-        }
+          if (
+            HACKATHON_GAME_MODE === 'FULL_TICKET' &&
+            ticketFragment.fullCode
+          ) {
+            const updatedProgress = {
+              ...ticketProgress,
+              foundPositions: Array.from(
+                { length: ticketFragment.fullCode.length },
+                (_, i) => i
+              ),
+            }
+            ticketGameProgressStorage.setItem(
+              'ticketGameProgress',
+              updatedProgress
+            )
+            setTicketProgress(updatedProgress)
 
-        if (ticketFragment) {
-          toast({
-            title: '🎉 JACKPOT WIN! 🎉',
-            description: `You found letter "${ticketFragment.letter}" for Hackathon Ticket Number #${ticketFragment.ticketNumber}! Keep spinning to collect them all!`,
-            style: { fontFamily: 'var(--font-ndot47)' },
-          })
+            toast({
+              title: '🎉 JACKPOT WIN! 🎉',
+              description: `You won the full ticket #${ticketFragment.ticketNumber}: ${ticketFragment.fullCode}!`,
+              style: { fontFamily: 'var(--font-ndot47)' },
+            })
+          } else if (ticketFragment.letter) {
+            const updatedProgress = {
+              ...ticketProgress,
+              foundPositions: [
+                ...ticketProgress.foundPositions,
+                ticketFragment.position,
+              ],
+            }
+            ticketGameProgressStorage.setItem(
+              'ticketGameProgress',
+              updatedProgress
+            )
+            setTicketProgress(updatedProgress)
+
+            toast({
+              title: '🎉 JACKPOT WIN! 🎉',
+              description: `You found letter "${ticketFragment.letter}" for Hackathon Ticket Number #${ticketFragment.ticketNumber}! Keep spinning to collect them all!`,
+              style: { fontFamily: 'var(--font-ndot47)' },
+            })
+          }
         } else {
           toast({
             title: 'NOT THIS TIME!',
@@ -159,7 +187,8 @@ const SlotMachine = (): JSX.Element => {
 
   return (
     <div className='flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center space-y-6 p-4 md:space-y-8'>
-      {ticketProgress ? <div className='pixel-border mx-auto w-full max-w-md rounded-lg border-2 border-white bg-black/50 p-2 md:p-4'>
+      {ticketProgress ? (
+        <div className='pixel-border mx-auto w-full max-w-md rounded-lg border-2 border-white bg-black/50 p-2 md:p-4'>
           <p className='text-center font-press-start-2p text-xs text-gray-300'>
             TICKET #{ticketProgress.ticketNumber}:{' '}
             {Array(HACKATHON_GAME_JACKPOT_TICKET_CODES[0]?.length ?? 0)
@@ -181,7 +210,8 @@ const SlotMachine = (): JSX.Element => {
                 </span>
               ))}
           </p>
-        </div> : null}
+        </div>
+      ) : null}
       <div className='flex w-full max-w-md flex-col items-center space-y-3 md:space-y-4'>
         <h1 className='pixel-shadow animate-pulse text-center font-press-start-2p text-xl font-semibold text-white md:text-4xl'>
           TICKET SLOT

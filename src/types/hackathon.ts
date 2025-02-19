@@ -63,7 +63,8 @@ export interface HackathonSpinResult {
   symbols: string[]
   ticketFragment?: {
     ticketNumber: string
-    letter: string
+    letter?: string
+    fullCode?: string
     position: number
   }
 }
