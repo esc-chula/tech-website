@@ -28,13 +28,8 @@ import {
 
 import FormSection from '../common/form-section'
 import Input from '../common/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../common/select'
+
+import MembersForm from './members-form'
 
 const formSchema = z.object({
   teamName: z.string().min(1, {
@@ -131,9 +126,19 @@ const formSchema = z.object({
           message: 'Invalid Medical Condition',
         })
         .optional(),
+      chestSize: z
+        .string()
+        .min(1, {
+          message: 'Chest Size is required',
+        })
+        .max(2, {
+          message: 'Invalid Chest Size',
+        }),
     })
   ),
 })
+
+export type RegistrationFormSchema = z.infer<typeof formSchema>
 
 interface RegistrationFormProps {
   currentUserData: Student
@@ -212,10 +217,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setLoading(true)
 
-    // simulate validation loading for 1.5 seconds
+    // simulate validation loading for 1 seconds
     await new Promise((resolve) => {
-      setTimeout(resolve, 1500)
+      setTimeout(resolve, 1000)
     })
+
+    let isError = false
 
     // team members must be 4-5 members
     if (values.teamMembers.length < 4) {
@@ -223,7 +230,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         type: 'manual',
         message: 'Team must have at least 4 hackers',
       })
-      setLoading(false)
+      isError = true
     }
 
     // validate first 2 members student id
@@ -234,7 +241,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           type: 'manual',
           message: 'Invalid Student ID',
         })
-        setLoading(false)
+        isError = true
       }
     })
 
@@ -249,7 +256,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           type: 'manual',
           message: 'Duplicate Student ID',
         })
-        setLoading(false)
+        isError = true
       }
       if (names.has(name)) {
         form.setError(`teamMembers.${index}.firstName`, {
@@ -260,13 +267,40 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           type: 'manual',
           message: 'Duplicate Name',
         })
-        setLoading(false)
+        isError = true
       }
       studentIds.add(studentId)
       names.add(name)
     })
 
-    if (!form.formState.isValid) {
+    // validate each members chest size, convert to number
+    const memberChestSizes = [] as number[]
+    values.teamMembers.forEach((member, index) => {
+      const chestSize = parseInt(member.chestSize)
+      if (isNaN(chestSize)) {
+        form.setError(`teamMembers.${index}.chestSize`, {
+          type: 'manual',
+          message: 'Invalid Chest Size',
+        })
+        isError = true
+      }
+      if (chestSize < 30 || chestSize > 60) {
+        form.setError(`teamMembers.${index}.chestSize`, {
+          type: 'manual',
+          message: 'Chest Size must be between 30-60 inches',
+        })
+        isError = true
+      }
+      // set member chest size if valid
+      if (!isNaN(chestSize)) {
+        memberChestSizes.push(chestSize)
+      }
+    })
+    if (memberChestSizes.length !== values.teamMembers.length) {
+      isError = true
+    }
+
+    if (!form.formState.isValid || isError) {
       setLoading(false)
 
       return
@@ -299,7 +333,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     const resRegister = await registerHackathonTeam(
       resTeamTicket.data.id,
       values.teamName,
-      values.teamMembers
+      values.teamMembers.map((member, index) => ({
+        ...member,
+        chestSize: memberChestSizes[index] ?? 0,
+      }))
     )
     if (!resRegister.success) {
       toast({
@@ -413,314 +450,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         ) : null}
         {/* members form */}
         {form.watch('teamMembers').map((_, index) => (
-          <FormSection
-            key={index}
-            title={`Hacker #${index + 1}`}
-            description={
-              index <= 1 ? 'Must be Chulalongkorn student.' : undefined
-            }
-          >
-            <div className='grid gap-2 sm:grid-cols-2 md:gap-6'>
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.firstName`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      First Name<span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder='Please Fill Your First Name'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.lastName`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Last Name<span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder='Please Fill Your Last Name'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid gap-2 sm:grid-cols-2 md:gap-6'>
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.nickname`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Nickname<span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder='Please Fill Your Nickname'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.pronoun`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Pronoun<span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={(value) => {
-                          if (!value) {
-                            return
-                          }
-                          form.setValue(
-                            `teamMembers.${index}.pronoun`,
-                            value as z.infer<
-                              typeof formSchema
-                            >['teamMembers'][0]['pronoun']
-                          )
-                        }}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder='Please Select Your Pronoun' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value='HE'>He/Him/His</SelectItem>
-                          <SelectItem value='SHE'>She/Her/Hers</SelectItem>
-                          <SelectItem value='THEY'>They/Them/Theirs</SelectItem>
-                          <SelectItem value='OTHER'>Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={form.control}
-              name={`teamMembers.${index}.email`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Email<span className='text-red-500'>*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder='Please Fill Your Email' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className='grid gap-2 sm:grid-cols-2 md:gap-6'>
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.phoneNumber`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Phone Number<span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder='Please Fill Your Phone Number'
-                      />
-                    </FormControl>
-                    <FormDescription>Format: 0XX-XXX-XXXX</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.studentId`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Student ID<span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder='Please Fill Your Student ID'
-                        readOnly={index === 0}
-                      />
-                    </FormControl>
-                    {index <= 1 ? (
-                      <FormDescription>
-                        Must be Chulalongkorn and Engineering Student ID.
-                      </FormDescription>
-                    ) : null}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={form.control}
-              name={`teamMembers.${index}.faculty`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Faculty<span className='text-red-500'>*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder='Please Fill Your Faculty' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={`teamMembers.${index}.department`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Department<span className='text-red-500'>*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder='Please Fill Your Department'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={`teamMembers.${index}.university`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    University<span className='text-red-500'>*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder='Please Fill Your University'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className='grid gap-2 sm:grid-cols-2 md:gap-6'>
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.role`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Role<span className='text-red-500'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={(value) => {
-                          if (!value) {
-                            return
-                          }
-                          form.setValue(
-                            `teamMembers.${index}.role`,
-                            value as z.infer<
-                              typeof formSchema
-                            >['teamMembers'][0]['role']
-                          )
-                        }}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder='Please Select Your Role' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value='DEVELOPER'>Developer</SelectItem>
-                          <SelectItem value='DESIGNER'>Designer</SelectItem>
-                          <SelectItem value='PRODUCT'>Product</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.foodRestriction`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Food Restriction</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder='Please Fill Your Food Restriction'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='grid gap-2 sm:grid-cols-2 md:gap-6'>
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.medication`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Medication</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder='Please Fill Your Medication'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`teamMembers.${index}.medicalCondition`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Medical Condition</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder='Please Fill Your Medical Condition'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </FormSection>
+          <MembersForm key={index} form={form} index={index} />
         ))}
         {/* submit */}
         <div className='fixed bottom-2 w-full max-w-md px-3 sm:bottom-5'>

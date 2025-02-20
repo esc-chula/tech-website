@@ -151,6 +151,8 @@ model HackathonTeamMember {
   foodRestriction  String?
   medication       String?
   medicalCondition String?
+
+  chestSize Int @default(0)
 }
 
 enum HackathonPronoun {

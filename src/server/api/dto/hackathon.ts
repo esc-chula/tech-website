@@ -24,6 +24,7 @@ export const CreateHackathonTeamMemberDto = z.object({
   foodRestriction: z.string().nullish(),
   medication: z.string().nullish(),
   medicalCondition: z.string().nullish(),
+  chestSize: z.number(),
 })
 
 export const CreateHackathonRegistrationDto = z.object({

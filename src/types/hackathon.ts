@@ -42,6 +42,7 @@ export interface HackathonTeamMember {
   foodRestriction?: string | null | undefined
   medication?: string | null | undefined
   medicalCondition?: string | null | undefined
+  chestSize: number
 }
 
 export interface HackathonRegistration {
