@@ -8,6 +8,7 @@ import {
   findMyRegistration,
 } from '~/server/actions/hackathon'
 
+import BackButton from '../../_components/common/back-button'
 import BirdsBackground from '../../_components/common/birds-background'
 import UserBox from '../../_components/common/user-box'
 import RegistrationForm from '../../_components/registration/registration-form'
@@ -38,6 +39,7 @@ const Page: React.FC = async () => {
 
   return (
     <>
+      <BackButton href='/hackathon' />
       <div className='flex min-h-dvh flex-col items-center gap-10 pb-24 pt-8'>
         <UserBox />
         <div className='flex flex-col items-center gap-2 text-center md:gap-6'>
