@@ -152,7 +152,7 @@ export async function spinHackathonTicketSlot(
         ? HACKATHON_GAME_JACKPOT_SYMBOLS[0]
         : (HACKATHON_GAME_JACKPOT_SYMBOLS[
             Math.floor(Math.random() * HACKATHON_GAME_JACKPOT_SYMBOLS.length)
-          ] ?? HACKATHON_GAME_JACKPOT_SYMBOLS[0])
+          ] ?? HACKATHON_GAME_JACKPOT_SYMBOLS[1])
     ) as string[]
 
   if (symbols.every((symbol) => symbol === symbols[0]) && !isJackpot) {
