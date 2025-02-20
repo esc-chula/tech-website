@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const HackathonJackpotPage: React.FC = () => {
   return (
     <div className='flex h-screen flex-col items-center justify-center'>
-      <p className='hidden'>{`FYI: There's 5% chance to win the full ticket, and 15% chance to win per character.`}</p>
+      <p className='hidden'>{`FYI: There's 1.5% chance to win the full ticket, and 15% chance to win per character.`}</p>
       {/* <BackButton /> */}
       <SlotMachine />
       <BirdsBackground />
