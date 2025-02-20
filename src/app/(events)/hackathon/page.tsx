@@ -20,8 +20,19 @@ import GridTunnelContextProvider from './_contexts/grid-tunnel-context'
 const Page: React.FC = () => {
   return (
     <>
-      <TicketRandomConsoleLog tickets={['DEV_GM0HP5G68B', 'DEV_LZVHRI8AD4']} />
-      <TicketRandomConsoleLog tickets={['DEV_J99LB1RMSA', 'DEV_FGSNU249N0']} />
+      <TicketRandomConsoleLog
+        tickets={[
+          'DEV_GM0HP5G68B',
+          'DEV_LZVHRI8AD4',
+          'DEV_J99LB1RMSA',
+          'DEV_FGSNU249N0',
+          'ไหนอั่งเปา',
+          'ไหนอั่งเปา',
+          'ไหนอั่งเปา',
+          'ไหนอั่งเปา',
+          'ไหนอั่งเปา',
+        ]}
+      />
       <TicketRandomConsoleLog
         tickets={[
           'บางปีก็เสียใจที่ไม่ได้อั่งเปา แต่ปีนี้เสียเราที่ไม่มีเธอ เพราะเธอะละเมอกินอั่งเปา เราเลยกินนาย อยากคลายรีเฟรชหัวใจ หาไฟไปหาอั่งเปา',
