@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.10](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.9..v0.3.10) - 2025-02-20
+
+### <!-- 0 -->⛰️  Features
+
+- Shirt size field - ([db819a4](https://github.com/esc-chula/intania-oidc-new/commit/db819a4f772c5da96c1371b8252497857d8ba692))
+
 ## [0.3.9](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.8..v0.3.9) - 2025-02-20
 
 ### <!-- 0 -->⛰️  Features
