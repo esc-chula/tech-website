@@ -151,7 +151,10 @@ export async function spinHackathonTicketSlot(
       isJackpot
         ? HACKATHON_GAME_JACKPOT_SYMBOLS[0]
         : (HACKATHON_GAME_JACKPOT_SYMBOLS[
-            Math.floor(Math.random() * HACKATHON_GAME_JACKPOT_SYMBOLS.length)
+            1 +
+              Math.floor(
+                Math.random() * (HACKATHON_GAME_JACKPOT_SYMBOLS.length - 1)
+              )
           ] ?? HACKATHON_GAME_JACKPOT_SYMBOLS[1])
     ) as string[]
 
