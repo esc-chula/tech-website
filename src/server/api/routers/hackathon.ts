@@ -17,6 +17,7 @@ import {
   ClaimHackathonTicketDto,
   CreateHackathonRegistrationDto,
   CreateHackathonTeamTicketDto,
+  DeleteHackathonRegistrationDto,
   UpdateHackathonRegistrationDto,
 } from '../dto/hackathon'
 
@@ -331,6 +332,39 @@ export const hackathonRouter = createTRPCRouter({
       }
     }
   ),
+
+  deleteTeamTicket: trpc
+    .input(DeleteHackathonRegistrationDto)
+    .mutation(async ({ ctx, input }): Promise<Response<null>> => {
+      const userId = ctx.session.user?.id
+      if (!userId) {
+        return {
+          success: false,
+          message: 'Unauthorized',
+          errors: ['Session ID not found'],
+        }
+      }
+
+      try {
+        await ctx.db.hackathonTeamTicket.delete({
+          where: { id: input.teamTicketId },
+        })
+
+        return {
+          success: true,
+          message: 'Team Pass deleted successfully',
+          data: null,
+        }
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Failed to delete Team Pass',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
+        }
+      }
+    }),
 
   getMyActiveClaim: trpc.query(
     async ({
