@@ -1,7 +1,9 @@
 import { type Metadata } from 'next'
+import { headers } from 'next/headers'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
+import { isMobile } from '~/lib/is-mobile'
 import {
   findMyRegistration,
   getMyRegistrationIndex,
@@ -31,6 +33,9 @@ const Page: React.FC = async () => {
     return notFound()
   }
 
+  const userAgent = headers().get('user-agent') ?? ''
+  const mobileCheck = isMobile(userAgent)
+
   return (
     <>
       <div className='flex min-h-dvh flex-col items-center gap-8 pb-24 pt-8 md:gap-10'>
@@ -45,7 +50,11 @@ const Page: React.FC = async () => {
             {`Don't forget to tag @intania.tech and your team!`}
           </p>
         </div>
-        <ShareStory teamNo={resMyRegistrationIndex.data + 1} />
+        <ShareStory
+          isMobile={mobileCheck}
+          teamName={resMyRegistration.data.teamName}
+          teamNo={resMyRegistrationIndex.data + 1}
+        />
         <Link className='underline' href='/hackathon/ticket'>
           View your Team Pass.
         </Link>

@@ -1,10 +1,18 @@
 'use server'
 
+import {
+  HACKATHON_GAME_JACKPOT_FULL_TICKET_MODE_RATE,
+  HACKATHON_GAME_JACKPOT_MODE,
+  HACKATHON_GAME_JACKPOT_PER_CHARACTER_MODE_RATE,
+  HACKATHON_GAME_JACKPOT_SYMBOLS,
+  HACKATHON_GAME_JACKPOT_TICKET_CODES,
+} from '~/constants/hackathon'
 import { withRateLimit } from '~/lib/rate-limit'
 import { api } from '~/trpc/server'
 import {
   type CreateHackathonTeamMemberInput,
   type HackathonRegistration,
+  type HackathonSpinResult,
   type HackathonTeamMember,
   type HackathonTeamTicket,
   type HackathonTicket,
@@ -41,7 +49,8 @@ export const claimHackahonTicketWithRateLimit = withRateLimit(
   claimHackathonTicket,
   {
     maxAttempts: 5,
-    windowInSeconds: 30,
+    windowInSeconds: 20,
+    identifierMethod: 'sid',
   },
   'claim-hackathon-ticket'
 )
@@ -125,3 +134,83 @@ export async function updateHackathonRegistration(
   })
   return res
 }
+
+export async function spinHackathonTicketSlot(
+  ticketNumber: string,
+  foundPositions: number[] = []
+): Promise<Response<HackathonSpinResult>> {
+  const jackpotRate =
+    HACKATHON_GAME_JACKPOT_MODE === 'FULL_TICKET'
+      ? HACKATHON_GAME_JACKPOT_FULL_TICKET_MODE_RATE
+      : HACKATHON_GAME_JACKPOT_PER_CHARACTER_MODE_RATE
+  const isJackpot = Math.random() < jackpotRate
+
+  const symbols: string[] = Array(3)
+    .fill(null)
+    .map(() =>
+      isJackpot
+        ? HACKATHON_GAME_JACKPOT_SYMBOLS[0]
+        : (HACKATHON_GAME_JACKPOT_SYMBOLS[
+            Math.floor(Math.random() * HACKATHON_GAME_JACKPOT_SYMBOLS.length)
+          ] ?? HACKATHON_GAME_JACKPOT_SYMBOLS[0])
+    ) as string[]
+
+  if (!isJackpot) {
+    return Promise.resolve({
+      success: true,
+      message: 'Spin result successful',
+      data: { symbols },
+    })
+  }
+
+  const idx = parseInt(ticketNumber) - 1
+  const ticketCode = HACKATHON_GAME_JACKPOT_TICKET_CODES[idx] ?? 'INVALID CODE'
+
+  if (HACKATHON_GAME_JACKPOT_MODE === 'FULL_TICKET') {
+    return Promise.resolve({
+      success: true,
+      message: 'Spin result successful',
+      data: {
+        symbols,
+        ticketFragment: {
+          ticketNumber,
+          fullCode: ticketCode,
+          position: -1,
+        },
+      },
+    })
+  }
+
+  // PER_CHARACTER mode
+  const remainingPositions = Array.from(
+    { length: ticketCode.length },
+    (_, i) => i
+  ).filter((pos) => !foundPositions.includes(pos))
+
+  const position =
+    remainingPositions[Math.floor(Math.random() * remainingPositions.length)] ??
+    0
+
+  return Promise.resolve({
+    success: true,
+    message: 'Spin result successful',
+    data: {
+      symbols,
+      ticketFragment: {
+        ticketNumber,
+        letter: ticketCode.charAt(position),
+        position,
+      },
+    },
+  })
+}
+
+export const spinHackathonTicketSlotWithRateLimit = withRateLimit(
+  spinHackathonTicketSlot,
+  {
+    maxAttempts: 1,
+    windowInSeconds: 3,
+    identifierMethod: 'ip',
+  },
+  'spin-hackathon-ticket'
+)

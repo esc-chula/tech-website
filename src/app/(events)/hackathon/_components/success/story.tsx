@@ -10,6 +10,7 @@ interface StoryProps {
   background: 1 | 2 | 3
   layoutType: 1 | 2 | 3
   emoji: string
+  teamName: string
   teamNo: number
   phrase: string
 }
@@ -19,6 +20,7 @@ const Story: React.FC<StoryProps> = ({
   background,
   layoutType,
   emoji,
+  teamName,
   teamNo,
   phrase,
 }) => {
@@ -49,6 +51,14 @@ const Story: React.FC<StoryProps> = ({
       <div className='absolute inset-0 z-20 mb-[30%]'>
         {layoutType === 1 ? (
           <div className='flex h-full w-full flex-col items-center justify-center text-center font-ndot47'>
+            <p
+              className='text-white/50'
+              style={{
+                fontSize: `${fontFactor}px`,
+              }}
+            >
+              Team {teamName}
+            </p>
             <p
               className='text-white/50'
               style={{
@@ -95,26 +105,48 @@ const Story: React.FC<StoryProps> = ({
               <br />
               HACKATH<span className='text-hackathon-primary'>O</span>N
             </p>
-            <p
-              className='text-white/60'
-              style={{
-                fontSize: `${fontFactor * 2}px`,
-              }}
-            >
-              TEAM NO. <span className='text-hackathon-primary'>{teamNo}</span>
-            </p>
+            <div className='flex flex-col items-center gap-[1%]'>
+              <p
+                className='text-white/50'
+                style={{
+                  fontSize: `${fontFactor}px`,
+                }}
+              >
+                Team {teamName}
+              </p>
+              <p
+                className='text-white/60'
+                style={{
+                  fontSize: `${fontFactor * 2}px`,
+                }}
+              >
+                TEAM NO.{' '}
+                <span className='text-hackathon-primary'>{teamNo}</span>
+              </p>
+            </div>
           </div>
         ) : null}
         {layoutType === 3 ? (
           <div className='flex h-full w-full flex-col items-center justify-center gap-[1.5%] text-center font-ndot47'>
-            <p
-              className='text-white/60'
-              style={{
-                fontSize: `${fontFactor * 1.25}px`,
-              }}
-            >
-              TEAM NO. <span className='text-hackathon-primary'>{teamNo}</span>
-            </p>
+            <div className='flex flex-col items-center gap-[1%]'>
+              <p
+                className='text-white/50'
+                style={{
+                  fontSize: `${fontFactor}px`,
+                }}
+              >
+                Team {teamName}
+              </p>
+              <p
+                className='text-white/60'
+                style={{
+                  fontSize: `${fontFactor * 1.25}px`,
+                }}
+              >
+                TEAM NO.{' '}
+                <span className='text-hackathon-primary'>{teamNo}</span>
+              </p>
+            </div>
             <p
               className='text-white'
               style={{

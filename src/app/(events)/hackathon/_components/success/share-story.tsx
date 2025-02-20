@@ -10,10 +10,16 @@ import Button from '../ui/button'
 import Story from './story'
 
 interface ShareStoryProps {
+  isMobile: boolean
   teamNo: number
+  teamName: string
 }
 
-const ShareStory: React.FC<ShareStoryProps> = ({ teamNo }) => {
+const ShareStory: React.FC<ShareStoryProps> = ({
+  isMobile,
+  teamNo,
+  teamName,
+}) => {
   const { toast } = useToast()
 
   const storyRef = useRef<HTMLDivElement>(null)
@@ -47,6 +53,11 @@ const ShareStory: React.FC<ShareStoryProps> = ({ teamNo }) => {
   const handleShare = async (): Promise<void> => {
     try {
       if (!storyRef.current) {
+        return
+      }
+
+      if (!isMobile) {
+        handleDownload()
         return
       }
 
@@ -105,7 +116,7 @@ const ShareStory: React.FC<ShareStoryProps> = ({ teamNo }) => {
         '48 HRS NON-STOP',
         'MILLION IS OURS',
         'WHAT THE HACK?!',
-        'GEN-XXXXXXXXXX', // TODO: add ticket code
+        'GEN_BLPVF2THML',
       ]
       setPhrase((prev) => {
         const filteredPhrases = phrases.filter((p) => p !== prev)
@@ -128,6 +139,7 @@ const ShareStory: React.FC<ShareStoryProps> = ({ teamNo }) => {
               emoji={emoji}
               layoutType={layoutType}
               phrase={phrase}
+              teamName={teamName}
               teamNo={teamNo}
             />
           </div>
@@ -140,6 +152,7 @@ const ShareStory: React.FC<ShareStoryProps> = ({ teamNo }) => {
           emoji={emoji}
           layoutType={layoutType}
           phrase={phrase}
+          teamName={teamName}
           teamNo={teamNo}
         />
       </div>

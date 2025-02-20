@@ -10,7 +10,7 @@ const organizers = [
     logo: '/hackathon/assets/organizer-logo-1.png',
   },
   {
-    name: 'esc-chula',
+    name: '111th',
     logo: '/hackathon/assets/organizer-logo-2.png',
   },
 ]
@@ -32,6 +32,7 @@ const SponsorsSection: React.FC = () => {
                 fill
                 alt={organizer.name}
                 className='object-contain'
+                sizes='100px'
                 src={organizer.logo}
               />
             </div>
