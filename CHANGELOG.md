@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.12](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.12..v0.3.12) - 2025-02-20
+
+### <!-- 0 -->⛰️  Features
+
+- Reset after getting jackpot - ([17b9d40](https://github.com/esc-chula/intania-oidc-new/commit/17b9d40440320f40c173a5d2deb9756d859de788))
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Get the same ticket - ([964cc9e](https://github.com/esc-chula/intania-oidc-new/commit/964cc9e6ff7c4c8a30eeaa796b99ab2cecd1b0fa))
+- Default symbols - ([f4d08c2](https://github.com/esc-chula/intania-oidc-new/commit/f4d08c295d98073213f57e3e90d8a33b3e07bb09))
+
 ## [0.3.12](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.11..v0.3.12) - 2025-02-20
 
 ### <!-- 1 -->🐛 Bug Fixes
