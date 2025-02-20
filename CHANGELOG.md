@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.13](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.13..v0.3.13) - 2025-02-20
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Shift not jackpot idx - ([52a48b9](https://github.com/esc-chula/intania-oidc-new/commit/52a48b9bd8413638392d3e414b38b765e546ec84))
+- Shift not jackpot idx on frontend - ([a7a8d40](https://github.com/esc-chula/intania-oidc-new/commit/a7a8d400f2bf546e7b9c55fff29b05dddb6f1cd1))
+
 ## [0.3.13](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.12..v0.3.13) - 2025-02-20
 
 ### <!-- 0 -->⛰️  Features
