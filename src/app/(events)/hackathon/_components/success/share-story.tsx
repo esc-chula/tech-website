@@ -105,7 +105,7 @@ const ShareStory: React.FC<ShareStoryProps> = ({ teamNo }) => {
         '48 HRS NON-STOP',
         'MILLION IS OURS',
         'WHAT THE HACK?!',
-        'GEN-XXXXXXXXXX', // TODO: add ticket code
+        'GEN_BLPVF2THML',
       ]
       setPhrase((prev) => {
         const filteredPhrases = phrases.filter((p) => p !== prev)

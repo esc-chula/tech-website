@@ -21,9 +21,11 @@ const Page: React.FC = () => {
   return (
     <>
       <TicketRandomConsoleLog tickets={['DEV_GM0HP5G68B', 'DEV_LZVHRI8AD4']} />
+      <TicketRandomConsoleLog tickets={['DEV_J99LB1RMSA', 'DEV_FGSNU249N0']} />
       <TicketRandomConsoleLog
         tickets={[
           'บางปีก็เสียใจที่ไม่ได้อั่งเปา แต่ปีนี้เสียเราที่ไม่มีเธอ เพราะเธอะละเมอกินอั่งเปา เราเลยกินนาย อยากคลายรีเฟรชหัวใจ หาไฟไปหาอั่งเปา',
+          'https://intania.tech/hackathon/jackpot',
         ]}
       />
       <TicketSetLocalStorage name='tae-eia' ticket='DEV_FSTUON8IUL' />

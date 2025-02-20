@@ -219,13 +219,25 @@ const SlotMachine = (): JSX.Element => {
         </h1>
         <div className='pixel-border mx-auto w-full rounded-lg border-2 border-white bg-black/50 p-2 md:p-4'>
           <p className='text-center font-press-start-2p text-[8px] leading-relaxed text-gray-300 md:text-xs'>
-            HOW TO PLAY:
-            <br />
-            1. SPIN TO WIN TICKET LETTERS
-            <br />
-            2. GET JACKPOT TO REVEAL A LETTER
-            <br />
-            3. COLLECT ALL LETTERS TO WIN!
+            {HACKATHON_GAME_JACKPOT_MODE === 'FULL_TICKET' ? (
+              <>
+                HOW TO PLAY:
+                <br />
+                1. SPIN TO WIN TICKET
+                <br />
+                2. GET JACKPOT TO REVEAL FULL TICKET
+              </>
+            ) : (
+              <>
+                HOW TO PLAY:
+                <br />
+                1. SPIN TO WIN TICKET LETTERS
+                <br />
+                2. GET JACKPOT TO REVEAL A LETTER
+                <br />
+                3. COLLECT ALL LETTERS TO WIN!
+              </>
+            )}
           </p>
         </div>
       </div>
