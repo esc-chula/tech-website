@@ -188,7 +188,7 @@ const SlotMachine = (): JSX.Element => {
   }
 
   return (
-    <div className='mt-16 flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center space-y-5 p-4 sm:mt-auto sm:space-y-6 md:space-y-8'>
+    <div className='mt-8 flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center space-y-5 p-4 sm:mt-auto sm:space-y-6 md:space-y-8'>
       {ticketProgress ? (
         <div className='pixel-border mx-auto w-full max-w-md rounded-lg border-2 border-white bg-black/50 p-2 md:p-4'>
           <p className='text-center font-press-start-2p text-xs text-gray-300'>

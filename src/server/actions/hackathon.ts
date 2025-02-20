@@ -155,6 +155,14 @@ export async function spinHackathonTicketSlot(
           ] ?? HACKATHON_GAME_JACKPOT_SYMBOLS[0])
     ) as string[]
 
+  if (symbols.every((symbol) => symbol === symbols[0]) && !isJackpot) {
+    return Promise.resolve({
+      success: true,
+      message: 'Spin result successful',
+      data: { symbols },
+    })
+  }
+
   if (!isJackpot) {
     return Promise.resolve({
       success: true,
