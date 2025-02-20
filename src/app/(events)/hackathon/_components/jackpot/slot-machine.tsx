@@ -62,6 +62,22 @@ const SlotMachine = (): JSX.Element => {
   const spin = async (): Promise<void> => {
     if (spinning.some((spin) => spin) || !ticketProgress) return
 
+    if (
+      HACKATHON_GAME_JACKPOT_MODE === 'FULL_TICKET' &&
+      ticketProgress.foundPositions.length ===
+        HACKATHON_GAME_JACKPOT_TICKET_CODES[0]?.length
+    ) {
+      const randomIdx = Math.floor(
+        Math.random() * HACKATHON_GAME_JACKPOT_TICKET_CODES.length
+      )
+      const newProgress = {
+        ticketNumber: `${randomIdx + 1}`,
+        foundPositions: [],
+      }
+      ticketGameProgressStorage.setItem('ticketGameProgress', newProgress)
+      setTicketProgress(newProgress)
+    }
+
     setReels([
       generateReelSymbols(),
       generateReelSymbols(),
