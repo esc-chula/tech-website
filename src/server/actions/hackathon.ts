@@ -2,10 +2,10 @@
 
 import {
   HACKATHON_GAME_JACKPOT_FULL_TICKET_MODE_RATE,
+  HACKATHON_GAME_JACKPOT_MODE,
   HACKATHON_GAME_JACKPOT_PER_CHARACTER_MODE_RATE,
   HACKATHON_GAME_JACKPOT_SYMBOLS,
   HACKATHON_GAME_JACKPOT_TICKET_CODES,
-  HACKATHON_GAME_MODE,
 } from '~/constants/hackathon'
 import { withRateLimit } from '~/lib/rate-limit'
 import { api } from '~/trpc/server'
@@ -140,7 +140,7 @@ export async function spinHackathonTicketSlot(
   foundPositions: number[] = []
 ): Promise<Response<HackathonSpinResult>> {
   const jackpotRate =
-    HACKATHON_GAME_MODE === 'FULL_TICKET'
+    HACKATHON_GAME_JACKPOT_MODE === 'FULL_TICKET'
       ? HACKATHON_GAME_JACKPOT_FULL_TICKET_MODE_RATE
       : HACKATHON_GAME_JACKPOT_PER_CHARACTER_MODE_RATE
   const isJackpot = Math.random() < jackpotRate
@@ -166,7 +166,7 @@ export async function spinHackathonTicketSlot(
   const idx = parseInt(ticketNumber) - 1
   const ticketCode = HACKATHON_GAME_JACKPOT_TICKET_CODES[idx] ?? 'INVALID CODE'
 
-  if (HACKATHON_GAME_MODE === 'FULL_TICKET') {
+  if (HACKATHON_GAME_JACKPOT_MODE === 'FULL_TICKET') {
     return Promise.resolve({
       success: true,
       message: 'Spin result successful',

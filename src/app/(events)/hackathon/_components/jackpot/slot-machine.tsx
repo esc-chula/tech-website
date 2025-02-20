@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react'
 
 import {
+  HACKATHON_GAME_JACKPOT_MODE,
   HACKATHON_GAME_JACKPOT_SYMBOLS,
   HACKATHON_GAME_JACKPOT_TICKET_CODES,
-  HACKATHON_GAME_MODE,
 } from '~/constants/hackathon'
 import { toast } from '~/hooks/use-toast'
 import { ticketGameProgressStorage } from '~/lib/hackathon-ticket'
@@ -109,7 +109,7 @@ const SlotMachine = (): JSX.Element => {
       setTimeout(() => {
         if (ticketFragment && ticketProgress) {
           if (
-            HACKATHON_GAME_MODE === 'FULL_TICKET' &&
+            HACKATHON_GAME_JACKPOT_MODE === 'FULL_TICKET' &&
             ticketFragment.fullCode
           ) {
             const updatedProgress = {
