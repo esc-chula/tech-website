@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.12](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.11..v0.3.12) - 2025-02-20
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Jackpot rate - ([ef23fa1](https://github.com/esc-chula/intania-oidc-new/commit/ef23fa1ba7a4fbf716bc0275dbe7d376c4959468))
+- Jackpot rate - ([e8e6755](https://github.com/esc-chula/intania-oidc-new/commit/e8e6755d8dd2bd070c9f8b4d059effba01596634))
+- Slot machine - ([917e587](https://github.com/esc-chula/intania-oidc-new/commit/917e5870ce6b2d57fa0b3d07dd414e0ea58d7ea7))
+
 ## [0.3.11](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.10..v0.3.11) - 2025-02-20
 
 ### <!-- 1 -->🐛 Bug Fixes
