@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 
 import {
@@ -187,7 +188,7 @@ const SlotMachine = (): JSX.Element => {
   }
 
   return (
-    <div className='flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center space-y-6 p-4 md:space-y-8'>
+    <div className='mt-16 flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center space-y-5 p-4 sm:mt-auto sm:space-y-6 md:space-y-8'>
       {ticketProgress ? (
         <div className='pixel-border mx-auto w-full max-w-md rounded-lg border-2 border-white bg-black/50 p-2 md:p-4'>
           <p className='text-center font-press-start-2p text-xs text-gray-300'>
@@ -213,7 +214,7 @@ const SlotMachine = (): JSX.Element => {
           </p>
         </div>
       ) : null}
-      <div className='flex w-full max-w-md flex-col items-center space-y-3 md:space-y-4'>
+      <div className='flex w-full max-w-md flex-col items-center space-y-2 md:space-y-4'>
         <h1 className='pixel-shadow animate-pulse text-center font-press-start-2p text-xl font-semibold text-white md:text-4xl'>
           TICKET SLOT
         </h1>
@@ -225,7 +226,9 @@ const SlotMachine = (): JSX.Element => {
                 <br />
                 1. SPIN TO WIN TICKET
                 <br />
-                2. GET JACKPOT TO REVEAL FULL TICKET
+                2. GET JACKPOT(888)
+                <br />
+                3. REVEAL FULL TICKET
               </>
             ) : (
               <>
@@ -233,7 +236,7 @@ const SlotMachine = (): JSX.Element => {
                 <br />
                 1. SPIN TO WIN TICKET LETTERS
                 <br />
-                2. GET JACKPOT TO REVEAL A LETTER
+                2. GET JACKPOT(888) TO REVEAL A LETTER
                 <br />
                 3. COLLECT ALL LETTERS TO WIN!
               </>
@@ -270,14 +273,17 @@ const SlotMachine = (): JSX.Element => {
         </div>
       </div>
 
-      <button
-        className='pixel-border shadow-neon w-full max-w-[160px] transform bg-carmine-600 px-4 py-2 font-press-start-2p text-sm text-white transition-transform hover:scale-105 hover:bg-carmine-500 disabled:cursor-not-allowed disabled:opacity-50 md:max-w-[200px] md:px-8 md:py-3 md:text-xl'
-        disabled={spinning.some((s) => s)}
-        type='button'
-        onClick={spin}
-      >
-        SPIN!
-      </button>
+      <div className='flex flex-col items-center gap-8'>
+        <button
+          className='pixel-border shadow-neon w-full max-w-[160px] transform bg-carmine-600 px-4 py-2 font-press-start-2p text-sm text-white transition-transform hover:scale-105 hover:bg-carmine-500 disabled:cursor-not-allowed disabled:opacity-50 md:max-w-[200px] md:px-8 md:py-3 md:text-xl'
+          disabled={spinning.some((s) => s)}
+          type='button'
+          onClick={spin}
+        >
+          SPIN!
+        </button>
+        <p className='-mt-5 text-xs text-white/40'>Sponsored by Intania 888</p>
+      </div>
     </div>
   )
 }
