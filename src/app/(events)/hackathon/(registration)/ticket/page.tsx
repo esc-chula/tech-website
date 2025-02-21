@@ -77,7 +77,7 @@ const Page: React.FC = async () => {
   return (
     <>
       <BackButton href='/hackathon' />
-      <div className='flex min-h-dvh flex-col items-center gap-10 pb-24 pt-8'>
+      <div className='flex min-h-dvh flex-col items-center gap-10 overflow-hidden pb-24 pt-8'>
         <UserBox />
         <div className='mt-4 flex flex-col items-center gap-4'>
           <h1 className='text-center text-4xl font-semibold capitalize tracking-tighter text-white sm:text-6xl'>

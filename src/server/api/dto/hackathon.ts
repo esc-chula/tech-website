@@ -9,6 +9,10 @@ export const CreateHackathonTeamTicketDto = z.object({
   ticketIds: z.array(z.number()).length(2),
 })
 
+export const DeleteHackathonRegistrationDto = z.object({
+  teamTicketId: z.number(),
+})
+
 export const CreateHackathonTeamMemberDto = z.object({
   firstName: z.string(),
   lastName: z.string(),

@@ -26,7 +26,7 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
   const router = useRouter()
 
   const [timeLeft, setTimeLeft] = useState<string | null>(null)
-  const isMobile = useMediaQuery({ maxWidth: 640 })
+  const isMobile = useMediaQuery({ maxWidth: 768 })
 
   useEffect(() => {
     if (!expiredAt) return
@@ -104,12 +104,12 @@ const ClaimedTicket: React.FC<ClaimedTicketProps> = ({
         ticketType === 'PRODUCT' && 'from-yellow-700 to-black'
       )}
       exit={{
-        translateX: isMobile ? 0 : `${moveDirection === 'left' ? 60 : -60}%`,
-        translateY: isMobile ? `${moveDirection === 'left' ? 60 : -60}%` : 0,
+        translateX: isMobile ? 0 : `${moveDirection === 'left' ? 55 : -60}%`,
+        translateY: isMobile ? `${moveDirection === 'left' ? 55 : -60}%` : 0,
         boxShadow: `0 0 240px 200px ${shadowColor}`,
         scale: 1.25,
         opacity: 0.3,
-        transition: { duration: 1.5, ease: 'easeIn' },
+        transition: { duration: 2, ease: 'easeInOut' },
       }}
       whileInView={{
         boxShadow: [

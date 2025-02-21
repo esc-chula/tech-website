@@ -83,6 +83,20 @@ const TicketForm: React.FC<TicketFormProps> = ({ ticket1, ticket2 }) => {
             ) : (
               <TicketBox key='ticketBox1' form={code1Form} name='Ticket 1' />
             )}
+            <div className='pointer-events-none fixed inset-0 z-10 flex items-center justify-center overflow-hidden'>
+              <motion.div
+                className='aspect-square h-[50vh] rounded-full opacity-0'
+                exit={{
+                  opacity: 1,
+                  height: '250vh',
+                  transition: { duration: 2.5, ease: 'easeInOut' },
+                }}
+                style={{
+                  background:
+                    'radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, 0.00) 100%)',
+                }}
+              />
+            </div>
           </AnimatePresence>
           <AnimatePresence propagate initial={false} mode='wait'>
             {ticket2 ? (

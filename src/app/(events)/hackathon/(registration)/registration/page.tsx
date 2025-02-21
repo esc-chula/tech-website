@@ -8,9 +8,11 @@ import {
   findMyRegistration,
 } from '~/server/actions/hackathon'
 
+import BackButton from '../../_components/common/back-button'
 import BirdsBackground from '../../_components/common/birds-background'
 import UserBox from '../../_components/common/user-box'
 import RegistrationForm from '../../_components/registration/registration-form'
+import RemoveRegistrationButton from '../../_components/registration/remove-registration-button'
 
 export const metadata: Metadata = {
   title: 'Intania Hackathon - Registration',
@@ -37,6 +39,7 @@ const Page: React.FC = async () => {
 
   return (
     <>
+      <BackButton href='/hackathon' />
       <div className='flex min-h-dvh flex-col items-center gap-10 pb-24 pt-8'>
         <UserBox />
         <div className='flex flex-col items-center gap-2 text-center md:gap-6'>
@@ -47,9 +50,20 @@ const Page: React.FC = async () => {
           </p>
         </div>
         {resCountRegistrations.data >= HACKATHON_MAX_TEAMS ? (
-          <div>
-            <p className='text-center text-white'>Registration is full.</p>
-          </div>
+          <>
+            <div className='flex max-w-md flex-col items-center gap-3 rounded-2xl border-2 border-white/10 bg-white/10 p-4 text-center backdrop-blur-sm'>
+              <p className='text-center text-lg font-semibold text-white'>
+                Registration is full for this round.
+              </p>
+              <p className='text-white/60'>
+                Thank you for your interest in Intania Hackathon. Please stay
+                tuned for our next event.
+                <br />
+                :D
+              </p>
+            </div>
+            <RemoveRegistrationButton />
+          </>
         ) : (
           <RegistrationForm currentUserData={resMe.data} />
         )}

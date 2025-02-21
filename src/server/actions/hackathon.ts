@@ -37,6 +37,29 @@ export async function createHackathonTeamTicket(
   })
 }
 
+export async function deleteMyHackathonRegistration(): Promise<Response<null>> {
+  const resMyTeamTicket = await api.hackathon.findMyTeamTicket()
+  if (!resMyTeamTicket.success) {
+    return {
+      success: false,
+      message: 'Failed to get team ticket data',
+      errors: resMyTeamTicket.errors,
+    }
+  }
+
+  if (!resMyTeamTicket.data) {
+    return {
+      success: false,
+      message: 'You have not registered',
+      errors: ['User does not have HackathonTeamTicket in database'],
+    }
+  }
+
+  return await api.hackathon.deleteTeamTicket({
+    teamTicketId: resMyTeamTicket.data.id,
+  })
+}
+
 async function claimHackathonTicket(
   ticketCode: string
 ): Promise<Response<HackathonTicket>> {

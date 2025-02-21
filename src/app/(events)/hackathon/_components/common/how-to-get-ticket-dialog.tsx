@@ -60,7 +60,7 @@ const HowToGetTicketDialog: React.FC = () => {
             <li>
               <span className='font-bold'>Combine Your Tickets:</span> Once your
               team has collected 2 Ticket Codes, you can merge them into a Team
-              Ticket to complete your registration in the website.
+              Pass to complete your registration in the website.
             </li>
           </ol>
         </DialogDescription>
