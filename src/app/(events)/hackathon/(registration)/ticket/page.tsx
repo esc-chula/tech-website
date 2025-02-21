@@ -78,7 +78,7 @@ const Page: React.FC = async () => {
   return (
     <>
       <BackButton href='/hackathon' />
-      <div className='flex min-h-dvh flex-col items-center gap-10 overflow-hidden pb-24 pt-8'>
+      <div className='flex min-h-dvh flex-col items-center gap-10 overflow-hidden pb-48 pt-8 md:pb-24'>
         <UserBox />
         <div className='mt-4 flex flex-col items-center gap-4'>
           <h1 className='text-center text-4xl font-semibold capitalize tracking-tighter text-white sm:text-6xl'>
@@ -86,12 +86,15 @@ const Page: React.FC = async () => {
           </h1>
           <HowToGetTicketDialog />
         </div>
-        <TicketStats />
         <div className='-mt-4 flex h-1/2 w-full grow-[0.5] items-center justify-center'>
           <TicketForm ticket1={ticket1} ticket2={ticket2} />
         </div>
+        <div className='fixed bottom-2 flex flex-col items-center gap-2 rounded-2xl border-2 border-white/10 bg-white/5 p-3 backdrop-blur-lg'>
+          <h3 className='text-center text-sm font-medium'>Remaining Tickets</h3>
+          <TicketStats />
+        </div>
       </div>
-      <Building1Background />
+      <Building1Background hideHackathonTitle />
     </>
   )
 }
