@@ -7,6 +7,8 @@ export const HACKATHON_IG_URL =
   'https://intania.link/hack-ig?utm_source=web&utm_medium=corner+button'
 export const HACKATHON_OPENCHAT_URL =
   'https://intania.link/hack-openchat?utm_source=web&utm_medium=corner+button'
+export const HACKATHON_DISCORD =
+  'https://intania.link/hack-discord?utm_source=web&utm_medium=team+pass'
 
 // GAME: JACKPOT
 export const HACKATHON_GAME_JACKPOT_MODE: 'FULL_TICKET' | 'PER_CHARACTER' =
