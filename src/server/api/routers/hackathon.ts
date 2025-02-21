@@ -10,6 +10,7 @@ import type {
   HackathonTeamTicket,
   HackathonTicket,
   HackathonTicketClaim,
+  HackathonTicketNonClaimStats,
 } from '~/types/hackathon'
 import { type Response } from '~/types/server'
 
@@ -721,4 +722,73 @@ export const hackathonRouter = createTRPCRouter({
         }
       }
     ),
+
+  getTicketNonClaimStats: trpc.query(
+    async ({ ctx }): Promise<Response<HackathonTicketNonClaimStats>> => {
+      try {
+        const devCount = await ctx.db.hackathonTicket.count({
+          where: {
+            ticketType: 'DEVELOPER',
+            claims: {
+              none: {
+                expiredAt: { gt: new Date() },
+              },
+            },
+          },
+        })
+
+        const desCount = await ctx.db.hackathonTicket.count({
+          where: {
+            ticketType: 'DESIGNER',
+            claims: {
+              none: {
+                expiredAt: { gt: new Date() },
+              },
+            },
+          },
+        })
+
+        const proCount = await ctx.db.hackathonTicket.count({
+          where: {
+            ticketType: 'PRODUCT',
+            claims: {
+              none: {
+                expiredAt: { gt: new Date() },
+              },
+            },
+          },
+        })
+
+        const genCount = await ctx.db.hackathonTicket.count({
+          where: {
+            ticketType: 'GENERAL',
+            claims: {
+              none: {
+                expiredAt: { gt: new Date() },
+              },
+            },
+          },
+        })
+
+        return {
+          success: true,
+          message: 'Ticket stats fetched successfully',
+          data: {
+            dev: devCount,
+            des: desCount,
+            pro: proCount,
+            gen: genCount,
+          },
+        }
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Failed to fetch ticket stats',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
+        }
+      }
+    }
+  ),
 })

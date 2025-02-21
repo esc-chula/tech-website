@@ -44,7 +44,7 @@ export const usePrize = (): { prize: number | null; prizeString: string } => {
   }, [])
 
   const decimalPlaces =
-    prize === null ? 0 : Math.max(4 - Math.floor(Math.log10(prize)), 0)
+    prize === null ? 0 : Math.max(5 - Math.floor(Math.log10(prize)), 0)
   const prizeWithDecimal = prize === null ? '0' : prize.toFixed(decimalPlaces)
   const wholePart = prizeWithDecimal.split('.')[0] ?? '0'
   const decimalPart = prizeWithDecimal.split('.')[1] ?? ''

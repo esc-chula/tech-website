@@ -13,6 +13,7 @@ import HowToGetTicketDialog from '../../_components/common/how-to-get-ticket-dia
 import UserBox from '../../_components/common/user-box'
 import TeamTicket from '../../_components/ticket/team-ticket'
 import TicketForm from '../../_components/ticket/ticket-form'
+import TicketStats from '../../_components/ticket/ticket-stats'
 
 export const metadata: Metadata = {
   title: 'Intania Hackathon - Ticket',
@@ -85,7 +86,8 @@ const Page: React.FC = async () => {
           </h1>
           <HowToGetTicketDialog />
         </div>
-        <div className='flex h-1/2 w-full grow-[0.5] items-center justify-center'>
+        <TicketStats />
+        <div className='-mt-4 flex h-1/2 w-full grow-[0.5] items-center justify-center'>
           <TicketForm ticket1={ticket1} ticket2={ticket2} />
         </div>
       </div>

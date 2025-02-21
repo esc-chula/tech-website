@@ -58,48 +58,81 @@ const CreateTeamBox: React.FC<CreateTeamBoxProps> = ({ ticket1, ticket2 }) => {
           scale: 1.25,
         }}
       >
-        <TeamPass className='scale-50 sm:scale-75 md:scale-90' />
+        <TeamPass className='scale-50 duration-500 ease-in-out hover:scale-[0.52] sm:scale-90 sm:hover:scale-[0.92] md:scale-100 md:hover:scale-[1.02]' />
 
         <motion.div
-          className='absolute -z-10 aspect-video w-[60vw] rounded-[100%] opacity-50'
-          transition={{ duration: 2, ease: 'easeInOut' }}
+          className='absolute -z-10 aspect-video rounded-[100%]'
+          transition={{ duration: 2, ease: 'easeOut' }}
           animate={{
             opacity: 1,
+            width: '80vw',
           }}
           initial={{
             opacity: 0,
+            width: '0vw',
           }}
           style={{
             background:
               'radial-gradient(50% 50% at 50% 50%, rgba(248, 248, 248, 0.20) 44%, rgba(102, 102, 102, 0.00) 100%)',
+          }}
+          whileInView={{
+            width: ['65vw', '80vw', '65vw'],
+            transition: {
+              duration: 3,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut',
+            },
           }}
         />
         <motion.div
-          className='absolute -z-10 aspect-video w-[60vw] rounded-[100%]'
-          transition={{ duration: 2, ease: 'easeInOut' }}
+          className='absolute -z-10 aspect-video rounded-[100%]'
+          transition={{ duration: 2, ease: 'easeOut' }}
           animate={{
             opacity: 1,
+            width: '80vw',
           }}
           initial={{
             opacity: 0,
+            width: '0vw',
           }}
           style={{
             background:
               'radial-gradient(50% 50% at 50% 50%, rgba(248, 248, 248, 0.20) 44%, rgba(102, 102, 102, 0.00) 100%)',
+          }}
+          whileInView={{
+            width: ['85vw', '100vw', '85vw'],
+            transition: {
+              duration: 3,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut',
+            },
           }}
         />
         <motion.div
-          className='absolute -z-10 aspect-video w-[80vw] rounded-[100%]'
-          transition={{ duration: 2, ease: 'easeInOut' }}
+          className='absolute -z-10 aspect-video rounded-[100%]'
+          transition={{ duration: 2, ease: 'easeOut' }}
           animate={{
             opacity: 1,
+            width: '100vw',
           }}
           initial={{
             opacity: 0,
+            width: '0vw',
           }}
           style={{
             background:
-              'radial-gradient(50% 50% at 50% 50%, rgba(248, 248, 248, 0.20) 44%, rgba(102, 102, 102, 0.00) 100%)',
+              'radial-gradient(50% 50% at 50% 50%, rgba(248, 200, 200, 0.20) 44%, rgba(102, 102, 102, 0.00) 100%)',
+          }}
+          whileInView={{
+            width: ['85vw', '100vw', '85vw'],
+            transition: {
+              duration: 5,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut',
+            },
           }}
         />
       </motion.div>
@@ -111,6 +144,11 @@ const CreateTeamBox: React.FC<CreateTeamBoxProps> = ({ ticket1, ticket2 }) => {
       >
         {loading ? <LoaderCircle className='animate-spin' /> : 'Register'}
       </button>
+      <p className='pt-3 text-center text-xs text-white/50'>
+        Expiration time is still counting,
+        <br />
+        click the button to secure your Team Pass!
+      </p>
       <div className='pointer-events-none fixed inset-0 z-10 flex items-center justify-center overflow-hidden'>
         <motion.div
           className='aspect-square h-[50vh] rounded-full opacity-0'

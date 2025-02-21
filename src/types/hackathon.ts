@@ -74,3 +74,10 @@ export interface TicketProgress {
   ticketNumber: string
   foundPositions: number[]
 }
+
+export interface HackathonTicketNonClaimStats {
+  dev: number
+  des: number
+  pro: number
+  gen: number
+}
