@@ -55,7 +55,7 @@ const Page: React.FC = async () => {
           teamName={resMyRegistration.data.teamName}
           teamNo={resMyRegistrationIndex.data + 1}
         />
-        <Link className='underline' href='/hackathon/ticket'>
+        <Link className='text-center underline' href='/hackathon/ticket'>
           View your Team Pass.
         </Link>
       </div>

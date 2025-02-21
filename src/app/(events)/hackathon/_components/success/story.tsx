@@ -156,7 +156,7 @@ const Story: React.FC<StoryProps> = ({
               HUNTING FOR
             </p>
             <div
-              className='grid aspect-square place-content-center rounded-full bg-white p-[6%]'
+              className='grid aspect-square place-content-center rounded-full'
               style={{
                 fontSize: `${fontFactor * 8.5}px`,
               }}

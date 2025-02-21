@@ -728,6 +728,7 @@ export const hackathonRouter = createTRPCRouter({
       try {
         const devCount = await ctx.db.hackathonTicket.count({
           where: {
+            teamTicketId: null,
             ticketType: 'DEVELOPER',
             claims: {
               none: {
@@ -739,6 +740,7 @@ export const hackathonRouter = createTRPCRouter({
 
         const desCount = await ctx.db.hackathonTicket.count({
           where: {
+            teamTicketId: null,
             ticketType: 'DESIGNER',
             claims: {
               none: {
@@ -750,6 +752,7 @@ export const hackathonRouter = createTRPCRouter({
 
         const proCount = await ctx.db.hackathonTicket.count({
           where: {
+            teamTicketId: null,
             ticketType: 'PRODUCT',
             claims: {
               none: {
@@ -761,6 +764,7 @@ export const hackathonRouter = createTRPCRouter({
 
         const genCount = await ctx.db.hackathonTicket.count({
           where: {
+            teamTicketId: null,
             ticketType: 'GENERAL',
             claims: {
               none: {
