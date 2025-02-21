@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.15](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.14..v0.3.15) - 2025-02-21
+
+### <!-- 0 -->⛰️  Features
+
+- Team pass animation - ([cbe4a69](https://github.com/esc-chula/intania-oidc-new/commit/cbe4a69d2bbd8e435fc24c9234234a7dc83e5f3a))
+- Remove team ticket - ([983219f](https://github.com/esc-chula/intania-oidc-new/commit/983219fa7d3651e3cebac1c86721c4e2b32dc52d))
+- Registration back button - ([573f889](https://github.com/esc-chula/intania-oidc-new/commit/573f889d75b5f9938fa9de8455b5d78e052297e5))
+
+### Miscellaneous Tasks
+
+- Update team ticket to team pass - ([f532725](https://github.com/esc-chula/intania-oidc-new/commit/f5327256803b135ff4d803b88f178cc8297c5375))
+
 ## [0.3.14](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.13..v0.3.14) - 2025-02-20
 
 ### <!-- 1 -->🐛 Bug Fixes
