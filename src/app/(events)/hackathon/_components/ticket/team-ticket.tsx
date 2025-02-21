@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-
+import { HACKATHON_DISCORD } from '~/constants/hackathon'
 import { countHackathonRegistrations } from '~/server/actions/hackathon'
 import {
   type HackathonRegistration,
@@ -36,12 +36,22 @@ const TeamTicket: React.FC<TeamTicketProps> = async ({
           <TeamTicketQrCode publicId={teamTicket.publicId} />
         </div>
       </div>
-      <Link
-        className='rounded-full bg-hackathon-primary px-6 py-1.5 text-sm sm:text-base'
-        href='/hackathon/ticket/share'
-      >
-        Share
-      </Link>
+      <div className='flex items-center gap-4'>
+        <Link
+          className='rounded-full border-2 border-hackathon-primary bg-hackathon-primary px-6 py-1.5 text-sm hover:bg-red-600 sm:text-base'
+          href='/hackathon/ticket/share'
+        >
+          Share
+        </Link>
+        <Link
+          className='rounded-full border-2 border-white/10 bg-white/10 px-6 py-1.5 text-sm backdrop-blur-sm hover:bg-white/20 sm:text-base'
+          href={HACKATHON_DISCORD}
+          rel='noopener noreferrer'
+          target='_blank'
+        >
+          Discord
+        </Link>
+      </div>
       <div className='grid w-full grid-cols-2 rounded-3xl border-2 border-white/10 bg-white/10 p-4 backdrop-blur-md'>
         <div>
           <p className='text-xs text-white/50 sm:text-sm'>Team Name</p>

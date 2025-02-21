@@ -58,7 +58,7 @@ const CreateTeamBox: React.FC<CreateTeamBoxProps> = ({ ticket1, ticket2 }) => {
           scale: 1.25,
         }}
       >
-        <TeamPass className='scale-50 duration-500 ease-in-out hover:scale-[0.52] sm:scale-90 sm:hover:scale-[0.92] md:scale-100 md:hover:scale-[1.02]' />
+        <TeamPass className='scale-50 duration-500 ease-in-out hover:scale-[0.52] active:scale-[1.02] sm:scale-90 sm:hover:scale-[0.92] md:scale-100 md:hover:scale-[1.02]' />
 
         <motion.div
           className='absolute -z-10 aspect-video rounded-[100%]'
