@@ -30,7 +30,7 @@ const HowToGetTicketDialog: React.FC = () => {
           Ticket Rules & Guides
         </DialogTitle>
         <DialogDescription asChild>
-          <ol className='flex list-decimal flex-col gap-2 text-xs leading-relaxed text-white/80 sm:text-base'>
+          <ol className='flex list-inside list-decimal flex-col gap-2 text-xs leading-relaxed text-white/80 sm:text-base md:list-outside'>
             <li>
               <span className='font-bold'>Form Your Team:</span> Team up with
               4-5 undergrad Hackers and at least 2 students from Faculty of
