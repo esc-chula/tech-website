@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.18](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.17..v0.3.18) - 2025-02-21
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Ticket stat background on safari - ([19b96b7](https://github.com/esc-chula/intania-oidc-new/commit/19b96b74a83f3a83aea15655c31d4aea6dbaea36))
+
 ## [0.3.17](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.16..v0.3.17) - 2025-02-21
 
 ### <!-- 0 -->⛰️  Features
