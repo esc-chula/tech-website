@@ -17,6 +17,7 @@ import {
   type HackathonTeamTicket,
   type HackathonTicket,
   type HackathonTicketClaim,
+  type HackathonTicketNonClaimStats,
   type UpdateHackathonTeamMemberInput,
 } from '~/types/hackathon'
 import { type Response } from '~/types/server'
@@ -248,3 +249,9 @@ export const spinHackathonTicketSlotWithRateLimit = withRateLimit(
   },
   'spin-hackathon-ticket'
 )
+
+export const getHackathonTicketNonClaimStats = async (): Promise<
+  Response<HackathonTicketNonClaimStats>
+> => {
+  return await api.hackathon.getTicketNonClaimStats()
+}
