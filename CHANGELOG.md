@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.20](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.19..v0.3.20) - 2025-03-12
+
+### <!-- 0 -->⛰️  Features
+
+- Hackathon ticket release timeline - ([8253ac7](https://github.com/esc-chula/intania-oidc-new/commit/8253ac74416d548762cc0d59e1213b3388e416eb))
+- Prize counting character highlight - ([2f2a61e](https://github.com/esc-chula/intania-oidc-new/commit/2f2a61e06186673606a933205e7363ba97f182d5))
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Landing info - ([9557824](https://github.com/esc-chula/intania-oidc-new/commit/955782463a58908001a052f8dd070dce5b816e75))
+
 ## [0.3.19](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.18..v0.3.19) - 2025-02-21
 
 ### <!-- 0 -->⛰️  Features
