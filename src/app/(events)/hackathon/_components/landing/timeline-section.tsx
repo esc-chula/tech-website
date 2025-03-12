@@ -1,4 +1,5 @@
 import ScrollRevealer from '~/components/common/animation/scroll-revealer'
+import { HACKATHON_IG_URL, HACKATHON_OPENCHAT_URL } from '~/constants/hackathon'
 import { cn } from '~/lib/utils'
 
 import Section from './section'
@@ -40,26 +41,65 @@ const contents = [
   {
     title: 'Ticket Release',
     children: (
-      <div className='flex flex-col gap-4 text-xs text-white/90 sm:text-sm md:text-base'>
-        <p>
-          This is no ordinary registration—this is a ticket hunt! To secure your
-          spot in the most intense 48-hour hackathon, you’ll need to{' '}
-          <span className='font-bold underline'>
-            follow the clues, crack the codes, and claim your ticket.
-          </span>
-        </p>
-        <p>
-          👀 Follow our social media & LINE OpenChat for hidden hints and Easter
-          eggs.
-        </p>
-        <p>💡 Solve the challenges to unlock your team’s ticket.</p>
-        <p>
-          🤝 Team up, strategize, and get ready for the real hackathon
-          experience!
-        </p>
+      <div className='flex flex-col gap-6 text-xs text-white/90 sm:text-sm md:text-base'>
+        <div className='flex flex-col gap-4'>
+          <p>
+            This is no ordinary registration—this is a ticket hunt! To secure
+            your spot in the most intense 48-hour hackathon, you’ll need to{' '}
+            <span className='font-bold'>
+              follow the clues, crack the codes, and claim your ticket.
+            </span>
+          </p>
+          <p>
+            👀 Follow our{' '}
+            <a
+              className='font-bold underline'
+              href={HACKATHON_IG_URL}
+              rel='noopener noreferrer'
+              target='_blank'
+            >
+              Instagram
+            </a>{' '}
+            &{' '}
+            <a
+              className='font-bold underline'
+              href={HACKATHON_OPENCHAT_URL}
+              rel='noopener noreferrer'
+              target='_blank'
+            >
+              LINE OpenChat
+            </a>{' '}
+            for hidden hints and Easter eggs.
+          </p>
+          <p>💡 Solve quests & challenges to unlock your team’s ticket.</p>
+          <p>
+            🤝 Team up, strategize, and get ready for the real hackathon
+            experience!
+          </p>
+        </div>
+        <div className='grid gap-2 font-semibold md:grid-cols-2 md:gap-4'>
+          <div className='flex items-center gap-1 rounded-2xl border-2 border-white/10 p-3 md:gap-2 md:p-4'>
+            <span className='select-none text-lg md:text-xl'>🐤</span>
+            <div className=''>
+              <p className='text-xs font-medium text-white/50'>
+                Early Bird - 10 Teams
+              </p>
+              <p>17 - 23 Februrary 2025</p>
+            </div>
+          </div>
+          <div className='flex items-center gap-1 rounded-2xl border-2 border-white/10 p-3 md:gap-2 md:p-4'>
+            <span className='select-none text-lg md:text-xl'>🎟️</span>
+            <div className=''>
+              <p className='text-xs font-medium text-white/50'>
+                General Admission - 30 Teams
+              </p>
+              <p>14 - 22 March 2025</p>
+            </div>
+          </div>
+        </div>
       </div>
     ),
-    date: '17 February 2025—Super Early Bird',
+    date: '17 Feb - 22 March 2025',
   },
   {
     title: 'HACK Day',

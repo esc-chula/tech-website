@@ -1,6 +1,9 @@
+/* eslint-disable react/no-array-index-key -- Array index is used as key for static array */
 'use client'
 
 import { usePrize } from '../../_hooks/prize'
+
+const IS_HIDE_PRICE = true as boolean
 
 const PrizeSection: React.FC = () => {
   const { prize, prizeString } = usePrize()
@@ -14,12 +17,25 @@ const PrizeSection: React.FC = () => {
         ?<span className='text-hackathon-primary'>?</span>???
       </p> */}
       <p className='select-none pl-[0.7%] font-ndot47 text-5xl sm:text-6xl md:text-8xl'>
-        {prize === null ? (
+        {prize === null || IS_HIDE_PRICE ? (
           <>
             ?<span className='text-hackathon-primary'>?</span>???
           </>
         ) : (
-          prizeString
+          <>
+            {prizeString.split('').map((char, i) => (
+              <span
+                key={i}
+                className={
+                  i === prizeString.split('').length - 1
+                    ? 'text-hackathon-primary'
+                    : ''
+                }
+              >
+                {char}
+              </span>
+            ))}
+          </>
         )}
       </p>
       <p className='text-lg font-semibold sm:text-xl md:text-2xl'>Prize Pool</p>

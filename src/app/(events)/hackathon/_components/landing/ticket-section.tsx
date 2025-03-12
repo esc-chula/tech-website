@@ -44,7 +44,9 @@ const contents = [
           <span className='font-bold underline'>Team Pass</span> to secure their
           spot in the hackathon.
         </p>
-        <p>🤫 Hint: You can find one of the code in this section too.</p>
+        <p className='text-sm sm:text-base'>
+          🤫 Hint: You can find one of the code in this section too.
+        </p>
       </>
     ),
   },
