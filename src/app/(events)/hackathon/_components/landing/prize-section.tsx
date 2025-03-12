@@ -3,6 +3,8 @@
 
 import { usePrize } from '../../_hooks/prize'
 
+const IS_HIDE_PRICE = true as boolean
+
 const PrizeSection: React.FC = () => {
   const { prize, prizeString } = usePrize()
 
@@ -15,7 +17,7 @@ const PrizeSection: React.FC = () => {
         ?<span className='text-hackathon-primary'>?</span>???
       </p> */}
       <p className='select-none pl-[0.7%] font-ndot47 text-5xl sm:text-6xl md:text-8xl'>
-        {prize === null ? (
+        {prize === null || IS_HIDE_PRICE ? (
           <>
             ?<span className='text-hackathon-primary'>?</span>???
           </>

@@ -93,7 +93,7 @@ const contents = [
               <p className='text-xs font-medium text-white/50'>
                 General Admission - 30 Teams
               </p>
-              <p>8 - 22 March 2025</p>
+              <p>14 - 22 March 2025</p>
             </div>
           </div>
         </div>
