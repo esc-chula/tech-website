@@ -17,9 +17,6 @@ const HowToGetTicketDialog: React.FC = () => {
         <button
           className='flex rounded-full border-2 border-white/10 bg-white/10 px-4 py-2 text-xs font-medium tracking-tighter text-white/70 backdrop-blur-md hover:bg-white/15 sm:text-base'
           type='button'
-          onClick={() => {
-            console.log('DEV_3AUO70434N')
-          }}
         >
           <MessageCircleQuestion className='mr-0.5 size-3.5 sm:mr-1.5 sm:size-6' />
           How to Get Tickets?
