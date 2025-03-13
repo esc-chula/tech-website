@@ -35,6 +35,7 @@ import { useGridTunnelContext } from '../../_contexts/grid-tunnel-context'
 
 const RANDOM = Boolean(Math.floor(Math.random() * 2))
 
+// TICKET_HERE
 const GLTF_FILE = RANDOM
   ? '/hackathon/assets/band-with-ticket.glb'
   : '/hackathon/assets/band-with-qrcode.glb'
