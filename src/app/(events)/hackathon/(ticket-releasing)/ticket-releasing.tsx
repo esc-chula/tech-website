@@ -53,3 +53,15 @@ export const TicketSetLocalStorage: React.FC<TicketSetLocalStorageProps> = ({
 
   return null
 }
+
+interface TicketConsolePathfindingProps {
+  pathway: string
+}
+
+export const TicketConsolePathfinding: React.FC<
+  TicketConsolePathfindingProps
+> = ({ pathway }) => {
+  console.log(pathway)
+
+  return null
+}

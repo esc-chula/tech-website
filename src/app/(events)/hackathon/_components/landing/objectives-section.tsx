@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 
 import ScrollRevealer from '~/components/common/animation/scroll-revealer'
@@ -69,7 +70,15 @@ const objectives = [
             memorable
           </span>{' '}
           tech event ever. This isn’t just about winning—it’s about the
-          experience, and the community.
+          experience, and the community
+          {/* TICKET_HERE PATHFINDING DOT REMOVED TOO*/}{' '}
+          <Link
+            className='font-bold text-hackathon-primary underline'
+            href='/hackathon/doonee'
+          >
+            here
+          </Link>
+          .
         </p>
       </>
     ),
