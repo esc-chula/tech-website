@@ -1,4 +1,10 @@
 import { TicketConsolePathfinding } from './(ticket-releasing)/ticket-releasing'
+import HiddenTicketFetcher from './(ticket-releasing)/ticket-post'
+import {
+  TicketRandomConsoleLog,
+  TicketRandomTransparentText,
+  TicketSetLocalStorage,
+} from './(ticket-releasing)/ticket-releasing'
 import Footer from './_components/common/footer'
 import Socials from './_components/common/socials'
 import AnimatedGridTunnel from './_components/landing/animated-grid-tunnel'
@@ -18,6 +24,27 @@ const Page: React.FC = () => {
     <>
       {/* TICKET_HERE PATHFINDING */}
       <TicketConsolePathfinding pathway='ลองไปดูที่ Footer ใต้คำว่า Intania Hackathon' />
+      <HiddenTicketFetcher />
+      <TicketRandomConsoleLog
+        tickets={[
+          'DEV_GM0HP5G68B',
+          'DEV_LZVHRI8AD4',
+          'DEV_J99LB1RMSA',
+          'DEV_FGSNU249N0',
+          'ไหนอั่งเปา',
+          'ไหนอั่งเปา',
+          'ไหนอั่งเปา',
+          'ไหนอั่งเปา',
+          'ไหนอั่งเปา',
+        ]}
+      />
+      <TicketRandomConsoleLog
+        tickets={[
+          'บางปีก็เสียใจที่ไม่ได้อั่งเปา แต่ปีนี้เสียเราที่ไม่มีเธอ เพราะเธอะละเมอกินอั่งเปา เราเลยกินนาย อยากคลายรีเฟรชหัวใจ หาไฟไปหาอั่งเปา',
+          'https://intania.tech/hackathon/jackpot',
+        ]}
+      />
+      <TicketSetLocalStorage name='tae-eia' ticket='DEV_FSTUON8IUL' />
       <GridTunnelContextProvider>
         <div className='relative'>
           {/* fixed components */}
