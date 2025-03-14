@@ -6,3 +6,4 @@
 - tae eia: `src\app\(events)\hackathon\page.tsx`
 - slotmachine: `src\constants\hackathon.ts`
 - share story phrase `src\app\(events)\hackathon\_components\success\share-story.tsx`
+- query searchParams: `src\app\(events)\hackathon\(registration)\ticket\page.tsx`

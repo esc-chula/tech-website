@@ -33,7 +33,12 @@ import * as THREE from 'three'
 import Section from './section'
 import { useGridTunnelContext } from '../../_contexts/grid-tunnel-context'
 
-const GLTF_FILE = '/hackathon/assets/band.glb'
+const RANDOM = Boolean(Math.floor(Math.random() * 2))
+
+// TICKET_HERE
+const GLTF_FILE = RANDOM
+  ? '/hackathon/assets/band-with-ticket.glb'
+  : '/hackathon/assets/band-with-qrcode.glb'
 const TEXTURE_FILE = '/hackathon/assets/band.png'
 
 extend({ MeshLineGeometry, MeshLineMaterial })

@@ -1,8 +1,4 @@
-import {
-  TicketRandomConsoleLog,
-  TicketRandomTransparentText,
-  TicketSetLocalStorage,
-} from './(ticket-releasing)/ticket-releasing'
+import { TicketConsolePathfinding } from './(ticket-releasing)/ticket-releasing'
 import Footer from './_components/common/footer'
 import Socials from './_components/common/socials'
 import AnimatedGridTunnel from './_components/landing/animated-grid-tunnel'
@@ -20,26 +16,8 @@ import GridTunnelContextProvider from './_contexts/grid-tunnel-context'
 const Page: React.FC = () => {
   return (
     <>
-      <TicketRandomConsoleLog
-        tickets={[
-          'DEV_GM0HP5G68B',
-          'DEV_LZVHRI8AD4',
-          'DEV_J99LB1RMSA',
-          'DEV_FGSNU249N0',
-          'ไหนอั่งเปา',
-          'ไหนอั่งเปา',
-          'ไหนอั่งเปา',
-          'ไหนอั่งเปา',
-          'ไหนอั่งเปา',
-        ]}
-      />
-      <TicketRandomConsoleLog
-        tickets={[
-          'บางปีก็เสียใจที่ไม่ได้อั่งเปา แต่ปีนี้เสียเราที่ไม่มีเธอ เพราะเธอะละเมอกินอั่งเปา เราเลยกินนาย อยากคลายรีเฟรชหัวใจ หาไฟไปหาอั่งเปา',
-          'https://intania.tech/hackathon/jackpot',
-        ]}
-      />
-      <TicketSetLocalStorage name='tae-eia' ticket='DEV_FSTUON8IUL' />
+      {/* TICKET_HERE PATHFINDING */}
+      <TicketConsolePathfinding pathway='ลองไปดูที่ Footer ใต้คำว่า Intania Hackathon' />
       <GridTunnelContextProvider>
         <div className='relative'>
           {/* fixed components */}
@@ -50,9 +28,6 @@ const Page: React.FC = () => {
           <AnimatedGridTunnel>
             <OffsetRevealer className='gap-5'>
               <HeroSection />
-              <TicketRandomTransparentText
-                tickets={['ลองรีเฟรชหัวใจเพื่ออั่งเปา', 'DEV_ITJI4UHDIO']}
-              />
             </OffsetRevealer>
             <OffsetRevealer
               className='gap-2 sm:gap-4 md:gap-6'

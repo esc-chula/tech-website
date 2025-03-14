@@ -27,7 +27,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <div className='group relative aspect-video w-full'>
         <Link
           className='absolute inset-0 z-10 flex items-center justify-center gap-1 bg-black/50 text-sm opacity-0 duration-200 group-hover:opacity-100'
-          href={projectLink}
+          // TICKET_HERE
+          href={`${projectLink}${title === 'Product for Hackathon 101' ? '?code=GEN_7GSFDV8137' : ''}`}
           rel='noopener noreferrer'
           target='_blank'
         >
