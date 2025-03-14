@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.21](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.20..v0.3.21) - 2025-03-14
+
+### <!-- 0 -->⛰️  Features
+
+- Clear early bird tickets - ([ca85931](https://github.com/esc-chula/intania-oidc-new/commit/ca859311417117ae77a9151a10a6e5a5ece44242))
+- Slot machine tickets - ([fc94cf9](https://github.com/esc-chula/intania-oidc-new/commit/fc94cf9dbac8f06edeb1229156c1a84a9108f06b))
+- Ticket badge tickets - ([6fe2746](https://github.com/esc-chula/intania-oidc-new/commit/6fe27469ea0ff03856df15837d2f5f63e66ec934))
+- Tk searchParams - ([322641c](https://github.com/esc-chula/intania-oidc-new/commit/322641cd6546f21132a86ff32d770abe9f5f5bfb))
+- Pathfinding ticket - ([550833d](https://github.com/esc-chula/intania-oidc-new/commit/550833d21c74660fb0a65cb343d74018e7b2f459))
+
+### Miscellaneous Tasks
+
+- Add ticket here comment - ([0119448](https://github.com/esc-chula/intania-oidc-new/commit/0119448d923b98be7dc9160a68d6ffa876e526bc))
+
 ## [0.3.20](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.19..v0.3.20) - 2025-03-12
 
 ### <!-- 0 -->⛰️  Features
