@@ -6,6 +6,7 @@ export async function POST(): Promise<NextResponse> {
     success: true,
     message: "Congratulations! You've found a hidden ticket!",
     data: {
+      // TICKET_HERE
       ticketCode: 'GEN_5XQ5YJKU16',
     },
   })
