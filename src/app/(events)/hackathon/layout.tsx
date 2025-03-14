@@ -3,7 +3,8 @@ import { type Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Intania Hackathon - The real 48-hour innovation challenge!',
   description:
-    'Join Intania Hackathon, The real 48-hour innovation challenge! Build, innovate, and create groundbreaking solutions with top engineering students. Compete, collaborate, and bring your ideas to life! Secure your ticket and be part of the next big innovation made in Intania.',
+    // TICKET_HERE
+    'HIDDEN TICKET: GEN_P4HTDIW6B9 Join Intania Hackathon, The real 48-hour innovation challenge! Build, innovate, and create groundbreaking solutions with top engineering students. Compete, collaborate, and bring your ideas to life! Secure your ticket and be part of the next big innovation made in Intania.',
   creator: 'Engineering Student Committee, Chulalongkorn University',
   keywords: [
     'Intania Hackathon',
