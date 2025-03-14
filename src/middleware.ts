@@ -32,8 +32,6 @@ export function middleware(
     },
   })
 
-  next.cookies.set('aungpao', 'DEV_WZM7J2NRVE')
-
   return next
 }
 

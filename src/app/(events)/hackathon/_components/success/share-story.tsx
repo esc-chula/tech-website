@@ -112,12 +112,7 @@ const ShareStory: React.FC<ShareStoryProps> = ({
 
     // phrase
     if (layoutType === 1) {
-      const phrases = [
-        '48 HRS NON-STOP',
-        'MILLION IS OURS',
-        'WHAT THE HACK?!',
-        'GEN_BLPVF2THML',
-      ]
+      const phrases = ['48 HRS NON-STOP', 'MILLION IS OURS', 'WHAT THE HACK?!']
       setPhrase((prev) => {
         const filteredPhrases = phrases.filter((p) => p !== prev)
         const newPhrase =
