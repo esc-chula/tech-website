@@ -1,3 +1,4 @@
+import HiddenTicketFetcher from './(ticket-releasing)/ticket-post'
 import { TicketConsolePathfinding } from './(ticket-releasing)/ticket-releasing'
 import Footer from './_components/common/footer'
 import Socials from './_components/common/socials'
@@ -18,6 +19,7 @@ const Page: React.FC = () => {
     <>
       {/* TICKET_HERE PATHFINDING */}
       <TicketConsolePathfinding pathway='ลองไปดูที่ Footer ใต้คำว่า Intania Hackathon' />
+      <HiddenTicketFetcher />
       <GridTunnelContextProvider>
         <div className='relative'>
           {/* fixed components */}
