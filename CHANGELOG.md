@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.23](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.22..v0.3.23) - 2025-03-14
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Fixed max teams - ([6a6def2](https://github.com/esc-chula/intania-oidc-new/commit/6a6def28f8f9fccd3ab7aaee0d990b3dffadcbb7))
+
 ## [0.3.22](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.21..v0.3.22) - 2025-03-14
 
 ### <!-- 0 -->⛰️  Features
