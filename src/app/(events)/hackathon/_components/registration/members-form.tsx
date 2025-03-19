@@ -36,12 +36,8 @@ const MembersForm: React.FC<MembersForm> = ({ form, index }) => {
   return (
     <FormSection
       key={index}
+      description={undefined}
       title={`Hacker #${index + 1}`}
-      description={
-        index <= 1
-          ? 'Must be Chulalongkorn and Engineering Student.'
-          : undefined
-      }
     >
       <div className='grid gap-2 sm:grid-cols-2 md:gap-6'>
         <FormField
