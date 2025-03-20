@@ -20,7 +20,7 @@ function getNumberByDate({
     (currentDate.getTime() - startDate.getTime()) /
     (endDate.getTime() - startDate.getTime())
 
-  return max * Math.pow(percentage, 4)
+  return max * Math.pow(percentage, 8)
 }
 
 const MARGIN_DATE = 0
@@ -31,15 +31,15 @@ export const usePrize = (): { prize: number | null; prizeString: string } => {
   useEffect(() => {
     const config = {
       startDate: new Date(
-        new Date('2025-02-19T00:00:00').getTime() -
+        new Date('2025-02-10T00:00:00').getTime() -
           MARGIN_DATE * 24 * 60 * 60 * 1000
       ),
       endDate: new Date(
-        new Date('2025-03-17T00:00:00').getTime() -
+        new Date('2025-03-22T11:11:11').getTime() -
           MARGIN_DATE * 24 * 60 * 60 * 1000
       ),
 
-      max: 1_111_111,
+      max: 250_000,
     }
 
     const initialPrize = getNumberByDate(config)
