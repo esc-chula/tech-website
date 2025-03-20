@@ -1,3 +1,5 @@
+import crypto from 'node:crypto'
+
 import {
   HACKATHON_MAX_TEAMS,
   HACKATHON_TICKET_EXPIRY_DAYS,
@@ -5,6 +7,7 @@ import {
 import { genPublicId } from '~/lib/hackathon-ticket'
 import { createTRPCRouter, trpc } from '~/server/api/trpc'
 import type {
+  HackathonCommunityRegistration,
   HackathonRegistration,
   HackathonTeamMember,
   HackathonTeamTicket,
@@ -15,10 +18,13 @@ import type {
 import { type Response } from '~/types/server'
 
 import {
+  CheckHackathonCommunityRegistrationCodeDto,
   ClaimHackathonTicketDto,
+  CreateHackathonCommunityTeamDto,
   CreateHackathonRegistrationDto,
   CreateHackathonTeamTicketDto,
   DeleteHackathonRegistrationDto,
+  GetHackathonCommunityRegistrationByCodeDto,
   UpdateHackathonRegistrationDto,
 } from '../dto/hackathon'
 
@@ -795,4 +801,310 @@ export const hackathonRouter = createTRPCRouter({
       }
     }
   ),
+  checkCommunityRegistrationCode: trpc
+    .input(CheckHackathonCommunityRegistrationCodeDto)
+    .query(
+      async ({
+        ctx,
+        input,
+      }): Promise<
+        Response<{ valid: boolean; requiredUniversity: string | null }>
+      > => {
+        try {
+          const { code } = input
+
+          const communityRegistration =
+            await ctx.db.hackathonCommunityRegistration.findUnique({
+              where: {
+                code,
+              },
+            })
+
+          if (!communityRegistration) {
+            return {
+              success: true,
+              data: {
+                valid: false,
+                requiredUniversity: null,
+              },
+              message: 'Code not found',
+            }
+          }
+
+          if (!communityRegistration.isActive) {
+            return {
+              success: true,
+              data: {
+                valid: false,
+                requiredUniversity: null,
+              },
+              message: 'This registration is not active',
+            }
+          }
+
+          if (
+            communityRegistration.expiresAt &&
+            communityRegistration.expiresAt < new Date()
+          ) {
+            return {
+              success: true,
+              data: {
+                valid: false,
+                requiredUniversity: null,
+              },
+              message: 'This registration has expired',
+            }
+          }
+
+          const existingTeam = await ctx.db.hackathonCommunityTeam.findFirst({
+            where: {
+              communityRegistrationId: communityRegistration.id,
+            },
+          })
+
+          if (existingTeam) {
+            return {
+              success: true,
+              data: {
+                valid: false,
+                requiredUniversity: null,
+              },
+              message: 'This registration link has already been used',
+            }
+          }
+
+          return {
+            success: true,
+            data: {
+              valid: true,
+              requiredUniversity: communityRegistration.requiredUniversity,
+            },
+            message: 'Code is valid',
+          }
+        } catch (error) {
+          console.error('Error checking community registration code:', error)
+          return {
+            success: false,
+            message: 'Failed to check community registration code',
+            errors: ['Failed to check community registration code'],
+          }
+        }
+      }
+    ),
+  createCommunityTeam: trpc
+    .input(CreateHackathonCommunityTeamDto)
+    .mutation(async ({ ctx, input }): Promise<Response<{ teamId: string }>> => {
+      try {
+        const { code, teamName, teamMembers } = input
+
+        const communityRegistration =
+          await ctx.db.hackathonCommunityRegistration.findUnique({
+            where: {
+              code,
+            },
+          })
+
+        if (!communityRegistration) {
+          return {
+            success: false,
+            message: 'Community registration code not found',
+            errors: ['Community registration code not found'],
+          }
+        }
+
+        if (!communityRegistration.isActive) {
+          return {
+            success: false,
+            message: 'Community registration is not active',
+            errors: ['Community registration is not active'],
+          }
+        }
+
+        if (
+          communityRegistration.expiresAt &&
+          communityRegistration.expiresAt < new Date()
+        ) {
+          return {
+            success: false,
+            message: 'Community registration has expired',
+            errors: ['Community registration has expired'],
+          }
+        }
+
+        const existingTeam = await ctx.db.hackathonCommunityTeam.findFirst({
+          where: {
+            communityRegistrationId: communityRegistration.id,
+          },
+        })
+
+        if (existingTeam) {
+          return {
+            success: false,
+            message: 'This community registration link has already been used',
+            errors: ['This community registration link has already been used'],
+          }
+        }
+
+        const engineeringStudentsFromRequiredUniversity = teamMembers.filter(
+          (member) =>
+            member.university === communityRegistration.requiredUniversity
+        )
+
+        if (engineeringStudentsFromRequiredUniversity.length < 2) {
+          return {
+            success: false,
+            message: `At least 2 team members must be from ${communityRegistration.requiredUniversity}`,
+            errors: [
+              `At least 2 team members must be from ${communityRegistration.requiredUniversity}`,
+            ],
+          }
+        }
+
+        /*
+         * TODO: Frontend faculty input is not a dropdown menu
+         * We need to do something about this to ensure consistent input values
+         */
+        const engineeringStudentsFromChula = teamMembers.filter(
+          (member) =>
+            member.faculty === 'Engineering' &&
+            member.university === 'Chulalongkorn University'
+        )
+
+        if (engineeringStudentsFromChula.length < 2) {
+          return {
+            success: false,
+            message:
+              'At least 2 team members must be from the Engineering faculty at Chulalongkorn University',
+            errors: [
+              'At least 2 team members must be from the Engineering faculty at Chulalongkorn University',
+            ],
+          }
+        }
+
+        const publicId = crypto.randomUUID()
+        const communityTeam = await ctx.db.hackathonCommunityTeam.create({
+          data: {
+            publicId,
+            teamName,
+            communityRegistrationId: communityRegistration.id,
+            teamMembers: {
+              create: teamMembers.map((member) => ({
+                publicId: crypto.randomUUID(),
+                firstName: member.firstName,
+                lastName: member.lastName,
+                nickname: member.nickname,
+                pronoun: member.pronoun,
+                phoneNumber: member.phoneNumber,
+                email: member.email,
+                studentId: member.studentId,
+                faculty: member.faculty,
+                department: member.department,
+                university: member.university,
+                role: member.role,
+                foodRestriction: member.foodRestriction,
+                medication: member.medication,
+                medicalCondition: member.medicalCondition,
+                chestSize: member.chestSize || 0,
+              })),
+            },
+          },
+          include: {
+            teamMembers: true,
+          },
+        })
+
+        return {
+          success: true,
+          data: { teamId: communityTeam.publicId },
+          message: 'Community team created successfully',
+        }
+      } catch (error) {
+        console.error('Error creating community team:', error)
+        return {
+          success: false,
+          message: 'Failed to create community team',
+          errors: ['Failed to create community team'],
+        }
+      }
+    }),
+  getCommunityRegistrationByCode: trpc
+    .input(GetHackathonCommunityRegistrationByCodeDto)
+    .query(
+      async ({
+        ctx,
+        input,
+      }): Promise<Response<HackathonCommunityRegistration>> => {
+        try {
+          const registration =
+            await ctx.db.hackathonCommunityRegistration.findUnique({
+              where: { code: input.code },
+              include: {
+                communityTeam: {
+                  select: {
+                    publicId: true,
+                    teamName: true,
+                    teamMembers: {
+                      select: {
+                        publicId: true,
+                        firstName: true,
+                        lastName: true,
+                        nickname: true,
+                        pronoun: true,
+                        phoneNumber: true,
+                        email: true,
+                        studentId: true,
+                        faculty: true,
+                        department: true,
+                        university: true,
+                        role: true,
+                        foodRestriction: true,
+                        medication: true,
+                        medicalCondition: true,
+                        chestSize: true,
+                      },
+                    },
+                  },
+                },
+              },
+            })
+
+          if (!registration) {
+            return {
+              success: false,
+              message: 'Registration not found',
+              errors: ['Registration not found'],
+            }
+          }
+
+          const hasTeam = registration.communityTeam !== null
+
+          return {
+            success: true,
+            message: hasTeam
+              ? 'Registration found with team already registered'
+              : 'Registration found without team',
+            data: {
+              registration: {
+                code: registration.code,
+                requiredUniversity: registration.requiredUniversity,
+                team: registration.communityTeam
+                  ? {
+                      publicId: registration.communityTeam.publicId,
+                      teamName: registration.communityTeam.teamName,
+                      teamMembers: registration.communityTeam.teamMembers,
+                    }
+                  : undefined,
+              },
+            },
+          }
+        } catch (error) {
+          console.error('Error fetching community registration:', error)
+          return {
+            success: false,
+            message: 'Failed to fetch community registration',
+            errors: ['Failed to fetch community registration'],
+          }
+        }
+      }
+    ),
 })

@@ -1,10 +1,14 @@
 import { type Metadata } from 'next'
+import { redirect } from 'next/navigation'
 
+import CommunityRegistrationForm from '~/app/(events)/hackathon/_components/registration/community-registration-form'
 import { HACKATHON_MAX_TEAMS } from '~/constants/hackathon'
-import { countHackathonRegistrations } from '~/server/actions/hackathon'
+import {
+  checkCommunityRegistrationCode,
+  countHackathonRegistrations,
+} from '~/server/actions/hackathon'
 
 import BirdsBackground from '../../../_components/common/birds-background'
-import CommunityRegistrationForm from '../../../_components/registration/community-registration-form'
 import RemoveRegistrationButton from '../../../_components/registration/remove-registration-button'
 
 export const metadata: Metadata = {
@@ -17,7 +21,14 @@ interface PageProps {
   }
 }
 
-const Page: React.FC<PageProps> = async ({ params }) => {
+const CommunityRegistrationPage = async ({
+  params,
+}: PageProps): Promise<React.ReactNode> => {
+  const result = await checkCommunityRegistrationCode(params.code)
+  if (!result.success) {
+    return redirect('/hackathon')
+  }
+
   const { code: communityCode } = params
 
   const resCountRegistrations = await countHackathonRegistrations()
@@ -51,7 +62,10 @@ const Page: React.FC<PageProps> = async ({ params }) => {
             <RemoveRegistrationButton />
           </>
         ) : (
-          <CommunityRegistrationForm communityCode={communityCode} />
+          <CommunityRegistrationForm
+            communityCode={communityCode}
+            requiredUniversity={result.data.requiredUniversity}
+          />
         )}
       </div>
       <BirdsBackground />
@@ -59,4 +73,4 @@ const Page: React.FC<PageProps> = async ({ params }) => {
   )
 }
 
-export default Page
+export default CommunityRegistrationPage

@@ -20,10 +20,7 @@ import {
   FormMessage,
 } from '~/components/ui/form'
 import { useToast } from '~/hooks/use-toast'
-import {
-  findMyTeamTicket,
-  registerHackathonTeam,
-} from '~/server/actions/hackathon'
+import { createCommunityTeam } from '~/server/actions/hackathon'
 
 import FormSection from '../common/form-section'
 import Input from '../common/input'
@@ -141,10 +138,12 @@ export type CommunityRegistrationFormSchema = z.infer<typeof formSchema>
 
 interface CommunityRegistrationFormProps {
   communityCode: string
+  requiredUniversity: string | null
 }
 
 const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
   communityCode,
+  requiredUniversity,
 }) => {
   const router = useRouter()
   const { toast } = useToast()
@@ -156,9 +155,8 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
     defaultValues: {
       teamName: '',
       teamMembers: [
-        // TODO: dynamic form, based from community
-        {},
-        {},
+        { university: requiredUniversity ?? '' },
+        { university: requiredUniversity ?? '' },
         {},
         {},
       ],
@@ -167,11 +165,6 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setLoading(true)
-
-    // simulate validation loading for 1 seconds
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1000)
-    })
 
     let isError = false
 
@@ -184,17 +177,19 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
       isError = true
     }
 
-    // validate first 2 members student id
-    const studentIdRegex = /^6[4-7]3\d{5}21$/
-    values.teamMembers.forEach((member, index) => {
-      if (index <= 1 && !studentIdRegex.test(member.studentId)) {
-        form.setError(`teamMembers.${index}.studentId`, {
-          type: 'manual',
-          message: 'Invalid Student ID',
-        })
-        isError = true
-      }
-    })
+    // Check if at least 2 members are from required university
+    const membersFromRequiredUniversity = values.teamMembers.filter(
+      (member) => member.university === requiredUniversity
+    )
+
+    if (membersFromRequiredUniversity.length < 2) {
+      toast({
+        title: 'Validation Error',
+        description: `At least 2 team members must be from ${requiredUniversity ?? 'Your University'}`,
+        variant: 'destructive',
+      })
+      isError = true
+    }
 
     // validate if any team member has the same student id or first and last name
     const studentIds = new Set<string>()
@@ -253,56 +248,32 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
 
     if (!form.formState.isValid || isError) {
       setLoading(false)
-
       return
     }
 
-    const resTeamTicket = await findMyTeamTicket()
-    if (!resTeamTicket.success) {
-      toast({
-        title: 'Registration Failed',
-        description: resTeamTicket.message,
-        variant: 'destructive',
-      })
-
-      setLoading(false)
-
-      return
-    }
-    if (!resTeamTicket.data) {
-      toast({
-        title: 'Registration Failed',
-        description: 'You do not have a Team Pass',
-        variant: 'destructive',
-      })
-
-      setLoading(false)
-
-      return
-    }
-
-    const resRegister = await registerHackathonTeam(
-      resTeamTicket.data.id,
+    // create community team
+    const resRegister = await createCommunityTeam(
+      communityCode,
       values.teamName,
       values.teamMembers.map((member, index) => ({
         ...member,
         chestSize: memberChestSizes[index] ?? 0,
       }))
     )
+
     if (!resRegister.success) {
       toast({
         title: 'Registration Failed',
         description: resRegister.message,
         variant: 'destructive',
       })
-
       setLoading(false)
-
       return
     }
 
-    router.push(`/hackathon/community/${communityCode}/registration/success`)
-
+    router.push(
+      `/hackathon/community/${communityCode}/registration/success?teamId=${resRegister.data.teamId}`
+    )
     setLoading(false)
   }
 
@@ -376,10 +347,7 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
               className='flex aspect-square w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-white/10 bg-white/5 backdrop-blur-md hover:border-white/50'
               type='button'
               onClick={() => {
-                form.setValue('teamMembers', [
-                  ...form.getValues('teamMembers'),
-                  {} as z.infer<typeof formSchema>['teamMembers'][0],
-                ])
+                form.setValue('teamMembers', [...form.getValues('teamMembers')])
               }}
             >
               <span className='font-ndot47 text-3xl'>+</span>

@@ -59,3 +59,40 @@ export const UpdateHackathonRegistrationDto = z.object({
   teamName: z.string(),
   teamMembers: z.array(UpdateHackathonTeamMemberDto),
 })
+
+export const CreateHackathonCommunityRegistrationLinkDto = z.object({
+  requiredUniversity: z.string(),
+  expiresAt: z.date().optional(),
+})
+
+export const CheckHackathonCommunityRegistrationCodeDto = z.object({
+  code: z.string(),
+})
+
+export const CreateHackathonCommunityTeamMemberDto = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  nickname: z.string(),
+  pronoun: z.nativeEnum(HackathonPronoun),
+  phoneNumber: z.string(),
+  email: z.string().email(),
+  studentId: z.string(),
+  faculty: z.string(),
+  department: z.string(),
+  university: z.string(),
+  role: z.nativeEnum(HackathonRole),
+  foodRestriction: z.string().nullish(),
+  medication: z.string().nullish(),
+  medicalCondition: z.string().nullish(),
+  chestSize: z.number().optional().default(0),
+})
+
+export const CreateHackathonCommunityTeamDto = z.object({
+  code: z.string(),
+  teamName: z.string(),
+  teamMembers: z.array(CreateHackathonCommunityTeamMemberDto),
+})
+
+export const GetHackathonCommunityRegistrationByCodeDto = z.object({
+  code: z.string(),
+})
