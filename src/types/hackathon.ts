@@ -81,3 +81,33 @@ export interface HackathonTicketNonClaimStats {
   pro: number
   gen: number
 }
+
+export interface HackathonCommunityRegistration {
+  registration: {
+    code: string
+    requiredUniversity: string
+    team?: {
+      publicId: string
+      teamName: string
+      teamMembers: HackathonTeamMember[]
+    }
+  }
+}
+
+export interface HackathonCommunityTeamMember {
+  firstName: string
+  lastName: string
+  nickname: string
+  pronoun: HackathonPronoun
+  phoneNumber: string
+  email: string
+  studentId: string
+  faculty: string
+  department: string
+  university: string
+  role: HackathonRole
+  foodRestriction?: string | null
+  medication?: string | null
+  medicalCondition?: string | null
+  chestSize?: number
+}

@@ -28,7 +28,7 @@ const Page: React.FC = async () => {
     return notFound()
   }
 
-  const resMyRegistrationIndex = await getMyRegistrationIndex()
+  const resMyRegistrationIndex = await getMyRegistrationIndex({})
   if (!resMyRegistrationIndex.success || resMyRegistrationIndex.data === -1) {
     return notFound()
   }
