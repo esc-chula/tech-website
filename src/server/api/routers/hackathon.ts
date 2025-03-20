@@ -464,17 +464,25 @@ export const hackathonRouter = createTRPCRouter({
         }
       }
 
-      const totalTeamCount = await ctx.db.hackathonRegistration
+      const totalLocalTeamCount = await ctx.db.hackathonRegistration
         .count()
         .catch(() => null)
-      if (totalTeamCount === null) {
+
+      const totalCommunityTeamCount = await ctx.db.hackathonCommunityTeam
+        .count()
+        .catch(() => null)
+      if (totalLocalTeamCount === null || totalCommunityTeamCount === null) {
         return {
           success: false,
           message: 'Failed to count total team',
           errors: ['Something went wrong while counting total team'],
         }
       }
-      if (totalTeamCount >= HACKATHON_MAX_TEAMS) {
+
+      if (
+        totalLocalTeamCount + totalCommunityTeamCount >=
+        HACKATHON_MAX_TEAMS
+      ) {
         return {
           success: false,
           message: `Application is closed. Maximum number of teams (${HACKATHON_MAX_TEAMS}) has been reached`,
@@ -616,10 +624,12 @@ export const hackathonRouter = createTRPCRouter({
   countRegistrations: trpc.query(async ({ ctx }): Promise<Response<number>> => {
     try {
       const count = await ctx.db.hackathonRegistration.count()
+      const communityCount = await ctx.db.hackathonCommunityTeam.count()
+
       return {
         success: true,
         message: 'Number of registrations found',
-        data: count,
+        data: count + communityCount,
       }
     } catch (error) {
       return {
