@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.23..v0.4.0) - 2025-03-20
+
+### <!-- 0 -->⛰️  Features
+
+- Base community ticket routes - ([a364f4b](https://github.com/esc-chula/intania-oidc-new/commit/a364f4bf3b20270253220693acdb74b126916f8f))
+- Add community registration schema - ([bdf1f1f](https://github.com/esc-chula/intania-oidc-new/commit/bdf1f1f33797f1a48e575c0aa33cae48b6bac176))
+- Api - ([8633ef3](https://github.com/esc-chula/intania-oidc-new/commit/8633ef3d4247b6e23761541efe67a2133f64f7e1))
+- Community ticket page - ([f6c7909](https://github.com/esc-chula/intania-oidc-new/commit/f6c7909b6eb67131c856e6053cc63bc5025facbb))
+- Integrate community registration - ([15c5ed3](https://github.com/esc-chula/intania-oidc-new/commit/15c5ed382a2a02c96fcb8fcb384b29d5571c5658))
+- Community ticket - ([a6422f9](https://github.com/esc-chula/intania-oidc-new/commit/a6422f969b4ce55d1d6ad43ed3583d7aa593d57d))
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- Schema - ([e4e8ff0](https://github.com/esc-chula/intania-oidc-new/commit/e4e8ff061154c047c681e9c296fd1b88764f458c))
+- Team count logic - ([91b92b8](https://github.com/esc-chula/intania-oidc-new/commit/91b92b81b55bb88b6fbbc890a20ce9657d19d467))
+- Eslint import order - ([581fc0e](https://github.com/esc-chula/intania-oidc-new/commit/581fc0ec54cd4629e056377ddbd6a174a40c2da6))
+
+### Miscellaneous Tasks
+
+- Format schema - ([201c84f](https://github.com/esc-chula/intania-oidc-new/commit/201c84fe4bc9d4e14410e316cb635a433bc9a523))
+
 ## [0.3.23](https://github.com/esc-chula/intania-oidc-new/compare/v0.3.22..v0.3.23) - 2025-03-14
 
 ### <!-- 1 -->🐛 Bug Fixes
