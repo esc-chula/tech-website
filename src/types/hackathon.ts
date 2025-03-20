@@ -89,17 +89,7 @@ export interface HackathonCommunityRegistration {
     team?: {
       publicId: string
       teamName: string
-      teamMembers: {
-        publicId: string
-        firstName: string
-        lastName: string
-        nickname: string
-        pronoun: string
-        phoneNumber: string
-        email: string
-        studentId: string
-        faculty: string
-      }[]
+      teamMembers: HackathonTeamMember[]
     }
   }
 }

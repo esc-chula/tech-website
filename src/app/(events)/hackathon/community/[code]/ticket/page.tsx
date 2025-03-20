@@ -1,10 +1,7 @@
 import { type Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-import {
-  findMyRegistration,
-  findMyTeamTicket,
-} from '~/server/actions/hackathon'
+import { getCommunityRegistrationByCode } from '~/server/actions/hackathon'
 
 import Building1Background from '../../../_components/common/bulding-1-background'
 import CommunityTeamTicket from '../../../_components/ticket/community-team-ticket'
@@ -22,15 +19,10 @@ interface PageProps {
 const Page: React.FC<PageProps> = async ({ params }) => {
   const { code: communityCode } = params
 
-  // TODO: find community ticket instead
-  const resMyTeamTicket = await findMyTeamTicket()
-  const resMyRegistration = await findMyRegistration()
+  const resRegistrationByCode =
+    await getCommunityRegistrationByCode(communityCode)
 
-  if (!resMyTeamTicket.success || !resMyRegistration.success) {
-    return 'Something went wrong, please try again later...'
-  }
-
-  if (!resMyTeamTicket.data || !resMyRegistration.data) {
+  if (!resRegistrationByCode.success) {
     return notFound()
   }
 
@@ -44,8 +36,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
         </div>
         <CommunityTeamTicket
           communityCode={communityCode}
-          registration={resMyRegistration.data}
-          teamTicket={resMyTeamTicket.data}
+          communityRegistration={resRegistrationByCode.data}
         />
       </div>
       <Building1Background />

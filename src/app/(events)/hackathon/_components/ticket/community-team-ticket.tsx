@@ -2,30 +2,25 @@ import Link from 'next/link'
 
 import { HACKATHON_DISCORD } from '~/constants/hackathon'
 import { countHackathonRegistrations } from '~/server/actions/hackathon'
-import {
-  type HackathonRegistration,
-  type HackathonTeamMember,
-  type HackathonTeamTicket,
-  type HackathonTicket,
-} from '~/types/hackathon'
+import { type HackathonCommunityRegistration } from '~/types/hackathon'
 
 import TeamTicketQrCode from './team-ticket-qrcode'
 
 interface CommunityTeamTicketProps {
-  registration: HackathonRegistration & {
-    teamMembers: HackathonTeamMember[]
-  }
-  teamTicket: HackathonTeamTicket & {
-    tickets: HackathonTicket[]
-  }
   communityCode: string
+  communityRegistration: HackathonCommunityRegistration
 }
 
 const CommunityTeamTicket: React.FC<CommunityTeamTicketProps> = async ({
-  registration,
-  teamTicket,
   communityCode,
+  communityRegistration,
 }) => {
+  const { registration } = communityRegistration
+
+  if (!registration.team) {
+    return 'Something went wrong, please try again later...'
+  }
+
   const resCountRegistrations = await countHackathonRegistrations()
   if (!resCountRegistrations.success) {
     return 'Something went wrong, please try again later...'
@@ -35,7 +30,7 @@ const CommunityTeamTicket: React.FC<CommunityTeamTicketProps> = async ({
     <div className='flex w-full max-w-screen-sm flex-col items-center gap-6'>
       <div className='aspect-square w-full max-w-xs rounded-3xl border-2 border-white/10 bg-white/10 p-3.5 backdrop-blur-md'>
         <div className='relative h-full w-full overflow-hidden rounded-2xl'>
-          <TeamTicketQrCode publicId={teamTicket.publicId} />
+          <TeamTicketQrCode publicId={registration.team.publicId} />
         </div>
       </div>
       <div className='flex items-center gap-4'>
@@ -57,7 +52,7 @@ const CommunityTeamTicket: React.FC<CommunityTeamTicketProps> = async ({
       <div className='grid w-full grid-cols-2 rounded-3xl border-2 border-white/10 bg-white/10 p-4 backdrop-blur-md'>
         <div>
           <p className='text-xs text-white/50 sm:text-sm'>Team Name</p>
-          <p className='text-xl font-semibold'>{registration.teamName}</p>
+          <p className='text-xl font-semibold'>{registration.team.teamName}</p>
         </div>
         <div>
           <p className='text-xs text-white/50 sm:text-sm'>Team No.</p>
@@ -65,7 +60,7 @@ const CommunityTeamTicket: React.FC<CommunityTeamTicketProps> = async ({
         </div>
       </div>
       <div className='grid w-full gap-6 rounded-3xl border-2 border-white/10 bg-white/10 p-4 backdrop-blur-md'>
-        {registration.teamMembers.map((teamMember, index) => (
+        {registration.team.teamMembers.map((teamMember, index) => (
           <div key={teamMember.id} className='space-y-4'>
             <div>
               <p className='text-xs text-white/50 sm:text-sm'>

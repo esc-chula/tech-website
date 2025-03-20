@@ -1055,6 +1055,7 @@ export const hackathonRouter = createTRPCRouter({
                     teamName: true,
                     teamMembers: {
                       select: {
+                        id: true,
                         publicId: true,
                         firstName: true,
                         lastName: true,
