@@ -25,6 +25,7 @@ import {
   CreateHackathonTeamTicketDto,
   DeleteHackathonRegistrationDto,
   GetHackathonCommunityRegistrationByCodeDto,
+  GetHackathonCommunityTeamIndexDto,
   UpdateHackathonRegistrationDto,
 } from '../dto/hackathon'
 
@@ -1118,4 +1119,44 @@ export const hackathonRouter = createTRPCRouter({
         }
       }
     ),
+
+  getHackathonCommunityTeamIndex: trpc
+    .input(GetHackathonCommunityTeamIndexDto)
+    .query(async ({ ctx, input }): Promise<Response<number>> => {
+      try {
+        const { teamId } = input
+
+        const communityTeams = await ctx.db.hackathonCommunityTeam.findMany({
+          select: { publicId: true },
+          orderBy: { createdAt: 'asc' },
+        })
+
+        const teamIndex = communityTeams.findIndex(
+          (team) => team.publicId === teamId
+        )
+
+        if (teamIndex === -1) {
+          return {
+            success: false,
+            message: 'Community team not found',
+            errors: ['No community team found with the provided ID'],
+          }
+        }
+
+        return {
+          success: true,
+          message: 'Community team index found',
+          data: teamIndex,
+        }
+      } catch (error) {
+        console.error('Error fetching community team index:', error)
+        return {
+          success: false,
+          message: 'Failed to fetch community team index',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
+        }
+      }
+    }),
 })

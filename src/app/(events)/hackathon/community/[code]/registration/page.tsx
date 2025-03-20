@@ -1,5 +1,4 @@
 import { type Metadata } from 'next'
-import { redirect } from 'next/navigation'
 
 import CommunityRegistrationForm from '~/app/(events)/hackathon/_components/registration/community-registration-form'
 import { HACKATHON_MAX_TEAMS } from '~/constants/hackathon'
@@ -25,8 +24,19 @@ const CommunityRegistrationPage = async ({
   params,
 }: PageProps): Promise<React.ReactNode> => {
   const result = await checkCommunityRegistrationCode(params.code)
-  if (!result.success) {
-    return redirect('/hackathon')
+
+  if (!result.success || !result.data.valid) {
+    return (
+      <>
+        <div className='flex min-h-dvh flex-col items-center justify-center space-y-2'>
+          <h1 className='text-2xl font-semibold'>Invalid Registration</h1>
+          <p className='text-sm text-white/60'>
+            This registration is not valid.
+          </p>
+        </div>
+        <BirdsBackground />
+      </>
+    )
   }
 
   const { code: communityCode } = params

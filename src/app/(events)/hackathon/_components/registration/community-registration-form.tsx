@@ -141,6 +141,60 @@ interface CommunityRegistrationFormProps {
   requiredUniversity: string | null
 }
 
+interface FormTeamMember {
+  firstName: string
+  lastName: string
+  nickname: string
+  pronoun: 'HE' | 'SHE' | 'THEY' | 'OTHER'
+  phoneNumber: string
+  email: string
+  studentId: string
+  faculty: string
+  department: string
+  university: string
+  role: 'DEVELOPER' | 'DESIGNER' | 'PRODUCT'
+  foodRestriction?: string
+  medication?: string
+  medicalCondition?: string
+  chestSize: string
+}
+
+const createDefaultTeamMember = (university?: string): FormTeamMember => ({
+  firstName: '',
+  lastName: '',
+  nickname: '',
+  pronoun: 'HE' as const,
+  phoneNumber: '',
+  email: '',
+  studentId: '',
+  faculty: '',
+  department: '',
+  university: university ?? '',
+  role: 'DEVELOPER' as const,
+  foodRestriction: '',
+  medication: '',
+  medicalCondition: '',
+  chestSize: '',
+})
+
+const createChulalongkornEngineeringTeamMember = (): FormTeamMember => ({
+  firstName: '',
+  lastName: '',
+  nickname: '',
+  pronoun: 'HE' as const,
+  phoneNumber: '',
+  email: '',
+  studentId: '',
+  faculty: 'Engineering',
+  department: '',
+  university: 'Chulalongkorn University',
+  role: 'DEVELOPER' as const,
+  foodRestriction: '',
+  medication: '',
+  medicalCondition: '',
+  chestSize: '',
+})
+
 const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
   communityCode,
   requiredUniversity,
@@ -155,10 +209,10 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
     defaultValues: {
       teamName: '',
       teamMembers: [
-        { university: requiredUniversity ?? '' },
-        { university: requiredUniversity ?? '' },
-        {},
-        {},
+        createDefaultTeamMember(requiredUniversity ?? ''),
+        createDefaultTeamMember(requiredUniversity ?? ''),
+        createChulalongkornEngineeringTeamMember(),
+        createChulalongkornEngineeringTeamMember(),
       ],
     },
   })
@@ -252,29 +306,39 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
     }
 
     // create community team
-    const resRegister = await createCommunityTeam(
-      communityCode,
-      values.teamName,
-      values.teamMembers.map((member, index) => ({
-        ...member,
-        chestSize: memberChestSizes[index] ?? 0,
-      }))
-    )
+    try {
+      const resRegister = await createCommunityTeam(
+        communityCode,
+        values.teamName,
+        values.teamMembers.map((member, index) => ({
+          ...member,
+          chestSize: memberChestSizes[index] ?? 0,
+        }))
+      )
 
-    if (!resRegister.success) {
+      if (!resRegister.success) {
+        toast({
+          title: 'Registration Failed',
+          description: resRegister.message,
+          variant: 'destructive',
+        })
+        setLoading(false)
+        return
+      }
+
+      router.push(
+        `/hackathon/community/${communityCode}/registration/success?teamId=${resRegister.data.teamId}`
+      )
+      setLoading(false)
+    } catch (error) {
       toast({
-        title: 'Registration Failed',
-        description: resRegister.message,
+        title: 'Submission Error',
+        description: 'An error occurred while submitting the form',
         variant: 'destructive',
       })
       setLoading(false)
-      return
+      
     }
-
-    router.push(
-      `/hackathon/community/${communityCode}/registration/success?teamId=${resRegister.data.teamId}`
-    )
-    setLoading(false)
   }
 
   return (
@@ -347,7 +411,10 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
               className='flex aspect-square w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-white/10 bg-white/5 backdrop-blur-md hover:border-white/50'
               type='button'
               onClick={() => {
-                form.setValue('teamMembers', [...form.getValues('teamMembers')])
+                form.setValue('teamMembers', [
+                  ...form.getValues('teamMembers'),
+                  createDefaultTeamMember(),
+                ])
               }}
             >
               <span className='font-ndot47 text-3xl'>+</span>
@@ -365,7 +432,16 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
         ) : null}
         {/* members form */}
         {form.watch('teamMembers').map((_, index) => (
-          <MembersForm key={index} form={form} index={index} />
+          <MembersForm
+            key={index}
+            community
+            form={form}
+            index={index}
+            lockedFields={{
+              university: index < 4,
+              faculty: index >= 2 && index < 4,
+            }}
+          />
         ))}
         {/* submit */}
         <div className='fixed bottom-2 w-full max-w-md px-3 sm:bottom-5'>

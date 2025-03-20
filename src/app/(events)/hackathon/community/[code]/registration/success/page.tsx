@@ -1,12 +1,12 @@
 import { type Metadata } from 'next'
 import { headers } from 'next/headers'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import { isMobile } from '~/lib/is-mobile'
 import {
-  findMyRegistration,
-  getMyRegistrationIndex,
+  getCommunityRegistrationByCode,
+  getHackathonCommunityTeamIndex,
 } from '~/server/actions/hackathon'
 
 import Building1Background from '../../../../_components/common/bulding-1-background'
@@ -20,21 +20,40 @@ interface PageProps {
   params: {
     code: string
   }
+  searchParams: {
+    teamId?: string
+  }
 }
 
-const Page: React.FC<PageProps> = async ({ params }) => {
+const Page: React.FC<PageProps> = async ({ params, searchParams }) => {
   const { code: communityCode } = params
+  const { teamId } = searchParams
 
-  // TODO: find community registration
-  const resMyRegistration = await findMyRegistration()
-  if (!resMyRegistration.success || !resMyRegistration.data) {
+  if (!teamId) {
+    // Redirect if no teamId was provided
+    return redirect(`/hackathon/community/${communityCode}/registration`)
+  }
+
+  // Get community registration data using the code
+  const resCommunityRegistration =
+    await getCommunityRegistrationByCode(communityCode)
+
+  if (!resCommunityRegistration.success) {
     return notFound()
   }
 
-  const resMyRegistrationIndex = await getMyRegistrationIndex()
-  if (!resMyRegistrationIndex.success || resMyRegistrationIndex.data === -1) {
+  // Check if the community has a team and if it matches the teamId from URL
+  const { registration } = resCommunityRegistration.data
+  const team = registration.team
+
+  if (!team || team.publicId !== teamId) {
     return notFound()
   }
+
+  const resTeamIndex = await getHackathonCommunityTeamIndex(teamId)
+  const teamNo = resTeamIndex.success
+    ? resTeamIndex.data + 1
+    : parseInt(teamId.substring(0, 4), 16) || 999
 
   const userAgent = headers().get('user-agent') ?? ''
   const mobileCheck = isMobile(userAgent)
@@ -54,8 +73,8 @@ const Page: React.FC<PageProps> = async ({ params }) => {
         </div>
         <ShareStory
           isMobile={mobileCheck}
-          teamName={resMyRegistration.data.teamName}
-          teamNo={resMyRegistrationIndex.data + 1}
+          teamName={team.teamName}
+          teamNo={teamNo}
         />
         <Link
           className='text-center underline'

@@ -285,3 +285,11 @@ export async function getCommunityRegistrationByCode(
     code,
   })
 }
+
+export async function getHackathonCommunityTeamIndex(
+  teamId: string
+): Promise<Response<number>> {
+  return await api.hackathon.getHackathonCommunityTeamIndex({
+    teamId,
+  })
+}
