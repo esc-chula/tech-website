@@ -1,5 +1,4 @@
 import { type Metadata } from 'next'
-import { notFound } from 'next/navigation'
 
 import { getCommunityRegistrationByCode } from '~/server/actions/hackathon'
 
@@ -22,13 +21,24 @@ const Page: React.FC<PageProps> = async ({ params }) => {
   const resRegistrationByCode =
     await getCommunityRegistrationByCode(communityCode)
 
-  if (!resRegistrationByCode.success) {
-    return notFound()
+  if (
+    !resRegistrationByCode.success ||
+    !resRegistrationByCode.data.registration.team
+  ) {
+    return (
+      <>
+        <div className='flex min-h-dvh flex-col items-center justify-center space-y-2'>
+          <h1 className='text-2xl font-semibold'>Invalid Ticket</h1>
+          <p className='text-sm text-white/60'>This ticket is not valid.</p>
+        </div>
+        <Building1Background />
+      </>
+    )
   }
 
   return (
     <>
-      <div className='flex min-h-dvh flex-col items-center gap-8 pb-24 pt-8'>
+      <div className='flex min-h-dvh flex-col items-center gap-8 pb-24 pt-14'>
         <div className='mt-4 flex flex-col items-center gap-4'>
           <h1 className='text-center text-4xl font-semibold capitalize tracking-tighter text-white sm:text-5xl md:text-6xl'>
             Your Team Pass

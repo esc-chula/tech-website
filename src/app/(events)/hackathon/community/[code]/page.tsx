@@ -1,4 +1,6 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
+
+import { getCommunityRegistrationByCode } from '~/server/actions/hackathon'
 
 interface PageProps {
   params: {
@@ -6,17 +8,21 @@ interface PageProps {
   }
 }
 
-const Page: React.FC<PageProps> = ({ params }) => {
-  const { code } = params
+const Page: React.FC<PageProps> = async ({ params }) => {
+  const { code: communityCode } = params
 
-  // TODO: code validation and redirect
-  // if no registration redirect to /hackathon/community/registration
-  // if has registration redirect to /hackathon/community/ticket
-  if (code !== 'test') {
+  const resRegistrationByCode =
+    await getCommunityRegistrationByCode(communityCode)
+
+  if (!resRegistrationByCode.success) {
     return notFound()
   }
 
-  return null
+  if (resRegistrationByCode.data.registration.team) {
+    return redirect(`/hackathon/community/${communityCode}/ticket`)
+  }
+
+  return redirect(`/hackathon/community/${communityCode}/registration`)
 }
 
 export default Page

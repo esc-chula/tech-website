@@ -7,6 +7,7 @@ import {
   countHackathonRegistrations,
 } from '~/server/actions/hackathon'
 
+import BackButton from '../../../_components/common/back-button'
 import BirdsBackground from '../../../_components/common/birds-background'
 import RemoveRegistrationButton from '../../../_components/registration/remove-registration-button'
 
@@ -48,7 +49,8 @@ const CommunityRegistrationPage = async ({
 
   return (
     <>
-      <div className='flex min-h-dvh flex-col items-center gap-10 pb-24 pt-8'>
+      <BackButton href='/hackathon' />
+      <div className='flex min-h-dvh flex-col items-center gap-10 pb-24 pt-14'>
         <div className='flex flex-col items-center gap-2 text-center md:gap-6'>
           <h1 className='text-4xl font-semibold md:text-5xl'>Registration</h1>
           <p className='text-sm text-white/60'>

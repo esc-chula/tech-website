@@ -1,11 +1,11 @@
 import { type Metadata } from 'next'
 import { headers } from 'next/headers'
 import Link from 'next/link'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 
 import { isMobile } from '~/lib/is-mobile'
 import {
-  findMyRegistration,
+  getCommunityRegistrationByCode,
   getMyRegistrationIndex,
 } from '~/server/actions/hackathon'
 
@@ -26,14 +26,15 @@ interface PageProps {
 const Page: React.FC<PageProps> = async ({ params }) => {
   const { code: communityCode } = params
 
-  // TODO: find registration from code
-  const resMyRegistration = await findMyRegistration()
-  if (!resMyRegistration.success || !resMyRegistration.data) {
-    return redirect(`/hackathon/login?redirectUrl=/hackathon/ticket/share`)
-  }
+  const resRegistrationByCode =
+    await getCommunityRegistrationByCode(communityCode)
+  const resTeamIndex = await getMyRegistrationIndex({ communityCode })
 
-  const resMyRegistrationIndex = await getMyRegistrationIndex()
-  if (!resMyRegistrationIndex.success || resMyRegistrationIndex.data === -1) {
+  if (
+    !resRegistrationByCode.success ||
+    !resRegistrationByCode.data.registration.team ||
+    !resTeamIndex.success
+  ) {
     return notFound()
   }
 
@@ -43,7 +44,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
   return (
     <>
       <BackButton />
-      <div className='flex min-h-dvh flex-col items-center gap-8 pb-24 pt-8 md:gap-10'>
+      <div className='flex min-h-dvh flex-col items-center gap-8 pb-24 pt-14 md:gap-10'>
         <div className='flex flex-col items-center gap-2 text-center md:gap-6'>
           <h1 className='text-4xl font-semibold md:text-5xl'>Share</h1>
           <p className='text-sm text-white/60'>
@@ -52,8 +53,8 @@ const Page: React.FC<PageProps> = async ({ params }) => {
         </div>
         <ShareStory
           isMobile={mobileCheck}
-          teamName={resMyRegistration.data.teamName}
-          teamNo={resMyRegistrationIndex.data + 1}
+          teamName={resRegistrationByCode.data.registration.team.teamName}
+          teamNo={resTeamIndex.data + 1}
         />
         <Link
           className='underline'

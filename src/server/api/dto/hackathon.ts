@@ -97,6 +97,6 @@ export const GetHackathonCommunityRegistrationByCodeDto = z.object({
   code: z.string(),
 })
 
-export const GetHackathonCommunityTeamIndexDto = z.object({
-  teamId: z.string(),
+export const GetRegistrationIndexByCommunityCodeDto = z.object({
+  code: z.string(),
 })

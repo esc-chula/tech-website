@@ -22,10 +22,10 @@ import {
 import { useToast } from '~/hooks/use-toast'
 import { createCommunityTeam } from '~/server/actions/hackathon'
 
+import CommunityMembersForm from './community-members-form'
+
 import FormSection from '../common/form-section'
 import Input from '../common/input'
-
-import MembersForm from './members-form'
 
 const formSchema = z.object({
   teamName: z.string().min(1, {
@@ -337,7 +337,6 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
         variant: 'destructive',
       })
       setLoading(false)
-      
     }
   }
 
@@ -432,11 +431,12 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
         ) : null}
         {/* members form */}
         {form.watch('teamMembers').map((_, index) => (
-          <MembersForm
+          <CommunityMembersForm
             key={index}
             community
             form={form}
             index={index}
+            requiredUniversity={requiredUniversity}
             lockedFields={{
               university: index < 4,
               faculty: index >= 2 && index < 4,

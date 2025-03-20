@@ -26,10 +26,10 @@ import {
   registerHackathonTeam,
 } from '~/server/actions/hackathon'
 
+import MembersForm from './members-form'
+
 import FormSection from '../common/form-section'
 import Input from '../common/input'
-
-import MembersForm from './members-form'
 
 const formSchema = z.object({
   teamName: z.string().min(1, {

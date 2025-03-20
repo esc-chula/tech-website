@@ -140,7 +140,16 @@ export async function findMyRegistration(): Promise<
   return await api.hackathon.findMyRegistration()
 }
 
-export async function getMyRegistrationIndex(): Promise<Response<number>> {
+export async function getMyRegistrationIndex({
+  communityCode,
+}: {
+  communityCode?: string
+}): Promise<Response<number>> {
+  if (communityCode) {
+    return await api.hackathon.getRegistrationIndexByCommunityCode({
+      code: communityCode,
+    })
+  }
   return await api.hackathon.getMyRegistrationIndex()
 }
 
@@ -283,13 +292,5 @@ export async function getCommunityRegistrationByCode(
 ): Promise<Response<HackathonCommunityRegistration>> {
   return await api.hackathon.getCommunityRegistrationByCode({
     code,
-  })
-}
-
-export async function getHackathonCommunityTeamIndex(
-  teamId: string
-): Promise<Response<number>> {
-  return await api.hackathon.getHackathonCommunityTeamIndex({
-    teamId,
   })
 }

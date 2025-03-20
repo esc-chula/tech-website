@@ -25,7 +25,7 @@ import {
   CreateHackathonTeamTicketDto,
   DeleteHackathonRegistrationDto,
   GetHackathonCommunityRegistrationByCodeDto,
-  GetHackathonCommunityTeamIndexDto,
+  GetRegistrationIndexByCommunityCodeDto,
   UpdateHackathonRegistrationDto,
 } from '../dto/hackathon'
 
@@ -597,11 +597,39 @@ export const hackathonRouter = createTRPCRouter({
           }
         }
 
-        const registrations = await ctx.db.hackathonRegistration.findMany({
-          select: { id: true, teamTicketId: true },
+        const regularRegistrations =
+          await ctx.db.hackathonRegistration.findMany({
+            select: { id: true, teamTicketId: true, createdAt: true },
+          })
+
+        const communityRegistrations =
+          await ctx.db.hackathonCommunityRegistration.findMany({
+            select: { id: true, code: true, createdAt: true },
+          })
+
+        const mergedRegistrations = [
+          ...regularRegistrations.map((reg) => ({
+            ...reg,
+            type: 'regular',
+            code: null,
+          })),
+          ...communityRegistrations.map((reg) => ({
+            ...reg,
+            type: 'community',
+            teamTicketId: null,
+          })),
+        ]
+
+        mergedRegistrations.sort((a, b) => {
+          const aDate = new Date(a.createdAt).getTime()
+          const bDate = new Date(b.createdAt).getTime()
+          if (aDate !== bDate) {
+            return aDate - bDate
+          }
+          return a.id - b.id
         })
 
-        const registrationIndex = registrations.findIndex(
+        const registrationIndex = mergedRegistrations.findIndex(
           (reg) => reg.teamTicketId === teamTicket.id
         )
 
@@ -621,6 +649,62 @@ export const hackathonRouter = createTRPCRouter({
       }
     }
   ),
+
+  getRegistrationIndexByCommunityCode: trpc
+    .input(GetRegistrationIndexByCommunityCodeDto)
+    .mutation(async ({ ctx, input }): Promise<Response<number>> => {
+      try {
+        const regularRegistrations =
+          await ctx.db.hackathonRegistration.findMany({
+            select: { id: true, teamTicketId: true, createdAt: true },
+          })
+
+        const communityRegistrations =
+          await ctx.db.hackathonCommunityRegistration.findMany({
+            select: { id: true, code: true, createdAt: true },
+          })
+
+        const mergedRegistrations = [
+          ...regularRegistrations.map((reg) => ({
+            ...reg,
+            type: 'regular',
+            code: null,
+          })),
+          ...communityRegistrations.map((reg) => ({
+            ...reg,
+            type: 'community',
+            teamTicketId: null,
+          })),
+        ]
+
+        mergedRegistrations.sort((a, b) => {
+          const aDate = new Date(a.createdAt).getTime()
+          const bDate = new Date(b.createdAt).getTime()
+          if (aDate !== bDate) {
+            return aDate - bDate
+          }
+          return a.id - b.id
+        })
+
+        const registrationIndex = mergedRegistrations.findIndex(
+          (reg) => reg.type === 'community' && reg.code === input.code
+        )
+
+        return {
+          success: true,
+          message: 'Registration index found',
+          data: registrationIndex,
+        }
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Failed to fetch registration index by community code',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
+        }
+      }
+    }),
 
   countRegistrations: trpc.query(async ({ ctx }): Promise<Response<number>> => {
     try {
@@ -1119,44 +1203,4 @@ export const hackathonRouter = createTRPCRouter({
         }
       }
     ),
-
-  getHackathonCommunityTeamIndex: trpc
-    .input(GetHackathonCommunityTeamIndexDto)
-    .query(async ({ ctx, input }): Promise<Response<number>> => {
-      try {
-        const { teamId } = input
-
-        const communityTeams = await ctx.db.hackathonCommunityTeam.findMany({
-          select: { publicId: true },
-          orderBy: { createdAt: 'asc' },
-        })
-
-        const teamIndex = communityTeams.findIndex(
-          (team) => team.publicId === teamId
-        )
-
-        if (teamIndex === -1) {
-          return {
-            success: false,
-            message: 'Community team not found',
-            errors: ['No community team found with the provided ID'],
-          }
-        }
-
-        return {
-          success: true,
-          message: 'Community team index found',
-          data: teamIndex,
-        }
-      } catch (error) {
-        console.error('Error fetching community team index:', error)
-        return {
-          success: false,
-          message: 'Failed to fetch community team index',
-          errors: [
-            error instanceof Error ? error.message : 'Something went wrong',
-          ],
-        }
-      }
-    }),
 })
