@@ -128,39 +128,39 @@ model HackathonCommunityRegistration {
   isActive           Boolean   @default(true)
   requiredUniversity String
 
-  communityTeam      HackathonCommunityTeam?       @relation("HackathonCommunityRegistrationToTeam")
+  communityTeam HackathonCommunityTeam? @relation("HackathonCommunityRegistrationToTeam")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model HackathonRegistration {
-  id                      Int  @id @default(autoincrement())
-  teamTicketId            Int  @unique
+  id           Int @id @default(autoincrement())
+  teamTicketId Int @unique
 
-  teamTicket            HackathonTeamTicket             @relation(fields: [teamTicketId], references: [id], name: "HackathonTeamTicketToRegistration")
-  teamName              String
-  teamMembers           HackathonTeamMember[]           @relation("HackathonRegistrationToTeamMembers")
+  teamTicket  HackathonTeamTicket   @relation(fields: [teamTicketId], references: [id], name: "HackathonTeamTicketToRegistration")
+  teamName    String
+  teamMembers HackathonTeamMember[] @relation("HackathonRegistrationToTeamMembers")
 }
 
 model HackathonCommunityTeam {
-  id                      Int      @id @default(autoincrement())
-  publicId                String   @unique
-  communityRegistrationId Int      @unique
+  id                      Int                            @id @default(autoincrement())
+  publicId                String                         @unique
+  communityRegistrationId Int                            @unique
   communityRegistration   HackathonCommunityRegistration @relation(fields: [communityRegistrationId], references: [id], name: "HackathonCommunityRegistrationToTeam")
-  
+
   teamName    String
   teamMembers HackathonCommunityTeamMember[] @relation("HackathonCommunityTeamToMembers")
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model HackathonCommunityTeamMember {
-  id             Int                   @id @default(autoincrement())
-  publicId       String                @unique
-  teamId         Int
-  team           HackathonCommunityTeam @relation(fields: [teamId], references: [id], name: "HackathonCommunityTeamToMembers")
+  id       Int                    @id @default(autoincrement())
+  publicId String                 @unique
+  teamId   Int
+  team     HackathonCommunityTeam @relation(fields: [teamId], references: [id], name: "HackathonCommunityTeamToMembers")
 
   firstName   String
   lastName    String
@@ -178,7 +178,7 @@ model HackathonCommunityTeamMember {
   medication       String?
   medicalCondition String?
   chestSize        Int     @default(0)
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
