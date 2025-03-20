@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary -- gu lazy */
 'use client'
 
 import { ChevronDown } from 'lucide-react'
@@ -25,12 +26,24 @@ import {
   SelectValue,
 } from '../common/select'
 
-interface MembersForm {
+interface CommunityMembersForm {
   form: UseFormReturn<RegistrationFormSchema>
   index: number
+  lockedFields?: {
+    university?: boolean
+    faculty?: boolean
+  }
+  community: boolean
+  requiredUniversity: string | null
 }
 
-const MembersForm: React.FC<MembersForm> = ({ form, index }) => {
+const CommunityMembersForm: React.FC<CommunityMembersForm> = ({
+  form,
+  index,
+  lockedFields = {},
+  community = false,
+  requiredUniversity,
+}) => {
   const [showMoreFields, setShowMoreFields] = useState(false)
 
   return (
@@ -38,9 +51,11 @@ const MembersForm: React.FC<MembersForm> = ({ form, index }) => {
       key={index}
       title={`Hacker #${index + 1}`}
       description={
-        index <= 1
-          ? 'Must be Chulalongkorn and Engineering Student.'
-          : undefined
+        index <= 1 && requiredUniversity
+          ? `Must be ${requiredUniversity}`
+          : index > 1 && index <= 3
+            ? 'Must be Chulalongkorn and Engineering Student.'
+            : undefined
       }
     >
       <div className='grid gap-2 sm:grid-cols-2 md:gap-6'>
@@ -174,13 +189,16 @@ const MembersForm: React.FC<MembersForm> = ({ form, index }) => {
                 <Input
                   {...field}
                   placeholder='Please Fill Your Student ID'
-                  readOnly={index === 0}
+                  readOnly={index === 0 && !community}
                 />
               </FormControl>
-              {index <= 1 ? (
+              {index <= 1 && !community ? (
                 <FormDescription>
                   Chulalongkorn and Engineering Student ID.
                 </FormDescription>
+              ) : null}
+              {community ? (
+                <FormDescription>Your University Student ID.</FormDescription>
               ) : null}
               <FormMessage />
             </FormItem>
@@ -196,8 +214,17 @@ const MembersForm: React.FC<MembersForm> = ({ form, index }) => {
               Faculty<span className='text-red-500'>*</span>
             </FormLabel>
             <FormControl>
-              <Input {...field} placeholder='Please Fill Your Faculty' />
+              <Input
+                {...field}
+                disabled={lockedFields.faculty}
+                placeholder='Please Fill Your Faculty'
+              />
             </FormControl>
+            {lockedFields.faculty ? (
+              <FormDescription>
+                This field is locked for this team member
+              </FormDescription>
+            ) : null}
             <FormMessage />
           </FormItem>
         )}
@@ -226,8 +253,17 @@ const MembersForm: React.FC<MembersForm> = ({ form, index }) => {
               University<span className='text-red-500'>*</span>
             </FormLabel>
             <FormControl>
-              <Input {...field} placeholder='Please Fill Your University' />
+              <Input
+                {...field}
+                disabled={lockedFields.university}
+                placeholder='Please Fill Your University'
+              />
             </FormControl>
+            {lockedFields.university ? (
+              <FormDescription>
+                This field is locked for this team member
+              </FormDescription>
+            ) : null}
             <FormMessage />
           </FormItem>
         )}
@@ -351,4 +387,4 @@ const MembersForm: React.FC<MembersForm> = ({ form, index }) => {
   )
 }
 
-export default MembersForm
+export default CommunityMembersForm

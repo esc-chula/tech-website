@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderCircle, Minus } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link as Scroll } from 'react-scroll'
 import { z } from 'zod'
@@ -19,14 +19,10 @@ import {
   FormLabel,
   FormMessage,
 } from '~/components/ui/form'
-import { type Student } from '~/generated/intania/auth/student/v1/student'
 import { useToast } from '~/hooks/use-toast'
-import {
-  findMyTeamTicket,
-  registerHackathonTeam,
-} from '~/server/actions/hackathon'
+import { createCommunityTeam } from '~/server/actions/hackathon'
 
-import MembersForm from './members-form'
+import CommunityMembersForm from './community-members-form'
 
 import FormSection from '../common/form-section'
 import Input from '../common/input'
@@ -138,19 +134,74 @@ const formSchema = z.object({
   ),
 })
 
-export type RegistrationFormSchema = z.infer<typeof formSchema>
+export type CommunityRegistrationFormSchema = z.infer<typeof formSchema>
 
-interface RegistrationFormProps {
-  currentUserData: Student
+interface CommunityRegistrationFormProps {
+  communityCode: string
+  requiredUniversity: string | null
 }
 
-const RegistrationForm: React.FC<RegistrationFormProps> = ({
-  currentUserData,
+interface FormTeamMember {
+  firstName: string
+  lastName: string
+  nickname: string
+  pronoun: 'HE' | 'SHE' | 'THEY' | 'OTHER'
+  phoneNumber: string
+  email: string
+  studentId: string
+  faculty: string
+  department: string
+  university: string
+  role: 'DEVELOPER' | 'DESIGNER' | 'PRODUCT'
+  foodRestriction?: string
+  medication?: string
+  medicalCondition?: string
+  chestSize: string
+}
+
+const createDefaultTeamMember = (university?: string): FormTeamMember => ({
+  firstName: '',
+  lastName: '',
+  nickname: '',
+  pronoun: 'HE' as const,
+  phoneNumber: '',
+  email: '',
+  studentId: '',
+  faculty: '',
+  department: '',
+  university: university ?? '',
+  role: 'DEVELOPER' as const,
+  foodRestriction: '',
+  medication: '',
+  medicalCondition: '',
+  chestSize: '',
+})
+
+const createChulalongkornEngineeringTeamMember = (): FormTeamMember => ({
+  firstName: '',
+  lastName: '',
+  nickname: '',
+  pronoun: 'HE' as const,
+  phoneNumber: '',
+  email: '',
+  studentId: '',
+  faculty: 'Engineering',
+  department: '',
+  university: 'Chulalongkorn University',
+  role: 'DEVELOPER' as const,
+  foodRestriction: '',
+  medication: '',
+  medicalCondition: '',
+  chestSize: '',
+})
+
+const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
+  communityCode,
+  requiredUniversity,
 }) => {
   const router = useRouter()
   const { toast } = useToast()
 
-  const [mounted, setMounted] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -158,69 +209,16 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     defaultValues: {
       teamName: '',
       teamMembers: [
-        {
-          faculty: 'Engineering',
-          university: 'Chulalongkorn University',
-        },
-        {
-          faculty: 'Engineering',
-          university: 'Chulalongkorn University',
-        },
+        createDefaultTeamMember(requiredUniversity ?? ''),
+        createDefaultTeamMember(requiredUniversity ?? ''),
+        createChulalongkornEngineeringTeamMember(),
+        createChulalongkornEngineeringTeamMember(),
       ],
     },
   })
 
-  useEffect(() => {
-    setMounted(true)
-
-    form.setValue('teamMembers.0.firstName', currentUserData.firstNameEn ?? '')
-    form.setValue('teamMembers.0.lastName', currentUserData.familyNameEn ?? '')
-    form.setValue('teamMembers.0.nickname', currentUserData.nicknameEn ?? '')
-    const currentPronoun = (): z.infer<
-      typeof formSchema
-    >['teamMembers'][0]['pronoun'] => {
-      switch (currentUserData.preferredPronoun) {
-        case 'he/him/his':
-          return 'HE'
-        case 'she/her/hers':
-          return 'SHE'
-        case 'they/them/theirs':
-          return 'THEY'
-        case 'other':
-          return 'OTHER'
-        default:
-          return 'OTHER'
-      }
-    }
-    form.setValue('teamMembers.0.pronoun', currentPronoun())
-    form.setValue(
-      'teamMembers.0.phoneNumber',
-      currentUserData.phoneNumber ?? ''
-    )
-    form.setValue('teamMembers.0.email', currentUserData.email ?? '')
-    form.setValue('teamMembers.0.studentId', currentUserData.studentId ?? '')
-    form.setValue(
-      'teamMembers.0.department',
-      currentUserData.department?.nameEn ?? ''
-    )
-    form.setValue(
-      'teamMembers.0.foodRestriction',
-      currentUserData.foodLimitations ?? ''
-    )
-    form.setValue('teamMembers.0.medication', currentUserData.medications ?? '')
-    form.setValue(
-      'teamMembers.0.medicalCondition',
-      currentUserData.medicalConditions ?? ''
-    )
-  }, [currentUserData, form])
-
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setLoading(true)
-
-    // simulate validation loading for 1 seconds
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1000)
-    })
 
     let isError = false
 
@@ -233,17 +231,19 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       isError = true
     }
 
-    // validate first 2 members student id
-    const studentIdRegex = /^6[4-7]3\d{5}21$/
-    values.teamMembers.forEach((member, index) => {
-      if (index <= 1 && !studentIdRegex.test(member.studentId)) {
-        form.setError(`teamMembers.${index}.studentId`, {
-          type: 'manual',
-          message: 'Invalid Student ID',
-        })
-        isError = true
-      }
-    })
+    // Check if at least 2 members are from required university
+    const membersFromRequiredUniversity = values.teamMembers.filter(
+      (member) => member.university === requiredUniversity
+    )
+
+    if (membersFromRequiredUniversity.length < 2) {
+      toast({
+        title: 'Validation Error',
+        description: `At least 2 team members must be from ${requiredUniversity ?? 'Your University'}`,
+        variant: 'destructive',
+      })
+      isError = true
+    }
 
     // validate if any team member has the same student id or first and last name
     const studentIds = new Set<string>()
@@ -302,61 +302,42 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
     if (!form.formState.isValid || isError) {
       setLoading(false)
-
       return
     }
 
-    const resTeamTicket = await findMyTeamTicket()
-    if (!resTeamTicket.success) {
+    // create community team
+    try {
+      const resRegister = await createCommunityTeam(
+        communityCode,
+        values.teamName,
+        values.teamMembers.map((member, index) => ({
+          ...member,
+          chestSize: memberChestSizes[index] ?? 0,
+        }))
+      )
+
+      if (!resRegister.success) {
+        toast({
+          title: 'Registration Failed',
+          description: resRegister.message,
+          variant: 'destructive',
+        })
+        setLoading(false)
+        return
+      }
+
+      router.push(
+        `/hackathon/community/${communityCode}/registration/success?teamId=${resRegister.data.teamId}`
+      )
+      setLoading(false)
+    } catch (error) {
       toast({
-        title: 'Registration Failed',
-        description: resTeamTicket.message,
+        title: 'Submission Error',
+        description: 'An error occurred while submitting the form',
         variant: 'destructive',
       })
-
       setLoading(false)
-
-      return
     }
-    if (!resTeamTicket.data) {
-      toast({
-        title: 'Registration Failed',
-        description: 'You do not have a Team Pass',
-        variant: 'destructive',
-      })
-
-      setLoading(false)
-
-      return
-    }
-
-    const resRegister = await registerHackathonTeam(
-      resTeamTicket.data.id,
-      values.teamName,
-      values.teamMembers.map((member, index) => ({
-        ...member,
-        chestSize: memberChestSizes[index] ?? 0,
-      }))
-    )
-    if (!resRegister.success) {
-      toast({
-        title: 'Registration Failed',
-        description: resRegister.message,
-        variant: 'destructive',
-      })
-
-      setLoading(false)
-
-      return
-    }
-
-    router.push('/hackathon/registration/success')
-
-    setLoading(false)
-  }
-
-  if (!mounted) {
-    return <LoaderCircle className='animate-spin opacity-50' size={32} />
   }
 
   return (
@@ -431,7 +412,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               onClick={() => {
                 form.setValue('teamMembers', [
                   ...form.getValues('teamMembers'),
-                  {} as z.infer<typeof formSchema>['teamMembers'][0],
+                  createDefaultTeamMember(),
                 ])
               }}
             >
@@ -450,7 +431,17 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         ) : null}
         {/* members form */}
         {form.watch('teamMembers').map((_, index) => (
-          <MembersForm key={index} form={form} index={index} />
+          <CommunityMembersForm
+            key={index}
+            community
+            form={form}
+            index={index}
+            requiredUniversity={requiredUniversity}
+            lockedFields={{
+              university: index < 4,
+              faculty: index >= 2 && index < 4,
+            }}
+          />
         ))}
         {/* submit */}
         <div className='fixed bottom-2 w-full max-w-md px-3 sm:bottom-5'>
@@ -488,4 +479,4 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   )
 }
 
-export default RegistrationForm
+export default CommunityRegistrationForm

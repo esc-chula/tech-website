@@ -24,7 +24,7 @@ const Page: React.FC = async () => {
     return redirect(`/hackathon/login?redirectUrl=/hackathon/ticket/share`)
   }
 
-  const resMyRegistrationIndex = await getMyRegistrationIndex()
+  const resMyRegistrationIndex = await getMyRegistrationIndex({})
   if (!resMyRegistrationIndex.success || resMyRegistrationIndex.data === -1) {
     return notFound()
   }

@@ -11,6 +11,8 @@ import { withRateLimit } from '~/lib/rate-limit'
 import { api } from '~/trpc/server'
 import {
   type CreateHackathonTeamMemberInput,
+  type HackathonCommunityRegistration,
+  type HackathonCommunityTeamMember,
   type HackathonRegistration,
   type HackathonSpinResult,
   type HackathonTeamMember,
@@ -138,7 +140,16 @@ export async function findMyRegistration(): Promise<
   return await api.hackathon.findMyRegistration()
 }
 
-export async function getMyRegistrationIndex(): Promise<Response<number>> {
+export async function getMyRegistrationIndex({
+  communityCode,
+}: {
+  communityCode?: string
+}): Promise<Response<number>> {
+  if (communityCode) {
+    return await api.hackathon.getRegistrationIndexByCommunityCode({
+      code: communityCode,
+    })
+  }
   return await api.hackathon.getMyRegistrationIndex()
 }
 
@@ -254,4 +265,32 @@ export const getHackathonTicketNonClaimStats = async (): Promise<
   Response<HackathonTicketNonClaimStats>
 > => {
   return await api.hackathon.getTicketNonClaimStats()
+}
+
+export async function checkCommunityRegistrationCode(
+  code: string
+): Promise<Response<{ valid: boolean; requiredUniversity: string | null }>> {
+  return await api.hackathon.checkCommunityRegistrationCode({
+    code,
+  })
+}
+
+export async function createCommunityTeam(
+  code: string,
+  teamName: string,
+  teamMembers: HackathonCommunityTeamMember[]
+): Promise<Response<{ teamId: string }>> {
+  return await api.hackathon.createCommunityTeam({
+    code,
+    teamName,
+    teamMembers,
+  })
+}
+
+export async function getCommunityRegistrationByCode(
+  code: string
+): Promise<Response<HackathonCommunityRegistration>> {
+  return await api.hackathon.getCommunityRegistrationByCode({
+    code,
+  })
 }

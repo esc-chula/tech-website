@@ -121,6 +121,19 @@ model HackathonTeamTicket {
   registration HackathonRegistration? @relation("HackathonTeamTicketToRegistration")
 }
 
+model HackathonCommunityRegistration {
+  id                 Int       @id @default(autoincrement())
+  code               String    @unique
+  expiresAt          DateTime?
+  isActive           Boolean   @default(true)
+  requiredUniversity String
+
+  communityTeam HackathonCommunityTeam? @relation("HackathonCommunityRegistrationToTeam")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model HackathonRegistration {
   id           Int @id @default(autoincrement())
   teamTicketId Int @unique
@@ -128,6 +141,49 @@ model HackathonRegistration {
   teamTicket  HackathonTeamTicket   @relation(fields: [teamTicketId], references: [id], name: "HackathonTeamTicketToRegistration")
   teamName    String
   teamMembers HackathonTeamMember[] @relation("HackathonRegistrationToTeamMembers")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model HackathonCommunityTeam {
+  id                      Int                            @id @default(autoincrement())
+  publicId                String                         @unique
+  communityRegistrationId Int                            @unique
+  communityRegistration   HackathonCommunityRegistration @relation(fields: [communityRegistrationId], references: [id], name: "HackathonCommunityRegistrationToTeam")
+
+  teamName    String
+  teamMembers HackathonCommunityTeamMember[] @relation("HackathonCommunityTeamToMembers")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HackathonCommunityTeamMember {
+  id       Int                    @id @default(autoincrement())
+  publicId String                 @unique
+  teamId   Int
+  team     HackathonCommunityTeam @relation(fields: [teamId], references: [id], name: "HackathonCommunityTeamToMembers")
+
+  firstName   String
+  lastName    String
+  nickname    String
+  pronoun     HackathonPronoun
+  phoneNumber String
+  email       String
+  studentId   String
+  faculty     String
+  department  String
+  university  String
+  role        HackathonRole
+
+  foodRestriction  String?
+  medication       String?
+  medicalCondition String?
+  chestSize        Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model HackathonTeamMember {
