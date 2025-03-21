@@ -93,13 +93,13 @@ const contents = [
               <p className='text-xs font-medium text-white/50'>
                 General Admission - 30 Teams
               </p>
-              <p>14 - 22 March 2025</p>
+              <p>14 - 27 March 2025</p>
             </div>
           </div>
         </div>
       </div>
     ),
-    date: '17 Feb - 22 March 2025',
+    date: '17 Feb - 27 March 2025',
   },
   {
     title: 'HACK Day',

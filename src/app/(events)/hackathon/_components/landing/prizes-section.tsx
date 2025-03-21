@@ -73,16 +73,15 @@ const PrizesSection: React.FC = () => {
           <ScrollRevealer delay={0.5} initialTranslateY='15%'>
             <PrizeCard subtitle='Swags & Rewards' title='??,???'>
               <p className='text-sm text-white/70'>
-                1-on-1 mentorship with industry experts
+                Premium Swag for Everyone! 🎁
               </p>
               <p className='text-sm text-white/70'>
-                Access to exclusive startup programs
+                Get ready for high-quality exclusive shirts, valuable rewards,
+                and tons of exciting goodies!
               </p>
               <p className='text-sm text-white/70'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Consequuntur iste dolorem similique, tempore quae officia minus
-                fuga aliquid sint tenetur adipisci doloremque? Sapiente sunt
-                nobis voluptates et quaerat, ipsam dicta?
+                Whether you win through challenges or participate in fun
+                activities, there’s many of swag waiting just for you!
               </p>
             </PrizeCard>
           </ScrollRevealer>
