@@ -8,7 +8,7 @@ import HeroSection from './_components/landing/hero-section'
 import ObjectivesSection from './_components/landing/objectives-section'
 import OffsetRevealer from './_components/landing/offset-revealer'
 import PrizeSection from './_components/landing/prize-section'
-// import PrizesSection from './_components/landing/prizes-section';
+import PrizesSection from './_components/landing/prizes-section'
 import SponsorsSection from './_components/landing/sponsors-section'
 import TicketSection from './_components/landing/ticket-section'
 import TimelineSection from './_components/landing/timeline-section'
@@ -50,7 +50,7 @@ const Page: React.FC = () => {
           {/* info sections */}
           <TimelineSection />
           <TicketSection />
-          {/* <PrizesSection /> */}
+          <PrizesSection />
           <ObjectivesSection />
           {/* TODO: judges, swags */}
 

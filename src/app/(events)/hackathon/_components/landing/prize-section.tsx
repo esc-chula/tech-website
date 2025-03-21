@@ -3,7 +3,7 @@
 
 import { usePrize } from '../../_hooks/prize'
 
-const IS_HIDE_PRICE = true as boolean
+const IS_HIDE_PRICE = false as boolean
 
 const PrizeSection: React.FC = () => {
   const { prize, prizeString } = usePrize()
