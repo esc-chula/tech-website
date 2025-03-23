@@ -10,6 +10,7 @@ import OffsetRevealer from './_components/landing/offset-revealer'
 import PrizeSection from './_components/landing/prize-section'
 import PrizesSection from './_components/landing/prizes-section'
 import SponsorsSection from './_components/landing/sponsors-section'
+// import SwagSection from './_components/landing/swag-section'
 import TicketSection from './_components/landing/ticket-section'
 import TimelineSection from './_components/landing/timeline-section'
 import GridTunnelContextProvider from './_contexts/grid-tunnel-context'
@@ -51,6 +52,7 @@ const Page: React.FC = () => {
           <TimelineSection />
           <TicketSection />
           <PrizesSection />
+          {/* <SwagSection /> */}
           <ObjectivesSection />
           {/* TODO: judges, swags */}
 
