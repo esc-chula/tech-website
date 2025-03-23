@@ -125,7 +125,7 @@ const ObjectiveCard: React.FC<ObjectiveCardProps> = ({
   index,
   title,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(index !== 0)
+  const [isCollapsed, setIsCollapsed] = useState(index !== 1)
 
   const contentRef = useRef<HTMLDivElement>(null)
   const [contentHeight, setContentHeight] = useState(0)

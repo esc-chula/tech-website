@@ -5,15 +5,15 @@ import Section from './section'
 const competitionPrizes = [
   {
     title: 'Winner',
-    prize: '80,000',
+    prize: '100,000',
   },
   {
     title: '1st Runner-up',
-    prize: '60,000',
+    prize: '50,000',
   },
   {
     title: '2nd Runner-up',
-    prize: '40,000',
+    prize: '30,000',
   },
   {
     title: 'Challenges Awards',
