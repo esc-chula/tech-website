@@ -17,7 +17,11 @@ const Page: React.FC = () => {
   useEffect(() => {
     if (qrData) {
       setLoading(true)
+      setError(null)
+      setTeamData(null)
+
       console.log(`Searching Team Ticket for: ${qrData}`)
+
       findTeamTicketByPublicId(qrData)
         .then((res) => {
           if (!res.success) {
@@ -37,12 +41,19 @@ const Page: React.FC = () => {
   }, [qrData])
 
   return (
-    <div className='min-h-dvh w-full px-4 pb-6'>
-      <div className='relative mx-auto h-full w-full max-w-screen-sm'>
-        <div className='absolute left-1/2 top-1/2 z-10 aspect-square w-1/2 -translate-x-1/2 -translate-y-1/2 rounded-3xl border-[3px] border-white/50' />
+    <div className='flex min-h-dvh w-full flex-col gap-4 px-4 pb-6'>
+      <div className='relative mx-auto w-full max-w-screen-sm'>
+        <div
+          className={cn(
+            'absolute left-1/2 top-1/2 z-10 aspect-square w-1/2 -translate-x-1/2 -translate-y-1/2 rounded-3xl border-[3px]',
+            loading ? 'border-green-400/80' : 'border-white/50'
+          )}
+        />
         <QrReader
           className='aspect-square w-full'
-          constraints={{}}
+          constraints={{
+            facingMode: 'environment',
+          }}
           onResult={(result) => {
             if (result) {
               setQrData(result.getText())
@@ -53,7 +64,7 @@ const Page: React.FC = () => {
       {error ? <p>{error}</p> : null}
       {loading ? <p>Searching...</p> : null}
       {teamData ? (
-        <>
+        <div className='flex w-full flex-col'>
           <div className='mb-4 w-full border-collapse text-left'>
             <div className='w-full border p-2 font-bold'>Team Information</div>
             <TableRow field='Team Name' value={teamData.teamName} />
@@ -63,12 +74,11 @@ const Page: React.FC = () => {
           {teamData.teamMembers.map((teamMember, idx) => (
             <div
               key={teamMember.id}
-              className='mb-4 mt-10 w-full border-collapse text-left'
+              className='mb-4 w-full border-collapse text-left'
             >
               <div className='w-full border p-2 font-bold'>
                 Member {idx + 1}
               </div>
-              <TableRow className='font-bold' field='Field' value='Value' />
               <TableRow field='First Name' value={teamMember.firstName} />
               <TableRow field='Last Name' value={teamMember.lastName} />
               <TableRow field='Nickname' value={teamMember.nickname} />
@@ -91,7 +101,7 @@ const Page: React.FC = () => {
           >
             Clear
           </Button>
-        </>
+        </div>
       ) : null}
     </div>
   )
