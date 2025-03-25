@@ -10,6 +10,7 @@ const HackathonTitle: React.FC<HackathonTitleProps> = ({ className }) => {
       INTANIA
       <br />
       HACKATH<span className='text-hackathon-primary'>0</span>N
+      <br />
     </span>
   )
 }

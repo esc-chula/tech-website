@@ -29,7 +29,7 @@ const Page: React.FC = () => {
 
           {/* hero grid tunnel */}
           <AnimatedGridTunnel>
-            <OffsetRevealer className='gap-5'>
+            <OffsetRevealer className='gap-7'>
               <HeroSection />
             </OffsetRevealer>
             <OffsetRevealer
