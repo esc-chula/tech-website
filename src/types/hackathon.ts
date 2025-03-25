@@ -94,6 +94,13 @@ export interface HackathonCommunityRegistration {
   }
 }
 
+export interface HackathonCommunityTeamTicket {
+  id: number
+  publicId: string
+  communityRegistrationId: number
+  teamName: string
+}
+
 export interface HackathonCommunityTeamMember {
   firstName: string
   lastName: string
@@ -110,4 +117,11 @@ export interface HackathonCommunityTeamMember {
   medication?: string | null
   medicalCondition?: string | null
   chestSize?: number
+}
+
+export interface HackathonTeam {
+  id: number
+  publicId: string
+  teamName: string
+  teamMembers: HackathonTeamMember[]
 }

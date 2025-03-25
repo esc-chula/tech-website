@@ -8,6 +8,7 @@ import { genPublicId } from '~/lib/hackathon-ticket'
 import { createTRPCRouter, trpc } from '~/server/api/trpc'
 import type {
   HackathonCommunityRegistration,
+  HackathonCommunityTeamTicket,
   HackathonRegistration,
   HackathonTeamMember,
   HackathonTeamTicket,
@@ -26,6 +27,7 @@ import {
   DeleteHackathonRegistrationDto,
   GetHackathonCommunityRegistrationByCodeDto,
   GetRegistrationIndexByCommunityCodeDto,
+  GetTeamByPublicId,
   UpdateHackathonRegistrationDto,
 } from '../dto/hackathon'
 
@@ -896,6 +898,7 @@ export const hackathonRouter = createTRPCRouter({
       }
     }
   ),
+
   checkCommunityRegistrationCode: trpc
     .input(CheckHackathonCommunityRegistrationCodeDto)
     .query(
@@ -986,6 +989,7 @@ export const hackathonRouter = createTRPCRouter({
         }
       }
     ),
+
   createCommunityTeam: trpc
     .input(CreateHackathonCommunityTeamDto)
     .mutation(async ({ ctx, input }): Promise<Response<{ teamId: string }>> => {
@@ -1122,6 +1126,7 @@ export const hackathonRouter = createTRPCRouter({
         }
       }
     }),
+
   getCommunityRegistrationByCode: trpc
     .input(GetHackathonCommunityRegistrationByCodeDto)
     .query(
@@ -1203,4 +1208,107 @@ export const hackathonRouter = createTRPCRouter({
         }
       }
     ),
+
+  findTeamByPublicId: trpc.input(GetTeamByPublicId).query(
+    async ({
+      ctx,
+      input,
+    }): Promise<
+      Response<
+        | (HackathonTeamTicket & {
+            registration: HackathonRegistration | null
+            teamMembers: HackathonTeamMember[]
+          })
+        | null
+      >
+    > => {
+      try {
+        const teamTicket = await ctx.db.hackathonTeamTicket.findUnique({
+          where: {
+            publicId: input.publicId,
+          },
+          include: {
+            registration: true,
+          },
+        })
+
+        if (!teamTicket?.registration) {
+          return {
+            success: true,
+            data: null,
+          }
+        }
+
+        const teamMembers = await ctx.db.hackathonTeamMember.findMany({
+          where: {
+            registrationId: teamTicket.registration.id,
+          },
+        })
+
+        return {
+          success: true,
+          data: {
+            ...teamTicket,
+            teamMembers,
+          },
+        }
+      } catch (error) {
+        console.error('Error fetching team ticket:', error)
+        return {
+          success: false,
+          message: 'Failed fetch team ticket',
+          errors: [
+            error instanceof Error ? error.message : 'Something went wrong',
+          ],
+        }
+      }
+    }
+  ),
+
+  findCommunityTeamByPublicId: trpc.input(GetTeamByPublicId).query(
+    async ({
+      ctx,
+      input,
+    }): Promise<
+      Response<
+        | (HackathonCommunityTeamTicket & {
+            teamMembers: HackathonTeamMember[]
+          })
+        | null
+      >
+    > => {
+      try {
+        const teamTicket = await ctx.db.hackathonCommunityTeam.findUnique({
+          where: {
+            publicId: input.publicId,
+          },
+        })
+
+        if (!teamTicket) {
+          return {
+            success: true,
+            data: null,
+          }
+        }
+
+        const teamMembers = await ctx.db.hackathonCommunityTeamMember.findMany({
+          where: {
+            teamId: teamTicket.id,
+          },
+        })
+
+        return {
+          success: true,
+          data: { ...teamTicket, teamMembers },
+        }
+      } catch (error) {
+        console.error('Error fetching team ticket:', error)
+        return {
+          success: false,
+          message: 'Failed fetch team ticket',
+          errors: ['Failed fetch team ticket'],
+        }
+      }
+    }
+  ),
 })

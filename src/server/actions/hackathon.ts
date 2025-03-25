@@ -13,8 +13,10 @@ import {
   type CreateHackathonTeamMemberInput,
   type HackathonCommunityRegistration,
   type HackathonCommunityTeamMember,
+  type HackathonCommunityTeamTicket,
   type HackathonRegistration,
   type HackathonSpinResult,
+  type HackathonTeam,
   type HackathonTeamMember,
   type HackathonTeamTicket,
   type HackathonTicket,
@@ -293,4 +295,64 @@ export async function getCommunityRegistrationByCode(
   return await api.hackathon.getCommunityRegistrationByCode({
     code,
   })
+}
+
+export async function findTeamTicketByPublicId(
+  publicId: string
+): Promise<Response<HackathonTeam>> {
+  let res = null as
+    | (HackathonTeamTicket & {
+        registration: HackathonRegistration | null
+        teamMembers: HackathonTeamMember[]
+      })
+    | (HackathonCommunityTeamTicket & {
+        teamMembers: HackathonTeamMember[]
+      })
+    | null
+  let teamName = ''
+
+  try {
+    const resTeamTicket = await api.hackathon.findTeamByPublicId({ publicId })
+    if (!resTeamTicket.success) {
+      throw new Error('')
+    } else if (resTeamTicket.data && resTeamTicket.data.registration) {
+      res = resTeamTicket.data
+      teamName = resTeamTicket.data.registration.teamName
+    }
+
+    if (!resTeamTicket.data) {
+      const resCommunityTeamTicket =
+        await api.hackathon.findCommunityTeamByPublicId({ publicId })
+      if (!resCommunityTeamTicket.success) {
+        throw new Error('')
+      } else if (resCommunityTeamTicket.data) {
+        res = resCommunityTeamTicket.data
+        teamName = resCommunityTeamTicket.data.teamName
+      }
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Error fetching team ticket',
+      errors: ['Error fetching team ticket'],
+    }
+  }
+
+  if (!res) {
+    return {
+      success: false,
+      message: 'Team ticket not found',
+      errors: ['Team ticket not found'],
+    }
+  }
+
+  return {
+    success: true,
+    data: {
+      id: res.id,
+      publicId: res.publicId,
+      teamMembers: res.teamMembers,
+      teamName,
+    },
+  }
 }
