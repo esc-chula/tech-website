@@ -208,12 +208,19 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       teamName: '',
-      teamMembers: [
-        createDefaultTeamMember(requiredUniversity ?? ''),
-        createDefaultTeamMember(requiredUniversity ?? ''),
-        createChulalongkornEngineeringTeamMember(),
-        createChulalongkornEngineeringTeamMember(),
-      ],
+      teamMembers: requiredUniversity
+        ? [
+            createDefaultTeamMember(requiredUniversity),
+            createDefaultTeamMember(requiredUniversity),
+            createChulalongkornEngineeringTeamMember(),
+            createChulalongkornEngineeringTeamMember(),
+          ]
+        : [
+            createChulalongkornEngineeringTeamMember(),
+            createChulalongkornEngineeringTeamMember(),
+            createDefaultTeamMember(requiredUniversity ?? ''),
+            createDefaultTeamMember(requiredUniversity ?? ''),
+          ],
     },
   })
 
@@ -438,7 +445,7 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
             index={index}
             requiredUniversity={requiredUniversity}
             lockedFields={{
-              university: index < 4,
+              university: requiredUniversity ? index < 4 : index < 2,
               faculty: index >= 2 && index < 4,
             }}
           />
