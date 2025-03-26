@@ -100,3 +100,7 @@ export const GetHackathonCommunityRegistrationByCodeDto = z.object({
 export const GetRegistrationIndexByCommunityCodeDto = z.object({
   code: z.string(),
 })
+
+export const GetTeamByPublicId = z.object({
+  publicId: z.string(),
+})
