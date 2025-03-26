@@ -218,8 +218,8 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
         : [
             createChulalongkornEngineeringTeamMember(),
             createChulalongkornEngineeringTeamMember(),
-            createDefaultTeamMember(requiredUniversity ?? ''),
-            createDefaultTeamMember(requiredUniversity ?? ''),
+            createDefaultTeamMember(''),
+            createDefaultTeamMember(''),
           ],
     },
   })
@@ -243,7 +243,7 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
       (member) => member.university === requiredUniversity
     )
 
-    if (membersFromRequiredUniversity.length < 2) {
+    if (requiredUniversity !== '' && membersFromRequiredUniversity.length < 2) {
       toast({
         title: 'Validation Error',
         description: `At least 2 team members must be from ${requiredUniversity ?? 'Your University'}`,
@@ -307,7 +307,7 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
       isError = true
     }
 
-    if (!form.formState.isValid || isError) {
+    if (isError) {
       setLoading(false)
       return
     }
@@ -446,7 +446,7 @@ const CommunityRegistrationForm: React.FC<CommunityRegistrationFormProps> = ({
             requiredUniversity={requiredUniversity}
             lockedFields={{
               university: requiredUniversity ? index < 4 : index < 2,
-              faculty: index >= 2 && index < 4,
+              faculty: requiredUniversity ? index >= 2 && index < 4 : index < 2,
             }}
           />
         ))}
