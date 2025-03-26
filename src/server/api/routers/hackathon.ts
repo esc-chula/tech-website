@@ -1049,7 +1049,10 @@ export const hackathonRouter = createTRPCRouter({
             member.university === communityRegistration.requiredUniversity
         )
 
-        if (engineeringStudentsFromRequiredUniversity.length < 2) {
+        if (
+          communityRegistration.requiredUniversity !== '' &&
+          engineeringStudentsFromRequiredUniversity.length < 2
+        ) {
           return {
             success: false,
             message: `At least 2 team members must be from ${communityRegistration.requiredUniversity}`,

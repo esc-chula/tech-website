@@ -32,6 +32,9 @@ export function middleware(
     },
   })
 
+  // TICKET_HERE
+  next.cookies.set('aungpao', 'DEV_FBHY5NKMML')
+
   return next
 }
 
