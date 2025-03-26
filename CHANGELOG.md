@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.3](https://github.com/esc-chula/intania-oidc-new/compare/v0.4.2..v0.4.3) - 2025-03-26
+
+### <!-- 0 -->⛰️  Features
+
+- Scan qr info - ([85c6724](https://github.com/esc-chula/intania-oidc-new/commit/85c6724ccf3ba4cc7b0a0d6af5e998e4ef858c1d))
+- Improve scanner - ([9ac8b53](https://github.com/esc-chula/intania-oidc-new/commit/9ac8b5367bdc8e57b404d20ff483e62a589308d5))
+
 ## [0.4.2](https://github.com/esc-chula/intania-oidc-new/compare/v0.4.1..v0.4.2) - 2025-03-23
 
 ### <!-- 1 -->🐛 Bug Fixes
