@@ -1,5 +1,8 @@
 import HiddenTicketFetcher from './(ticket-releasing)/ticket-post'
-import { TicketConsolePathfinding } from './(ticket-releasing)/ticket-releasing'
+import {
+  TicketConsolePathfinding,
+  TicketSetLocalStorage,
+} from './(ticket-releasing)/ticket-releasing'
 import Footer from './_components/common/footer'
 import Socials from './_components/common/socials'
 import AnimatedGridTunnel from './_components/landing/animated-grid-tunnel'
@@ -18,8 +21,9 @@ import GridTunnelContextProvider from './_contexts/grid-tunnel-context'
 const Page: React.FC = () => {
   return (
     <>
-      {/* TICKET_HERE PATHFINDING */}
-      <TicketConsolePathfinding pathway='ลองไปดูที่ Footer ใต้คำว่า Intania Hackathon' />
+      {/* TICKET_HERE */}
+      <TicketConsolePathfinding pathway='DEV_FBHY5NKMML' />
+      <TicketSetLocalStorage name='aungpao' ticket='DEV_TEC0C9TLEK' />
       <HiddenTicketFetcher />
       <GridTunnelContextProvider>
         <div className='relative'>

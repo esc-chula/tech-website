@@ -19,15 +19,7 @@ export const metadata: Metadata = {
   title: 'Intania Hackathon - Ticket',
 }
 
-const Page: React.FC<{ searchParams: { code?: string } }> = async ({
-  searchParams,
-}) => {
-  //TICKET_HERE
-  //Origin does not have searchParams
-  if (!searchParams.code) {
-    redirect('/hackathon/ticket?code=GEN_KZQX05NWAL')
-  }
-
+const Page: React.FC = async () => {
   const resMyTeamTicket = await findMyTeamTicket()
   const resMyActiveClaim = await getMyActiveClaim()
 
