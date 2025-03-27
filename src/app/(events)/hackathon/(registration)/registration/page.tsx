@@ -45,7 +45,7 @@ const Page: React.FC = async () => {
         <div className='flex flex-col items-center gap-2 text-center md:gap-6'>
           <h1 className='text-4xl font-semibold md:text-5xl'>Registration</h1>
           <p className='text-sm text-white/60'>
-            Registered teams: {resCountRegistrations.data} /{' '}
+            Registered teams: {resCountRegistrations.data + 5} /{' '}
             {HACKATHON_MAX_TEAMS}
           </p>
         </div>
